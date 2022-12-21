@@ -1,8 +1,4 @@
 # team03
-
-ระบบหลัก ระบบโรงแรม 
-<hr/>
-#### รายชื่อผู้รับผิดชอบ
 ```
     B6325886 Thansiri Suphimon
 ```
@@ -13,3 +9,5 @@
     B6302399 Butsarakam Seekoh
 ```
     B6311032 Pattharapon Kanwicha
+```
+    B6326357 Danudech Chaiphondech
