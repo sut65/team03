@@ -42,7 +42,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&Signin{}).Create(&loginOfficer2)
 
-
 	//Employee login
 	loginEmployee1 := Signin{
 		Username: "ESobsa",
@@ -66,60 +65,60 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	// Set Data Officer
 	db.Model(&Officer{}).Create(&Officer{
-		Officername:  "Phonsak songsang",
-		Tel:    "0981522594",
-		Signin: loginOfficer1,
+		Officername: "Phonsak songsang",
+		Tel:         "0981522594",
+		Signin:      loginOfficer1,
 	})
 	db.Model(&Officer{}).Create(&Officer{
 
-		Officername:  "Moonnight machine",
-		Tel:    "0981521111",
-		Signin: loginOfficer2,
+		Officername: "Moonnight machine",
+		Tel:         "0981521111",
+		Signin:      loginOfficer2,
 	})
 
 	// Set Data Department
 	db.Model(&Department{}).Create(&Department{
-		Name:    "Reception",
+		Name: "Reception",
 	})
 	db.Model(&Department{}).Create(&Department{
-		Name:    "Housekeeping",
+		Name: "Housekeeping",
 	})
 	db.Model(&Department{}).Create(&Department{
-		Name:    "Chef",
+		Name: "Chef",
 	})
 	db.Model(&Department{}).Create(&Department{
-		Name:    "Accounting",
+		Name: "Accounting",
 	})
 	db.Model(&Department{}).Create(&Department{
-		Name:    "Sale & Marketing",
+		Name: "Sale & Marketing",
 	})
 
 	// Set Data Position
 	db.Model(&Position{}).Create(&Position{
-		Name:    "Department head",
+		Name: "Department head",
 	})
 	db.Model(&Position{}).Create(&Position{
-		Name:    "Full time employee",
+		Name: "Full time employee",
 	})
 	db.Model(&Position{}).Create(&Position{
-		Name:    "Part time employee",
+		Name: "Part time employee",
 	})
 
 	// Set Data Location
 	db.Model(&Location{}).Create(&Location{
-		Name:    "Kitchen Room",
+		Name: "Kitchen Room",
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name:    "Cashier",
+		Name: "Cashier",
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name:    "Hotel Front",
+		Name: "Hotel Front",
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name:    "Housekeeping staff Room",
+		Name: "Housekeeping staff Room",
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name:    "Marketing staff room",
+		Name: "Marketing staff room",
 	})
 
 	var OFSongsawang Officer
@@ -145,7 +144,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Full time employee").Scan(&Full)
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Part time employee").Scan(&Part)
 
-
 	var Kitchen Location
 	var Cashier Location
 	var Hotelfront Location
@@ -157,7 +155,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM locations WHERE name = ?", "Housekeeping staff Room").Scan(&Housekeepingstaff)
 	db.Raw("SELECT * FROM locations WHERE name = ?", "Marketing staff room").Scan(&Marketing)
 
-
 	timedate1 := time.Date(1950, 2, 16, 0, 0, 0, 0, time.Local)
 	timeyear1 := time.Date(1987, 2, 16, 0, 0, 0, 0, time.Local)
 	timedate2 := time.Date(1965, 9, 9, 0, 0, 0, 0, time.Local)
@@ -166,10 +163,10 @@ func SetupIntoDatabase(db *gorm.DB) {
 	timeyear3 := time.Date(1990, 5, 13, 0, 0, 0, 0, time.Local)
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID: 1430099536148,
-		Employeename :       "Sobsa tugwan",
+		PersonalID:   1430099536148,
+		Employeename: "Sobsa tugwan",
 		Email:        "Sobsa@gmail.com",
-		Eusername:	  "ESobsa",
+		Eusername:    "ESobsa",
 		Password:     SetupPasswordHash("Sobsa01"),
 		Department:   Chef,
 		Position:     Head,
@@ -186,8 +183,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID: 1400000005257,
-		Employeename :       "Hanoi slotmachine",
+		PersonalID:   1400000005257,
+		Employeename: "Hanoi slotmachine",
 		Email:        "Hanoi@gmail.com",
 		Eusername:    "EHanoi",
 		Password:     SetupPasswordHash("Hanoi02"),
@@ -206,8 +203,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID: 1585289653250,
-		Employeename :       "Banana amoi",
+		PersonalID:   1585289653250,
+		Employeename: "Banana amoi",
 		Email:        "Banana@gmail.com",
 		Eusername:    "EBanana",
 		Password:     SetupPasswordHash("Eanana03"),
