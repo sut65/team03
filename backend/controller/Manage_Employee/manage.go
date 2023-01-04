@@ -1,16 +1,14 @@
 package controller
 
- 
-
 import (
+	"github.com/sut65/team03/entity"
+	"golang.org/x/crypto/bcrypt"
 
-        "github.com/sut65/team03/entity"
+	"github.com/gin-gonic/gin"
 
-        "github.com/gin-gonic/gin"
-
-        "net/http"
-
+	"net/http"
 )
+
 //Officer...................................................................
 // POST /Officers
 
@@ -19,13 +17,13 @@ func CreateOfficer(c *gin.Context) {
 	var officer entity.Officer
 
 	if err := c.ShouldBindJSON(&officer); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Create(&officer).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": officer})
 }
@@ -38,8 +36,8 @@ func GetOfficer(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM officers WHERE id = ?", id).Scan(&officer).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": officer})
 }
@@ -50,8 +48,8 @@ func ListOfficers(c *gin.Context) {
 	var officers []entity.Officer
 
 	if err := entity.DB().Raw("SELECT * FROM officers").Scan(&officers).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": officers})
 }
@@ -62,8 +60,8 @@ func DeleteOfficer(c *gin.Context) {
 	id := c.Param("id")
 
 	if tx := entity.DB().Exec("DELETE FROM officers WHERE id = ?", id); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "officer not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "officer not found"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -74,18 +72,18 @@ func UpdateOfficer(c *gin.Context) {
 	var officer entity.Officer
 
 	if err := c.ShouldBindJSON(&officer); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if tx := entity.DB().Where("id = ?", officer.ID).First(&officer); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "officer not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "officer not found"})
+		return
 	}
 
 	if err := entity.DB().Save(&officer).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": officer})
 }
@@ -98,13 +96,13 @@ func CreateDepartment(c *gin.Context) {
 	var department entity.Department
 
 	if err := c.ShouldBindJSON(&department); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Create(&department).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": department})
 }
@@ -117,8 +115,8 @@ func GetDepartment(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM departments WHERE id = ?", id).Scan(&department).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": department})
 }
@@ -129,8 +127,8 @@ func ListDepartments(c *gin.Context) {
 	var departments []entity.Department
 
 	if err := entity.DB().Raw("SELECT * FROM departments").Scan(&departments).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": departments})
 }
@@ -141,8 +139,8 @@ func DeleteDepartment(c *gin.Context) {
 	id := c.Param("id")
 
 	if tx := entity.DB().Exec("DELETE FROM departments WHERE id = ?", id); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "department not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "department not found"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -153,18 +151,18 @@ func UpdateDepartment(c *gin.Context) {
 	var department entity.Department
 
 	if err := c.ShouldBindJSON(&department); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if tx := entity.DB().Where("id = ?", department.ID).First(&department); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "department not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "department not found"})
+		return
 	}
 
 	if err := entity.DB().Save(&department).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": department})
 }
@@ -177,13 +175,13 @@ func CreatePosition(c *gin.Context) {
 	var position entity.Position
 
 	if err := c.ShouldBindJSON(&position); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Create(&position).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": position})
 }
@@ -196,8 +194,8 @@ func GetPosition(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM positions WHERE id = ?", id).Scan(&position).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": position})
 }
@@ -208,8 +206,8 @@ func ListPositions(c *gin.Context) {
 	var positions []entity.Position
 
 	if err := entity.DB().Raw("SELECT * FROM positions").Scan(&positions).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": positions})
 }
@@ -220,8 +218,8 @@ func DeletePosition(c *gin.Context) {
 	id := c.Param("id")
 
 	if tx := entity.DB().Exec("DELETE FROM positions WHERE id = ?", id); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "position not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "position not found"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -232,18 +230,18 @@ func UpdatePosition(c *gin.Context) {
 	var position entity.Position
 
 	if err := c.ShouldBindJSON(&position); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if tx := entity.DB().Where("id = ?", position.ID).First(&position); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "position not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "position not found"})
+		return
 	}
 
 	if err := entity.DB().Save(&position).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": position})
 }
@@ -256,13 +254,13 @@ func CreateLocation(c *gin.Context) {
 	var location entity.Location
 
 	if err := c.ShouldBindJSON(&location); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if err := entity.DB().Create(&location).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": location})
 }
@@ -275,8 +273,8 @@ func GetLocation(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM locations WHERE id = ?", id).Scan(&location).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": location})
 }
@@ -287,8 +285,8 @@ func ListLocations(c *gin.Context) {
 	var locations []entity.Location
 
 	if err := entity.DB().Raw("SELECT * FROM locations").Scan(&locations).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": locations})
 }
@@ -299,8 +297,8 @@ func DeleteLocation(c *gin.Context) {
 	id := c.Param("id")
 
 	if tx := entity.DB().Exec("DELETE FROM locations WHERE id = ?", id); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "location not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "location not found"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -311,39 +309,92 @@ func UpdateLocation(c *gin.Context) {
 	var location entity.Location
 
 	if err := c.ShouldBindJSON(&location); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if tx := entity.DB().Where("id = ?", location.ID).First(&location); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "location not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "location not found"})
+		return
 	}
 
 	if err := entity.DB().Save(&location).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": location})
 }
 
-//Employee...................................................................
+// Employee...................................................................
 // POST /Employees
+func SetupPasswordHash(pwd string) string {
+	var password, _ = bcrypt.GenerateFromPassword([]byte(pwd), 14)
+	return string(password)
+}
 
 func CreateEmployee(c *gin.Context) {
 
+	var officer entity.Officer
+	var department entity.Department
+	var position entity.Position
+	var location entity.Location
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	if err := entity.DB().Create(&employee).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+	// 9. ค้นหา Officer ด้วย id //tx.RowsAffected ตรวจสอบแถว
+	if tx := entity.DB().Where("id = ?", employee.OfficerID).First(&officer); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "officer not found"})
+		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": employee})
+
+	// 10. ค้นหา department ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.DepartmentID).First(&department); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "department not found"})
+		return
+	}
+
+	// 11. ค้นหา position ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.PositionID).First(&position); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "position not found"})
+		return
+	}
+
+	// 12. ค้นหา location ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.LocationID).First(&location); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "location not found"})
+		return
+	}
+
+	// 13. สร้าง Employee
+	ey := entity.Employee{
+		Officer:      officer,               // โยงความสัมพันธ์กับ Entity Officer
+		Department:   department,            // โยงความสัมพันธ์กับ Entity Department
+		Position:     position,              // โยงความสัมพันธ์กับ Entity Position
+		Location:     location,              // โยงความสัมพันธ์กับ Entity Location
+		PersonalID:   employee.PersonalID,   // ตั้งค่าฟิลด์ PersonalID
+		Employeename: employee.Employeename, // ตั้งค่าฟิลด์ Name
+		Email:        employee.Email,
+		Eusername:    employee.Eusername,                   // ตั้งค่าฟิลด์ Email
+		Password:     SetupPasswordHash(employee.Password), // ตั้งค่าฟิลด์ Password
+		Salary:       employee.Salary,                      // ตั้งค่าฟิลด์ Salary
+		Phonenumber:  employee.Phonenumber,                 // ตั้งค่าฟิลด์ Tel
+		Gender:       employee.Gender,                      // ตั้งค่าฟิลด์ Gender
+		DateOfBirth:  employee.DateOfBirth,                 // ตั้งค่าฟิลด์ DateOfBirth
+		YearOfStart:  employee.YearOfStart,                 // ตั้งค่าฟิลด์ YearOfStart
+		Address:      employee.Address,                     // ตั้งค่าฟิลด์ Address
+		Blood:        employee.Blood,                       // ตั้งค่าฟิลด์ Address
+		// Signin:       createuserlogin,
+	}
+
+	if err := entity.DB().Create(&ey).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": ey})
 }
 
 // GET /Employee/:id
@@ -354,8 +405,8 @@ func GetEmployee(c *gin.Context) {
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM employees WHERE id = ?", id).Scan(&employee).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": employee})
 }
@@ -365,9 +416,9 @@ func ListEmployees(c *gin.Context) {
 
 	var employees []entity.Employee
 
-	if err := entity.DB().Raw("SELECT * FROM employees").Scan(&employees).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Raw("SELECT * FROM employees").Find(&employees).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": employees})
 }
@@ -378,8 +429,8 @@ func DeleteEmployee(c *gin.Context) {
 	id := c.Param("id")
 
 	if tx := entity.DB().Exec("DELETE FROM employees WHERE id = ?", id); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
@@ -390,18 +441,18 @@ func UpdateEmployee(c *gin.Context) {
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
 	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+		return
 	}
 
 	if err := entity.DB().Save(&employee).Error; err != nil {
-		   c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		   return
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": employee})
 }

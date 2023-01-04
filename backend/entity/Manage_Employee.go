@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
 // สร้างตารางชื่อ Officer
 type Officer struct {
 	gorm.Model
@@ -15,7 +14,7 @@ type Officer struct {
 	Signin   Signin `gorm:"references:ID"`
 
 	Officername string
-	Tel   string
+	Tel         string
 	// ส่ง admin_id ไปตาราง Employee เพื่อเป็น foreignKey
 	Employee []Employee `gorm:"foreignKey:OfficerID"`
 }
@@ -28,7 +27,7 @@ type Department struct {
 	Employee []Employee `gorm:"foreignKey:DepartmentID"`
 }
 
-// สร้างตารางชื่อ Position 
+// สร้างตารางชื่อ Position
 type Position struct {
 	gorm.Model
 	Name string
@@ -44,29 +43,28 @@ type Location struct {
 	Employee []Employee `gorm:"foreignKey:LocationID"`
 }
 
-
 // สร้างตารางชื่อ Employee เป็นตารางหลัก
 type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID uint64 `gorm:"uniqueIndex"`
-	Employeename       string
-	Email    string `gorm:"uniqueIndex"`
+	PersonalID   uint64 `gorm:"uniqueIndex"`
+	Employeename string
+	Email        string `gorm:"uniqueIndex"`
 
 	Eusername string
-	Password string
+	Password  string
 
 	SigninID *uint
 	Signin   Signin `gorm:"references:ID"`
 
 	Salary      uint64
-	Phonenumber      string
+	Phonenumber string
 	Gender      string
 	DateOfBirth time.Time
 	YearOfStart time.Time
 	Address     string
-	Blood		string
+	Blood       string
 
 	// OfficerID ทำหน้าที่เป็น FK
 	OfficerID *uint
@@ -83,6 +81,4 @@ type Employee struct {
 	// LocationID ทำหน้าที่เป็น FK
 	LocationID *uint
 	Location   Location `gorm:"references:ID"`
-
-
 }
