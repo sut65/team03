@@ -6,6 +6,9 @@ import Navbar from "./components/Navbar";
 
 import Manage_Search from "./components/Employee/Manage_Search";
 import Manage_Show from "./components/Employee/Manage_Show";
+import Manage_Save from "./components/Employee/Manage_Save";
+import Home from "./components/Home";
+
 
 
 export default function App() {
@@ -13,16 +16,15 @@ export default function App() {
 return (
 
   <Router>
-
-   <div>
-
-   <Navbar />
-
+    <div>
+      <Navbar/>
    <Routes>
 
-       <Route path="/" element={<Manage_Search />} />
+       <Route path="/" element={<Home />} />
 
-       <Route path="/create" element={<Manage_Show />} />
+       <Route path="/ManageSave" element={<Manage_Save />} />
+
+       <Route path="/ManageShow" element={<Manage_Show />} />
 
    </Routes>
 
