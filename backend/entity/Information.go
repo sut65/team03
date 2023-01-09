@@ -319,9 +319,9 @@ func SetupIntoDatabase(db *gorm.DB) {
 	var Room1 Room
 	var Room2 Room
 	var Room3 Room
-	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "1").Scan(&Room1)
-	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "2").Scan(&Room2)
-	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "3").Scan(&Room3)
+	db.Raw("SELECT * FROM rooms WHERE id = ?", "1").Scan(&Room1)
+	db.Raw("SELECT * FROM rooms WHERE id = ?", "2").Scan(&Room2)
+	db.Raw("SELECT * FROM rooms WHERE id = ?", "3").Scan(&Room3)
 
 	//ระบบ check In-Out
 
@@ -355,10 +355,10 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Employee:         Banana,
 	})
 	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
-	var checkInOut1 CheckInOut
-	var checkInOut2 CheckInOut
-	db.Raw("SELECT * FROM checkinouts WHERE CheckInOutID = ?", "1").Scan(&checkInOut1)
-	db.Raw("SELECT * FROM checkinouts WHERE CheckInOutID = ?", "2").Scan(&checkInOut2)
+	var CheckInOut1 CheckInOut
+	var CheckInOut2 CheckInOut
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&CheckInOut2)
 
 	//ระบบสมัครสมาชิก
 	var Customer1 Customer
@@ -526,6 +526,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RepairStatus: inprogress,
 		Customer:     Customer1,
 	})
+	var RepairReq1 RepairReq
+	var RepairReq2 RepairReq
+	var RepairReq3 RepairReq
+	db.Raw("SELECT * FROM repair_reqs WHERE id = ?", "1").Scan(&RepairReq1)
+	db.Raw("SELECT * FROM repair_reqs WHERE id = ?", "2").Scan(&RepairReq2)
+	db.Raw("SELECT * FROM repair_reqs WHERE id = ?", "3").Scan(&RepairReq3)
 
 	// ===============     อาหาร     ===============
 	db.Model(&Food{}).Create(&Food{
@@ -552,10 +558,10 @@ func SetupIntoDatabase(db *gorm.DB) {
 	var PadThai Food
 	var PadKaphao Food
 	var Noodles Food
-	db.Raw("SELECT * FROM Food WHERE Name = ?", "No Order").Scan(&NoOrder1)
-	db.Raw("SELECT * FROM Food WHERE Name = ?", "Pad Thai").Scan(&PadThai)
-	db.Raw("SELECT * FROM Food WHERE Name = ?", "Pad Kaphao").Scan(&PadKaphao)
-	db.Raw("SELECT * FROM Food WHERE Name = ?", "Noodles").Scan(&Noodles)
+	db.Raw("SELECT * FROM Foods WHERE Name = ?", "No Order").Scan(&NoOrder1)
+	db.Raw("SELECT * FROM Foods WHERE Name = ?", "Pad Thai").Scan(&PadThai)
+	db.Raw("SELECT * FROM Foods WHERE Name = ?", "Pad Kaphao").Scan(&PadKaphao)
+	db.Raw("SELECT * FROM Foods WHERE Name = ?", "Noodles").Scan(&Noodles)
 
 	// ===============     เครื่องดื่ม     ===============
 	db.Model(&Drink{}).Create(&Drink{
@@ -582,10 +588,10 @@ func SetupIntoDatabase(db *gorm.DB) {
 	var Pepsi Drink
 	var Mansome Drink
 	var Water Drink
-	db.Raw("SELECT * FROM drink WHERE name = ?", "No Order").Scan(&NoOrder2)
-	db.Raw("SELECT * FROM drink WHERE name = ?", "Pepsi").Scan(&Pepsi)
-	db.Raw("SELECT * FROM drink WHERE name = ?", "Mansome").Scan(&Mansome)
-	db.Raw("SELECT * FROM drink WHERE name = ?", "Water").Scan(&Water)
+	db.Raw("SELECT * FROM drinks WHERE name = ?", "No Order").Scan(&NoOrder2)
+	db.Raw("SELECT * FROM drinks WHERE name = ?", "Pepsi").Scan(&Pepsi)
+	db.Raw("SELECT * FROM drinks WHERE name = ?", "Mansome").Scan(&Mansome)
+	db.Raw("SELECT * FROM drinks WHERE name = ?", "Water").Scan(&Water)
 
 	// ===============     อุปกรณ์เสริม     ===============
 	db.Model(&Accessories{}).Create(&Accessories{

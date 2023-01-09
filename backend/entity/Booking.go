@@ -29,5 +29,5 @@ type Booking struct {
 	CustomerID *uint
 	Customer   Customer `gorm:"references:id"`
 
-	CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
+	//CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
 }
