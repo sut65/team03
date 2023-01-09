@@ -81,4 +81,7 @@ type Employee struct {
 	// LocationID ทำหน้าที่เป็น FK
 	LocationID *uint
 	Location   Location `gorm:"references:ID"`
+
+	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey
+	CheckInOut []CheckInOut `grom:"foreignKey:EmployeeID"`
 }

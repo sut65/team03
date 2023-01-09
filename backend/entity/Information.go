@@ -229,4 +229,101 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM employees WHERE employeename  = ?", "Hanoi slotmachine").Scan(&Hanoi)
 	db.Raw("SELECT * FROM employees WHERE employeename  = ?", "Banana amoi").Scan(&Banana)
 
+	//ระบบ check In-Out
+
+	//set status data
+
+	checkin := CheckInOutStatus{
+		Name: "Checked In",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkin)
+
+	checkout := CheckInOutStatus{
+		Name: "Checked Out",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkout)
+
+	//set check In-Out data
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          3001, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkout,
+		Employee:         Sobsa,
+	})
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          3002, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkin,
+		Employee:         Banana,
+	})
+
+	//ระบบแจ้งซ่อม
+
+	//set type data
+	air := RepairType{
+		Name: "Air Conditioner",
+	}
+	db.Model(&RepairType{}).Create(&air)
+
+	toilet := RepairType{
+		Name: "Toilet",
+	}
+	db.Model(&RepairType{}).Create(&toilet)
+
+	light := RepairType{
+		Name: "Light Bulb",
+	}
+	db.Model(&RepairType{}).Create(&light)
+
+	fur := RepairType{
+		Name: "Furniture",
+	}
+	db.Model(&RepairType{}).Create(&fur)
+
+	elec := RepairType{
+		Name: "Electrical appliance",
+	}
+	db.Model(&RepairType{}).Create(&elec)
+
+	//set status data
+	inprogress := RepairStatus{
+		Name: "In Progress",
+	}
+	db.Model(&RepairStatus{}).Create(&inprogress)
+
+	success := RepairStatus{
+		Name: "Success",
+	}
+	db.Model(&RepairStatus{}).Create(&success)
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         12,
+		RepairType:   air,
+		Note:         "air not cool",
+		Time:         time.Now(),
+		RepairStatus: success,
+		User:         2,
+	})
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         11,
+		RepairType:   fur,
+		Note:         "bed is broken",
+		Time:         time.Now(),
+		RepairStatus: inprogress,
+		User:         1,
+	})
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         12,
+		RepairType:   air,
+		Note:         "air not cool",
+		Time:         time.Now(),
+		RepairStatus: inprogress,
+		User:         3,
+	})
 }

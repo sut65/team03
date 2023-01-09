@@ -1,7 +1,6 @@
 package entity
 
 import (
-	
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -30,7 +29,13 @@ func SetupDatabase() {
 		&Position{},
 		&Location{},
 		&Employee{},
-
+		//checkInOut
+		&CheckInOutStatus{},
+		&CheckInOut{},
+		//แจ้งซ่อม
+		&RepairType{},
+		&RepairStatus{},
+		&RepairReq{},
 	)
 	db = database
 
