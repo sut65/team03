@@ -82,6 +82,7 @@ type Employee struct {
 	LocationID *uint
 	Location   Location `gorm:"references:ID"`
 
+	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey
 	CheckInOut []CheckInOut `grom:"foreignKey:EmployeeID"`
 }

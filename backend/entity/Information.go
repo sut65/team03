@@ -229,4 +229,189 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM employees WHERE employeename  = ?", "Hanoi slotmachine").Scan(&Hanoi)
 	db.Raw("SELECT * FROM employees WHERE employeename  = ?", "Banana amoi").Scan(&Banana)
 
+	//Room Data
+	//RoomType Data
+	Standard := RoomType{
+		Size:    "Standard",
+		Bedsize: "Single Bedded",
+		Bedtype: "King Sized Bed",
+	}
+	db.Model(&RoomType{}).Create(&Standard)
+
+	Superior := RoomType{
+		Size:    "Superior",
+		Bedsize: "Twin Bedded",
+		Bedtype: "Queen Sized Bed",
+	}
+	db.Model(&RoomType{}).Create(&Superior)
+
+	Deluxe := RoomType{
+		Size:    "Deluxe",
+		Bedsize: "Double Bedded",
+		Bedtype: "Double Bed",
+	}
+	db.Model(&RoomType{}).Create(&Deluxe)
+
+	Suite := RoomType{
+		Size:    "Suite",
+		Bedsize: "Triple Bedded",
+		Bedtype: "King Sized Bed",
+	}
+	db.Model(&RoomType{}).Create(&Suite)
+
+	//RoomZone Data
+	A := RoomZone{
+		Name: "A",
+	}
+	db.Model(&RoomZone{}).Create(&A)
+
+	B := RoomZone{
+		Name: "B",
+	}
+	db.Model(&RoomZone{}).Create(&B)
+
+	C := RoomZone{
+		Name: "C",
+	}
+	db.Model(&RoomZone{}).Create(&C)
+
+	D := RoomZone{
+		Name: "D",
+	}
+	db.Model(&RoomZone{}).Create(&D)
+
+	//State Data
+	on := State{
+		Name: "on",
+	}
+	db.Model(&State{}).Create(&on)
+
+	off := State{
+		Name: "off",
+	}
+	db.Model(&State{}).Create(&off)
+
+	//Room Data
+	//Room1
+	db.Model(&Room{}).Create(&Room{
+		Employee: Sobsa,
+		RoomType: Standard,
+		RoomZone: A,
+		State:    on,
+		Time:     time.Now(),
+	})
+	//Room2
+	db.Model(&Room{}).Create(&Room{
+		Employee: Hanoi,
+		RoomType: Superior,
+		RoomZone: B,
+		State:    on,
+		Time:     time.Now(),
+	})
+	//Room3
+	db.Model(&Room{}).Create(&Room{
+		Employee: Banana,
+		RoomType: Deluxe,
+		RoomZone: C,
+		State:    off,
+		Time:     time.Now(),
+	})
+
+	//ระบบ check In-Out
+
+	//set status data
+
+	checkin := CheckInOutStatus{
+		Name: "Checked In",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkin)
+
+	checkout := CheckInOutStatus{
+		Name: "Checked Out",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkout)
+
+	//set check In-Out data
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          3001, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkout,
+		Employee:         Sobsa,
+	})
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          3002, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkin,
+		Employee:         Banana,
+	})
+
+	//ระบบแจ้งซ่อม
+
+	//set type data
+	// air := RepairType{
+	// 	Name: "Air Conditioner",
+	// }
+	// db.Model(&RepairType{}).Create(&air)
+
+	// toilet := RepairType{
+	// 	Name: "Toilet",
+	// }
+	// db.Model(&RepairType{}).Create(&toilet)
+
+	// light := RepairType{
+	// 	Name: "Light Bulb",
+	// }
+	// db.Model(&RepairType{}).Create(&light)
+
+	// fur := RepairType{
+	// 	Name: "Furniture",
+	// }
+	// db.Model(&RepairType{}).Create(&fur)
+
+	// elec := RepairType{
+	// 	Name: "Electrical appliance",
+	// }
+	// db.Model(&RepairType{}).Create(&elec)
+
+	// //set status data
+	// inprogress := RepairStatus{
+	// 	Name: "In Progress",
+	// }
+	// db.Model(&RepairStatus{}).Create(&inprogress)
+
+	// success := RepairStatus{
+	// 	Name: "Success",
+	// }
+	// db.Model(&RepairStatus{}).Create(&success)
+
+	// db.Model(&RepairReq{}).Create(&RepairReq{
+	// 	Room:         12,
+	// 	RepairType:   air,
+	// 	Note:         "air not cool",
+	// 	Time:         time.Now(),
+	// 	RepairStatus: success,
+	// 	User:         2,
+	// })
+
+	// db.Model(&RepairReq{}).Create(&RepairReq{
+	// 	Room:         11,
+	// 	RepairType:   fur,
+	// 	Note:         "bed is broken",
+	// 	Time:         time.Now(),
+	// 	RepairStatus: inprogress,
+	// 	User:         1,
+	// })
+
+	// db.Model(&RepairReq{}).Create(&RepairReq{
+	// 	Room:         12,
+	// 	RepairType:   air,
+	// 	Note:         "air not cool",
+	// 	Time:         time.Now(),
+	// 	RepairStatus: inprogress,
+	// 	User:         3,
+	// })
 }

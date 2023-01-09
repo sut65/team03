@@ -33,6 +33,13 @@ func SetupDatabase() {
 		&RoomZone{},
 		&State{},
 		&Room{},
+		//checkInOut
+		&CheckInOutStatus{},
+		&CheckInOut{},
+		//แจ้งซ่อม
+		// &RepairType{},
+		// &RepairStatus{},
+		// &RepairReq{},
 	)
 	db = database
 
