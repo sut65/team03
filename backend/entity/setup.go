@@ -50,6 +50,9 @@ func SetupDatabase() {
 		&Food{},
 		&Drink{},
 		&Accessories{},
+		// ระบบจองห้องพัก
+		&Booking{},
+		&Branch{},
 	)
 	db = database
 
