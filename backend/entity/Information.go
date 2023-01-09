@@ -414,4 +414,105 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RepairStatus: inprogress,
 		User:         3,
 	})
+
+	//ระบบสมัครสมาชิก 
+	var Customer1 Customer
+	var Customer2 Customer
+
+	//Gender
+	Gender1 := Gender{
+		Gender: "Male",
+	}
+	db.Model(&Gender{}).Create(&Gender1)
+
+	Gender2 := Gender{
+		Gender: "Female",
+	}
+	db.Model(&Gender{}).Create(&Gender2)
+
+	Gender3 := Gender{
+		Gender: "Commom",
+	}
+	db.Model(&Gender{}).Create(&Gender3)
+
+	Gender4 := Gender{
+		Gender: "Neuter",
+	}
+	db.Model(&Gender{}).Create(&Gender4)
+
+	Gender5 := Gender{
+		Gender: "Other",
+	}
+	db.Model(&Gender{}).Create(&Gender5)
+
+	//Province
+	Province1 := Province{
+		Province: "Bangkok",
+	}
+	db.Model(&Province{}).Create(&Province1)
+
+	Province2 := Province{
+		Province: "Nakhon Ratchasima",
+	}
+	db.Model(&Province{}).Create(&Province2)
+
+	Province3 := Province{
+		Province: "Chonburi",
+	}
+	db.Model(&Province{}).Create(&Province3)
+
+	Province4 := Province{
+		Province: "Chiangmai",
+	}
+	db.Model(&Province{}).Create(&Province4)
+
+	//Memberlevel
+	Memberlevel1 := Memberlevel{
+		Memberlevel: "Classis",
+	}
+	db.Model(&Memberlevel{}).Create(&Memberlevel1)
+
+	Memberlevel2 := Memberlevel{
+		Memberlevel: "Sliver",
+	}
+	db.Model(&Memberlevel{}).Create(&Memberlevel2)
+
+	Memberlevel3 := Memberlevel{
+		Memberlevel: "Gold",
+	}
+	db.Model(&Memberlevel{}).Create(&Memberlevel3)
+
+	Memberlevel4 := Memberlevel{
+		Memberlevel: "Plantinum",
+	}
+	db.Model(&Memberlevel{}).Create(&Memberlevel4)
+
+	//Csutomer 
+	password1, _ := bcrypt.GenerateFromPassword([]byte("SD123456"), 14)
+	Customer1 = Customer{
+		Gender: 	Gender1,
+		Province: 	Province1,
+		FirstName: 	"Sandee",
+		LastName: 	"Masuk",
+		Password:	string(password1),
+		Age: 		30,
+		Phone:		"095-7456921",
+		Email:		"Sandee12@gmail.com",
+		Memberlevel: Memberlevel1,
+	}
+	db.Model(&Customer{}).Create(&Customer1)
+
+	password2, _ := bcrypt.GenerateFromPassword([]byte("NC332548"), 14)
+	Customer2 = Customer{
+		Gender: 	Gender2,
+		Province: 	Province2,
+		FirstName: 	"Nicha",
+		LastName: 	"Memak",
+		Password:	string(password2),
+		Age: 		25,
+		Phone:		"084-5215667",
+		Email:		"Nicha@gmail.com",
+		Memberlevel: Memberlevel2,
+	}
+	db.Model(&Customer{}).Create(&Customer2)
 }
