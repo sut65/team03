@@ -415,7 +415,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		User:         3,
 	})
 
-	//ระบบสมัครสมาชิก 
+	//ระบบสมัครสมาชิก
 	var Customer1 Customer
 	var Customer2 Customer
 
@@ -487,32 +487,136 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&Memberlevel{}).Create(&Memberlevel4)
 
-	//Csutomer 
+	//Csutomer
 	password1, _ := bcrypt.GenerateFromPassword([]byte("SD123456"), 14)
 	Customer1 = Customer{
-		Gender: 	Gender1,
-		Province: 	Province1,
-		FirstName: 	"Sandee",
-		LastName: 	"Masuk",
-		Password:	string(password1),
-		Age: 		30,
-		Phone:		"095-7456921",
-		Email:		"Sandee12@gmail.com",
+		Gender:      Gender1,
+		Province:    Province1,
+		FirstName:   "Sandee",
+		LastName:    "Masuk",
+		Password:    string(password1),
+		Age:         30,
+		Phone:       "095-7456921",
+		Email:       "Sandee12@gmail.com",
 		Memberlevel: Memberlevel1,
 	}
 	db.Model(&Customer{}).Create(&Customer1)
 
 	password2, _ := bcrypt.GenerateFromPassword([]byte("NC332548"), 14)
 	Customer2 = Customer{
-		Gender: 	Gender2,
-		Province: 	Province2,
-		FirstName: 	"Nicha",
-		LastName: 	"Memak",
-		Password:	string(password2),
-		Age: 		25,
-		Phone:		"084-5215667",
-		Email:		"Nicha@gmail.com",
+		Gender:      Gender2,
+		Province:    Province2,
+		FirstName:   "Nicha",
+		LastName:    "Memak",
+		Password:    string(password2),
+		Age:         25,
+		Phone:       "084-5215667",
+		Email:       "Nicha@gmail.com",
 		Memberlevel: Memberlevel2,
 	}
 	db.Model(&Customer{}).Create(&Customer2)
+
+	// ===============     อาหาร     ===============
+	db.Model(&Food{}).Create(&Food{
+		Name:  "No Order",
+		Price: 0,
+		Item:  1,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Pad Thai",
+		Price: 65,
+		Item:  50,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Pad Kaphao",
+		Price: 55,
+		Item:  50,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Noodles",
+		Price: 55,
+		Item:  50,
+	})
+	var NoOrder1 Food
+	var PadThai Food
+	var PadKaphao Food
+	var Noodles Food
+	db.Raw("SELECT * FROM Food WHERE Name = ?", "No Order").Scan(&NoOrder1)
+	db.Raw("SELECT * FROM Food WHERE Name = ?", "Pad Thai").Scan(&PadThai)
+	db.Raw("SELECT * FROM Food WHERE Name = ?", "Pad Kaphao").Scan(&PadKaphao)
+	db.Raw("SELECT * FROM Food WHERE Name = ?", "Noodles").Scan(&Noodles)
+
+	// ===============     เครื่องดื่ม     ===============
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "No Order",
+		Price: 0,
+		Item:  1,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Pepsi",
+		Price: 15,
+		Item:  50,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Mansome",
+		Price: 20,
+		Item:  50,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Water",
+		Price: 10,
+		Item:  50,
+	})
+	var NoOrder2 Drink
+	var Pepsi Drink
+	var Mansome Drink
+	var Water Drink
+	db.Raw("SELECT * FROM drink WHERE name = ?", "No Order").Scan(&NoOrder2)
+	db.Raw("SELECT * FROM drink WHERE name = ?", "Pepsi").Scan(&Pepsi)
+	db.Raw("SELECT * FROM drink WHERE name = ?", "Mansome").Scan(&Mansome)
+	db.Raw("SELECT * FROM drink WHERE name = ?", "Water").Scan(&Water)
+
+	// ===============     อุปกรณ์เสริม     ===============
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "No Order",
+		Price: 0,
+		Item:  1,
+	})
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "Plug",
+		Price: 40,
+		Item:  15,
+	})
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "Chair",
+		Price: 70,
+		Item:  7,
+	})
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "Table",
+		Price: 120,
+		Item:  7,
+	})
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "Table & Chair (small)",
+		Price: 135,
+		Item:  10,
+	})
+	db.Model(&Accessories{}).Create(&Accessories{
+		Name:  "Bed",
+		Price: 350,
+		Item:  5,
+	})
+	var NoOrder3 Accessories
+	var Plug Accessories
+	var Chair Accessories
+	var Table Accessories
+	var TableChair Accessories
+	var Bed Accessories
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "No Order").Scan(&NoOrder3)
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "Plug").Scan(&Plug)
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "Chair").Scan(&Chair)
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "Table").Scan(&Table)
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "Table & Chair (small)").Scan(&TableChair)
+	db.Raw("SELECT * FROM Accessories WHERE name=?", "Bed").Scan(&Bed)
 }

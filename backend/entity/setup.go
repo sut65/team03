@@ -29,6 +29,7 @@ func SetupDatabase() {
 		&Position{},
 		&Location{},
 		&Employee{},
+		// ระบบห้องพัก
 		&RoomType{},
 		&RoomZone{},
 		&State{},
@@ -36,16 +37,19 @@ func SetupDatabase() {
 		//checkInOut
 		&CheckInOutStatus{},
 		&CheckInOut{},
-		//แจ้งซ่อม
-		// &RepairType{},
-		// &RepairStatus{},
-		// &RepairReq{},
-
+		// แจ้งซ่อม
+		&RepairType{},
+		&RepairStatus{},
+		&RepairReq{},
 		//ระบบสมัครสมาชิก(ข้อมูลลูกค้า)
 		&Customer{},
 		&Gender{},
 		&Province{},
 		&Memberlevel{},
+		// ระบบบริการเสริม
+		&Food{},
+		&Drink{},
+		&Accessories{},
 	)
 	db = database
 
