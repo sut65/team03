@@ -29,13 +29,10 @@ func SetupDatabase() {
 		&Position{},
 		&Location{},
 		&Employee{},
-		//checkInOut
-		&CheckInOutStatus{},
-		&CheckInOut{},
-		//แจ้งซ่อม
-		&RepairType{},
-		&RepairStatus{},
-		&RepairReq{},
+		&RoomType{},
+		&RoomZone{},
+		&State{},
+		&Room{},
 	)
 	db = database
 
