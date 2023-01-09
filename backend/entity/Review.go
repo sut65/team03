@@ -36,4 +36,7 @@ type Review struct {
 	// DepartmentID ทำหน้าที่เป็น FK
 	DepartmentID *uint
 	Department   Department `gorm:"references:ID"`
+
+
+	
 }

@@ -43,7 +43,7 @@ function Navbar() {
 
          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 
-           System Analysis and Design
+           ระบบโรงแรม
 
          </Typography>
 
