@@ -41,4 +41,6 @@ type Customer struct {
 	Memberlevel    Memberlevel
 
 	Bookings []Booking `gorm:"foreignKey:CustomerID"`
+
+	Review []Review `gorm:"foreignKey:DepartmentID"`
 }
