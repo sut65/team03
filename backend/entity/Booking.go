@@ -28,4 +28,6 @@ type Booking struct {
 	//รับเข้ามา
 	CustomerID *uint
 	Customer   Customer `gorm:"references:id"`
+
+	CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
 }

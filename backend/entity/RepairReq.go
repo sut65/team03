@@ -20,9 +20,9 @@ type RepairStatus struct {
 
 type RepairReq struct {
 	gorm.Model
-	Room uint
-	// RoomID *uint
-	// Room Room `gorm:"references:ID"`
+	//Room uint
+	RoomID *uint
+	Room   Room `gorm:"references:ID"`
 
 	RepairTypeID *uint
 	RepairType   RepairType `gorm:"references:ID"`
@@ -33,7 +33,6 @@ type RepairReq struct {
 	RepairStatusID *uint
 	RepairStatus   RepairStatus `gorm:"references:ID"`
 
-	User uint
-	//UserID *uint
-	//User User `gorm:"references:ID"`
+	CustomerID *uint
+	Customer   Customer `gorm:"references:ID"`
 }

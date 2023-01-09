@@ -316,6 +316,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 		State:    off,
 		Time:     time.Now(),
 	})
+	var Room1 Room
+	var Room2 Room
+	var Room3 Room
+	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "1").Scan(&Room1)
+	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "2").Scan(&Room2)
+	db.Raw("SELECT * FROM rooms WHERE RoomID = ?", "3").Scan(&Room3)
 
 	//ระบบ check In-Out
 
@@ -348,72 +354,11 @@ func SetupIntoDatabase(db *gorm.DB) {
 		CheckInOutStatus: checkin,
 		Employee:         Banana,
 	})
-
-	//ระบบแจ้งซ่อม
-
-	//set type data
-	air := RepairType{
-		Name: "Air Conditioner",
-	}
-	db.Model(&RepairType{}).Create(&air)
-
-	toilet := RepairType{
-		Name: "Toilet",
-	}
-	db.Model(&RepairType{}).Create(&toilet)
-
-	light := RepairType{
-		Name: "Light Bulb",
-	}
-	db.Model(&RepairType{}).Create(&light)
-
-	fur := RepairType{
-		Name: "Furniture",
-	}
-	db.Model(&RepairType{}).Create(&fur)
-
-	elec := RepairType{
-		Name: "Electrical appliance",
-	}
-	db.Model(&RepairType{}).Create(&elec)
-
-	//set status data
-	inprogress := RepairStatus{
-		Name: "In Progress",
-	}
-	db.Model(&RepairStatus{}).Create(&inprogress)
-
-	success := RepairStatus{
-		Name: "Success",
-	}
-	db.Model(&RepairStatus{}).Create(&success)
-
-	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         12,
-		RepairType:   air,
-		Note:         "air not cool",
-		Time:         time.Now(),
-		RepairStatus: success,
-		User:         2,
-	})
-
-	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         11,
-		RepairType:   fur,
-		Note:         "bed is broken",
-		Time:         time.Now(),
-		RepairStatus: inprogress,
-		User:         1,
-	})
-
-	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         12,
-		RepairType:   air,
-		Note:         "air not cool",
-		Time:         time.Now(),
-		RepairStatus: inprogress,
-		User:         3,
-	})
+	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
+	var checkInOut1 CheckInOut
+	var checkInOut2 CheckInOut
+	db.Raw("SELECT * FROM checkinouts WHERE CheckInOutID = ?", "1").Scan(&checkInOut1)
+	db.Raw("SELECT * FROM checkinouts WHERE CheckInOutID = ?", "2").Scan(&checkInOut2)
 
 	//ระบบสมัครสมาชิก
 	var Customer1 Customer
@@ -515,6 +460,72 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Memberlevel: Memberlevel2,
 	}
 	db.Model(&Customer{}).Create(&Customer2)
+
+	//ระบบแจ้งซ่อม
+
+	//set type data
+	air := RepairType{
+		Name: "Air Conditioner",
+	}
+	db.Model(&RepairType{}).Create(&air)
+
+	toilet := RepairType{
+		Name: "Toilet",
+	}
+	db.Model(&RepairType{}).Create(&toilet)
+
+	light := RepairType{
+		Name: "Light Bulb",
+	}
+	db.Model(&RepairType{}).Create(&light)
+
+	fur := RepairType{
+		Name: "Furniture",
+	}
+	db.Model(&RepairType{}).Create(&fur)
+
+	elec := RepairType{
+		Name: "Electrical appliance",
+	}
+	db.Model(&RepairType{}).Create(&elec)
+
+	//set status data
+	inprogress := RepairStatus{
+		Name: "In Progress",
+	}
+	db.Model(&RepairStatus{}).Create(&inprogress)
+
+	success := RepairStatus{
+		Name: "Success",
+	}
+	db.Model(&RepairStatus{}).Create(&success)
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         Room1,
+		RepairType:   air,
+		Note:         "air not cool",
+		Time:         time.Now(),
+		RepairStatus: success,
+		Customer:     Customer1,
+	})
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         Room2,
+		RepairType:   fur,
+		Note:         "bed is broken",
+		Time:         time.Now(),
+		RepairStatus: inprogress,
+		Customer:     Customer2,
+	})
+
+	db.Model(&RepairReq{}).Create(&RepairReq{
+		Room:         Room3,
+		RepairType:   air,
+		Note:         "air not cool",
+		Time:         time.Now(),
+		RepairStatus: inprogress,
+		Customer:     Customer1,
+	})
 
 	// ===============     อาหาร     ===============
 	db.Model(&Food{}).Create(&Food{
