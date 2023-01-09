@@ -619,4 +619,26 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM Accessories WHERE name=?", "Table").Scan(&Table)
 	db.Raw("SELECT * FROM Accessories WHERE name=?", "Table & Chair (small)").Scan(&TableChair)
 	db.Raw("SELECT * FROM Accessories WHERE name=?", "Bed").Scan(&Bed)
+
+	//---------------------------------Branch data-----------------------
+	b4001 := Branch{
+		B_name: "Bangkok",
+	}
+	db.Model(&Branch{}).Create(&b4001)
+
+	b4002 := Branch{
+		B_name: "Pattaya",
+	}
+	db.Model(&Branch{}).Create(&b4002)
+
+	b4003 := Branch{
+		B_name: "Chiang Mai",
+	}
+	db.Model(&Branch{}).Create(&b4003)
+
+	b4004 := Branch{
+		B_name: "Phuket Town",
+	}
+	db.Model(&Branch{}).Create(&b4004)
+
 }

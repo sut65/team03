@@ -51,4 +51,6 @@ type Room struct {
 	//StateID ทำหน้าที่เป็น FK
 	StateID *uint
 	State   State
+
+	Bookings []Booking `gorm:"foreignKey:RoomID"`
 }
