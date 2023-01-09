@@ -40,6 +40,12 @@ func SetupDatabase() {
 		// &RepairType{},
 		// &RepairStatus{},
 		// &RepairReq{},
+
+		//ระบบสมัครสมาชิก(ข้อมูลลูกค้า)
+		&Customer{},
+		&Gender{},
+		&Province{},
+		&Memberlevel{},
 	)
 	db = database
 
