@@ -637,6 +637,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM Accessories WHERE name=?", "Table & Chair (small)").Scan(&TableChair)
 	db.Raw("SELECT * FROM Accessories WHERE name=?", "Bed").Scan(&Bed)
 
+	// ============================================================================ Booking
 	//---------------------------------Branch data-----------------------
 	b4001 := Branch{
 		B_name: "Bangkok",
@@ -657,5 +658,18 @@ func SetupIntoDatabase(db *gorm.DB) {
 		B_name: "Phuket Town",
 	}
 	db.Model(&Branch{}).Create(&b4004)
+	// ============================================================================ Booking
+	// ============================================================================ Check Payment
+	// ------------------------- Status ------------------
+	s1001 := Status{
+		Type: "ยังไม่ได้รับการชำระเงิน",
+	}
+	db.Model(&Status{}).Create(&s1001)
+
+	s1002 := Status{
+		Type: "ได้รับการชำระเงินเรียบร้อยแล้ว",
+	}
+	db.Model(&Status{}).Create(&s1002)
+	// ============================================================================ Check Payment
 
 }
