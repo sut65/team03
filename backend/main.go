@@ -2,6 +2,7 @@ package main
 
 import (
 	booking "github.com/sut65/team03/controller/Booking"
+	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
 
 	"github.com/sut65/team03/entity"
@@ -62,6 +63,19 @@ func main() {
 	r.PATCH("/branchs", booking.UpdateBranch)
 	r.DELETE("/branchs/:id", booking.DeleteBranch)
 	//=================================================== Booking Routes
+	//=================================================== Check Payment Routes
+	r.GET("/chk_payments", chk_payment.ListCHK_Payments)
+	r.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
+	r.POST("/chk_payments", chk_payment.CreateCHK_Payment)
+	r.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+	r.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
+	// ---Status---
+	r.GET("/chk_payment/statuses", chk_payment.ListCHK_Payments)
+	r.GET("/chk_payment/status/:id", chk_payment.GetCHK_Payment)
+	r.POST("/chk_payment/statuses", chk_payment.CreateCHK_Payment)
+	r.PATCH("/chk_payment/statuses", chk_payment.UpdateCHK_Payment)
+	r.DELETE("/chk_payment/statuses/:id", chk_payment.DeleteCHK_Payment)
+	//=================================================== Check Payment Routes
 
 	// Run the server
 
