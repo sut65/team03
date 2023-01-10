@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/sut65/team03/controller/Manage_Employee"
+	booking "github.com/sut65/team03/controller/Booking"
+	controller "github.com/sut65/team03/controller/Manage_Employee"
 
 	"github.com/sut65/team03/entity"
 
 	"github.com/gin-gonic/gin"
-
-
 )
 
 func main() {
@@ -16,7 +15,7 @@ func main() {
 
 	r := gin.Default()
 
-  r.Use(CORSMiddleware())
+	r.Use(CORSMiddleware())
 
 	// Officer Routes
 	r.GET("/Officers", controller.ListOfficers)
@@ -48,6 +47,21 @@ func main() {
 	r.POST("/Employees", controller.CreateEmployee)
 	r.PATCH("/Employees", controller.UpdateEmployee)
 	r.DELETE("/Employees/:id", controller.DeleteEmployee)
+
+	//=================================================== Booking Routes
+	r.GET("/bookings", booking.ListBookings)
+	r.GET("/booking/:id", booking.GetBooking)
+	r.GET("/bookings/user/:id", booking.ListBookingsByUID)
+	r.POST("/bookings", booking.CreateBooking)
+	r.PATCH("/bookings", booking.UpdateBooking)
+	r.DELETE("/bookings/:id", booking.DeleteBooking)
+	// ---Branch---
+	r.GET("/branchs", booking.ListBranchs)
+	r.GET("/branch/:id", booking.GetBranch)
+	r.POST("/branchs", booking.CreateBranch)
+	r.PATCH("/branchs", booking.UpdateBranch)
+	r.DELETE("/branchs/:id", booking.DeleteBranch)
+	//=================================================== Booking Routes
 
 	// Run the server
 
