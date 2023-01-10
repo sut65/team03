@@ -16,7 +16,6 @@ type Branch struct {
 type Booking struct {
 	gorm.Model
 	//รับเข้ามา
-	Number   string `gorm:"uniqueIndex"`
 	BranchID *uint
 	Branch   Branch `gorm:"references:id"`
 	//รับเข้ามา
