@@ -6,22 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-/* type refFromOfficer struct {
-	gorm.Model
-
-	// SigninID ทำหน้าที่เป็น FK
-	SigninID *uint
-	Signin   Signin `gorm:"references:ID"`
-
-	//ordinary data
-	Officername string
-	Tel         string
-	Time        time.Time
-
-	// ส่ง admin_id ไปตาราง Employee เพื่อเป็น foreignKey
-	Employee []Employee `gorm:"foreignKey:OfficerID"`
-} */
-
 // สร้างตารางชื่อ CheckInOutStatus
 type CheckInOutStatus struct {
 	gorm.Model
@@ -34,9 +18,9 @@ type CheckInOutStatus struct {
 type CheckInOut struct {
 	gorm.Model
 
-	Booking uint
-	//BookingID *uint
-	//Booking Booking `gorm:"references:ID"`
+	// Booking uint
+	BookingID *uint
+	Booking   Booking `gorm:"references:ID"`
 
 	CheckInTime  time.Time
 	CheckOutTime time.Time

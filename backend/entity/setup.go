@@ -53,6 +53,9 @@ func SetupDatabase() {
 		// ระบบจองห้องพัก
 		&Booking{},
 		&Branch{},
+		// ระบบตรวจสอบการชำระเงิน
+		&CHK_Payment{},
+		&Status{},
 	)
 	db = database
 

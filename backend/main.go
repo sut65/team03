@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/sut65/team03/controller/Manage_Employee"
+	booking "github.com/sut65/team03/controller/Booking"
+	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
+	controller "github.com/sut65/team03/controller/Manage_Employee"
 
 	"github.com/sut65/team03/entity"
 
 	"github.com/gin-gonic/gin"
-
-
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 
 	r := gin.Default()
 
-  r.Use(CORSMiddleware())
+	r.Use(CORSMiddleware())
 
 	// Officer Routes
 	r.GET("/Officers", controller.ListOfficers)
@@ -48,6 +48,34 @@ func main() {
 	r.POST("/Employees", controller.CreateEmployee)
 	r.PATCH("/Employees", controller.UpdateEmployee)
 	r.DELETE("/Employees/:id", controller.DeleteEmployee)
+
+	//=================================================== Booking Routes
+	r.GET("/bookings", booking.ListBookings)
+	r.GET("/booking/:id", booking.GetBooking)
+	r.GET("/bookings/user/:id", booking.ListBookingsByUID)
+	r.POST("/bookings", booking.CreateBooking)
+	r.PATCH("/bookings", booking.UpdateBooking)
+	r.DELETE("/bookings/:id", booking.DeleteBooking)
+	// ---Branch---
+	r.GET("/branchs", booking.ListBranchs)
+	r.GET("/branch/:id", booking.GetBranch)
+	r.POST("/branchs", booking.CreateBranch)
+	r.PATCH("/branchs", booking.UpdateBranch)
+	r.DELETE("/branchs/:id", booking.DeleteBranch)
+	//=================================================== Booking Routes
+	//=================================================== Check Payment Routes
+	r.GET("/chk_payments", chk_payment.ListCHK_Payments)
+	r.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
+	r.POST("/chk_payments", chk_payment.CreateCHK_Payment)
+	r.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+	r.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
+	// ---Status---
+	r.GET("/chk_payment/statuses", chk_payment.ListCHK_Payments)
+	r.GET("/chk_payment/status/:id", chk_payment.GetCHK_Payment)
+	r.POST("/chk_payment/statuses", chk_payment.CreateCHK_Payment)
+	r.PATCH("/chk_payment/statuses", chk_payment.UpdateCHK_Payment)
+	r.DELETE("/chk_payment/statuses/:id", chk_payment.DeleteCHK_Payment)
+	//=================================================== Check Payment Routes
 
 	// Run the server
 

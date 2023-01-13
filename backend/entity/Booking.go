@@ -16,7 +16,6 @@ type Branch struct {
 type Booking struct {
 	gorm.Model
 	//รับเข้ามา
-	Number   string `gorm:"uniqueIndex"`
 	BranchID *uint
 	Branch   Branch `gorm:"references:id"`
 	//รับเข้ามา
@@ -29,5 +28,5 @@ type Booking struct {
 	CustomerID *uint
 	Customer   Customer `gorm:"references:id"`
 
-	//CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
+	CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
 }
