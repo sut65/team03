@@ -323,43 +323,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM rooms WHERE id = ?", "2").Scan(&Room2)
 	db.Raw("SELECT * FROM rooms WHERE id = ?", "3").Scan(&Room3)
 
-	//ระบบ check In-Out
-
-	//set status data
-
-	checkin := CheckInOutStatus{
-		Name: "Checked In",
-	}
-	db.Model(&CheckInOutStatus{}).Create(&checkin)
-
-	checkout := CheckInOutStatus{
-		Name: "Checked Out",
-	}
-	db.Model(&CheckInOutStatus{}).Create(&checkout)
-
-	//set check In-Out data
-
-	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          3001, //dump
-		CheckInTime:      time.Now(),
-		CheckOutTime:     time.Now(),
-		CheckInOutStatus: checkout,
-		Employee:         Sobsa,
-	})
-
-	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          3002, //dump
-		CheckInTime:      time.Now(),
-		CheckOutTime:     time.Now(),
-		CheckInOutStatus: checkin,
-		Employee:         Banana,
-	})
-	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
-	var CheckInOut1 CheckInOut
-	var CheckInOut2 CheckInOut
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&CheckInOut2)
-
 	//ระบบสมัครสมาชิก
 	var Customer1 Customer
 	var Customer2 Customer
@@ -659,6 +622,24 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&Branch{}).Create(&b4004)
 	// ============================================================================ Booking
+	//ใส่ไว้ก่อนนะเราต้องใช้เชื่อมกับตาราง checkin-out by joon
+	booking1 := Booking{
+		Branch:   b4001,
+		Room:     Room1,
+		Start:    time.Now(),
+		Stop:     time.Now(),
+		Customer: Customer1,
+	}
+	db.Model(&Booking{}).Create(&booking1)
+
+	booking2 := Booking{
+		Branch:   b4002,
+		Room:     Room2,
+		Start:    time.Now(),
+		Stop:     time.Now(),
+		Customer: Customer2,
+	}
+	db.Model(&Booking{}).Create(&booking2)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := Status{
@@ -671,5 +652,41 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&Status{}).Create(&s1002)
 	// ============================================================================ Check Payment
+	//ระบบ check In-Out
+
+	//set status data
+
+	checkin := CheckInOutStatus{
+		Name: "Checked In",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkin)
+
+	checkout := CheckInOutStatus{
+		Name: "Checked Out",
+	}
+	db.Model(&CheckInOutStatus{}).Create(&checkout)
+
+	//set check In-Out data
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          booking1, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkout,
+		Employee:         Sobsa,
+	})
+
+	db.Model(&CheckInOut{}).Create(&CheckInOut{
+		Booking:          booking2, //dump
+		CheckInTime:      time.Now(),
+		CheckOutTime:     time.Now(),
+		CheckInOutStatus: checkin,
+		Employee:         Banana,
+	})
+	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
+	var CheckInOut1 CheckInOut
+	var CheckInOut2 CheckInOut
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&CheckInOut2)
 
 }
