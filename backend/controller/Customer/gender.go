@@ -6,6 +6,20 @@ import (
 	"github.com/sut65/team03/entity"
 )
 
+func CreateGender(c *gin.Context) {
+	var gender entity.Gender
+	if err := c.ShouldBindJSON(&gender); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := entity.DB().Create(&gender).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"data": gender})
+}
+
 // GET /gender/:id
 func GetGender(c *gin.Context) {
 	var gender entity.Gender

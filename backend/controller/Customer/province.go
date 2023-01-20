@@ -7,7 +7,21 @@ import (
 	"github.com/sut65/team03/entity"
 )
 
-// GET /user/:id
+func CreateProvince(c *gin.Context) {
+	var province entity.Province
+	if err := c.ShouldBindJSON(&province); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := entity.DB().Create(&province).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"data": province})
+}
+
+// GET /:id
 func GetProvince(c *gin.Context) {
 	var province entity.Province
 	id := c.Param("id")
