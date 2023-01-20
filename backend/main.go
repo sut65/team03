@@ -4,6 +4,7 @@ import (
 	booking "github.com/sut65/team03/controller/Booking"
 	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
+	customer "github.com/sut65/team03/controller/Customer"
 
 	"github.com/sut65/team03/entity"
 
@@ -76,6 +77,32 @@ func main() {
 	r.PATCH("/chk_payment/statuses", chk_payment.UpdateCHK_Payment)
 	r.DELETE("/chk_payment/statuses/:id", chk_payment.DeleteCHK_Payment)
 	//=================================================== Check Payment Routes
+
+	//==================================================Customer Routes
+	r.GET("/customers", customer.ListCustomers)
+	r.GET("/customer/:id", customer.GetCustomerByID)
+	r.POST("/customers",  customer.CreateCustomer)
+	r.PATCH("/customers", customer.UpdateCustomer)
+	r.DELETE("/customers/:id", customer.DeleteCustomer)
+	//Gender
+	r.GET("/customers/genders", customer.ListGender)
+	r.GET("/customer/genders/:id", customer.GetGender)
+	r.POST("/customers/genders", customer.CreateGender)
+	r.PATCH("/customers/genders", customer.UpdateGender)
+	r.DELETE("/customers/genders/:id",customer.DeleteGender)
+	//Memberlevel
+	r.GET("/memberlevels", customer.ListMemberlevel)
+	r.GET("/customer/memberlevels/:id", customer.GetMemberlevel)
+	r.POST("/customers/memberlevels", customer.CreateMemberlevel)
+	r.PATCH("/customers/memberlevels", customer.UpdateMemberlevel)
+	r.DELETE("/customers/memberlevels/:id",customer.DeleteMemberlevel)
+	//Province
+	r.GET("/provinces", customer.ListProvince)
+	r.GET("/customer/provinces/:id", customer.GetProvince)
+	r.POST("/customers/provinces", customer.CreateProvince)
+	r.PATCH("/customers/provinces", customer.UpdateProvince)
+	r.DELETE("/customers/provinces/:id",customer.DeleteProvince)
+	//==================================================Customer Routes
 
 	// Run the server
 

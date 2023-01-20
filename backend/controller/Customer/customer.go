@@ -68,7 +68,7 @@ func GetCustomerByID(c *gin.Context) {
 }
 
 // GET All/Customers
-func GetCustomers(c *gin.Context) {
+func ListCustomers(c *gin.Context) {
 	var customers []entity.Customer
 	if err := entity.DB().Raw("SELECT * FROM customers").Scan(&customers).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -88,7 +88,7 @@ func DeleteCustomer(c *gin.Context) {
 }
 
 // PATCH /customers
-func UpdateBooking(c *gin.Context) {
+func UpdateCustomer(c *gin.Context) {
 	var customer entity.Customer
 	if err := c.ShouldBindJSON(&customer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
