@@ -6,11 +6,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type Status struct {
+type CHK_PaymentStatus struct {
 	gorm.Model
 	Type string
 	// ส่งไป
-	CHK_Payments []CHK_Payment `gorm:"foreignKey:StatusID"`
+	CHK_Payments []CHK_Payment `gorm:"foreignKey:CHK_PaymentStatusID"`
 }
 
 type CHK_Payment struct {
@@ -19,12 +19,12 @@ type CHK_Payment struct {
 	// PaymentID *uint
 	// Payment   Payment `gorm:"references:id"`
 	//รับเข้ามา
-	StatusID    *uint
-	Status      Status `gorm:"references:id"`
-	Date_time   time.Time
-	Amount      *uint
-	Description string
+	CHK_PaymentStatusID *uint
+	CHK_PaymentStatus   CHK_PaymentStatus `gorm:"references:id"`
+	Date_time           time.Time
+	Amount              *uint
+	Description         string
 	//รับเข้ามา
-	CustomerID *uint
-	Customer   Customer `gorm:"references:id"`
+	EmployeeID *uint
+	Employee   Employee `gorm:"references:id"`
 }

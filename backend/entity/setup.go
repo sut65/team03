@@ -55,7 +55,7 @@ func SetupDatabase() {
 		&Branch{},
 		// ระบบตรวจสอบการชำระเงิน
 		&CHK_Payment{},
-		&Status{},
+		&CHK_PaymentStatus{},
 	)
 	db = database
 
