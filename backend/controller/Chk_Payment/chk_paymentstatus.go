@@ -7,9 +7,9 @@ import (
 	"github.com/sut65/team03/entity"
 )
 
-// POST /statuses
+// POST /chk_payment/statuses
 func CreateStatus(c *gin.Context) {
-	var status entity.Status
+	var status entity.CHK_PaymentStatus
 	if err := c.ShouldBindJSON(&status); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -22,22 +22,22 @@ func CreateStatus(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": status})
 }
 
-// GET /status/:id
+// GET /chk_payment/status/:id
 func GetStatus(c *gin.Context) {
-	var status entity.Status
+	var status entity.CHK_PaymentStatus
 	id := c.Param("id")
 	if tx := entity.DB().Where("id = ?", id).First(&status); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "status not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "check payment status not found"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": status})
 }
 
-// GET /statuses
+// GET /chk_payment/statuses
 func ListStatuses(c *gin.Context) {
-	var statuses []entity.Status
-	if err := entity.DB().Raw("SELECT * FROM statuss").Scan(&statuses).Error; err != nil {
+	var statuses []entity.CHK_PaymentStatus
+	if err := entity.DB().Raw("SELECT * FROM chk_paymentstatuses").Scan(&statuses).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -45,27 +45,27 @@ func ListStatuses(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": statuses})
 }
 
-// DELETE /statuses/:id
+// DELETE /chk_payment/statuses/:id
 func DeleteStatus(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM statuses WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "status not found"})
+	if tx := entity.DB().Exec("DELETE FROM chk_paymentstatuses WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "check payment status not found"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /statuses
+// PATCH /chk_payment/statuses
 func UpdateStatus(c *gin.Context) {
-	var status entity.Status
+	var status entity.CHK_PaymentStatus
 	if err := c.ShouldBindJSON(&status); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", status.ID).First(&status); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "status not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "check payment status not found"})
 		return
 	}
 

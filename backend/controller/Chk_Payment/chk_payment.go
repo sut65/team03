@@ -9,8 +9,8 @@ import (
 
 func CreateCHK_Payment(c *gin.Context) {
 	var chk_payment entity.CHK_Payment
-	var customer entity.Customer
-	var status entity.Status
+	var employee entity.Employee
+	var status entity.CHK_PaymentStatus
 	// var payment entity.Payment // waiting for payment
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 8 จะถูก bind เข้าตัวแปร chk_payment
@@ -27,14 +27,14 @@ func CreateCHK_Payment(c *gin.Context) {
 	// }
 
 	// 10: ค้นหา status ด้วย id
-	if tx := entity.DB().Where("id = ?", chk_payment.StatusID).First(&status); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "status not found"})
+	if tx := entity.DB().Where("id = ?", chk_payment.CHK_PaymentStatusID).First(&status); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "check payment status not found"})
 		return
 	}
 
 	// 11: ค้นหา user ด้วย id
-	if tx := entity.DB().Where("id = ?", chk_payment.CustomerID).First(&customer); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+	if tx := entity.DB().Where("id = ?", chk_payment.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
 		return
 	}
 
@@ -42,10 +42,10 @@ func CreateCHK_Payment(c *gin.Context) {
 	chk_p := entity.CHK_Payment{
 		// waiting for payment
 		// Payment:   payment,
-		Status:    status,
-		Date_time: chk_payment.Date_time,
-		Amount:    chk_payment.Amount,
-		Customer:  customer,
+		CHK_PaymentStatus: status,
+		Date_time:         chk_payment.Date_time,
+		Amount:            chk_payment.Amount,
+		Employee:          employee,
 	}
 
 	//13: save
@@ -70,7 +70,7 @@ func GetCHK_Payment(c *gin.Context) {
 // GET /chk_payments
 func ListCHK_Payments(c *gin.Context) {
 	var chk_payments entity.CHK_Payment
-	if err := entity.DB().Preload("Payment").Preload("Status").Preload("User").Raw("SELECT * FROM chk_payments").Find(&chk_payments).Error; err != nil {
+	if err := entity.DB().Preload("Payment").Preload("CHK_PaymentStatus").Preload("Employee").Raw("SELECT * FROM chk_payments").Find(&chk_payments).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

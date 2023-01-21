@@ -85,4 +85,6 @@ type Employee struct {
 	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey
 	CheckInOut []CheckInOut `grom:"foreignKey:EmployeeID"`
+	// ส่ง EmployeeID ไปตาราง CHK_Payment เพื่อเป็น foreignKey
+	CHK_Payments []CHK_Payment `gorm:"foreignKey:EmployeeID"`
 }

@@ -645,15 +645,34 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&booking2)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
-	s1001 := Status{
+	s1001 := CHK_PaymentStatus{
 		Type: "ยังไม่ได้รับการชำระเงิน",
 	}
-	db.Model(&Status{}).Create(&s1001)
+	db.Model(&CHK_PaymentStatus{}).Create(&s1001)
 
-	s1002 := Status{
+	s1002 := CHK_PaymentStatus{
 		Type: "ได้รับการชำระเงินเรียบร้อยแล้ว",
 	}
-	db.Model(&Status{}).Create(&s1002)
+	db.Model(&CHK_PaymentStatus{}).Create(&s1002)
+	// ------------------------ CHK_Payment --------------------
+	db.Model(&CHK_Payment{}).Create(&CHK_Payment{
+		// Payment:   b4001,
+		CHK_PaymentStatus: s1001,
+		Date_time:         time.Now(),
+		Employee:          Sobsa,
+	})
+
+	db.Model(&CHK_Payment{}).Create(&CHK_Payment{
+		// Payment:   b4001,
+		CHK_PaymentStatus: s1002,
+		Date_time:         time.Now(),
+		Employee:          Banana,
+	})
+
+	var chk_payment1 Booking
+	var chk_payment2 Booking
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&chk_payment1)
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&chk_payment2)
 	// ============================================================================ Check Payment
 	//ระบบ check In-Out
 
