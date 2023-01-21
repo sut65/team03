@@ -7,6 +7,7 @@ import (
 	customer "github.com/sut65/team03/controller/Customer"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
 	repreq "github.com/sut65/team03/controller/RepReq"
+	room "github.com/sut65/team03/controller/Room"
 
 	"github.com/sut65/team03/entity"
 
@@ -139,6 +140,27 @@ func main() {
 	r.POST("/repairreq", repreq.CreateRepairReq)
 	r.PATCH("/repairreq", repreq.UpdateRepairReq)
 	r.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
+
+	//==================================================Room Routes
+	r.GET("/RoomTypes", room.ListRoomTypes)
+	r.GET("/RoomType/:id", room.GetRoomType)
+	r.POST("/RoomTypes", room.CreateRoomType)
+	r.PATCH("/RoomTypes", room.UpdateRoomType)
+	r.DELETE("/RoomTypes/:id", room.DeleteRoomType)
+
+	r.GET("/RoomZones", room.ListRoomZones)
+	r.GET("/RoomZone/:id", room.GetRoomZone)
+	r.POST("/RoomZones", room.CreateRoomZone)
+	r.PATCH("/RoomZones", room.UpdateRoomZone)
+	r.DELETE("/RoomZones/:id", room.DeleteRoomZone)
+
+	r.GET("/States", room.ListStates)
+	r.GET("/State/:id", room.GetState)
+	r.POST("/States", room.CreateState)
+	r.PATCH("/States", room.UpdateState)
+	r.DELETE("/States/:id", room.DeleteState)
+	//===================================================Room
+
 	// Run the server
 
 	r.Run()
