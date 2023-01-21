@@ -146,6 +146,12 @@ func main() {
 	r.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
 
 	//==================================================Room Routes
+	r.GET("/Rooms", room.ListRooms)
+	r.GET("/Room/:id", room.GetRoom)
+	r.POST("/Rooms", room.CreateRoom)
+	r.PATCH("/Rooms", room.UpdateRoom)
+	r.DELETE("/Rooms/:id", room.DeleteRoom)
+
 	r.GET("/RoomTypes", room.ListRoomTypes)
 	r.GET("/RoomType/:id", room.GetRoomType)
 	r.POST("/RoomTypes", room.CreateRoomType)
