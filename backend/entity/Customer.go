@@ -40,8 +40,7 @@ type Customer struct {
 	Memberlevel_ID *uint
 	Memberlevel    Memberlevel
 
-	Bookings     []Booking     `gorm:"foreignKey:CustomerID"`
-	RepairReq    []RepairReq   `gorm:"foreignKey:CustomerID"`
-	Review       []Review      `gorm:"foreignKey:DepartmentID"`
-	CHK_Payments []CHK_Payment `gorm:"foreignKey:CustomerID"`
+	Bookings  []Booking   `gorm:"foreignKey:CustomerID"`
+	RepairReq []RepairReq `gorm:"foreignKey:CustomerID"`
+	Review    []Review    `gorm:"foreignKey:DepartmentID"`
 }

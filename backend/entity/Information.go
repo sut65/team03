@@ -659,6 +659,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 		// Payment:   b4001,
 		CHK_PaymentStatus: s1001,
 		Date_time:         time.Now(),
+		Amount:            1760,
+		Description:       "-",
 		Employee:          Sobsa,
 	})
 
@@ -666,11 +668,13 @@ func SetupIntoDatabase(db *gorm.DB) {
 		// Payment:   b4001,
 		CHK_PaymentStatus: s1002,
 		Date_time:         time.Now(),
+		Amount:            3200,
+		Description:       "-",
 		Employee:          Banana,
 	})
 
-	var chk_payment1 Booking
-	var chk_payment2 Booking
+	var chk_payment1 CHK_Payment
+	var chk_payment2 CHK_Payment
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&chk_payment1)
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&chk_payment2)
 	// ============================================================================ Check Payment

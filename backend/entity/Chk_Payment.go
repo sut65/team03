@@ -22,7 +22,7 @@ type CHK_Payment struct {
 	CHK_PaymentStatusID *uint
 	CHK_PaymentStatus   CHK_PaymentStatus `gorm:"references:id"`
 	Date_time           time.Time
-	Amount              *uint
+	Amount              int
 	Description         string
 	//รับเข้ามา
 	EmployeeID *uint
