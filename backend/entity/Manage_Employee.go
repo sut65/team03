@@ -25,6 +25,7 @@ type Department struct {
 	Name string
 	// ส่ง Department_id ไปตาราง Employee เพื่อเป็น foreignKey
 	Employee []Employee `gorm:"foreignKey:DepartmentID"`
+	Review []Review `gorm:"foreignKey:DepartmentID"`
 }
 
 // สร้างตารางชื่อ Position

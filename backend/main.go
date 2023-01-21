@@ -7,7 +7,11 @@ import (
 	customer "github.com/sut65/team03/controller/Customer"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
 	repreq "github.com/sut65/team03/controller/RepReq"
+<<<<<<< HEAD
+	reviewht "github.com/sut65/team03/controller/Review"
+=======
 	room "github.com/sut65/team03/controller/Room"
+>>>>>>> f60db396140f3002f04f7761bd29bd37df3359ab
 
 	"github.com/sut65/team03/entity"
 
@@ -142,6 +146,12 @@ func main() {
 	r.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
 
 	//==================================================Room Routes
+	r.GET("/Rooms", room.ListRooms)
+	r.GET("/Room/:id", room.GetRoom)
+	r.POST("/Rooms", room.CreateRoom)
+	r.PATCH("/Rooms", room.UpdateRoom)
+	r.DELETE("/Rooms/:id", room.DeleteRoom)
+
 	r.GET("/RoomTypes", room.ListRoomTypes)
 	r.GET("/RoomType/:id", room.GetRoomType)
 	r.POST("/RoomTypes", room.CreateRoomType)
@@ -162,6 +172,21 @@ func main() {
 	//===================================================Room
 
 	// Run the server
+
+	//----------review----------------------
+	// Review Routes
+	r.GET("/Reviews", reviewht.ListReviews)
+	r.GET("/Review/:id", reviewht.GetReview)
+	r.POST("/Reviews", reviewht.CreateReview)
+	r.PATCH("/Reviews", reviewht.UpdateReview)
+	r.DELETE("/Reviews/:id", reviewht.DeleteReview)
+
+	// Systemwork Routes
+	r.GET("/Systemworks", reviewht.ListSystemworks)
+	r.GET("/Systemwork/:id", reviewht.GetSystemwork)
+	r.POST("/Systemworks", reviewht.CreateSystemwork)
+	r.PATCH("/Systemworks", reviewht.UpdateSystemwork)
+	r.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
 
 	r.Run()
 
