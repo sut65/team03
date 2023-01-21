@@ -7,6 +7,7 @@ import (
 	customer "github.com/sut65/team03/controller/Customer"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
 	repreq "github.com/sut65/team03/controller/RepReq"
+	reviewht "github.com/sut65/team03/controller/Review"
 
 	"github.com/sut65/team03/entity"
 
@@ -140,6 +141,21 @@ func main() {
 	r.PATCH("/repairreq", repreq.UpdateRepairReq)
 	r.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
 	// Run the server
+
+	//----------review----------------------
+	// Review Routes
+	r.GET("/Reviews", reviewht.ListReviews)
+	r.GET("/Review/:id", reviewht.GetReview)
+	r.POST("/Reviews", reviewht.CreateReview)
+	r.PATCH("/Reviews", reviewht.UpdateReview)
+	r.DELETE("/Reviews/:id", reviewht.DeleteReview)
+
+	// Systemwork Routes
+	r.GET("/Systemworks", reviewht.ListSystemworks)
+	r.GET("/Systemwork/:id", reviewht.GetSystemwork)
+	r.POST("/Systemworks", reviewht.CreateSystemwork)
+	r.PATCH("/Systemworks", reviewht.UpdateSystemwork)
+	r.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
 
 	r.Run()
 
