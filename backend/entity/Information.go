@@ -622,24 +622,27 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&Branch{}).Create(&b4004)
 	// ============================================================================ Booking
-	//ใส่ไว้ก่อนนะเราต้องใช้เชื่อมกับตาราง checkin-out by joon
-	booking1 := Booking{
+	//ใส่ไว้ก่อนนะเราต้องใช้เชื่อมกับตาราง checkin-out by joon => patch 21/1/2566 by earth
+	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4001,
 		Room:     Room1,
 		Start:    time.Now(),
 		Stop:     time.Now(),
 		Customer: Customer1,
-	}
-	db.Model(&Booking{}).Create(&booking1)
+	})
 
-	booking2 := Booking{
+	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4002,
 		Room:     Room2,
 		Start:    time.Now(),
 		Stop:     time.Now(),
 		Customer: Customer2,
-	}
-	db.Model(&Booking{}).Create(&booking2)
+	})
+
+	var booking1 Booking
+	var booking2 Booking
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&booking1)
+	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&booking2)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := Status{

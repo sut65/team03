@@ -31,7 +31,7 @@ func CreateBooking(c *gin.Context) {
 		return
 	}
 
-	// 11: ค้นหา user ด้วย id
+	// 11: ค้นหา customer ด้วย id
 	if tx := entity.DB().Where("id = ?", booking.CustomerID).First(&customer); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
 		return
