@@ -10,7 +10,7 @@ import (
 )
 
 //RepairType...................................................................
-// POST /RepairType
+// POST /repairtype
 
 func CreateRepairType(c *gin.Context) {
 
@@ -27,7 +27,7 @@ func CreateRepairType(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairType})
 }
 
-// GET /RepairType/:id
+// GET /repairtype/:id
 func GetRepairType(c *gin.Context) {
 
 	var RepairType entity.RepairType
@@ -41,7 +41,7 @@ func GetRepairType(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairType})
 }
 
-// GET /RepairTypes
+// GET /repairtypes
 func ListRepairTypes(c *gin.Context) {
 
 	var RepairType []entity.RepairType
@@ -52,7 +52,7 @@ func ListRepairTypes(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairType})
 }
 
-// DELETE /RepairType/:id
+// DELETE /repairtype/:id
 func DeleteRepairType(c *gin.Context) {
 
 	id := c.Param("id")
@@ -70,7 +70,7 @@ func DeleteRepairType(c *gin.Context) {
 	// c.JSON(http.StatusOK, gin.H{"data": RepairType})
 }
 
-// PATCH /RepairType
+// PATCH /repairtype
 func UpdateRepairType(c *gin.Context) {
 
 	var RepairType entity.RepairType
@@ -93,7 +93,7 @@ func UpdateRepairType(c *gin.Context) {
 }
 
 //RepairStatus...................................................................
-// POST /RepairStatus
+// POST /repairstatus
 
 func CreateRepairStatus(c *gin.Context) {
 
@@ -110,7 +110,7 @@ func CreateRepairStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
 }
 
-// GET /RepairStatus/:id
+// GET /repairstatus/:id
 func GetRepairStatus(c *gin.Context) {
 
 	var RepairStatus entity.RepairStatus
@@ -124,7 +124,7 @@ func GetRepairStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
 }
 
-// GET /RepairStatuses
+// GET /repairstatuses
 func ListRepairStatuses(c *gin.Context) {
 
 	var RepairStatus []entity.RepairStatus
@@ -135,7 +135,7 @@ func ListRepairStatuses(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
 }
 
-// DELETE /RepairStatus/:id
+// DELETE /repairstatus/:id
 func DeleteRepairStatus(c *gin.Context) {
 
 	id := c.Param("id")
@@ -153,7 +153,7 @@ func DeleteRepairStatus(c *gin.Context) {
 	// c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
 }
 
-// PATCH /RepairStatus
+// PATCH /repairstatus
 func UpdateRepairStatus(c *gin.Context) {
 
 	var RepairStatus entity.RepairStatus
@@ -176,7 +176,7 @@ func UpdateRepairStatus(c *gin.Context) {
 }
 
 // RepairReq...................................................................
-// POST /RepairReq
+// POST /repairreq
 func CreateRepairReq(c *gin.Context) {
 
 	var rr entity.RepairReq
@@ -233,7 +233,7 @@ func CreateRepairReq(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": RepairReq})
 }
 
-// GET /RepairReq/:id
+// GET /repairreq/:id
 func GetRepairReq(c *gin.Context) {
 
 	var rr entity.RepairReq
@@ -247,7 +247,7 @@ func GetRepairReq(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": rr})
 }
 
-// GET /RepairReqs
+// GET /repairreqs
 func ListRepairReqs(c *gin.Context) {
 
 	var rr []entity.RepairReq
@@ -259,7 +259,7 @@ func ListRepairReqs(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": rr})
 }
 
-// DELETE /RepairReq/:id
+// DELETE /repairreq/:id
 func DeleteRepairReq(c *gin.Context) {
 
 	id := c.Param("id")
@@ -271,7 +271,7 @@ func DeleteRepairReq(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /RepairReq
+// PATCH /repairreq
 func UpdateRepairReq(c *gin.Context) {
 
 	var rr entity.RepairReq

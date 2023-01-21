@@ -2,9 +2,11 @@ package main
 
 import (
 	booking "github.com/sut65/team03/controller/Booking"
+	check "github.com/sut65/team03/controller/CheckInOut"
 	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
-	controller "github.com/sut65/team03/controller/Manage_Employee"
 	customer "github.com/sut65/team03/controller/Customer"
+	controller "github.com/sut65/team03/controller/Manage_Employee"
+	repreq "github.com/sut65/team03/controller/RepReq"
 
 	"github.com/sut65/team03/entity"
 
@@ -81,7 +83,7 @@ func main() {
 	//==================================================Customer Routes
 	r.GET("/customers", customer.ListCustomers)
 	r.GET("/customer/:id", customer.GetCustomerByID)
-	r.POST("/customers",  customer.CreateCustomer)
+	r.POST("/customers", customer.CreateCustomer)
 	r.PATCH("/customers", customer.UpdateCustomer)
 	r.DELETE("/customers/:id", customer.DeleteCustomer)
 	//Gender
@@ -89,21 +91,54 @@ func main() {
 	r.GET("/customer/genders/:id", customer.GetGender)
 	r.POST("/customers/genders", customer.CreateGender)
 	r.PATCH("/customers/genders", customer.UpdateGender)
-	r.DELETE("/customers/genders/:id",customer.DeleteGender)
+	r.DELETE("/customers/genders/:id", customer.DeleteGender)
 	//Memberlevel
 	r.GET("/memberlevels", customer.ListMemberlevel)
 	r.GET("/customer/memberlevels/:id", customer.GetMemberlevel)
 	r.POST("/customers/memberlevels", customer.CreateMemberlevel)
 	r.PATCH("/customers/memberlevels", customer.UpdateMemberlevel)
-	r.DELETE("/customers/memberlevels/:id",customer.DeleteMemberlevel)
+	r.DELETE("/customers/memberlevels/:id", customer.DeleteMemberlevel)
 	//Province
 	r.GET("/provinces", customer.ListProvince)
 	r.GET("/customer/provinces/:id", customer.GetProvince)
 	r.POST("/customers/provinces", customer.CreateProvince)
 	r.PATCH("/customers/provinces", customer.UpdateProvince)
-	r.DELETE("/customers/provinces/:id",customer.DeleteProvince)
+	r.DELETE("/customers/provinces/:id", customer.DeleteProvince)
 	//==================================================Customer Routes
 
+	//========================= checkInOut routes
+	//status
+	r.GET("/checkinoutstatus/:id", check.GetCheckInOutStatus)
+	r.GET("/checkinoutstatuses", check.ListCheckInOutStatuses)
+	r.POST("/checkinoutstatus", check.CreateCheckInOutStatus)
+	r.PATCH("/checkinoutstatus", check.UpdateCheckInOutStatus)
+	r.DELETE("/checkinoutstatus/:id", check.DeleteCheckInOutStatus)
+	//main
+	r.GET("/checkinout/:id", check.GetCheckInOut)
+	r.GET("/checkinouts", check.ListCheckInOuts)
+	r.POST("/checkinout", check.CreateCheckInOut)
+	r.PATCH("/checkinout", check.UpdateCheckInOut)
+	r.DELETE("/checkinout/:id", check.DeleteCheckInOut)
+
+	//========================= repreq routes
+	//type
+	r.GET("/repairtype/:id", repreq.GetRepairType)
+	r.GET("/repairtypes", repreq.ListRepairTypes)
+	r.POST("/repairtype", repreq.CreateRepairType)
+	r.PATCH("/repairtype", repreq.UpdateRepairType)
+	r.DELETE("/repairtype/:id", repreq.DeleteRepairType)
+	//status
+	r.GET("/repairstatus/:id", repreq.GetRepairStatus)
+	r.GET("/repairstatuses", repreq.ListRepairStatuses)
+	r.POST("/repairstatus", repreq.CreateRepairStatus)
+	r.PATCH("/repairstatus", repreq.UpdateRepairStatus)
+	r.DELETE("/repairstatus/:id", repreq.DeleteRepairStatus)
+	//main
+	r.GET("/repairreq/:id", repreq.GetRepairReq)
+	r.GET("/repairreqs", repreq.ListRepairReqs)
+	r.POST("/repairreq", repreq.CreateRepairReq)
+	r.PATCH("/repairreq", repreq.UpdateRepairReq)
+	r.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
 	// Run the server
 
 	r.Run()

@@ -10,7 +10,7 @@ import (
 )
 
 //CheckInOutStatus...................................................................
-// POST /CheckInOutStatus
+// POST /checkinoutstatus
 
 func CreateCheckInOutStatus(c *gin.Context) {
 
@@ -27,7 +27,7 @@ func CreateCheckInOutStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOutStatus})
 }
 
-// GET /CheckInOutStatus/:id
+// GET //checkinoutstatus/:id
 func GetCheckInOutStatus(c *gin.Context) {
 
 	var CheckInOutStatus entity.CheckInOutStatus
@@ -41,7 +41,7 @@ func GetCheckInOutStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOutStatus})
 }
 
-// GET /CheckInOutStatuses
+// GET /checkinoutstatuses
 func ListCheckInOutStatuses(c *gin.Context) {
 
 	var CheckInOutStatus []entity.CheckInOutStatus
@@ -52,7 +52,7 @@ func ListCheckInOutStatuses(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOutStatus})
 }
 
-// DELETE /CheckInOutStatus/:id
+// DELETE /checkinoutstatus/:id
 func DeleteCheckInOutStatus(c *gin.Context) {
 
 	id := c.Param("id")
@@ -70,7 +70,7 @@ func DeleteCheckInOutStatus(c *gin.Context) {
 	// c.JSON(http.StatusOK, gin.H{"data": CheckInOutStatus})
 }
 
-// PATCH /CheckInOutStatus
+// PATCH //checkinoutstatus
 func UpdateCheckInOutStatus(c *gin.Context) {
 
 	var CheckInOutStatus entity.CheckInOutStatus
@@ -93,7 +93,7 @@ func UpdateCheckInOutStatus(c *gin.Context) {
 }
 
 //CheckInOut...................................................................
-// POST /CheckInOut
+// POST /checkinout
 
 func CreateCheckInOut(c *gin.Context) {
 
@@ -143,7 +143,7 @@ func CreateCheckInOut(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": CheckInOut})
 }
 
-// GET /CheckInOut/:id
+// GET /checkinout/:id
 func GetCheckInOut(c *gin.Context) {
 
 	var CheckInOut entity.CheckInOut
@@ -157,7 +157,7 @@ func GetCheckInOut(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOut})
 }
 
-// GET /CheckInOuts
+// GET /checkinouts
 func ListCheckInOuts(c *gin.Context) {
 
 	var CheckInOut []entity.CheckInOut
@@ -169,7 +169,7 @@ func ListCheckInOuts(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOut})
 }
 
-// DELETE /CheckInOut/:id
+// DELETE /checkinout/id
 func DeleteCheckInOut(c *gin.Context) {
 
 	id := c.Param("id")
@@ -181,7 +181,7 @@ func DeleteCheckInOut(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /CheckInOut
+// PATCH /checkinout
 func UpdateCheckInOut(c *gin.Context) {
 
 	var CheckInOut entity.CheckInOut
