@@ -6,6 +6,7 @@ import (
 	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
 	customer "github.com/sut65/team03/controller/Customer"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
+	payment "github.com/sut65/team03/controller/Payment"
 	repreq "github.com/sut65/team03/controller/RepReq"
 	reviewht "github.com/sut65/team03/controller/Review"
 	room "github.com/sut65/team03/controller/Room"
@@ -168,6 +169,12 @@ func main() {
 	r.DELETE("/States/:id", room.DeleteState)
 	//===================================================Room
 
+	// ======================================= PAYMENT
+	r.GET("/payment", payment.ListPayments)
+	r.GET("/payment/:id", payment.GetPayment)
+	r.GET("/payment/user/:id", payment.ListPaymentByUID)
+	r.POST("/payment", payment.CreatePayment)
+	// ======================================= PAYMENT
 	// Run the server
 
 	//----------review----------------------
