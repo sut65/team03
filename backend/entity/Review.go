@@ -7,12 +7,12 @@ import (
 )
 
 
-// สร้างตารางชื่อ Department
+// สร้างตารางชื่อ Systemwork
 type Systemwork struct {
 	gorm.Model
 	Name string
-	// ส่ง Department_id ไปตาราง Review เพื่อเป็น foreignKey
-	Review []Review `gorm:"foreignKey:DepartmentID"`
+	// ส่ง Systemwork_id ไปตาราง Review เพื่อเป็น foreignKey
+	Review []Review `gorm:"foreignKey:SystemworkID"`
 }
 
 

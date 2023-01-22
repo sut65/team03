@@ -715,4 +715,58 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&CheckInOut2)
 
+	//******************ระบบ review********************
+	// Set Data Systemwork
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Booking",
+	})
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Sevice",
+	})
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Check Payment",
+	})
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Payment",
+	})
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Review Hotel",
+	})
+	db.Model(&Systemwork{}).Create(&Systemwork{
+		Name: "Subscribe",
+	})
+
+	var Bookingsys Systemwork
+	var Sevicesys Systemwork
+	var Checkpaymentsys Systemwork
+	var Paymentsys Systemwork
+	var Reviewsys Systemwork
+	var Subscribesys Systemwork
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Booking").Scan(&Bookingsys)
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Sevice").Scan(&Sevicesys)
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Check Payment").Scan(&Checkpaymentsys)
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Payment").Scan(&Paymentsys)
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Review Hotel").Scan(&Reviewsys)
+	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Subscribe").Scan(&Subscribesys)
+	
+	timedaterv1 := time.Date(2023, 10, 15, 0, 0, 0, 0, time.Local)
+	timeyearrv2 := time.Date(2023, 5, 15, 0, 0, 0, 0, time.Local)
+
+	db.Model(&Review{}).Create(&Review{
+		Customer:   Customer1, 
+		Comment:    "ประทับใจทุกอย่างของโรงแรม",
+		Start:      5,
+		Reviewdate: timedaterv1,
+		Systemwork: Subscribesys,
+		Department: Housekeeping,
+	})
+	db.Model(&Review{}).Create(&Review{
+		Customer:   Customer2, 
+		Comment:    "โรงแรมสวย ดี บริการดี",
+		Start:      4,
+		Reviewdate: timeyearrv2,
+		Systemwork: Checkpaymentsys,
+		Department: Salemarketing,
+	})
+
 }

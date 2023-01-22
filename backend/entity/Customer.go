@@ -42,5 +42,5 @@ type Customer struct {
 
 	Bookings  []Booking   `gorm:"foreignKey:CustomerID"`
 	RepairReq []RepairReq `gorm:"foreignKey:CustomerID"`
-	Review    []Review    `gorm:"foreignKey:DepartmentID"`
+	Review    []Review    `gorm:"foreignKey:CustomerID"`
 }
