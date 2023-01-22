@@ -1,0 +1,129 @@
+package controller
+
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sut65/team03/entity"
+)
+
+// POST /service
+func CreateService(c *gin.Context) {
+	var service entity.Service
+	var customer entity.Customer
+	var food entity.Food
+	var drink entity.Drink
+	var accessorie entity.Accessories
+
+	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 9 จะถูก bind เข้าตัวแปร service
+	if err := c.ShouldBindJSON(&service); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 10: ค้นหา food ด้วย id
+	if tx := entity.DB().Where("id = ?", service.FoodID).First(&food); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		return
+	}
+
+	// 11: ค้นหา drink ด้วย id
+	if tx := entity.DB().Where("id = ?", service.DrinkID).First(&drink); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "drink not found"})
+		return
+	}
+
+	// 12: ค้นหา accessories ด้วย id
+	if tx := entity.DB().Where("id = ?", service.AccessoriesID).First(&accessorie); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "accessories not found"})
+		return
+	}
+
+	// 13: ค้นหา customer ด้วย id
+	if tx := entity.DB().Where("id = ?", service.CustomerID).First(&customer); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
+		return
+	}
+
+	// 14: สร้าง Service
+	sv := entity.Service{
+		Customer:    customer,
+		Food:        food,
+		Drink:       drink,
+		Accessories: accessorie,
+	}
+
+	//15: save
+	if err := entity.DB().Create(&sv).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"data": sv})
+}
+
+// GET /service/:id
+func GetService(c *gin.Context) {
+	var service entity.Service
+	id := c.Param("id")
+	if tx := entity.DB().Where("id = ?", id).First(&service); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "service not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": service})
+}
+
+// GET /services
+func ListServices(c *gin.Context) {
+	var services []entity.Service
+	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services").Find(&services).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": services})
+}
+
+// เผื่อแก้ไข ** ตรง userID
+// GET /service/user/:id
+func ListServicesByUID(c *gin.Context) {
+	var services []entity.Service
+	id := c.Param("id")
+	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services WHERE userid = ?", id).Find(&services).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": services})
+}
+
+// DELETE /services/:id
+func DeleteService(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM services WHERE id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "service not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
+// PATCH /services
+func UpdateService(c *gin.Context) {
+	var service entity.Service
+	if err := c.ShouldBindJSON(&service); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", service.ID).First(&service); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "service not found"})
+		return
+	}
+
+	if err := entity.DB().Save(&service).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": service})
+}
