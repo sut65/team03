@@ -10,6 +10,7 @@ import (
 	repreq "github.com/sut65/team03/controller/RepReq"
 	reviewht "github.com/sut65/team03/controller/Review"
 	room "github.com/sut65/team03/controller/Room"
+	service "github.com/sut65/team03/controller/Service"
 
 	"github.com/sut65/team03/entity"
 
@@ -175,6 +176,16 @@ func main() {
 	r.GET("/payment/user/:id", payment.ListPaymentByUID)
 	r.POST("/payment", payment.CreatePayment)
 	// ======================================= PAYMENT
+
+	// ======================================= SERVICE
+	r.GET("/services", service.ListServices)
+	r.GET("/service/:id", service.GetService)
+	r.GET("/services/user/:id", service.ListServicesByUID)
+	r.POST("/service", service.CreateService)
+	r.PATCH("/services", service.UpdateService)
+	r.DELETE("/services/:id", service.DeleteService)
+	// ======================================= SERVICE
+
 	// Run the server
 
 	//----------review----------------------
