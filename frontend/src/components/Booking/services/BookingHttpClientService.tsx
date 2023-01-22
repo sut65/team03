@@ -1,8 +1,22 @@
-import { BookingsInterface } from "../../interfaces/IBooking";
+import { BookingsInterface } from "../../../models/IBooking";
+
 
 const apiUrl = "http://localhost:8080";
 /* -----------------------------------------------------------------------Booking--------------------------------------------------------------*/
-
+// //=================================================== Booking Routes
+// r.GET("/bookings", booking.ListBookings)
+// r.GET("/booking/:id", booking.GetBooking)
+// r.GET("/bookings/user/:id", booking.ListBookingsByUID)
+// r.POST("/bookings", booking.CreateBooking)
+// r.PATCH("/bookings", booking.UpdateBooking)
+// r.DELETE("/bookings/:id", booking.DeleteBooking)
+// // ---Branch---
+// r.GET("/branchs", booking.ListBranchs)
+// r.GET("/branch/:id", booking.GetBranch)
+// r.POST("/branchs", booking.CreateBranch)
+// r.PATCH("/branchs", booking.UpdateBranch)
+// r.DELETE("/branchs/:id", booking.DeleteBranch)
+// //=================================================== Booking Routes
 //List Booking
 async function GetBookings() {
     const requestOptions = {
@@ -101,7 +115,7 @@ async function GetBranchs() {
 async function DeleteBooking(data: BookingsInterface) {
     let booking_id = data.ID;
     const requestOptions = {
-        method: "POST",
+        method: "DELETE",
         //   headers: {
         //     Authorization: `Bearer ${localStorage.getItem("token")}`,
         //     "Content-Type": "application/json",
@@ -125,7 +139,7 @@ async function DeleteBooking(data: BookingsInterface) {
 // Update Booking
 async function UppdateBooking(data: BookingsInterface) {
     const requestOptions = {
-        method: "POST",
+        method: "PATCH",
         //   headers: {
         //     Authorization: `Bearer ${localStorage.getItem("token")}`,
         //     "Content-Type": "application/json",

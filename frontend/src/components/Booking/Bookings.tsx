@@ -54,7 +54,6 @@ function Bookings() {
                     <DataGrid rows={bookings} getRowId={(row) => row.ID} columns={columns} pageSize={5} rowsPerPageOptions={[5]}/>
                 </div>
             </Container>
-        </div>
     );
 }
 
