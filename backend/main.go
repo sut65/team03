@@ -7,11 +7,8 @@ import (
 	customer "github.com/sut65/team03/controller/Customer"
 	controller "github.com/sut65/team03/controller/Manage_Employee"
 	repreq "github.com/sut65/team03/controller/RepReq"
-<<<<<<< HEAD
 	reviewht "github.com/sut65/team03/controller/Review"
-=======
 	room "github.com/sut65/team03/controller/Room"
->>>>>>> f60db396140f3002f04f7761bd29bd37df3359ab
 
 	"github.com/sut65/team03/entity"
 

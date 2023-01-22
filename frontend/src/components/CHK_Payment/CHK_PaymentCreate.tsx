@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Container from "@mui/material/Container";
-import Snackbar from "@mui/material/Snackbar";
-import Paper from "@mui/material/Paper";
+import { Link as RouterLink } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
-import FormControl from "@mui/material/FormControl";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Snackbar from "@mui/material/Snackbar";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import React, { useEffect, useState } from "react";
+// import { PaymentsInterface } from "../interfaces/IPayment";
+import { CHK_PaymentsInterface, StatusesInterface } from "../../models/ICHK_Payment";
+import { CHK_Payments, GetPayments, GetStatuses } from "./service/CHK_PaymentHttpClientService";
 
-import { BrachsInterface, BookingsInterface, } from "../../models/IBooking";
-import { Bookings, GetBranchs,} from "./services/BookingHttpClientService";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -25,11 +27,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function BookingCreate() {
-    const [booking, setBooking] = useState<BookingsInterface>({});
-    const [branchs, setBranchs] = useState<BrachsInterface[]>([]);
-    // const [rooms, setRooms] = useState<RoomsInterface[]>([]);
-    // const [users, setUsers] = useState<UsersInterface>();
+function CHK_PaymentCreate() {
+    const [chk_payment, setCHK_Payment] = useState<CHK_PaymentsInterface>({});
+    // const [payments, setPayments] = useState<PaymentsInterface[]>([]);
+    const [statuses, setStatuses] = useState<StatusesInterface[]>([]);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
@@ -45,38 +46,30 @@ function BookingCreate() {
     };
 
     const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof booking;
-        setBooking({
-            ...booking,
+        const name = event.target.name as keyof typeof chk_payment;
+        setCHK_Payment({
+            ...chk_payment,
             [name]: event.target.value,
         });
     };
 
-    const getBranchs = async () => {
-        let res = await GetBranchs();
+    const getStatuses = async () => {
+        let res = await GetStatuses();
         if (res) {
-            setBranchs(res);
+            setStatuses(res);
         }
     };
 
-    // const getRooms = async () => {
-    //     let res = await GetRooms();
-    //     if (res) {
-    //         setRooms(res);
-    //     }
-    // };
-
-    // const getUser = async() => {
-    //     let res = await GetUserByUID();
-    //     if (res) {
-    //         setUsers(res);
-    //     }
-    // }
+    const getPayments = async () => {
+        let res = await GetPayments();
+        if (res) {
+            // setPayments(res);
+        }
+    };
 
     useEffect(() => {
-        getBranchs();
-        // getRooms();
-        // getUser();
+        getStatuses;
+        getPayments;
     }, []);
 
     //for convert data type string to int
@@ -87,14 +80,15 @@ function BookingCreate() {
 
     async function submit() {
         let data = {
-            BranchID: convertType(booking.BranchID),
-            // RoomID: convertType(booking.RoomID),
-            Start: null,
-            Stop: null,
-            UserID: convertType(booking.UserID), //GET user by user(login)ID
+            // PaymentID: convertType(chk_payment.PaymentID),
+            StatusID: convertType(chk_payment.StatusID),
+            Date_time: chk_payment.Date_time,
+            Amount: convertType(chk_payment.Amount),
+            Description: chk_payment.Description,
+            EmployeeID: convertType(chk_payment.EmployeeID),
         };
 
-        let res = await Bookings(data);
+        let res = await CHK_Payments(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -106,19 +100,19 @@ function BookingCreate() {
         <Container maxWidth="md">
             <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    จองห้องพักสำเร็จ
+                    บันทึกการตตรวจสอบเสร็จสิ้น
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่ไม่สามารถจองห้องพักได้
+                    ไม่สามารถบันทึกการตตรวจสอบได้
                 </Alert>
             </Snackbar>
             <Paper>
                 <Box display="flex" sx={{ marginTop: 2, }} >
                     <Box sx={{ paddingX: 2, paddingY: 1 }}>
                         <Typography component="h2" variant="h6" color="primary" gutterBottom >
-                            จองห้องพัก
+                            ตรวจสอบการชำระเงิน
                         </Typography>
                     </Box>
                 </Box>
@@ -126,43 +120,21 @@ function BookingCreate() {
                 <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>เลือกสาขาของโรงแรม</p>
+                            <p>เลือกรายการ การชำระเงิน</p>
                             <Select
                                 native
-                                value={booking.BranchID + ""}
+                                // value={chk_payment.PaymentID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "BranchID",
+                                    name: "PaymentID",
                                 }}
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกสาขาที่จะเข้าพัก
+                                    กรุณาเลือกราย การชำระเงิน
                                 </option>
-                                {branchs.map((item: BrachsInterface) => (
+                                {/* {payments.map((item: PaymentsInterface) => (
                                     <option value={item.ID} key={item.ID}>
-                                        {item.Name}
-                                    </option>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>ห้องพัก</p>
-                            <Select
-                                native
-                                // value={booking.RoomID + ""}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "RoomID",
-                                }}
-                            >
-                                <option aria-label="None" value="">
-                                    กรุณาเลือกห้องพัก
-                                </option>
-                                {/* {rooms.map((item: RoomsInterface) => (
-                                    <option value={item.ID} key={item.ID}>
-                                        {item.Code}
+                                        {item.ID}
                                     </option>
                                 ))} */}
                             </Select>
@@ -170,15 +142,37 @@ function BookingCreate() {
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>วันที่เข้าพัก</p>
+                            <p>สถานะการชำระเงิน</p>
+                            <Select
+                                native
+                                value={chk_payment.StatusID + ""}
+                                onChange={handleChange}
+                                inputProps={{
+                                    name: "StatusID",
+                                }}
+                            >
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกสถานะการชำระเงิน
+                                </option>
+                                {statuses.map((item: StatusesInterface) => (
+                                    <option value={item.ID} key={item.ID}>
+                                        {item.Type}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                            <p>วันที่ชำระเงิน</p>
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    value={booking.Start}
+                                    value={chk_payment.Date_time}
                                     onChange={(newValue) => {
-                                        setBooking({
-                                            ...booking,
-                                            Start: newValue,
+                                        setCHK_Payment({
+                                            ...chk_payment,
+                                            Date_time: newValue,
                                         });
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
@@ -188,27 +182,30 @@ function BookingCreate() {
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>วันที่สิ้นสุดการพัก</p>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    value={booking.Stop}
-                                    onChange={(newValue) => {
-                                        setBooking({
-                                            ...booking,
-                                            Stop: newValue,
-                                        });
-                                    }}
-                                    renderInput={(params) => <TextField {...params} />}
-                                />
-                            </LocalizationProvider>
+                            <p>จำนวนเงิน</p>
+                            <TextField value={chk_payment.Amount}
+                                id="outlined-basic"
+                                label="Outlined"
+                                variant="outlined"
+                            />
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>จองโดย</p>
+                            <p>จำนวนเงิน</p>
+                            <TextField value={chk_payment.Description}
+                                id="outlined-basic"
+                                label="Outlined"
+                                variant="outlined"
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                            <p>ตรวจสอบโดย</p>
                             <Select
                                 native
-                                value={booking.UserID + ""}
+                                value={chk_payment.EmployeeID + ""}
                                 onChange={handleChange}
                                 disabled
                                 inputProps={{
@@ -223,10 +220,10 @@ function BookingCreate() {
                     </Grid>
                     <Grid item xs={12}>
                         <Button
-                            // component={RouterLink}
-                            // to="/watch_videos"
-                            // variant="contained"
-                            // color="inherit"
+                            component={RouterLink}
+                            to="/chk_paymernts"
+                            variant="contained"
+                            color="inherit"
                         >
                             กลับ
                         </Button>
@@ -244,4 +241,4 @@ function BookingCreate() {
         </Container>
     );
 }
-export default BookingCreate;
+export default CHK_PaymentCreate;
