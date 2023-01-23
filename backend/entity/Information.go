@@ -641,8 +641,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	var booking1 Booking
 	var booking2 Booking
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&booking1)
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&booking2)
+	db.Raw("SELECT * FROM bookings WHERE id = ?", "1").Scan(&booking1)
+	db.Raw("SELECT * FROM bookings WHERE id = ?", "2").Scan(&booking2)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := CHK_PaymentStatus{
@@ -681,7 +681,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//ระบบ check In-Out
 
 	//set status data
-
 	checkin := CheckInOutStatus{
 		Name: "Checked In",
 	}
@@ -693,9 +692,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&CheckInOutStatus{}).Create(&checkout)
 
 	//set check In-Out data
-
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          booking1, //dump
+		Booking:          booking1,
 		CheckInTime:      time.Now(),
 		CheckOutTime:     time.Now(),
 		CheckInOutStatus: checkout,
@@ -703,13 +701,13 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          booking2, //dump
+		Booking:          booking2,
 		CheckInTime:      time.Now(),
 		CheckOutTime:     time.Now(),
 		CheckInOutStatus: checkin,
 		Employee:         Banana,
 	})
-	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
+
 	var CheckInOut1 CheckInOut
 	var CheckInOut2 CheckInOut
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
@@ -748,12 +746,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Payment").Scan(&Paymentsys)
 	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Review Hotel").Scan(&Reviewsys)
 	db.Raw("SELECT * FROM systemworks WHERE name = ?", "Subscribe").Scan(&Subscribesys)
-	
+
 	timedaterv1 := time.Date(2023, 10, 15, 0, 0, 0, 0, time.Local)
 	timeyearrv2 := time.Date(2023, 5, 15, 0, 0, 0, 0, time.Local)
 
 	db.Model(&Review{}).Create(&Review{
-		Customer:   Customer1, 
+		Customer:   Customer1,
 		Comment:    "ประทับใจทุกอย่างของโรงแรม",
 		Start:      5,
 		Reviewdate: timedaterv1,
@@ -761,7 +759,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Department: Housekeeping,
 	})
 	db.Model(&Review{}).Create(&Review{
-		Customer:   Customer2, 
+		Customer:   Customer2,
 		Comment:    "โรงแรมสวย ดี บริการดี",
 		Start:      4,
 		Reviewdate: timeyearrv2,
