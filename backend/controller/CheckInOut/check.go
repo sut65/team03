@@ -162,7 +162,8 @@ func ListCheckInOuts(c *gin.Context) {
 
 	var CheckInOut []entity.CheckInOut
 
-	if err := entity.DB().Raw("SELECT * FROM Check_In_Outs").Scan(&CheckInOut).Error; err != nil {
+	//if err := entity.DB().Raw("SELECT * FROM Check_In_Outs").Scan(&CheckInOut).Error; err != nil {
+	if err := entity.DB().Preload("Booking").Preload("CheckInOutStatus").Preload("Employee").Raw("SELECT * FROM Check_In_Outs").Find(&CheckInOut).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

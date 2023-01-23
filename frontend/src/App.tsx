@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import Manage_Search from "./components/Employee/Manage_Search";
 import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
+
+import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
 import Home from "./components/Home";
 
 
@@ -25,7 +27,9 @@ return (
        <Route path="/ManageSave" element={<Manage_Save />} />
 
        <Route path="/ManageShow" element={<Manage_Show />} />
-
+       
+       <Route path="/CheckInOutShow" element={<CheckInOutShow />} />
+       
    </Routes>
 
    </div>
