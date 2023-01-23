@@ -28,6 +28,7 @@ func SetupDatabase() {
 		&Department{},
 		&Position{},
 		&Location{},
+		&Blood{},
 		&Employee{},
 		// ระบบห้องพัก
 		&RoomType{},

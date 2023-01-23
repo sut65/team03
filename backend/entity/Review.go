@@ -21,7 +21,7 @@ type Review struct {
 	gorm.Model
 
 	Comment string
-	Start int
+	Start string
 	Reviewdate time.Time
 
 
