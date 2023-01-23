@@ -27,6 +27,11 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&UserRole{}).Create(&Employeerole)
 
+	Customerrole := UserRole{
+		RoleName: "Customer",
+	}
+	db.Model(&UserRole{}).Create(&Customerrole)
+
 	//login
 	loginOfficer1 := Signin{
 		Username: "OFSongsawang",
@@ -62,6 +67,20 @@ func SetupIntoDatabase(db *gorm.DB) {
 		UserRole: Employeerole,
 	}
 	db.Model(&Signin{}).Create(&loginEmployee3)
+
+	//Doctor login
+	loginCustomer1 := Signin{
+		Username: "Sandee12@gmail.com",
+		Password: SetupPasswordHash("SD123456"),
+		UserRole: Customerrole,
+	}
+	db.Model(&Signin{}).Create(&loginCustomer1)
+	loginCustomer2 := Signin{
+		Username: "Nicha@gmail.com",
+		Password: SetupPasswordHash("NC332548"),
+		UserRole: Customerrole,
+	}
+	db.Model(&Signin{}).Create(&loginCustomer2)
 
 	// Set Data Officer
 	db.Model(&Officer{}).Create(&Officer{
@@ -155,6 +174,29 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM locations WHERE name = ?", "Housekeeping staff Room").Scan(&Housekeepingstaff)
 	db.Raw("SELECT * FROM locations WHERE name = ?", "Marketing staff room").Scan(&Marketing)
 
+	// Set Data Blood
+	db.Model(&Blood{}).Create(&Blood{
+		Name: "A",
+	})
+	db.Model(&Blood{}).Create(&Blood{
+		Name: "AB",
+	})
+	db.Model(&Blood{}).Create(&Blood{
+		Name: "B",
+	})
+	db.Model(&Blood{}).Create(&Blood{
+		Name: "O",
+	})
+
+	var Blooda Blood
+	var Bloodab Blood
+	var Bloodb Blood
+	var Bloodo Blood
+	db.Raw("SELECT * FROM bloods WHERE name = ?", "A").Scan(&Blooda)
+	db.Raw("SELECT * FROM bloods WHERE  name = ?", "AB").Scan(&Bloodab)
+	db.Raw("SELECT * FROM bloods WHERE name = ?", "B").Scan(&Bloodb)
+	db.Raw("SELECT * FROM bloods WHERE  name = ?", "O").Scan(&Bloodo)
+
 	timedate1 := time.Date(1950, 2, 16, 0, 0, 0, 0, time.Local)
 	timeyear1 := time.Date(1987, 2, 16, 0, 0, 0, 0, time.Local)
 	timedate2 := time.Date(1965, 9, 9, 0, 0, 0, 0, time.Local)
@@ -176,7 +218,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Gender:       "Male",
 		DateOfBirth:  timedate1,
 		YearOfStart:  timeyear1,
-		Blood:        "A",
+		Blood:        Blooda,
 		Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
 		Officer:      OFSongsawang,
 		Signin:       loginEmployee1,
@@ -196,7 +238,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Gender:       "Female",
 		DateOfBirth:  timedate2,
 		YearOfStart:  timeyear2,
-		Blood:        "B",
+		Blood:        Bloodb,
 		Address:      "157 m.1, seesad s, dokpeeb d,Nakhonratchasima 30000",
 		Officer:      OFSongsawang,
 		Signin:       loginEmployee2,
@@ -216,7 +258,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Gender:       "Female",
 		DateOfBirth:  timedate3,
 		YearOfStart:  timeyear3,
-		Blood:        "AB",
+		Blood:        Bloodab,
 		Address:      "426 m.6, yabyol s, nangrong d,Buriram 31000",
 		Officer:      OFMoonnight,
 		Signin:       loginEmployee3,
@@ -407,6 +449,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Phone:       "095-7456921",
 		Email:       "Sandee12@gmail.com",
 		Memberlevel: Memberlevel1,
+		Signin:       loginCustomer1,
 	}
 	db.Model(&Customer{}).Create(&Customer1)
 
@@ -421,6 +464,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Phone:       "084-5215667",
 		Email:       "Nicha@gmail.com",
 		Memberlevel: Memberlevel2,
+		Signin:       loginCustomer2,
 	}
 	db.Model(&Customer{}).Create(&Customer2)
 
@@ -872,7 +916,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Review{}).Create(&Review{
 		Customer:   Customer1,
 		Comment:    "ประทับใจทุกอย่างของโรงแรม",
-		Start:      5,
+		Start:      "5",
 		Reviewdate: timedaterv1,
 		Systemwork: Subscribesys,
 		Department: Housekeeping,
@@ -880,7 +924,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Review{}).Create(&Review{
 		Customer:   Customer2,
 		Comment:    "โรงแรมสวย ดี บริการดี",
-		Start:      4,
+		Start:      "4",
 		Reviewdate: timeyearrv2,
 		Systemwork: Checkpaymentsys,
 		Department: Salemarketing,

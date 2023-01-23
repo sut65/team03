@@ -44,6 +44,14 @@ type Location struct {
 	Employee []Employee `gorm:"foreignKey:LocationID"`
 }
 
+// สร้างตารางชื่อ Blood
+type Blood struct {
+	gorm.Model
+	Name string
+	// ส่ง Blood_id ไปตาราง Employee เพื่อเป็น foreignKey
+	Employee []Employee `gorm:"foreignKey:BloodID"`
+}
+
 // สร้างตารางชื่อ Employee เป็นตารางหลัก
 type Employee struct {
 	gorm.Model
@@ -65,7 +73,6 @@ type Employee struct {
 	DateOfBirth time.Time
 	YearOfStart time.Time
 	Address     string
-	Blood       string
 
 	// OfficerID ทำหน้าที่เป็น FK
 	OfficerID *uint
@@ -82,6 +89,10 @@ type Employee struct {
 	// LocationID ทำหน้าที่เป็น FK
 	LocationID *uint
 	Location   Location `gorm:"references:ID"`
+
+	// BloodID ทำหน้าที่เป็น FK
+	BloodID *uint
+	Blood   Blood `gorm:"references:ID"`
 
 	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey

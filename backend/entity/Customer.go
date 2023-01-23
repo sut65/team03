@@ -31,6 +31,9 @@ type Customer struct {
 	Phone     string `gorm:"uniqueIndex"`
 	Email     string `gorm:"uniqueIndex"`
 
+	SigninID *uint
+	Signin   Signin `gorm:"references:ID"`
+
 	Gender_ID *uint
 	Gender    Gender
 
