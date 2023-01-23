@@ -802,8 +802,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	var booking1 Booking
 	var booking2 Booking
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&booking1)
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&booking2)
+	db.Raw("SELECT * FROM bookings WHERE id = ?", "1").Scan(&booking1)
+	db.Raw("SELECT * FROM bookings WHERE id = ?", "2").Scan(&booking2)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := CHK_PaymentStatus{
@@ -842,7 +842,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//ระบบ check In-Out
 
 	//set status data
-
 	checkin := CheckInOutStatus{
 		Name: "Checked In",
 	}
@@ -854,9 +853,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&CheckInOutStatus{}).Create(&checkout)
 
 	//set check In-Out data
-
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          booking1, //dump
+		Booking:          booking1,
 		CheckInTime:      time.Now(),
 		CheckOutTime:     time.Now(),
 		CheckInOutStatus: checkout,
@@ -864,13 +862,13 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          booking2, //dump
+		Booking:          booking2,
 		CheckInTime:      time.Now(),
 		CheckOutTime:     time.Now(),
 		CheckInOutStatus: checkin,
 		Employee:         Banana,
 	})
-	//ข้อมูลเลข Booking ยัง dump อยู่ (09/01/2023)
+
 	var CheckInOut1 CheckInOut
 	var CheckInOut2 CheckInOut
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
