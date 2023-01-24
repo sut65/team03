@@ -2,7 +2,7 @@ export interface EmployeeInterface {
 
     ID?: number;
     PersonalID: number;
-    Employeename: string;
+    Name: string;
     Email?: string;
     Eusername?: string;
     Password?: string;
@@ -34,7 +34,7 @@ export interface EmployeeInterface {
 export interface OfficerInterface {
 
     ID: number;
-    Officername: string;
+    Name: string;
 
    //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
 }
