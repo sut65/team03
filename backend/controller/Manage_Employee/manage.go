@@ -144,51 +144,6 @@ func ListPositions(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": position})
 }
 
-//Blood...................................................................
-// POST /Blood
-
-func CreateBlood(c *gin.Context) {
-
-	var blood entity.Blood
-
-	if err := c.ShouldBindJSON(&blood); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if err := entity.DB().Create(&blood).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": blood})
-}
-
-// GET /blood/:id
-func GetBlood(c *gin.Context) {
-
-	var blood entity.Blood
-
-	id := c.Param("id")
-
-	if err := entity.DB().Raw("SELECT * FROM bloods WHERE id = ?", id).Scan(&blood).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": blood})
-}
-
-// GET /blood
-func ListBloods(c *gin.Context) {
-
-	var blood []entity.Blood
-
-	if err := entity.DB().Raw("SELECT * FROM bloods").Scan(&blood).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": blood})
-}
-
 //Location...................................................................
 // POST /Locations
 
@@ -281,7 +236,6 @@ func CreateEmployee(c *gin.Context) {
 	var department entity.Department
 	var position entity.Position
 	var location entity.Location
-	var blood entity.Blood
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
@@ -315,11 +269,6 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
-	// 12. ค้นหา blood ด้วย id
-	if tx := entity.DB().Where("id = ?", employee.BloodID).First(&blood); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Blood not found"})
-		return
-	}
 	var userrole entity.UserRole
 	if err := entity.DB().Model(&entity.UserRole{}).Where("role_name = ?", "Employee").First(&userrole).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employees role not found"})
@@ -349,7 +298,6 @@ func CreateEmployee(c *gin.Context) {
 		DateOfBirth:  employee.DateOfBirth,                 // ตั้งค่าฟิลด์ DateOfBirth
 		YearOfStart:  employee.YearOfStart,                 // ตั้งค่าฟิลด์ YearOfStart
 		Address:      employee.Address,                     // ตั้งค่าฟิลด์ Address
-		Blood:        blood,                                // ตั้งค่าฟิลด์ Address
 		Signin:       createuserlogin,
 	}
 
@@ -379,7 +327,7 @@ func ListEmployees(c *gin.Context) {
 
 	var employee []entity.Employee
 
-	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Preload("Blood").Raw("SELECT * FROM employees").Find(&employee).Error; err != nil {
+	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Raw("SELECT * FROM employees").Find(&employee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

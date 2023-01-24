@@ -51,10 +51,6 @@ func main() {
 			protected.PATCH("/Locations", employee.UpdateLocation)
 			protected.DELETE("/Locations/:id", employee.DeleteLocation)
 
-			protected.GET("/Bloods", employee.ListBloods)
-			protected.GET("/Blood/:id", employee.GetBlood)
-			protected.POST("/Bloods", employee.CreateBlood)
-
 			protected.GET("/Employees", employee.ListEmployees)
 			protected.GET("/Employee/:id", employee.GetEmployee)
 			protected.POST("/Employees", employee.CreateEmployee)
