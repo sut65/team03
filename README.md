@@ -11,3 +11,6 @@
     B6311032 Pattharapon Kanwicha
 ```
     B6326357 Danudech Chaiphondech 
+```
+    ถ้าใน service ขึ้น แดงที่ jwt ให้ใส่คำสั่งนี้ลงใน Backend
+    go mod tidy

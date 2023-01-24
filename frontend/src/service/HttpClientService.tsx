@@ -1,7 +1,7 @@
 const apiUrl = "http://localhost:8080";
 
 //เรียก id จากการล็อกอิน
-async function GetDoctorByID() {
+async function GetEmloyeeID() {
   let uid = localStorage.getItem("uid");
   const requestOptions = {
     method: "GET",
@@ -28,5 +28,5 @@ async function GetDoctorByID() {
 }
 
 export {
-    GetDoctorByID,
+    GetEmloyeeID,
 };
