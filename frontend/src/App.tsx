@@ -28,7 +28,7 @@ export default function App() {
     }
   }, []);
 
-  if (token) {
+  if (!token) {
     return <SignIn />;
   }
 
