@@ -48,6 +48,7 @@ func CreateService(c *gin.Context) {
 	// 14: สร้าง Service
 	sv := entity.Service{
 		Customer:    customer,
+		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
 		Food:        food,
 		Drink:       drink,
 		Accessories: accessorie,
@@ -83,12 +84,11 @@ func ListServices(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": services})
 }
 
-// เผื่อแก้ไข ** ตรง userID
-// GET /service/user/:id
+// GET /services/customer/:id
 func ListServicesByUID(c *gin.Context) {
 	var services []entity.Service
 	id := c.Param("id")
-	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services WHERE userid = ?", id).Find(&services).Error; err != nil {
+	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services WHERE customer_id = ?", id).Find(&services).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -110,17 +110,38 @@ func DeleteService(c *gin.Context) {
 // PATCH /services
 func UpdateService(c *gin.Context) {
 	var service entity.Service
+	var food entity.Food
+	var drink entity.Drink
+	var accessorie entity.Accessories
+
 	if err := c.ShouldBindJSON(&service); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", service.ID).First(&service); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "service not found"})
+	if tx := entity.DB().Where("id = ?", service.FoodID).First(&food); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&service).Error; err != nil {
+	if tx := entity.DB().Where("id = ?", service.DrinkID).First(&drink); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", service.AccessoriesID).First(&accessorie); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		return
+	}
+
+	patchservice := entity.Service{
+		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		Food:        food,
+		Drink:       drink,
+		Accessories: accessorie,
+	}
+
+	if err := entity.DB().Where("id = ?", service.ID).Updates(&patchservice).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
