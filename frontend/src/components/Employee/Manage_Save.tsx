@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link as RouterLink } from "react-router-dom";
 
@@ -31,6 +31,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { UsersInterface } from "../../models/IUser";
 import {
+  createTheme,
   FormControlLabel,
   FormLabel,
   MenuItem,
@@ -38,6 +39,7 @@ import {
   RadioGroup,
   Select,
   SelectChangeEvent,
+  ThemeProvider,
 } from "@mui/material";
 import {
   DepartmentInterface,
@@ -46,6 +48,21 @@ import {
   OfficerInterface,
   PositionInterface,
 } from "../../models/IEmployee";
+import { grey } from "@mui/material/colors";
+
+const bgbutton = createTheme({
+  palette: {
+    primary: {
+      // Purple and grey play nicely together.
+      main: grey[800],
+    },
+    secondary: {
+      // Purple and grey play nicely together.
+      main: grey[50],
+    },
+
+  },
+});
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -57,27 +74,132 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function Manage_Save() {
   const [date, setDate] = React.useState<Date | null>(null);
-
-  const [user, setUser] = React.useState<Partial<UsersInterface>>({});
-
   const [employee, setEmployee] = React.useState<Partial<EmployeeInterface>>(
-    {}
+    {
+      DepartmentID: 0,
+      PositionID: 0,
+      LocationID: 0,
+    }
   );
-
   const [location, setLocation] = React.useState<LocationInterface[]>([]);
-
   const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
-
   const [position, setPosition] = React.useState<PositionInterface[]>([]);
-
-  const [officer, setOfficer] = React.useState<OfficerInterface[]>([]);
-
+  const [user, setUser] = React.useState<OfficerInterface>();
   const [gender, setGender] = React.useState<string>("");
-
   const [success, setSuccess] = React.useState(false);
-
   const [error, setError] = React.useState(false);
+  const [offID,setOffID] = React.useState<Number | null>(0);
+  const [dateOfBirth, setDateOfBirth] = React.useState<Date | null>(new Date());
+  const [yearOfStart, setYearOfStart] = React.useState<Date | null>(new Date());
 
+
+  //-----------เริ่มดึงข้อมูล-----------//
+//---------------------Department-------------------------------------
+const getDepartment = async () => {
+  const apiUrl = `http://localhost:8080/Departments`;
+
+  const requestOptions = {
+    method: "GET",
+
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+  //การกระทำ //json
+  fetch(apiUrl, requestOptions)
+    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
+
+    .then((res) => {
+      console.log(res.data); //show ข้อมูล
+
+      if (res.data) {
+        setDepartment(res.data);
+      } else {
+        console.log("else");
+      }
+    });
+};
+//---------------------Position-------------------------------------
+const getPosition = async () => {
+  const apiUrl = `http://localhost:8080/Positions`;
+
+  const requestOptions = {
+    method: "GET",
+
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+  //การกระทำ //json
+  fetch(apiUrl, requestOptions)
+    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
+
+    .then((res) => {
+      console.log(res.data); //show ข้อมูล
+
+      if (res.data) {
+        setPosition(res.data);
+      } else {
+        console.log("else");
+      }
+    });
+};
+//---------------------Position-----------------------------
+const getLocation = async () => {
+  const apiUrl = `http://localhost:8080/Locations`;
+
+  const requestOptions = {
+    method: "GET",
+
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+  //การกระทำ //json
+  fetch(apiUrl, requestOptions)
+    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
+
+    .then((res) => {
+      console.log(res.data); //show ข้อมูล
+
+      if (res.data) {
+        setLocation(res.data);
+      } else {
+        console.log("else");
+      }
+    });
+};
+
+
+// const getOfficer = async () => {
+//   const apiUrl = `http://localhost:8080/Officers/`;
+
+//   const requestOptions = {
+//     method: "GET",
+
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       "Content-Type": "application/json",
+//     },
+//   };
+//   //การกระทำ //json
+//   fetch(apiUrl, requestOptions)
+//     .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
+
+//     .then((res) => {
+//       //console.log(res.data); //show ข้อมูล
+
+//       if (res.data) {
+//         setOfficer(res.data);
+//       } else {
+//         console.log("else");
+//       }
+//     });
+// };
+//----------------------------------จบการดึงข้อมูล------------------------
   const handleClose = (
     event?: React.SyntheticEvent | Event,
 
@@ -99,7 +221,7 @@ function Manage_Save() {
 
     const { value } = event.target;
 
-    setUser({ ...user, [id]: value });
+    setEmployee({ ...employee, [id]: value });
   };
 
   const handleChange = (event: SelectChangeEvent<number>) => {
@@ -112,23 +234,37 @@ function Manage_Save() {
 
   function submit() {
     let data = {
-      FirstName: user.FirstName ?? "",
-
-      LastName: user.LastName ?? "",
-
-      Email: user.Email ?? "",
-
-      Age: typeof user.Age === "string" ? parseInt(user.Age) : 0,
-
-      BirthDay: date,
+      PersonalID: typeof employee.PersonalID === "string" ? parseInt(employee.PersonalID) : 0,
+      Employeename:  employee.Employeename ,
+      Email: employee.Email ,
+      Eusername: employee.Eusername ?? "",
+      Password: employee.Password ?? "",
+      Salary: typeof employee.Salary === "string" ? parseInt(employee.Salary) : 0,
+      Phonenumber: employee.Phonenumber ?? "",
+      Gender: gender,
+      DateOfBirth: dateOfBirth,
+      YearOfStart: yearOfStart,
+      Address: employee.Address ?? "",
+      OfficerID: user?.ID ?? "",
+      DepartmentID: employee.DepartmentID ,
+      PositionID: employee.PositionID ,
+      LocationID: employee.LocationID,
+      Signin: {
+        Username: employee.Eusername ?? "",
+        Password: employee.Password ?? "",
+      }
     };
 
-    const apiUrl = "http://localhost:8080/users";
+    const apiUrl = "http://localhost:8080/Employees";
 
     const requestOptions = {
       method: "POST",
 
-      headers: { "Content-Type": "application/json" },
+      headers:       
+      {  
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json" 
+      },
 
       body: JSON.stringify(data),
     };
@@ -145,8 +281,21 @@ function Manage_Save() {
       });
   }
 
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
+    if (getToken) {
+      setUser(JSON.parse(localStorage.getItem("user") || ""));
+    }
+    getDepartment();
+    getPosition();
+    getLocation();
+    // getOfficer();
+
+  }, []);
+
   return (
-    <Container maxWidth="xl"  >
+  <ThemeProvider theme={bgbutton}>
+    <Container maxWidth="xl" >
       <Snackbar
         open={success}
         autoHideDuration={6000}
@@ -178,89 +327,90 @@ function Manage_Save() {
               color="primary"
               gutterBottom
             >
-              บันทึกข้อมูลพนักงาน
+              Record Employee Information
             </Typography>
           </Box>
         </Box>
 
         <Divider />
 
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={4} >
-            <p>รหัสบัตรประชาชน</p>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{ marginLeft: "6.5%"}}>
+          <Grid item xs={5}>
             <FormControl fullWidth variant="outlined">
+              <FormLabel>Personal ID</FormLabel>
+
               <TextField
-                id="FirstName"
+                id="PersonalID"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.FirstName || ""}
+                value={employee.PersonalID || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
 
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <FormControl fullWidth variant="outlined">
-              <p>ชื่อ - นามสกุล</p>
+              <FormLabel>Name</FormLabel>
               <TextField
-                id="LastName"
+                id="Employeename"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
+                value={employee.Employeename || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          {/* Comboboxlocation */}
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "10.5%"}}>
+          {/* ComboboxDepartment */}
           <Grid item xs={3}>
-            <p>แผนก</p>
+            <FormLabel>Department</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
-                value={employee.LocationID}
+                value={employee.DepartmentID}
                 onChange={handleChange}
                 inputProps={{
-                  name: "LocationID",
+                  name: "DepartmentID",
                 }}
               >
                 <MenuItem value={0} key={0}>
                   เลือกแผนก
                 </MenuItem>
-                {location.map((item: LocationInterface) => (
+                {department.map((item: DepartmentInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
 
-          {/* Comboboxlocation */}
+          {/* ComboboxPosition */}
           <Grid item xs={3}>
-            <p>ตำแหน่ง</p>
+            <FormLabel>Position</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
-                value={employee.LocationID}
+                value={employee.PositionID}
                 onChange={handleChange}
                 inputProps={{
-                  name: "LocationID",
+                  name: "PositionID",
                 }}
               >
                 <MenuItem value={0} key={0}>
                   เลือกตำแหน่ง
                 </MenuItem>
-                {location.map((item: LocationInterface) => (
+                {position.map((item: PositionInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
 
-          {/* ComboboxDepartment */}
+          {/* ComboboxLocation */}
           <Grid item xs={3}>
-            <p>สถานที่</p>
+            <FormLabel>Location</FormLabel>
 
             <FormControl fullWidth variant="outlined">
               <Select
@@ -279,56 +429,19 @@ function Manage_Save() {
               </Select>
             </FormControl>
           </Grid>
-        
-
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          {/* วันเกิด */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>BirthDay</p>
-
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid>
-
-          {/* วันที่ทำงาน */}
-
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>Start Date</p>
-
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ padding: 2 }}>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <p>Username</p>
+              <FormLabel>Username</FormLabel>
 
               <TextField
-                id="LastName"
+                id="Eusername"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
+                value={employee.Eusername || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -336,31 +449,31 @@ function Manage_Save() {
 
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <p>Password</p>
+              <FormLabel>Password</FormLabel>
 
               <TextField
-                id="LastName"
+                id="Password"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
+                value={employee.Password || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ padding: 2 }}>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <p>Email</p>
+              <FormLabel>Email</FormLabel>
 
               <TextField
-                id="LastName"
+                id="Email"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
+                value={employee.Email || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
@@ -368,54 +481,38 @@ function Manage_Save() {
 
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <p>เบอร์โทร</p>
+              <FormLabel>Tel</FormLabel>
 
               <TextField
-                id="LastName"
+                id="Phonenumber"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <p>เงินเดือน</p>
-
-              <TextField
-                id="LastName"
-                variant="outlined"
-                type="string"
-                size="medium"
-                value={user.LastName || ""}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <p>กรุ๊ปเลือด</p>
-
-              <TextField
-                id="LastName"
-                variant="outlined"
-                type="string"
-                size="medium"
-                value={user.LastName || ""}
+                value={employee.Phonenumber || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
         </Grid>
 
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined">
+              <FormLabel>Salary</FormLabel>
 
-        <Grid container spacing={3} sx={{ padding: 2 }}>
+              <TextField
+                id="Salary"
+                variant="outlined"
+                type="string"
+                size="medium"
+                value={employee.Salary || ""}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           <Grid item xs={6}>
             <FormControl>
               <FormLabel>Gender</FormLabel>
@@ -443,74 +540,72 @@ function Manage_Save() {
         </Grid>
 
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={4}>
+          <Grid item xs={12}>
             <FormControl fullWidth variant="outlined">
-              <p>ที่อยู่</p>
+              <FormLabel>Address</FormLabel>
 
               <TextField
-                id="LastName"
+                id="Address"
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={user.LastName || ""}
+                value={employee.Address || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
           </Grid>
         </Grid>
 
-          {/* วันเกิด */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>BirthDay</p>
+        {/* วันเกิด */}
+      <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
+        <Grid item xs={4}>
+          <FormControl fullWidth variant="outlined">
+            <FormLabel>BirthDay</FormLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={dateOfBirth}
+                onChange={setDateOfBirth}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+        </Grid>
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid>
+        {/* วันที่ทำงาน */}
 
-          {/* วันที่ทำงาน */}
+        <Grid item xs={4}>
+          <FormControl fullWidth variant="outlined">
+            <FormLabel>Start Date</FormLabel>
 
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>Start Date</p>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={yearOfStart}
+                onChange={setYearOfStart}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </FormControl>
+        </Grid>
+      </Grid>
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid>
-
+        <Grid container spacing={3} sx={{ padding: 2 }}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <p>เจ้าหน้าที่</p>
+              <FormLabel>Officer</FormLabel>
 
               <TextField
-                id="LastName"
-                variant="outlined"
-                type="string"
-                size="medium"
-                value={user.LastName || ""}
-                onChange={handleInputChange}
+                fullWidth
+                disabled
+                id="OfficerID"
+                value={user?.Officername}
+                //value={officer?.ID || ""}
+                // onChange={(event) => setOffID(Number(event.target.value)) }
               />
             </FormControl>
           </Grid>
 
           <Grid item xs={12}>
-            <Button component={RouterLink} to="/" variant="contained">
+            <Button component={RouterLink} to="/ManageShow" variant="contained">
               Back
             </Button>
 
@@ -523,11 +618,10 @@ function Manage_Save() {
               Submit
             </Button>
           </Grid>
-
         </Grid>
       </Paper>
-
     </Container>
+</ThemeProvider>
   );
 }
 
