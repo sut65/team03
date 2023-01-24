@@ -13,6 +13,8 @@ func CreatePayment(c *gin.Context) {
 	var customer entity.Customer
 	var paymentmethod entity.PaymentMethod
 	var place entity.Place
+	var crypto entity.Crypto
+	var bank entity.Bank
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 10 จะถูก bind เข้าตัวแปร payment
 	if err := c.ShouldBindJSON(&payment); err != nil {
@@ -23,6 +25,18 @@ func CreatePayment(c *gin.Context) {
 	// 11: ค้นหา paymentmethod ด้วย id
 	if tx := entity.DB().Where("id = ?", payment.PaymentMethodID).First(&paymentmethod); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethod not found"})
+		return
+	}
+
+	// 12: ค้นหา crypto ด้วย id
+	if tx := entity.DB().Where("id = ?", payment.CryptoID).First(&crypto); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "crypto not found"})
+		return
+	}
+
+	// 13: ค้นหา bank ด้วย id
+	if tx := entity.DB().Where("id = ?", payment.BankID).First(&bank); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "bank not found"})
 		return
 	}
 
@@ -42,7 +56,11 @@ func CreatePayment(c *gin.Context) {
 	pm := entity.Payment{
 		Customer:      customer,
 		PaymentMethod: paymentmethod,
+		Crypto:        crypto,
+		Bank:          bank,
 		Place:         place,
+		Time:          payment.Time,
+		Picture:       payment.Picture,
 	}
 
 	//17: save
@@ -67,7 +85,7 @@ func GetPayment(c *gin.Context) {
 // GET /payments
 func ListPayments(c *gin.Context) {
 	var payments []entity.Payment
-	if err := entity.DB().Preload("PaymentMethod").Preload("Place").Preload("Customer").Raw("SELECT * FROM payments").Find(&payments).Error; err != nil {
+	if err := entity.DB().Preload("PaymentMethod").Preload("Crypto").Preload("Bank").Preload("Place").Preload("Customer").Raw("SELECT * FROM payments").Find(&payments).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -75,12 +93,11 @@ func ListPayments(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": payments})
 }
 
-// เผื่อแก้ไข ** ตรง userID
-// GET /payment/user/:id
+// GET /payment/customer/:id
 func ListPaymentByUID(c *gin.Context) {
 	var payments []entity.Payment
 	id := c.Param("id")
-	if err := entity.DB().Preload("PaymentMethod").Preload("Place").Preload("Customer").Raw("SELECT * FROM payments WHERE userid = ?", id).Find(&payments).Error; err != nil {
+	if err := entity.DB().Preload("PaymentMethod").Preload("Crypto").Preload("Bank").Preload("Place").Preload("Customer").Raw("SELECT * FROM payments WHERE customer_id = ?", id).Find(&payments).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
