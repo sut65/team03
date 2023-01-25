@@ -11,7 +11,7 @@ func CreateCHK_Payment(c *gin.Context) {
 	var chk_payment entity.CHK_Payment
 	var employee entity.Employee
 	var status entity.CHK_PaymentStatus
-	// var payment entity.Payment // waiting for payment
+	var payment entity.Payment
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 8 จะถูก bind เข้าตัวแปร chk_payment
 	if err := c.ShouldBindJSON(&chk_payment); err != nil {
@@ -19,12 +19,11 @@ func CreateCHK_Payment(c *gin.Context) {
 		return
 	}
 
-	// waiting for payment
-	// // 9: ค้นหา payment ด้วย id
-	// if tx := entity.DB().Where("id = ?", chk_payment.PaymentID).First(&payment); tx.RowsAffected == 0 {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "payment not found"})
-	// 	return
-	// }
+	// 9: ค้นหา payment ด้วย id
+	if tx := entity.DB().Where("id = ?", chk_payment.PaymentID).First(&payment); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "payment not found"})
+		return
+	}
 
 	// 10: ค้นหา status ด้วย id
 	if tx := entity.DB().Where("id = ?", chk_payment.CHK_PaymentStatusID).First(&status); tx.RowsAffected == 0 {

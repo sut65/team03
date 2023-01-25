@@ -68,7 +68,7 @@ func GetBooking(c *gin.Context) {
 // GET /bookings
 func ListBookings(c *gin.Context) {
 	var bookings []entity.Booking
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("User").Raw("SELECT * FROM bookings").Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings").Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

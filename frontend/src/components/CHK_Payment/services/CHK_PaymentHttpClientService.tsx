@@ -1,17 +1,9 @@
-import { BookingsInterface, BrachsInterface } from "../../../models/IBooking";
+import { CHK_PaymentsInterface, StatusesInterface } from "../../../models/ICHK_Payment";
 
 
 const apiUrl = "http://localhost:8080";
-/* -----------------------------------------------------------------------Booking--------------------------------------------------------------*/
-// //=================================================== Booking Routes
-// r.GET("/bookings", booking.ListBookings)
-// r.GET("/booking/:id", booking.GetBooking)
-// r.GET("/bookings/user/:id", booking.ListBookingsByUID)
-// r.POST("/bookings", booking.CreateBooking)
-// r.PATCH("/bookings", booking.UpdateBooking)
-// r.DELETE("/bookings/:id", booking.DeleteBooking)
 
-async function GetCustomerByUID() {
+async function GetEmployeeByUID() {
     let uid = localStorage.getItem('user');
     const requestOptions = {
         method: "GET",
@@ -21,7 +13,7 @@ async function GetCustomerByUID() {
         },
     }
 
-    let res = await fetch(`${apiUrl}/customer/${uid}`, requestOptions)
+    let res = await fetch(`${apiUrl}/Employee/${uid}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -34,8 +26,15 @@ async function GetCustomerByUID() {
     return res;
 }
 
-//List Booking
-async function GetBookings() {
+// //=================================================== Check Payment Routes
+// r.GET("/chk_payments", chk_payment.ListCHK_Payments)
+// r.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
+// r.POST("/chk_payments", chk_payment.CreateCHK_Payment)
+// r.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+// r.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
+
+// List CHK_Payment
+async function GetCHK_Payments() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -44,7 +43,7 @@ async function GetBookings() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -57,9 +56,9 @@ async function GetBookings() {
     return res;
 }
 
-//Get Booking
-async function GetBooking(data: BookingsInterface) {
-    let b_id = data.ID;
+//Get CHK_Payment
+async function GetCHK_Payment(data: CHK_PaymentsInterface) {
+    let chkp_id = data.ID;
     const requestOptions = {
         method: "GET",
         headers: {
@@ -68,7 +67,7 @@ async function GetBooking(data: BookingsInterface) {
         },
     };
 
-    let res = await fetch(`${apiUrl}/booking/${b_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/${chkp_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -81,32 +80,8 @@ async function GetBooking(data: BookingsInterface) {
     return res;
 }
 
-//***List Booking by user ID***
-async function GetBookingsBYUID() {
-    let uid = localStorage.getItem('uid');
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
-    };
-
-    let res = await fetch(`${apiUrl}/bookings/user/${uid}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-//Craete Bookings
-async function Bookings(data: BookingsInterface) {
+//Craete CHK_Payments
+async function CHK_Payments(data: CHK_PaymentsInterface) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -116,7 +91,7 @@ async function Bookings(data: BookingsInterface) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -129,33 +104,8 @@ async function Bookings(data: BookingsInterface) {
     return res;
 }
 
-// Delete Booking
-async function DeleteBooking(data: BookingsInterface) {
-    let booking_id = data.ID;
-    const requestOptions = {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }
-
-    let res = await fetch(`${apiUrl}/bookings/${booking_id}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-// Update Booking
-async function UppdateBooking(data: BookingsInterface) {
+//Update CHK_Payments
+async function UpdateCHK_Payments(data: CHK_PaymentsInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -163,9 +113,9 @@ async function UppdateBooking(data: BookingsInterface) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-    }
+    };
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -178,16 +128,42 @@ async function UppdateBooking(data: BookingsInterface) {
     return res;
 }
 
-// // ---Branch---
-// r.GET("/branchs", booking.ListBranchs)
-// r.GET("/branch/:id", booking.GetBranch)
-// r.POST("/branchs", booking.CreateBranch)
-// r.PATCH("/branchs", booking.UpdateBranch)
-// r.DELETE("/branchs/:id", booking.DeleteBranch)
-// //=================================================== Booking Routes
+//Delete CHK_Payments
+async function DeleteCHK_Payments(data: CHK_PaymentsInterface) {
+    let chkp_id = data.ID;
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    };
 
-//GET List Branchs
-async function GetBranchs() {
+    let res = await fetch(`${apiUrl}/chk_payment/${chkp_id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+
+// // ---Status---
+// GET("/chk_payment/statuses", chk_payment.ListStatuses)
+// GET("/chk_payment/status/:id", chk_payment.GetStatus)
+// POST("/chk_payment/statuses", chk_payment.CreateStatus)
+// PATCH("/chk_payment/statuses", chk_payment.UpdateStatus)
+// DELETE("/chk_payment/statuse/:id", chk_payment.DeleteStatus)
+// //=================================================== Check Payment Routes
+
+// List statuses
+async function GetStatuses() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -196,7 +172,7 @@ async function GetBranchs() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/branchs`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/statuses`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -209,9 +185,9 @@ async function GetBranchs() {
     return res;
 }
 
-//GET Get Branchs
-async function GetBranch(data: BrachsInterface) {
-    let br_id = data.ID;
+// Get statuses
+async function GetStatus(data: StatusesInterface) {
+    let s_id = data.ID
     const requestOptions = {
         method: "GET",
         headers: {
@@ -220,7 +196,7 @@ async function GetBranch(data: BrachsInterface) {
         },
     };
 
-    let res = await fetch(`${apiUrl}/branch/${br_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/status/${s_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -233,8 +209,8 @@ async function GetBranch(data: BrachsInterface) {
     return res;
 }
 
-//Craete Branchs
-async function Branchs(data: BrachsInterface) {
+//Craete Statuses
+async function Statuses(data: StatusesInterface) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -244,7 +220,7 @@ async function Branchs(data: BrachsInterface) {
         body: JSON.stringify(data),
     };
 
-    let res = await fetch(`${apiUrl}/branchs`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/statuses`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -257,33 +233,8 @@ async function Branchs(data: BrachsInterface) {
     return res;
 }
 
-// Delete Branch
-async function DeleteBranch(data: BrachsInterface) {
-    let branch_id = data.ID;
-    const requestOptions = {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }
-
-    let res = await fetch(`${apiUrl}/branchs/${branch_id}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-// Update Branch
-async function UppdateBranch(data: BrachsInterface) {
+//Update Statuses
+async function UpdateStatuses(data: CHK_PaymentsInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -291,9 +242,9 @@ async function UppdateBranch(data: BrachsInterface) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-    }
+    };
 
-    let res = await fetch(`${apiUrl}/branchs`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/statuses`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -305,20 +256,47 @@ async function UppdateBranch(data: BrachsInterface) {
 
     return res;
 }
+
+//Delete Statuses
+async function DeleteStatuses(data: CHK_PaymentsInterface) {
+    let s_id = data.ID;
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    };
+
+    let res = await fetch(`${apiUrl}/chk_payment/statuse/${s_id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+
 
 export {
-    GetCustomerByUID,
+    GetEmployeeByUID,
 
-    Bookings,
-    GetBookings,
-    GetBooking,
-    GetBookingsBYUID, //****Special get */
-    DeleteBooking,
-    UppdateBooking,
+    GetCHK_Payments,
+    GetCHK_Payment,
+    CHK_Payments,
+    UpdateCHK_Payments,
+    DeleteCHK_Payments,
 
-    Branchs,
-    GetBranchs,
-    GetBranch,
-    UppdateBranch,
-    DeleteBranch,
+    GetStatuses,
+    GetStatus,
+    Statuses,
+    UpdateStatuses,
+    DeleteStatuses,
 };
+
