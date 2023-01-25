@@ -33,7 +33,7 @@ func CreateBooking(c *gin.Context) {
 
 	// 11: ค้นหา customer ด้วย id
 	if tx := entity.DB().Where("id = ?", booking.CustomerID).First(&customer); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "user not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
 		return
 	}
 
@@ -68,7 +68,7 @@ func GetBooking(c *gin.Context) {
 // GET /bookings
 func ListBookings(c *gin.Context) {
 	var bookings []entity.Booking
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("User").Raw("SELECT * FROM bookings").Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings").Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

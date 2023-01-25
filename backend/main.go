@@ -78,11 +78,11 @@ func main() {
 			protected.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
 			protected.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
 			// ---Status---
-			protected.GET("/chk_payment/statuses", chk_payment.ListCHK_Payments)
-			protected.GET("/chk_payment/status/:id", chk_payment.GetCHK_Payment)
-			protected.POST("/chk_payment/statuses", chk_payment.CreateCHK_Payment)
-			protected.PATCH("/chk_payment/statuses", chk_payment.UpdateCHK_Payment)
-			protected.DELETE("/chk_payment/statuses/:id", chk_payment.DeleteCHK_Payment)
+			protected.GET("/chk_payment/statuses", chk_payment.ListStatuses)
+			protected.GET("/chk_payment/status/:id", chk_payment.GetStatus)
+			protected.POST("/chk_payment/statuses", chk_payment.CreateStatus)
+			protected.PATCH("/chk_payment/statuses", chk_payment.UpdateStatus)
+			protected.DELETE("/chk_payment/statuses/:id", chk_payment.DeleteStatus)
 			//=================================================== Check Payment Routes
 
 			//==================================================Customer Routes

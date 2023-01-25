@@ -9,9 +9,17 @@ import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
 
 import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
+
+import Bookings from "./components/Booking/Bookings";
+import BookingCreate from "./components/Booking/BookingCreate";
+import BookingUpdate from "./components/Booking/BookingUpdate";
+
+import CHK_Payments from "./components/CHK_Payment/CHK_Payment";
+import CHK_PaymentCreate from "./components/CHK_Payment/CHK_PaymentCreate";
+import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
+
 import Home from "./components/Home";
 import SignIn from "./components/Login";
-
 
 
 export default function App() {
@@ -32,27 +40,34 @@ export default function App() {
     return <SignIn />;
   }
 
-return (
+  return (
 
-  <Router>
-    <div>
-      <Navbar/>
-   <Routes>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
 
-       <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
 
-       <Route path="/Man" element={<Manage_Save />} />
+          <Route path="/Man" element={<Manage_Save />} />
+          <Route path="/ManageShow" element={<Manage_Show />} />
 
-       <Route path="/ManageShow" element={<Manage_Show />} />
-       
-       <Route path="/CheckInOutShow" element={<CheckInOutShow />} />
-       
-   </Routes>
+          <Route path="/CheckInOutShow" element={<CheckInOutShow />} />
 
-   </div>
+          <Route path="/Book" element={<Bookings />} />
+          <Route path="/Book/Create" element={<BookingCreate />} />
+          <Route path="/Book/Edit" element={<BookingUpdate />} />
 
-  </Router>
+          <Route path="/CPM" element={<CHK_Payments />} />
+          <Route path="/CPM/Create" element={<CHK_PaymentCreate />} />
+          <Route path="/CPM/Edit" element={<CHK_PaymentUpdate />} />
 
-);
+        </Routes>
+
+      </div>
+
+    </Router>
+
+  );
 
 }
