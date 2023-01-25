@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link as RouterLink } from "react-router-dom";
 
@@ -10,14 +10,12 @@ import Container from "@mui/material/Container";
 
 import Box from "@mui/material/Box";
 
-
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { UsersInterface } from "../../models/IUser";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import { EmployeeInterface } from "../../models/IEmployee";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import moment from "moment";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const themeshow = createTheme({
   palette: {
@@ -36,6 +34,14 @@ const themeshow = createTheme({
 function Manage_Show() {
 
   const [employee, setEmployee] = React.useState<EmployeeInterface[]>([]);
+  const [saveID, setSaveID] = useState<number>(0);
+  const [open, setOpen] = useState(false);
+
+ 
+  const handleID = (ID: any) => {
+    setSaveID(ID);
+   
+  }
   
  const getEmployee = async () => {
    const apiUrl = "http://localhost:8080/Employees";
@@ -55,6 +61,33 @@ function Manage_Show() {
      });
  };
 
+ const deleteEmployee = (id : number) => {
+  
+  const apiUrl = "http://localhost:8080/Employees/"+id;
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+    
+
+  };
+
+  fetch(apiUrl, requestOptions)
+    .then((response) => response.json())
+    .then(async (res) => {
+      if (res.data) {
+        //setSuccess(true);
+        //await timeout(1000); //for 1 sec delay
+        window.location.reload();
+
+      } else {
+        //setError(true);
+      }
+    });
+}
+
 
  useEffect(() => {
    getEmployee();
@@ -63,7 +96,7 @@ function Manage_Show() {
  return (
 <ThemeProvider theme={themeshow}>
   <div>
-  <Container maxWidth="md">
+  <Container maxWidth="xl">
   <Box
         display="flex"
         sx={{
@@ -100,7 +133,7 @@ function Manage_Show() {
         </Box>
       </Box>
         <div>
-          <Container maxWidth="md">
+          <Container maxWidth="xl">
             <div style={{ height: 500, width: "100%", marginTop: "50px" }}>
               <TableContainer >
                 <Table aria-label="simple table">
@@ -144,6 +177,12 @@ function Manage_Show() {
                         <TableCell align="center">{moment(item.DateOfBirth).format("DD/MM/YYYY")}</TableCell>
                         <TableCell align="center">{moment(item.YearOfStart).format("DD/MM/YYYY")}</TableCell>
                         <TableCell align="center">{item.Officer?.Officername}</TableCell>
+                        <TableCell align="center">
+                            <IconButton aria-label="delete">
+                              <DeleteIcon onClick={() => deleteEmployee(Number(item.ID))} />
+                            </IconButton>
+                                        
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
