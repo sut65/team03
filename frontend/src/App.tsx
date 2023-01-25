@@ -13,6 +13,7 @@ import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
 import Bookings from "./components/Booking/Bookings";
 import BookingCreate from "./components/Booking/BookingCreate";
 import BookingUpdate from "./components/Booking/BookingUpdate";
+import BookingDelete from "./components/Booking/BookingDelete";
 
 import CHK_Payments from "./components/CHK_Payment/CHK_Payment";
 import CHK_PaymentCreate from "./components/CHK_Payment/CHK_PaymentCreate";
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
           <Route path="/Book/Edit" element={<BookingUpdate />} />
+          <Route path="/Book/Delete" element={<BookingDelete />} />
 
           <Route path="/CPM" element={<CHK_Payments />} />
           <Route path="/CPM/Create" element={<CHK_PaymentCreate />} />
