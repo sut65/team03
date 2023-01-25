@@ -1,18 +1,19 @@
-import { UsersInterface } from "./IUser"
+import { CustomersInterface } from "./ICustomer"
+import { RoomsInterface } from "./IRoom"
 
 export interface BookingsInterface {
     ID?: string,
     BranchID?: number,
     Branch?: BrachsInterface,
 
-    // RoomID?: number,
-    // Room?: RoomsInterface, // waiting for Rooms Interface
+    RoomID?: number,
+    Room?: RoomsInterface, // waiting for Rooms Interface
 
     Start?: Date | null,
     Stop?: Date | null,
 
-    UserID?: number,
-    User?: UsersInterface,
+    CustomerID?: number,
+    Customerr?: CustomersInterface,
 }
 
 export interface BrachsInterface {

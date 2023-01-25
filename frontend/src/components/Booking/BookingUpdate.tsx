@@ -16,11 +16,11 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import { BrachsInterface, BookingsInterface } from "../../models/IBooking";
+import { BookingsInterface, BrachsInterface } from "../../models/IBooking";
 import { RoomsInterface } from "../../models/IRoom";
-import { CustomersInterface } from "../../models/IRoom";
-import { Bookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
-import { GetRooms } from "../Room/services/RoomHttpClientService"
+import { CustomersInterface } from "../../models/ICustomer";
+import { Bookings, GetBookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
+import { GetRooms } from "../Room/services/RoomHttpClientService";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -29,8 +29,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function BookingCreate() {
+function BookingUpdate() {
     const [booking, setBooking] = useState<BookingsInterface>({});
+    const [u_bookings, setU_Bookings] = useState<BookingsInterface[]>([]);
     const [branchs, setBranchs] = useState<BrachsInterface[]>([]);
     const [rooms, setRooms] = useState<RoomsInterface[]>([]);
     const [customers, setCustomers] = useState<CustomersInterface>();
@@ -56,6 +57,13 @@ function BookingCreate() {
         });
     };
 
+    const getBookings = async () => {
+        let res = await GetBookings();
+        if (res) {
+            setU_Bookings(res);
+        }
+    };
+
     const getBranchs = async () => {
         let res = await GetBranchs();
         if (res) {
@@ -70,7 +78,7 @@ function BookingCreate() {
         }
     };
 
-    const getCustomer = async() => {
+    const getCustomer = async () => {
         let res = await GetCustomerByUID();
         if (res) {
             setCustomers(res);
@@ -78,6 +86,7 @@ function BookingCreate() {
     }
 
     useEffect(() => {
+        getBookings();
         getBranchs();
         getRooms();
         getCustomer();
@@ -122,12 +131,34 @@ function BookingCreate() {
                 <Box display="flex" sx={{ marginTop: 2, }} >
                     <Box sx={{ paddingX: 2, paddingY: 1 }}>
                         <Typography component="h2" variant="h6" color="primary" gutterBottom >
-                            จองห้องพัก
+                            แก้ไขการจองห้องพัก
                         </Typography>
                     </Box>
                 </Box>
                 <Divider />
                 <Grid container spacing={3} sx={{ padding: 2 }}>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                            <p>เลือกรายการจองที่จะแก้ไข</p>
+                            <Select
+                                native
+                                value={booking.ID + ""}
+                                onChange={handleChange}
+                                inputProps={{
+                                    name: "ID",
+                                }}
+                            >
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกรายการจองที่จะแก้ไข
+                                </option>
+                                {u_bookings.map((item: BookingsInterface) => (
+                                    <option value={item.ID} key={item.ID}>
+                                        {item.ID}
+                                    </option>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>เลือกสาขาของโรงแรม</p>
@@ -142,6 +173,11 @@ function BookingCreate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกสาขาที่จะเข้าพัก
                                 </option>
+                                {branchs.map((item: BrachsInterface) => item.ID === booking.BranchID && (
+                                    <option aria-label="None" value={item.ID} key={item.ID} selected>
+                                        {item.Name}
+                                    </option>
+                                ))}
                                 {branchs.map((item: BrachsInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.Name}
@@ -164,6 +200,11 @@ function BookingCreate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกห้องพัก
                                 </option>
+                                {rooms.map((item: RoomsInterface) => item.ID === booking.RoomID && (
+                                    <option value={item.ID} key={item.ID} selected>
+                                        {item.ID}
+                                    </option>
+                                ))}
                                 {rooms.map((item: RoomsInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.ID}
@@ -216,7 +257,7 @@ function BookingCreate() {
                                 onChange={handleChange}
                                 disabled
                                 inputProps={{
-                                    name: "CustomerID",
+                                    name: "UserID",
                                 }}
                             >
                                 <option value={customers?.ID} key={customers?.ID}>
@@ -248,4 +289,4 @@ function BookingCreate() {
         </Container>
     );
 }
-export default BookingCreate;
+export default BookingUpdate;
