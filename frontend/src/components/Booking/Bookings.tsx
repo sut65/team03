@@ -25,10 +25,10 @@ function Bookings() {
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 50 },
         { field: "Branch", headerName: "สาขา", width: 250, valueFormatter: (params) => params.value.Name, },
-        { field: "Room", headerName: "ห้องพักหมายเลข", width: 250, valueFormatter: (params) => params.value.ID, },
+        { field: "Room", headerName: "ห้องพักหมายเลข", width: 250, valueFormatter: (params) => params.value.Code, },
         { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150 },
         { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150 },
-        { field: "Customer", headerName: "จองโดย", width: 250, valueFormatter: (params) => params.value.FirstName, },
+        { field: "User", headerName: "จองโดย", width: 250, valueFormatter: (params) => params.value.Name, },
     ]
 
     return (
@@ -40,17 +40,17 @@ function Bookings() {
                         </Typography>
                     </Box>
                     <Box>
-                        <Button component={RouterLink} to="/Book/Create" variant="contained" color="primary">
+                        <Button component={RouterLink} to="/booking/create" variant="contained" color="primary">
                             จองห้องพัก
                         </Button>
                     </Box>
                     <Box>
-                        <Button component={RouterLink} to="/Book/Edit" variant="contained" color="warning">
+                        <Button component={RouterLink} to="/booking/update" variant="contained" color="warning">
                             แก้ไขการจองห้องพัก
                         </Button>
                     </Box>
                     <Box>
-                        <Button component={RouterLink} to="/Book/Delete" variant="contained" color="error">
+                        <Button component={RouterLink} to="/booking/delete" variant="contained" color="error">
                             ยกเลิกการจองห้องพัก
                         </Button>
                     </Box>

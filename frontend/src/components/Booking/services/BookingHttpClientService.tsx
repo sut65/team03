@@ -233,65 +233,15 @@ async function GetBranch(data: BrachsInterface) {
     return res;
 }
 
-//Craete Branchs
-async function Branchs(data: BrachsInterface) {
+//POST Create Branchs
+async function Branchs() {
     const requestOptions = {
         method: "POST",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
     };
-
-    let res = await fetch(`${apiUrl}/branchs`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-// Delete Branch
-async function DeleteBranch(data: BrachsInterface) {
-    let branch_id = data.ID;
-    const requestOptions = {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }
-
-    let res = await fetch(`${apiUrl}/branchs/${branch_id}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data;
-            } else {
-                return false;
-            }
-        });
-
-    return res;
-}
-
-// Update Branch
-async function UppdateBranch(data: BrachsInterface) {
-    const requestOptions = {
-        method: "PATCH",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    }
 
     let res = await fetch(`${apiUrl}/branchs`, requestOptions)
         .then((response) => response.json())
@@ -319,6 +269,4 @@ export {
     Branchs,
     GetBranchs,
     GetBranch,
-    UppdateBranch,
-    DeleteBranch,
 };

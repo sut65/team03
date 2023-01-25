@@ -1,5 +1,5 @@
 // import { PaymentsInterface } from "./IPayment"
-// import { EmployeeInterface } from "./IEmployee"
+import { UsersInterface } from "./IUser"
 
 export interface CHK_PaymentsInterface {
     ID?: number,
@@ -13,8 +13,8 @@ export interface CHK_PaymentsInterface {
     Amount?: number,
     Description?: string,
 
-    // EmployeeID?: number,
-    // Employee?: EmployeeInterface,
+    EmployeeID?: number,
+    Employee?: UsersInterface,
 }
 
 export interface StatusesInterface {

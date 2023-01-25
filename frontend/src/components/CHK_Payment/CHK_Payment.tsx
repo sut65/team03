@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { CHK_PaymentsInterface } from "../../models/ICHK_Payment";
-import { GetCHK_Payments } from "./services/CHK_PaymentHttpClientService";
+import { GetCHK_Payments } from "./service/CHK_PaymentHttpClientService";
 
 function CHK_Payments() {
     const [chk_payments, setCHK_Payments] = useState<CHK_PaymentsInterface[]>([]);
@@ -24,12 +24,12 @@ function CHK_Payments() {
 
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 50 },
-        { field: "Payment", headerName: "รายการชำระเงิน", width: 250, valueFormatter: (params) => params.value.ID }, //อาจมีการแก้ไข
+        { field: "Payment", headerName: "รายการชำระเงิน", width: 250, valueFormatter: (params) => params.value.Name },
         { field: "Status", headerName: "สถานะการชำระเงิน", width: 250, valueFormatter: (params) => params.value.Type },
         { field: "Date_time", headerName: "วัน-เวลาที่ชำระเงิน", width: 150 },
         { field: "Amount", headerName: "จำนวนเงินที่ชำระ", width: 150 },
         { field: "Description", headerName: "คำอธิบายเพิ่มเติม", width: 150 },
-        { field: "Employee", headerName: "ตรวจสอบโดย", width: 250,  valueFormatter: (params) => params.value.Employeename},
+        { field: "User", headerName: "ตรวจสอบโดย", width: 250,  valueFormatter: (params) => params.value.Name},
     ]
 
     return (
@@ -42,12 +42,12 @@ function CHK_Payments() {
                         </Typography>
                     </Box>
                     <Box>
-                        <Button component={RouterLink} to="/CPM/Create" variant="contained" color="primary">
+                        <Button component={RouterLink} to="/chk_payment/create" variant="contained" color="primary">
                             ตรวจสอบการชำระเงิน
                         </Button>
                     </Box>
                     <Box>
-                        <Button component={RouterLink} to="/CPM/Edit" variant="contained" color="warning">
+                        <Button component={RouterLink} to="/chk_payment/create" variant="contained" color="warning">
                             แก้ไขการตรวจสอบการชำระเงิน
                         </Button>
                     </Box>

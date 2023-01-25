@@ -54,7 +54,4 @@ type Payment struct {
 	Place           Place `gorm:"references:ID"`
 	Time            time.Time
 	Picture         string
-
-	// ส่งไป CHK_Payment
-	CHK_Payments []CHK_Payment `gorm:"foreignKey:PaymentID"`
 }

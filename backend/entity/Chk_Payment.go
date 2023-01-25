@@ -16,8 +16,8 @@ type CHK_PaymentStatus struct {
 type CHK_Payment struct {
 	gorm.Model
 	//รับเข้ามา
-	PaymentID *uint
-	Payment   Payment `gorm:"references:id"`
+	// PaymentID *uint
+	// Payment   Payment `gorm:"references:id"`
 	//รับเข้ามา
 	CHK_PaymentStatusID *uint
 	CHK_PaymentStatus   CHK_PaymentStatus `gorm:"references:id"`
