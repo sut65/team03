@@ -49,6 +49,11 @@ function Bookings() {
                             แก้ไขการจองห้องพัก
                         </Button>
                     </Box>
+                    <Box>
+                        <Button component={RouterLink} to="/booking/delete" variant="contained" color="error">
+                            ยกเลิกการจองห้องพัก
+                        </Button>
+                    </Box>
                 </Box>
                 <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
                     <DataGrid rows={bookings} getRowId={(row) => row.ID} columns={columns} pageSize={5} rowsPerPageOptions={[5]}/>
