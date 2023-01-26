@@ -42,8 +42,9 @@ func CreateReview(c *gin.Context) {
 				Systemwork: systemwork,                  // โยงความสัมพันธ์กับ systemwork
 				Department:    department,         // โยงความสัมพันธ์กับ Entity department
 				Comment: review.Comment,
-				Start: review.Start,
+				Star: review.Star,
 				Reviewdate: review.Reviewdate,
+				Reviewimega: review.Reviewimega,
 			}
 
 	if err := entity.DB().Create(&rv).Error; err != nil {

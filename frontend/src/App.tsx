@@ -29,6 +29,8 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
+import Review_Show from "./components/Review/Review_Show";
+import Review_Save from "./components/Review/Review_Save";
 
 
 export default function App() {
@@ -59,6 +61,7 @@ export default function App() {
 
           <Route path="/Man" element={<Manage_Save />} />
           <Route path="/ManageShow" element={<Manage_Show />} />
+          
 
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
@@ -71,6 +74,9 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
+
+          <Route path="/RW" element={<Review_Show />} />
+          <Route path="/ReviewSave" element={<Review_Save />} />
 
           <Route path="/ss" element={<ServiceShow />} />
           <Route path="/sa" element={<ServiceAdd />} />
