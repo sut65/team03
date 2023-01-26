@@ -2,7 +2,7 @@ const apiUrl = "http://localhost:8080";
 
 //เรียก id จากการล็อกอิน
 async function GetEmloyeeID() {
-  let uid = localStorage.getItem("uid");
+  let id = localStorage.getItem("id");
   const requestOptions = {
     method: "GET",
     headers: {
@@ -12,7 +12,35 @@ async function GetEmloyeeID() {
   };
 
   let res = await fetch(
-    `${apiUrl}/Employee/${uid}`,
+    `${apiUrl}/Employee/${id}`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
+async function GetCustomerByID() {
+
+  let id = localStorage.getItem("id");
+
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(
+    `${apiUrl}/customer/${id}`,
     requestOptions
   )
     .then((response) => response.json())
@@ -28,5 +56,6 @@ async function GetEmloyeeID() {
 }
 
 export {
-    GetEmloyeeID,
+  GetEmloyeeID,
+  GetCustomerByID,
 };

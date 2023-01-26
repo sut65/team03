@@ -45,11 +45,18 @@ func SetupDatabase() {
 		&Customer{},
 		&Gender{},
 		&Province{},
-		&Memberlevel{},
+		&Nametitle{},
 		// ระบบบริการเสริม
 		&Food{},
 		&Drink{},
 		&Accessories{},
+		&Service{},
+		// ระบบชำระเงิน
+		&Place{},
+		&Bank{},
+		&Crypto{},
+		&PaymentMethod{},
+		&Payment{},
 		// ระบบจองห้องพัก
 		&Booking{},
 		&Branch{},

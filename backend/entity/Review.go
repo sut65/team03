@@ -21,8 +21,9 @@ type Review struct {
 	gorm.Model
 
 	Comment string
-	Start string
+	Star int
 	Reviewdate time.Time
+	Reviewimega string
 
 
 	// CustomerID ทำหน้าที่เป็น FK
