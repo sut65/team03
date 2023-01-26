@@ -891,4 +891,180 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Department: Salemarketing,
 	})
 
+	//=====================================================Storage
+	// Data Storage
+	//Product Data
+	TV := Product{
+		Name:  "TV",
+		Price: 5000,
+	}
+	db.Model(&Product{}).Create(&TV)
+
+	fridge := Product{
+		Name:  "fridge",
+		Price: 4500,
+	}
+	db.Model(&Product{}).Create(&fridge)
+
+	microwave := Product{
+		Name:  "microwave",
+		Price: 2000,
+	}
+	db.Model(&Product{}).Create(&microwave)
+
+	aircon := Product{
+		Name:  "airconditioner",
+		Price: 7000,
+	}
+	db.Model(&Product{}).Create(&aircon)
+
+	lamp := Product{
+		Name:  "lamp",
+		Price: 500,
+	}
+	db.Model(&Product{}).Create(&lamp)
+
+	bedspread := Product{
+		Name:  "bedspread",
+		Price: 100,
+	}
+	db.Model(&Product{}).Create(&bedspread)
+
+	blanket := Product{
+		Name:  "blanket",
+		Price: 200,
+	}
+	db.Model(&Product{}).Create(&blanket)
+
+	bolstercushion := Product{
+		Name:  "bolster cushion",
+		Price: 300,
+	}
+	db.Model(&Product{}).Create(&bolstercushion)
+
+	duvet := Product{
+		Name:  "duvet",
+		Price: 150,
+	}
+	db.Model(&Product{}).Create(&duvet)
+
+	bed := Product{
+		Name:  "bed",
+		Price: 1000,
+	}
+	db.Model(&Product{}).Create(&bed)
+
+	sofa := Product{
+		Name:  "sofa",
+		Price: 800,
+	}
+	db.Model(&Product{}).Create(&sofa)
+
+	chair := Product{
+		Name:  "chair",
+		Price: 700,
+	}
+	db.Model(&Product{}).Create(&chair)
+
+	wardrobe := Product{
+		Name:  "wardrobe",
+		Price: 2500,
+	}
+	db.Model(&Product{}).Create(&wardrobe)
+
+	drawer := Product{
+		Name:  "drawer",
+		Price: 900,
+	}
+	db.Model(&Product{}).Create(&drawer)
+
+	door := Product{
+		Name:  "door",
+		Price: 600,
+	}
+	db.Model(&Product{}).Create(&door)
+
+	window := Product{
+		Name:  "window",
+		Price: 500,
+	}
+	db.Model(&Product{}).Create(&window)
+
+	mirror := Product{
+		Name:  "mirror",
+		Price: 300,
+	}
+	db.Model(&Product{}).Create(&mirror)
+
+	drape := Product{
+		Name:  "drape",
+		Price: 150,
+	}
+	db.Model(&Product{}).Create(&drape)
+
+	picture := Product{
+		Name:  "picture",
+		Price: 400,
+	}
+	db.Model(&Product{}).Create(&picture)
+
+	vase := Product{
+		Name:  "vase",
+		Price: 200,
+	}
+	db.Model(&Product{}).Create(&vase)
+
+	//ProductType Data
+	Electrical := ProductType{
+		Name: "Electrical",
+	}
+	db.Model(&ProductType{}).Create(&Electrical)
+
+	Bedding := ProductType{
+		Name: "Bedding",
+	}
+	db.Model(&ProductType{}).Create(&Bedding)
+
+	Fur := ProductType{
+		Name: "Furniture",
+	}
+	db.Model(&ProductType{}).Create(&Fur)
+
+	Interior := ProductType{
+		Name: "InteriorItems",
+	}
+	db.Model(&ProductType{}).Create(&Interior)
+
+	//Storage Data
+	//Storage1
+	db.Model(&Storage{}).Create(&Storage{
+		Employee:    Sobsa,
+		Product:     TV,
+		ProductType: Electrical,
+		Quantity:    50,
+		Time:        time.Now(),
+	})
+	//Storage2
+	db.Model(&Storage{}).Create(&Storage{
+		Employee:    Hanoi,
+		Product:     blanket,
+		ProductType: Bedding,
+		Quantity:    55,
+		Time:        time.Now(),
+	})
+	//Storage3
+	db.Model(&Storage{}).Create(&Storage{
+		Employee:    Banana,
+		Product:     chair,
+		ProductType: Fur,
+		Quantity:    60,
+		Time:        time.Now(),
+	})
+	var Storage1 Storage
+	var Storage2 Storage
+	var Storage3 Storage
+	db.Raw("SELECT * FROM storages WHERE id = ?", "1").Scan(&Storage1)
+	db.Raw("SELECT * FROM storages WHERE id = ?", "2").Scan(&Storage2)
+	db.Raw("SELECT * FROM storages WHERE id = ?", "3").Scan(&Storage3)
+
 }

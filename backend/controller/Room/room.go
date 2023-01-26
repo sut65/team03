@@ -69,7 +69,7 @@ func DeleteRoomType(c *gin.Context) {
 // PATCH /roomtypes
 func UpdateRoomType(c *gin.Context) {
 
-	var roomtype entity.Department
+	var roomtype entity.RoomType
 
 	if err := c.ShouldBindJSON(&roomtype); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

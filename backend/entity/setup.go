@@ -59,6 +59,10 @@ func SetupDatabase() {
 		//Review---------
 		&Review{},
 		&Systemwork{},
+		//ระบบคลังสินค้าห้องพัก
+		&Product{},
+		&ProductType{},
+		&Storage{},
 	)
 	db = database
 
