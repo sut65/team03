@@ -50,6 +50,7 @@ function SignIn() {
               localStorage.setItem("id", res.data.id);
               localStorage.setItem("user", JSON.stringify(res.data.user));
               localStorage.setItem("role", res.data.role);
+              localStorage.setItem("name", res.data.name);
               window.location.reload();
             } else {
               setError(true);
