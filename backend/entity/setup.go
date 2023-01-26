@@ -45,7 +45,7 @@ func SetupDatabase() {
 		&Customer{},
 		&Gender{},
 		&Province{},
-		&Memberlevel{},
+		&Nametitle{},
 		// ระบบบริการเสริม
 		&Food{},
 		&Drink{},

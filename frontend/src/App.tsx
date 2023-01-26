@@ -20,6 +20,8 @@ import CHK_Payments from "./components/CHK_Payment/CHK_Payment";
 import CHK_PaymentCreate from "./components/CHK_Payment/CHK_PaymentCreate";
 import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
 
+import Customer from "./components/Customer/CreateCustomer";
+
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 
@@ -65,6 +67,9 @@ export default function App() {
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
 
+          
+          
+
         </Routes>
 
       </div>
@@ -74,3 +79,5 @@ export default function App() {
   );
 
 }
+
+///Ui สมัคร customer อันนี้ => <Customer />

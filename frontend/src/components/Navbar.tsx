@@ -124,7 +124,7 @@ function Navbar() {
     { name: "Payment", icon: <PaymentIcon  />, path: "/PM" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/Se" },
-
+    
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
     { name: "Check The Room", icon: <CheckroomIcon  />, path: "/CTR" },
