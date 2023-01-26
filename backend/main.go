@@ -124,6 +124,7 @@ func main() {
 			protected.POST("/checkinout", check.CreateCheckInOut)
 			protected.PATCH("/checkinout", check.UpdateCheckInOut)
 			protected.DELETE("/checkinout/:id", check.DeleteCheckInOut)
+			protected.PATCH("/checkinout/:id", check.CheckOut)
 
 			//========================= repreq routes
 			//type

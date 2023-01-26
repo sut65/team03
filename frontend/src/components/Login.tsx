@@ -47,6 +47,7 @@ function SignIn() {
               setError(false);
               setSuccess(true);
               localStorage.setItem("token", res.data.token);
+              localStorage.setItem("id", res.data.id);
               localStorage.setItem("user", JSON.stringify(res.data.user));
               localStorage.setItem("role", res.data.role);
               window.location.reload();

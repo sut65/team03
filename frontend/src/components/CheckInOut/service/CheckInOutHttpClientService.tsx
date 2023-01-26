@@ -16,13 +16,13 @@ const apiUrl = "http://localhost:8080";
 	// r.DELETE("/checkinout/:id", check.DeleteCheckInOut)
 
 // List CheckInOut
-async function GetListCheckInOut() {
+async function GetCheckInOut() {
     const requestOptions = {
         method: "GET",
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     "Content-Type": "application/json",
-        //   },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
     };
 
     let res = await fetch(`${apiUrl}/checkinouts`, requestOptions)
@@ -39,13 +39,13 @@ async function GetListCheckInOut() {
 }
 
 // List Status
-async function GetListCheckInOutStatus() {
+async function GetIOStatus() {
     const requestOptions = {
         method: "GET",
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     "Content-Type": "application/json",
-        //   },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
     };
 
     let res = await fetch(`${apiUrl}/checkinoutstatuses`, requestOptions)
@@ -65,10 +65,10 @@ async function GetListCheckInOutStatus() {
 async function CreateCheckInOut(data: CheckInOutInterface) {
     const requestOptions = {
         method: "POST",
-        // headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     "Content-Type": "application/json",
-        // },
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     };
 
@@ -86,18 +86,18 @@ async function CreateCheckInOut(data: CheckInOutInterface) {
 }
 
 // Delete CheckInOut
-async function DeleteCheckInOut(data: CheckInOutInterface) {
-    let booking_id = data.ID;
+async function DeleteCheckInOut(data: number) {
+    let checkInOutID = data;
     const requestOptions = {
         method: "DELETE",
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     "Content-Type": "application/json",
-        //   },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
         body: JSON.stringify(data),
     }
     
-    let res = await fetch(`${apiUrl}/checkinoutstatus/${booking_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/checkinout/${checkInOutID}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -114,14 +114,62 @@ async function DeleteCheckInOut(data: CheckInOutInterface) {
 async function UppdateCheckInOut(data: CheckInOutInterface) {
     const requestOptions = {
         method: "PATCH",
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     "Content-Type": "application/json",
-        //   },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/checkinoutstatus`, requestOptions)
+    let res = await fetch(`${apiUrl}/checkinout`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+//protected.PATCH("/checkinout/:id", check.CheckOut)
+async function CheckOut(data: number) {
+    let checkInOutID = data;
+    const requestOptions = {
+        method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
+
+    let res = await fetch(`${apiUrl}/checkinout/${checkInOutID}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+// List Status
+async function GetEmps() {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/Employees`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -135,10 +183,12 @@ async function UppdateCheckInOut(data: CheckInOutInterface) {
 }
 
 export {
-    GetListCheckInOut,
-    GetListCheckInOutStatus,
+    GetCheckInOut,
+    GetIOStatus,
     CreateCheckInOut,
     DeleteCheckInOut,
     UppdateCheckInOut,
+    GetEmps,
+    CheckOut,
 };
 
