@@ -9,6 +9,7 @@ import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
 
 import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
+import CheckInOutCreate from "./components/CheckInOut/CheckInOutCreate";
 
 import Bookings from "./components/Booking/Bookings";
 import BookingCreate from "./components/Booking/BookingCreate";
@@ -42,7 +43,6 @@ export default function App() {
   }
 
   return (
-
     <Router>
       <div>
         <Navbar />
@@ -53,8 +53,6 @@ export default function App() {
           <Route path="/Man" element={<Manage_Save />} />
           <Route path="/ManageShow" element={<Manage_Show />} />
 
-          <Route path="/CheckInOutShow" element={<CheckInOutShow />} />
-
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
           <Route path="/Book/Edit" element={<BookingUpdate />} />
@@ -63,6 +61,9 @@ export default function App() {
           <Route path="/CPM" element={<CHK_Payments />} />
           <Route path="/CPM/Create" element={<CHK_PaymentCreate />} />
           <Route path="/CPM/Edit" element={<CHK_PaymentUpdate />} />
+
+          <Route path="/CNCO" element={<CheckInOutShow />} />
+          <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
 
         </Routes>
 

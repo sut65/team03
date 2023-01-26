@@ -1,6 +1,9 @@
 package controller
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/sut65/team03/entity"
 	//"golang.org/x/crypto/bcrypt"
 
@@ -126,6 +129,8 @@ func CreateCheckInOut(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(cio.CheckOutTime)
+
 	// 12: สร้าง CheckInOut
 	CheckInOut := entity.CheckInOut{
 		Booking:          booking,
@@ -202,4 +207,32 @@ func UpdateCheckInOut(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": CheckInOut})
+}
+
+func CheckOut(c *gin.Context) {
+	id := c.Param("id")
+	var cio entity.CheckInOut
+
+	//check ว่ามีตารางหมายเลขนี้มั้ย?
+	if tx := entity.DB().Where("id = ?", id).First(&cio); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %s not found", id)})
+		c.Abort()
+		return
+	}
+
+	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		cio.CheckOutTime = time.Now()
+	}
+
+	cio.CheckInOutStatus.ID = 2
+
+	if err := entity.DB().Save(&cio).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Update Success",
+		"data":   cio,
+	})
 }
