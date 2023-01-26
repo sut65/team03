@@ -123,7 +123,7 @@ function Navbar() {
     { name: "Subscribe", icon: <PersonAddIcon  />, path: "/Sub" },
     { name: "Payment", icon: <PaymentIcon  />, path: "/PM" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
-    { name: "Service", icon: <RoomServiceIcon  />, path: "/Se" },
+    { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
     
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
