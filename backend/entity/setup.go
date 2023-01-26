@@ -50,6 +50,13 @@ func SetupDatabase() {
 		&Food{},
 		&Drink{},
 		&Accessories{},
+		&Service{},
+		// ระบบชำระเงิน
+		&Place{},
+		&Bank{},
+		&Crypto{},
+		&PaymentMethod{},
+		&Payment{},
 		// ระบบจองห้องพัก
 		&Booking{},
 		&Branch{},
