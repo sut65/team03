@@ -16,14 +16,18 @@ type Province struct {
 	Customer []Customer `gorm:"foreignKey:Province_ID"`
 }
 
-type Memberlevel struct {
+type Nametitle struct {
 	gorm.Model
-	Memberlevel string
-	Customer    []Customer `gorm:"foreignKey:Memberlevel_ID"`
+	Nametitle string
+	Customer    []Customer `gorm:"foreignKey:Nametitle_ID"`
 }
 
 type Customer struct {
 	gorm.Model
+
+	Nametitle_ID *uint
+	Nametitle    Nametitle
+
 	FirstName string
 	LastName  string
 	Password  string
@@ -40,8 +44,7 @@ type Customer struct {
 	Province_ID *uint
 	Province    Province
 
-	Memberlevel_ID *uint
-	Memberlevel    Memberlevel
+
 
 	Bookings  []Booking   `gorm:"foreignKey:CustomerID"`
 	RepairReq []RepairReq `gorm:"foreignKey:CustomerID"`

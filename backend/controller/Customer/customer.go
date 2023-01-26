@@ -11,7 +11,7 @@ import (
 func CreateCustomer(c *gin.Context) {
 	var gender entity.Gender
 	var province entity.Province
-	var memberlevel entity.Memberlevel
+	var nametitle entity.Nametitle
 	var customer entity.Customer
 
 	if err := c.ShouldBindJSON(&customer); err != nil {
@@ -25,12 +25,12 @@ func CreateCustomer(c *gin.Context) {
 	}
 	//ค้นหา Province ด้วย id
 	if tx := entity.DB().Where("id = ?", customer.Province_ID).First(&province); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Province not found"})
 		return
 	}
-	//ค้นหา Memberlevel ด้วย id
-	if tx := entity.DB().Where("id = ?", customer.Memberlevel_ID).First(&memberlevel); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Province not found"})
+	//ค้นหา Nametitle ด้วย id
+	if tx := entity.DB().Where("id = ?", customer.Nametitle_ID).First(&nametitle); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Nametitle not found"})
 		return
 	}
 
@@ -40,7 +40,7 @@ func CreateCustomer(c *gin.Context) {
 	cus := entity.Customer{
 		Gender:      gender,
 		Province:    province,
-		Memberlevel: memberlevel,
+		Nametitle:   nametitle,
 		FirstName:   customer.FirstName,
 		LastName:    customer.LastName,
 		Password:    string(password),

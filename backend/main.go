@@ -98,12 +98,12 @@ func main() {
 			protected.POST("/customers/genders", customer.CreateGender)
 			protected.PATCH("/customers/genders", customer.UpdateGender)
 			protected.DELETE("/customers/genders/:id", customer.DeleteGender)
-			//Memberlevel
-			protected.GET("/memberlevels", customer.ListMemberlevel)
-			protected.GET("/customer/memberlevels/:id", customer.GetMemberlevel)
-			protected.POST("/customers/memberlevels", customer.CreateMemberlevel)
-			protected.PATCH("/customers/memberlevels", customer.UpdateMemberlevel)
-			protected.DELETE("/customers/memberlevels/:id", customer.DeleteMemberlevel)
+			//Nametitle
+			protected.GET("/nametitles", customer.ListNametitle)
+			protected.GET("/customer/nametitles/:id", customer.GetNametitle)
+			protected.POST("/customers/nametitles", customer.CreateNametitle)
+			protected.PATCH("/customers/nametitles", customer.UpdateNametitle)
+			protected.DELETE("/customers/nametitles/:id", customer.DeleteNametitle)
 			//Province
 			protected.GET("/provinces", customer.ListProvince)
 			protected.GET("/customer/provinces/:id", customer.GetProvince)
