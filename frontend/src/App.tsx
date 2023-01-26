@@ -22,6 +22,11 @@ import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
 
 import Customer from "./components/Customer/CreateCustomer";
 
+import ServiceShow from "./components/Services/ServiceShow";
+import ServiceAdd from "./components/Services/ServiceAdd";
+import ServiceUpdate from "./components/Services/ServiceUpdate";
+import ServiceDelete from "./components/Services/ServiceDelete";
+
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 
@@ -67,7 +72,10 @@ export default function App() {
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
 
-          
+          <Route path="/ss" element={<ServiceShow />} />
+          <Route path="/sa" element={<ServiceAdd />} />
+          <Route path="/su/:id" element={<ServiceUpdate />} />
+          <Route path="/sd" element={<ServiceDelete />} />
           
 
         </Routes>
