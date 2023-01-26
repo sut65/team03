@@ -107,12 +107,16 @@ func DeleteService(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
+// customer/:id
 // PATCH /services
 func UpdateService(c *gin.Context) {
 	var service entity.Service
+	var customer entity.Customer
 	var food entity.Food
 	var drink entity.Drink
 	var accessorie entity.Accessories
+
+	// id := c.Param("id")
 
 	if err := c.ShouldBindJSON(&service); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -124,13 +128,18 @@ func UpdateService(c *gin.Context) {
 		return
 	}
 
+	if tx := entity.DB().Where("id = ?", service.CustomerID).First(&customer); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
+		return
+	}
+
 	if tx := entity.DB().Where("id = ?", service.DrinkID).First(&drink); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "drink not found"})
 		return
 	}
 
 	if tx := entity.DB().Where("id = ?", service.AccessoriesID).First(&accessorie); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "accessories not found"})
 		return
 	}
 
@@ -139,6 +148,7 @@ func UpdateService(c *gin.Context) {
 		Food:        food,
 		Drink:       drink,
 		Accessories: accessorie,
+		Customer:    customer,
 	}
 
 	if err := entity.DB().Where("id = ?", service.ID).Updates(&patchservice).Error; err != nil {
@@ -147,4 +157,37 @@ func UpdateService(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": service})
+}
+
+// GET /foods
+func ListFoods(c *gin.Context) {
+	var foods []entity.Food
+	if err := entity.DB().Raw("SELECT * FROM foods").Find(&foods).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": foods})
+}
+
+// GET /drinks
+func ListDrinks(c *gin.Context) {
+	var drinks []entity.Drink
+	if err := entity.DB().Raw("SELECT * FROM drinks").Find(&drinks).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": drinks})
+}
+
+// GET /accessories
+func ListAccessories(c *gin.Context) {
+	var accessories []entity.Accessories
+	if err := entity.DB().Raw("SELECT * FROM accessories").Find(&accessories).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": accessories})
 }
