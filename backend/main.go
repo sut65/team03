@@ -187,6 +187,10 @@ func main() {
 			protected.POST("/service", service.CreateService)
 			protected.PATCH("/services", service.UpdateService)
 			protected.DELETE("/services/:id", service.DeleteService)
+
+			protected.GET("/foods", service.ListFoods)
+			protected.GET("/drink", service.ListDrinks)
+			protected.GET("/accessories", service.ListAccessories)
 			// ======================================= SERVICE
 
 			// Run the server
