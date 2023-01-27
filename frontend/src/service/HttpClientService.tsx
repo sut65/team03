@@ -29,6 +29,7 @@ async function GetEmloyeeID() {
 
 async function GetCustomerByID() {
 
+
   let id = localStorage.getItem("id");
 
   const requestOptions = {
@@ -55,7 +56,34 @@ async function GetCustomerByID() {
   return res;
 }
 
+async function GetRoomID() {
+  let id = localStorage.getItem("id");
+  const requestOptions = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  let res = await fetch(
+    `${apiUrl}/room/${id}`,
+    requestOptions
+  )
+    .then((response) => response.json())
+    .then((res) => {
+      if (res.data) {
+        return res.data;
+      } else {
+        return false;
+      }
+    });
+
+  return res;
+}
+
 export {
   GetEmloyeeID,
   GetCustomerByID,
+  GetRoomID,
 };

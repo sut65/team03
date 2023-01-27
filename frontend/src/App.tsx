@@ -36,6 +36,10 @@ import Manage_Edit from "./components/Employee/Manage_Edit";
 import CheckInEdit from "./components/CheckInOut/CheckInEdit";
 import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
 
+import RoomShow from "./components/Room/RoomShow";
+import RoomCreate from "./components/Room/RoomCreate";
+import RoomDelete from "./components/Room/RoomDelete";
+import RoomEdit from "./components/Room/RoomEdit";
 
 export default function App() {
 
@@ -91,9 +95,14 @@ export default function App() {
           <Route path="/sa" element={<ServiceAdd />} />
           <Route path="/su/:id" element={<ServiceUpdate />} />
           <Route path="/sd" element={<ServiceDelete />} />
-          
-       
-   </Routes>
+
+          <Route path="/RT" element={<RoomShow />} />
+          <Route path="/RT/Create" element={<RoomCreate />} />
+          <Route path="/RT/Delete" element={<RoomDelete />} />
+          <Route path="/RT/Edit" element={<RoomEdit />} />
+
+
+        </Routes>
 
       </div>
 

@@ -32,6 +32,7 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 const bgnavbar = createTheme({
   palette: {
