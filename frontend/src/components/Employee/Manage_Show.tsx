@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import { EmployeeInterface } from "../../models/IEmployee";
-import { IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { ButtonGroup, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import moment from "moment";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -34,17 +34,12 @@ const themeshow = createTheme({
 function Manage_Show() {
 
   const [employee, setEmployee] = React.useState<EmployeeInterface[]>([]);
-  const [saveID, setSaveID] = useState<number>(0);
-  const [open, setOpen] = useState(false);
 
- 
-  // const handleID = (ID: any) => {
-  //   setSaveID(ID);
-   
-  // }
+  const id_officer = localStorage.getItem("id");
+
   
  const getEmployee = async () => {
-   const apiUrl = "http://localhost:8080/Employees";
+   const apiUrl = `http://localhost:8080/Employees/officer/${id_officer}`;
    const requestOptions = {
      method: "GET",
      headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json" },
@@ -79,7 +74,7 @@ function Manage_Show() {
     .then(async (res) => {
       if (res.data) {
         //setSuccess(true);
-        //await timeout(1000); //for 1 sec delay
+        //await timeout(1000); //for 1 sec delay 
         window.location.reload();
 
       } else {
@@ -115,9 +110,10 @@ function Manage_Show() {
         </Box>
 
         <Box>
+
           <Button 
             component={RouterLink}
-            to="/Man"
+            to="/Manage-Save"
             variant="contained"
             color="primary"
           >
@@ -146,7 +142,6 @@ function Manage_Show() {
                       <TableCell align="center" width="20%"> Position </TableCell>
                       <TableCell align="center" width="20%"> Location </TableCell>
                       <TableCell align="center" width="20%"> Username </TableCell>
-                      <TableCell align="center" width="20%"> Password </TableCell>
                       <TableCell align="center" width="20%"> Email </TableCell>
                       <TableCell align="center" width="20%"> Tel </TableCell>
                       <TableCell align="center" width="20%"> Salary </TableCell>
@@ -158,17 +153,17 @@ function Manage_Show() {
 
                     </TableRow>
                   </TableHead>
-                  
-                  <TableBody>
+
+                  <TableBody style={{ marginLeft: "100px" }}>
                     {employee.map((item: EmployeeInterface) => (
-                      <TableRow key={item.ID}>
+                     
+                     <TableRow key={item.ID} >
                         <TableCell align="center">{item.PersonalID}</TableCell>
                         <TableCell align="center">{item.Employeename}</TableCell>
                         <TableCell align="center">{item.Department?.Name}</TableCell>
                         <TableCell align="center">{item.Position?.Name}</TableCell>
                         <TableCell align="center">{item.Location?.Name}</TableCell>
                         <TableCell align="center">{item.Eusername}</TableCell>
-                        <TableCell align="center">{item.Password}</TableCell>
                         <TableCell align="center">{item.Email}</TableCell>
                         <TableCell align="center">{item.Phonenumber}</TableCell>
                         <TableCell align="center">{item.Salary}</TableCell>
@@ -180,11 +175,21 @@ function Manage_Show() {
                         <TableCell align="center">
                             <IconButton aria-label="delete">
                               <DeleteIcon onClick={() => deleteEmployee(Number(item.ID))} />
-                            </IconButton>
-                                        
+                            </IconButton>           
+                        </TableCell>
+                        <TableCell align="center">
+                          <ButtonGroup color="primary" aria-label="outlined primary button group">
+                            <Button
+                              color="warning"
+                              component={RouterLink}
+                              to={`/Manage-Edit/${item.ID}`}
+                              >
+                              Edit</Button>
+                          </ButtonGroup>      
                         </TableCell>
                       </TableRow>
                     ))}
+                  
                   </TableBody>
                 </Table>
               </TableContainer>

@@ -605,7 +605,7 @@ const getLocation = async () => {
           </Grid>
 
           <Grid item xs={12}>
-            <Button component={RouterLink} to="/ManageShow" variant="contained">
+            <Button component={RouterLink} to="/Manage-Show" variant="contained">
               Back
             </Button>
 

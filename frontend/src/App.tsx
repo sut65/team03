@@ -29,6 +29,7 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
+import Manage_Edit from "./components/Employee/Manage_Edit";
 import Review_Show from "./components/Review/Review_Show";
 import Review_Save from "./components/Review/Review_Save";
 import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
@@ -69,6 +70,12 @@ export default function App() {
 
           
 
+=======
+       <Route path="/Man" element={<Manage_Save />} />
+       <Route path="/ManageShow" element={<Manage_Show />} />
+       
+>>>>>>> 5016159 (UI update employee - close #85)
+
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
           <Route path="/Book/Edit" element={<BookingUpdate />} />
@@ -93,8 +100,8 @@ export default function App() {
           <Route path="/su/:id" element={<ServiceUpdate />} />
           <Route path="/sd" element={<ServiceDelete />} />
           
-
-        </Routes>
+       
+   </Routes>
 
       </div>
 

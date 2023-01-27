@@ -308,11 +308,21 @@ func CreateEmployee(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": ey})
 }
 
+func ListEmplooyeeByUID(c *gin.Context) {
+	var employee []entity.Employee
+	id := c.Param("id")
+	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Raw("SELECT * FROM employees WHERE officer_id = ?", id).Find(&employee).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": employee})
+}
+
 // GET /Employee/:id
 func GetEmployee(c *gin.Context) {
 
 	var employee entity.Employee
-
 	id := c.Param("id")
 
 	if err := entity.DB().Raw("SELECT * FROM employees WHERE id = ?", id).Scan(&employee).Error; err != nil {
@@ -350,20 +360,50 @@ func DeleteEmployee(c *gin.Context) {
 func UpdateEmployee(c *gin.Context) {
 
 	var employee entity.Employee
+	var department entity.Department
+	var position entity.Position
+	var location entity.Location
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", employee.ID).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+	if tx := entity.DB().Where("id = ?", employee.DepartmentID).First(&department); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Department not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&employee).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 11. ค้นหา position ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.PositionID).First(&position); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Position not found"})
 		return
 	}
+
+	// 12. ค้นหา location ด้วย id
+	if tx := entity.DB().Where("id = ?", employee.LocationID).First(&location); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Location not found"})
+		return
+	}
+
+	updateEm := entity.Employee{
+		Department:   department, // โยงความสัมพันธ์กับ Entity Department
+		Position:     position,   // โยงความสัมพันธ์กับ Entity Position
+		Location:     location,   // โยงความสัมพันธ์กับ Entity Location
+		PersonalID:   employee.PersonalID, // ตั้งค่าฟิลด์ PersonalID
+		Employeename: employee.Employeename,
+		Email:        employee.Email,
+		Eusername:    employee.Eusername,
+		Salary:       employee.Salary,      // ตั้งค่าฟิลด์ Salary
+		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
+		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender
+		Address:      employee.Address,     // ตั้งค่าฟิลด์ Address
+	}
+
+	if tx := entity.DB().Where("id = ?", employee.ID).Updates(&updateEm); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": " not found"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{"data": employee})
 }

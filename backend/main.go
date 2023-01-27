@@ -36,21 +36,18 @@ func main() {
 			// Officer Routes
 			protected.GET("/Officers", employee.ListOfficers)
 			protected.GET("/Officer/:id", employee.GetOfficer)
-			protected.POST("/Officers", employee.CreateOfficer)
 
 			protected.GET("/Departments", employee.ListDepartments)
 			protected.GET("/Department/:id", employee.GetDepartment)
-			protected.POST("/Departments", employee.CreateDepartment)
+		
 
 			protected.GET("/Positions", employee.ListPositions)
 			protected.GET("/Position/:id", employee.GetPosition)
-			protected.POST("/Positions", employee.CreatePosition)
+			
 
 			protected.GET("/Locations", employee.ListLocations)
 			protected.GET("/Location/:id", employee.GetLocation)
-			protected.POST("/Locations", employee.CreateLocation)
-			protected.PATCH("/Locations", employee.UpdateLocation)
-			protected.DELETE("/Locations/:id", employee.DeleteLocation)
+	
 
 			protected.GET("/Employees", employee.ListEmployees)
 			protected.GET("/Employee/:id", employee.GetEmployee)
