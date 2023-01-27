@@ -17,6 +17,7 @@ import { error } from "console";
 //color
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
+import id from "date-fns/esm/locale/id/index.js";
 
 function CheckInOutShow() {
   const [checkInOuts, setCheckInOuts] = useState<CheckInOutInterface[]>([]);
@@ -25,6 +26,9 @@ function CheckInOutShow() {
   const [successDel, setSuccessDel] = useState(false);
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
+  const [id, setId] = useState(0);
+  //let strid:string = ""
+  
 
   // const theme = createTheme({
   //   palette: {
@@ -82,14 +86,17 @@ function CheckInOutShow() {
     getList()
   }
 
+  function getStringValue(value: any): string {
+    return value.toString();
+  }
   const columns: GridColDef[] = [
     { field: "ID", headerName: "ลำดับ", width: 60 },
     { field: "CheckInTime", headerName: "Check-In Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
     { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "Booking", headerName: "Booking ID", width: 120, valueFormatter: (params) => params.value.ID},
+    { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.ID},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
-    { field: "CheckInOutStatus", headerName: "Status", width: 145, valueFormatter: (params) => params.value.Name,},
-    { field: "Employee", headerName: "Employee", width: 145, valueFormatter: (params) => params.value.Eusername,},
+    { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},
+    { field: "Employee", headerName: "Employee", width: 110, valueFormatter: (params) => params.value.Eusername,},
     // { field: "Delete", headerName: "Delete", width: 80, valueFormatter: (params) => <Button onClick={() => deleteCheckInOut(params.value.ID)}>Edit</Button> },
     // { field: "Delete",
     //   renderCell: (cellValues) => {
@@ -135,9 +142,10 @@ function CheckInOutShow() {
     // },
     {
       field: "checkout",
-      headerName: "CheckOut",
-      width: 180,
+      headerName: "CHECK-OUT",
+      width: 150,
       sortable: false,
+      align:"center",
       renderCell: (params) => {
           const onClick = (e: { stopPropagation: () => void; }) => {
               e.stopPropagation();
@@ -150,8 +158,9 @@ function CheckInOutShow() {
     },
     {
       field: "delete",
-      headerName: "",
+      headerName: "DELETE",
       sortable: false,
+      align:"center",
       renderCell: (params) => {
           const onClick = (e: { stopPropagation: () => void; }) => {
               e.stopPropagation();
@@ -162,6 +171,32 @@ function CheckInOutShow() {
           return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
       }
     },
+    // {
+    //   field: "edit",
+    //   headerName: "EDIT",
+    //   sortable: false,
+    //   align:"center",
+    //   renderCell: (params) => {
+    //       // const onClick = (e: { stopPropagation: () => void; }) => {
+    //       //     e.stopPropagation();
+    //       //     const id = params.getValue(params.id, "ID");
+    //       //     //onEdit(id);
+    //       //     //alert(id)
+    //       //     // let test = getStringValue(id)
+    //       //     // alert(test)
+              
+    //       // };
+    //       const onClick = (e: { stopPropagation: () => void; }) => {
+    //         e.stopPropagation();
+    //         setId(params.getValue(params.id, "ID"));
+    //       };
+        
+    //      let strid = id.toString();
+    //       return <Button onClick={onClick}  color="error" component={RouterLink} to={"/employee/update/" + id } endIcon={<DeleteOutlineIcon />} >EDIT</Button>;
+    //   }
+    // },
+    
+    
   ];
   // const deleteCheckInOut = (id: number) => {
   //   alert(id)
@@ -244,11 +279,21 @@ function CheckInOutShow() {
           <Box>
             <Button
               component={RouterLink}
-              to="/CNCO/CheckOut"
+              to="/CNCO/CN/Edit"
               variant="contained"
               color="primary"
             >
-              check out
+              Edit Check-In
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              component={RouterLink}
+              to="/CNCO/CO/Edit"
+              variant="contained"
+              color="primary"
+            >
+              Edit Check-Out
             </Button>
           </Box>
         </Box>

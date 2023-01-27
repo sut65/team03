@@ -31,6 +31,10 @@ import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
 import Review_Save from "./components/Review/Review_Save";
+import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
+import Manage_Edit from "./components/Employee/Manage_Edit";
+import CheckInEdit from "./components/CheckInOut/CheckInEdit";
+import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
 
 
 export default function App() {
@@ -74,6 +78,10 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
+          <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
+          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
+          {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
+
 
           <Route path="/RW" element={<Review_Show />} />
           <Route path="/ReviewSave" element={<Review_Save />} />
