@@ -39,7 +39,6 @@ func SetupDatabase() {
 		&CheckInOut{},
 		// แจ้งซ่อม
 		&RepairType{},
-		&RepairStatus{},
 		&RepairReq{},
 		//ระบบสมัครสมาชิก(ข้อมูลลูกค้า)
 		&Customer{},

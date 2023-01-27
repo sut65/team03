@@ -170,7 +170,7 @@ function CheckInOutUpdate() {
               color="primary"
               gutterBottom
             >
-              Check In-Check Out Update
+              CHECK IN-CHECK OUT UPDATE
             </Typography>
           </Box>
         </Box>

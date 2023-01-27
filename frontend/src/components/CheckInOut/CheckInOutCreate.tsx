@@ -156,7 +156,7 @@ function CheckInOutCreate() {
               color="primary"
               gutterBottom
             >
-              Check In
+              CHECK IN
             </Typography>
           </Box>
         </Box>

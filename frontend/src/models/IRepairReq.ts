@@ -1,4 +1,5 @@
-import { UsersInterface } from "./IUser";
+import { RoomInterface } from "./IRoom";
+import { CustomerInterface } from "./modelCustomer/ICustomer";
 
 //type
 export interface RepairTypeInterface {
@@ -6,24 +7,18 @@ export interface RepairTypeInterface {
     Name: string;
 }
 
-//status
-export interface RepairStatusInterface {
-    ID: number;
-    Name: string;
-}
-
 //main
 export interface RepairReqInterface {
-    ID: number;
-    Note: string;
-    Time: Date;
+    ID?: number;
+    Note?: string | null;
+    Time?: Date | null;
 
-    // RoomID: number;
-    // Room: RoomInterface;
+    RoomID?: number | null;
+    Room?: RoomInterface;
     
-    RepairStatusID: number;
-    RepairStatus: RepairStatusInterface;
+    RepairTypeID?: number | null;
+	RepairType?:   RepairTypeInterface;
 
-    UserID: number;
-    User: UsersInterface; 
+    CustomerID?: number | null;
+    Customer?: CustomerInterface; 
 }

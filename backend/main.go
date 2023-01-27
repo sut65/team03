@@ -131,12 +131,6 @@ func main() {
 			protected.POST("/repairtype", repreq.CreateRepairType)
 			protected.PATCH("/repairtype", repreq.UpdateRepairType)
 			protected.DELETE("/repairtype/:id", repreq.DeleteRepairType)
-			//status
-			protected.GET("/repairstatus/:id", repreq.GetRepairStatus)
-			protected.GET("/repairstatuses", repreq.ListRepairStatuses)
-			protected.POST("/repairstatus", repreq.CreateRepairStatus)
-			protected.PATCH("/repairstatus", repreq.UpdateRepairStatus)
-			protected.DELETE("/repairstatus/:id", repreq.DeleteRepairStatus)
 			//main
 			protected.GET("/repairreq/:id", repreq.GetRepairReq)
 			protected.GET("/repairreqs", repreq.ListRepairReqs)

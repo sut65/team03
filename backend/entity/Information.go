@@ -833,42 +833,28 @@ func SetupIntoDatabase(db *gorm.DB) {
 	}
 	db.Model(&RepairType{}).Create(&elec)
 
-	//set status data
-	inprogress := RepairStatus{
-		Name: "In Progress",
-	}
-	db.Model(&RepairStatus{}).Create(&inprogress)
-
-	success := RepairStatus{
-		Name: "Success",
-	}
-	db.Model(&RepairStatus{}).Create(&success)
-
 	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         Room1,
-		RepairType:   air,
-		Note:         "air not cool",
-		Time:         time.Now(),
-		RepairStatus: success,
-		Customer:     Customer1,
+		Room:       Room1,
+		RepairType: air,
+		Note:       "air not cool",
+		Time:       time.Now(),
+		Customer:   Customer1,
 	})
 
 	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         Room2,
-		RepairType:   fur,
-		Note:         "bed is broken",
-		Time:         time.Now(),
-		RepairStatus: inprogress,
-		Customer:     Customer2,
+		Room:       Room2,
+		RepairType: fur,
+		Note:       "bed is broken",
+		Time:       time.Now(),
+		Customer:   Customer2,
 	})
 
 	db.Model(&RepairReq{}).Create(&RepairReq{
-		Room:         Room3,
-		RepairType:   air,
-		Note:         "air not cool",
-		Time:         time.Now(),
-		RepairStatus: inprogress,
-		Customer:     Customer1,
+		Room:       Room3,
+		RepairType: air,
+		Note:       "air not cool",
+		Time:       time.Now(),
+		Customer:   Customer1,
 	})
 	var RepairReq1 RepairReq
 	var RepairReq2 RepairReq

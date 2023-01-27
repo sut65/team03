@@ -7,9 +7,15 @@ import Navbar from "./components/Navbar";
 import Manage_Search from "./components/Employee/Manage_Search";
 import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
+import Manage_Edit from "./components/Employee/Manage_Edit";
 
 import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
 import CheckInOutCreate from "./components/CheckInOut/CheckInOutCreate";
+import CheckInEdit from "./components/CheckInOut/CheckInEdit";
+import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
+import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
+
+import RepRqShow from "./components/RepReq/RepRqShow";
 
 import Bookings from "./components/Booking/Bookings";
 import BookingCreate from "./components/Booking/BookingCreate";
@@ -31,11 +37,8 @@ import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
 import Review_Save from "./components/Review/Review_list";
-import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
-import Manage_Edit from "./components/Employee/Manage_Edit";
-import CheckInEdit from "./components/CheckInOut/CheckInEdit";
-import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
 import Review_list from "./components/Review/Review_list";
+//import Review_Save from "./components/Review/Review_Save";
 
 import RoomShow from "./components/Room/RoomShow";
 import RoomCreate from "./components/Room/RoomCreate";
@@ -45,6 +48,8 @@ import StorageShow from "./components/Storage/StorageShow";
 import StorageCreate from "./components/Storage/StorageCreate";
 import StorageEdit from "./components/Storage/StorageEdit";
 
+import RepRqCreate from "./components/RepReq/RepRqCreate";
+import RepRqEdit from "./components/RepReq/RepRqEdit";
 
 export default function App() {
 
@@ -72,9 +77,9 @@ export default function App() {
 
           <Route path="/" element={<Home />} />
 
-       <Route path="/Manage-Save" element={<Manage_Save />} />
-       <Route path="/Manage-Show" element={<Manage_Show />} />
-       <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
+          <Route path="/Manage-Save" element={<Manage_Save />} />
+          <Route path="/Manage-Show" element={<Manage_Show />} />
+          <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
        
 
           <Route path="/Book" element={<Bookings />} />
@@ -92,7 +97,10 @@ export default function App() {
           <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
           {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
 
-
+          <Route path="/Rep" element={<RepRqShow />} />
+          <Route path="/Rep/Create" element={<RepRqCreate />} />
+          <Route path="/Rep/Edit" element={<RepRqEdit />} />
+          
           <Route path="/RW" element={<Review_Show />} />
           <Route path="/Reviewlist" element={<Review_list />} />
 
