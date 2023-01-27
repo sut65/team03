@@ -30,11 +30,20 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
-import Review_Save from "./components/Review/Review_Save";
+import Review_Save from "./components/Review/Review_list";
 import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
 import Manage_Edit from "./components/Employee/Manage_Edit";
 import CheckInEdit from "./components/CheckInOut/CheckInEdit";
 import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
+import Review_list from "./components/Review/Review_list";
+
+import RoomShow from "./components/Room/RoomShow";
+import RoomCreate from "./components/Room/RoomCreate";
+import RoomDelete from "./components/Room/RoomDelete";
+import RoomEdit from "./components/Room/RoomEdit";
+import StorageShow from "./components/Storage/StorageShow";
+import StorageCreate from "./components/Storage/StorageCreate";
+import StorageEdit from "./components/Storage/StorageEdit";
 
 
 export default function App() {
@@ -85,15 +94,24 @@ export default function App() {
 
 
           <Route path="/RW" element={<Review_Show />} />
-          <Route path="/ReviewSave" element={<Review_Save />} />
+          <Route path="/Reviewlist" element={<Review_list />} />
 
           <Route path="/ss" element={<ServiceShow />} />
           <Route path="/sa" element={<ServiceAdd />} />
           <Route path="/su/:id" element={<ServiceUpdate />} />
           <Route path="/sd" element={<ServiceDelete />} />
-          
-       
-   </Routes>
+
+          <Route path="/RT" element={<RoomShow />} />
+          <Route path="/RT/Create" element={<RoomCreate />} />
+          <Route path="/RT/Delete" element={<RoomDelete />} />
+          <Route path="/RT/Edit" element={<RoomEdit />} />
+
+          <Route path="/RoomW" element={<StorageShow />} />
+          <Route path="/RoomW/Create" element={<StorageCreate />} />
+          <Route path="/RoomW/Edit" element={<StorageEdit />} />
+
+
+        </Routes>
 
       </div>
 

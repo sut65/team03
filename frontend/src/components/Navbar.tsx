@@ -32,6 +32,7 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 const bgnavbar = createTheme({
   palette: {
@@ -52,8 +53,8 @@ const drawerWidth = 320; //ความยาวของ แถบเมนู
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
+  // flexGrow: 1,
+  // padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -137,7 +138,6 @@ function Navbar() {
 
  return (
   <ThemeProvider theme={bgnavbar}>
-    <Box sx={{ display: 'flex' }} >
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -199,7 +199,6 @@ function Navbar() {
         <DrawerHeader />
       </Main>
 
-    </Box>
   </ThemeProvider>
 
  );
