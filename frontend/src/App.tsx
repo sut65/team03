@@ -22,6 +22,10 @@ import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
+import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
+import Manage_Edit from "./components/Employee/Manage_Edit";
+import CheckInEdit from "./components/CheckInOut/CheckInEdit";
+import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
 
 
 export default function App() {
@@ -52,6 +56,7 @@ export default function App() {
 
           <Route path="/Man" element={<Manage_Save />} />
           <Route path="/ManageShow" element={<Manage_Show />} />
+          <Route path="/ManageEdit" element={<Manage_Edit />} />
 
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
@@ -64,6 +69,10 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
+          <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
+          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
+          {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
+
 
         </Routes>
 
