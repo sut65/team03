@@ -30,11 +30,12 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
-import Review_Save from "./components/Review/Review_Save";
+import Review_Save from "./components/Review/Review_list";
 import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
 import Manage_Edit from "./components/Employee/Manage_Edit";
 import CheckInEdit from "./components/CheckInOut/CheckInEdit";
 import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
+import Review_list from "./components/Review/Review_list";
 
 import RoomShow from "./components/Room/RoomShow";
 import RoomCreate from "./components/Room/RoomCreate";
@@ -93,7 +94,7 @@ export default function App() {
 
 
           <Route path="/RW" element={<Review_Show />} />
-          <Route path="/ReviewSave" element={<Review_Save />} />
+          <Route path="/Reviewlist" element={<Review_list />} />
 
           <Route path="/ss" element={<ServiceShow />} />
           <Route path="/sa" element={<ServiceAdd />} />

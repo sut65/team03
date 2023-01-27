@@ -49,7 +49,7 @@ const themeshow = createTheme({
   },
 });
 
-function Review_Show() {
+function Review_list() {
   Moment.locale("th");
   const [openForCreate, setOpenForCreate] = React.useState(false);
   const [review, setReview] = React.useState<ReviewInterface[]>([]);
@@ -61,8 +61,34 @@ function Review_Show() {
     setOpenForCreate(false);
   };
 
+  const deleteReview = (id : number) => {
+  
+    const apiUrl = "http://localhost:8080/Reviews/"+id;
+    const requestOptions = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+      
+  
+    };
+  
+    fetch(apiUrl, requestOptions)
+      .then((response) => response.json())
+      .then(async (res) => {
+        if (res.data) {
+          //setSuccess(true);
+          //await timeout(1000); //for 1 sec delay 
+          window.location.reload();
+  
+        } else {
+          //setError(true);
+        }
+      });
+  }
   const getReview = async () => {
-    const apiUrl = `http://localhost:8080/Reviews`;
+    const apiUrl = `http://localhost:8080/Review/`+localStorage.getItem("id");
 
     const requestOptions = {
       method: "GET",
@@ -104,7 +130,7 @@ function Review_Show() {
         Add
       </Button>
       <div>
-        <Box
+        {/* <Box
           sx={{
             backgroundImage: `url(${"https://img.freepik.com/free-photo/modern-luxury-hotel-office-reception-lounge-with-meeting-room_105762-1772.jpg?w=1060&t=st=1674825855~exp=1674826455~hmac=e2e451703c84c01719b2d4ab952bfc88a4cc96670f85bfc1735a997d9f74efd3"})`,
             backgroundSize: "auto",
@@ -113,18 +139,25 @@ function Review_Show() {
             marginTop: 12,
             boxShadow: 5,
           }}
-        ></Box>
+        ></Box> */}
 
         <Grid container columns={6} spacing={3} sx = {{mt:2}} >
           {review.map((item: ReviewInterface) => (
              <Grid item xs={3} key={item.ID} >
             
             <Paper  >
-              <Grid>
+              <Grid item xs = {6} >
                 <TextField
                   sx={{ "& fieldset": { border: "none" } }}
                   value={item.CustomerID}
                 />
+                <IconButton aria-label="delete">
+                              <DeleteIcon onClick={() => deleteReview(Number(item.ID))} />
+                            </IconButton>
+                <Grid>
+                  <Grid></Grid>
+                  
+                </Grid>
               </Grid>
               <Grid container columns={12}>
                 <Grid display={"flex"} justifyContent={"center"} item xs = {6}>
@@ -172,4 +205,4 @@ function Review_Show() {
   );
 }
 
-export default Review_Show;
+export default Review_list;

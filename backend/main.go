@@ -194,7 +194,7 @@ func main() {
 
 			//----------review----------------------
 			// Review Routes
-			protected.GET("/Reviews", reviewht.ListReviews)
+			r.GET("/Reviews", reviewht.ListReviews)
 			protected.GET("/Review/:id", reviewht.GetReview)
 			protected.POST("/Reviews", reviewht.CreateReview)
 			protected.PATCH("/Reviews", reviewht.UpdateReview)
@@ -202,10 +202,6 @@ func main() {
 
 			// Systemwork Routes
 			protected.GET("/Systemworks", reviewht.ListSystemworks)
-			protected.GET("/Systemwork/:id", reviewht.GetSystemwork)
-			protected.POST("/Systemworks", reviewht.CreateSystemwork)
-			protected.PATCH("/Systemworks", reviewht.UpdateSystemwork)
-			protected.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
 
 			//==================================================Storage Routes
 			protected.GET("/storages", storage.ListStorages)
