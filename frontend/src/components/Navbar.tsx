@@ -131,7 +131,7 @@ function Navbar() {
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
 
-    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Man" },
+    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
   ]
 
 
