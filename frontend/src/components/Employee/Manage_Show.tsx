@@ -38,10 +38,10 @@ function Manage_Show() {
   const [open, setOpen] = useState(false);
 
  
-  const handleID = (ID: any) => {
-    setSaveID(ID);
+  // const handleID = (ID: any) => {
+  //   setSaveID(ID);
    
-  }
+  // }
   
  const getEmployee = async () => {
    const apiUrl = "http://localhost:8080/Employees";

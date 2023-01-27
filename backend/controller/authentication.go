@@ -3,40 +3,45 @@ package controller
 import (
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/sut65/team03/entity"
 	"github.com/sut65/team03/service"
-	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
 
 // LoginPayload login body
 type LoginPayload struct {
 	Username string `json:"username"`
-	Password string `json:"password"`//ไฟล์ json ให้อ่านข้อมูลง่ายขึ้น
+	Password string `json:"password"` //ไฟล์ json ให้อ่านข้อมูลง่ายขึ้น
 }
 
 // OfficerResponse token response
 type OfficerResponse struct {
-	Token    string        `json:"token"`
-	ID       uint          `json:"id"`
-	Officer   entity.Officer `json:"user"` //สร้างเพื่อแยกOfficer
-	RoleName string        `json:"role"`
+	Token    string         `json:"token"`
+	ID       uint           `json:"id"`
+	Officer  entity.Officer `json:"user"` //สร้างเพื่อแยกOfficer
+	RoleName string         `json:"role"`
+	Name     string         `json:"name"` // นำชื่อไปแสดงผลลัพธ์
+
 }
 
 // EmployeeResponse token response
 type EmployeeResponse struct {
-	Token    string        `json:"token"`
-	ID       uint          `json:"id"`
-	Employee   entity.Employee `json:"user"` //สร้างเพื่อแยกEmployee
-	RoleName string        `json:"role"`
+	Token    string          `json:"token"`
+	ID       uint            `json:"id"`
+	Employee entity.Employee `json:"user"` //สร้างเพื่อแยกEmployee
+	RoleName string          `json:"role"`
+	Name     string          `json:"name"` // นำชื่อไปแสดงผลลัพธ์
+
 }
 
 // CustomerResponse token response
 type CustomerResponse struct {
-	Token    string       `json:"token"`
-	ID       uint         `json:"id"`
-	Customer    entity.Customer `json:"user"` //สร้างเพื่อแยกCustomer String
-	RoleName string       `json:"role"`
+	Token    string          `json:"token"`
+	ID       uint            `json:"id"`
+	Customer entity.Customer `json:"user"` //สร้างเพื่อแยกCustomer String
+	RoleName string          `json:"role"`
+	Name     string          `json:"name"` // นำชื่อไปแสดงผลลัพธ์
 }
 
 // POST /login
@@ -85,7 +90,7 @@ func Login(c *gin.Context) {
 	entity.DB().Raw("SELECT * FROM user_roles WHERE role_name = ?", "Officer").First(&OfficerRole)
 	entity.DB().Raw("SELECT * FROM user_roles WHERE role_name = ?", "Employee").First(&EmployeeRole)
 	entity.DB().Raw("SELECT * FROM user_roles WHERE role_name = ?", "Customer").First(&CustomerRole)
-//ตรวจสอบว่าใครเป็น หมอ หรือ ใครเป็น แอดมิน
+	//ตรวจสอบว่าใครเป็น หมอ หรือ ใครเป็น แอดมิน
 	if signin.UserRole.RoleName == EmployeeRole.RoleName {
 		var employee entity.Employee
 		if tx := entity.DB().
@@ -97,8 +102,9 @@ func Login(c *gin.Context) {
 		tokenResponse := EmployeeResponse{
 			Token:    signedToken,
 			ID:       employee.ID,
-			Employee:   employee,
+			Employee: employee,
 			RoleName: EmployeeRole.RoleName,
+			Name:     employee.Employeename,
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
@@ -114,12 +120,13 @@ func Login(c *gin.Context) {
 		tokenResponse := CustomerResponse{
 			Token:    signedToken,
 			ID:       customer.ID,
-			Customer:   customer,
+			Customer: customer,
 			RoleName: CustomerRole.RoleName,
+			Name:     customer.FirstName,
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})
-	}else if signin.UserRole.RoleName == OfficerRole.RoleName {
+	} else if signin.UserRole.RoleName == OfficerRole.RoleName {
 
 		var officer entity.Officer
 
@@ -132,8 +139,9 @@ func Login(c *gin.Context) {
 		tokenResponse := OfficerResponse{
 			Token:    signedToken,
 			ID:       officer.ID,
-			Officer:    officer,
+			Officer:  officer,
 			RoleName: OfficerRole.RoleName,
+			Name:     officer.Officername,
 		}
 
 		c.JSON(http.StatusOK, gin.H{"data": tokenResponse})

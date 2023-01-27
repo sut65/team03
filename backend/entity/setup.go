@@ -45,11 +45,18 @@ func SetupDatabase() {
 		&Customer{},
 		&Gender{},
 		&Province{},
-		&Memberlevel{},
+		&Nametitle{},
 		// ระบบบริการเสริม
 		&Food{},
 		&Drink{},
 		&Accessories{},
+		&Service{},
+		// ระบบชำระเงิน
+		&Place{},
+		&Bank{},
+		&Crypto{},
+		&PaymentMethod{},
+		&Payment{},
 		// ระบบจองห้องพัก
 		&Booking{},
 		&Branch{},
@@ -59,6 +66,10 @@ func SetupDatabase() {
 		//Review---------
 		&Review{},
 		&Systemwork{},
+		//ระบบคลังสินค้าห้องพัก
+		&Product{},
+		&ProductType{},
+		&Storage{},
 	)
 	db = database
 

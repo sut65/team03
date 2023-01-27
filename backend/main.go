@@ -12,6 +12,7 @@ import (
 	reviewht "github.com/sut65/team03/controller/Review"
 	room "github.com/sut65/team03/controller/Room"
 	service "github.com/sut65/team03/controller/Service"
+	storage "github.com/sut65/team03/controller/Storage"
 	"github.com/sut65/team03/middlewares"
 
 	"github.com/sut65/team03/entity"
@@ -97,12 +98,12 @@ func main() {
 			protected.POST("/customers/genders", customer.CreateGender)
 			protected.PATCH("/customers/genders", customer.UpdateGender)
 			protected.DELETE("/customers/genders/:id", customer.DeleteGender)
-			//Memberlevel
-			protected.GET("/memberlevels", customer.ListMemberlevel)
-			protected.GET("/customer/memberlevels/:id", customer.GetMemberlevel)
-			protected.POST("/customers/memberlevels", customer.CreateMemberlevel)
-			protected.PATCH("/customers/memberlevels", customer.UpdateMemberlevel)
-			protected.DELETE("/customers/memberlevels/:id", customer.DeleteMemberlevel)
+			//Nametitle
+			protected.GET("/nametitles", customer.ListNametitle)
+			protected.GET("/customer/nametitles/:id", customer.GetNametitle)
+			protected.POST("/customers/nametitles", customer.CreateNametitle)
+			protected.PATCH("/customers/nametitles", customer.UpdateNametitle)
+			protected.DELETE("/customers/nametitles/:id", customer.DeleteNametitle)
 			//Province
 			protected.GET("/provinces", customer.ListProvince)
 			protected.GET("/customer/provinces/:id", customer.GetProvince)
@@ -188,6 +189,10 @@ func main() {
 			protected.POST("/service", service.CreateService)
 			protected.PATCH("/services", service.UpdateService)
 			protected.DELETE("/services/:id", service.DeleteService)
+
+			protected.GET("/foods", service.ListFoods)
+			protected.GET("/drink", service.ListDrinks)
+			protected.GET("/accessories", service.ListAccessories)
 			// ======================================= SERVICE
 
 			// Run the server
@@ -206,6 +211,28 @@ func main() {
 			protected.POST("/Systemworks", reviewht.CreateSystemwork)
 			protected.PATCH("/Systemworks", reviewht.UpdateSystemwork)
 			protected.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
+
+			//==================================================Storage Routes
+			protected.GET("/Storages", storage.ListStorages)
+			protected.GET("/Storage/:id", storage.GetStorage)
+			protected.POST("/Storages", storage.CreateStorage)
+			protected.PATCH("/Storages", storage.UpdateStorage)
+			protected.DELETE("/Storages/:id", storage.DeleteStorage)
+
+			protected.GET("/Products", storage.ListProducts)
+			protected.GET("/Product/:id", storage.GetProduct)
+			protected.POST("/Products", storage.CreateProduct)
+			protected.PATCH("/Products", storage.UpdateProduct)
+			protected.DELETE("/Products/:id", storage.DeleteProduct)
+
+			protected.GET("/ProductTypes", storage.ListProductTypes)
+			protected.GET("/ProductType/:id", storage.GetProductType)
+			protected.POST("/ProductTypes", storage.CreateProductType)
+			protected.PATCH("/ProductTypes", storage.UpdateProductType)
+			protected.DELETE("/ProductTypes/:id", storage.DeleteProductType)
+
+			//===================================================Storage
+
 		}
 	}
 	r.POST("/login", controller.Login)
