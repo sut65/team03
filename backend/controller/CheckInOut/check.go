@@ -129,7 +129,7 @@ func CreateCheckInOut(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(cio.CheckOutTime)
+	//fmt.Println(cio.CheckOutTime)
 
 	// 12: สร้าง CheckInOut
 	CheckInOut := entity.CheckInOut{
@@ -187,26 +187,183 @@ func DeleteCheckInOut(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
+// PATCH /checkin
+func UpdateCheckIn(c *gin.Context) {
+	//main
+	var cio entity.CheckInOut
+	var cioOld entity.CheckInOut
+
+	//relation
+	//var booking entity.Booking
+	var status entity.CheckInOutStatus
+	var emp entity.Employee
+
+	if err := c.ShouldBindJSON(&cio); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	//check cio haved?
+	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+		return
+	}
+	cio.CheckInOutStatus = status
+
+	if cioOld.CheckInOutStatus.ID == 2 {
+		cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
+	}
+	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		cio.CheckInTime = cioOld.CheckInTime
+	}
+
+	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		cio.CheckOutTime = cioOld.CheckOutTime
+	}
+
+	if cio.BookingID == nil {
+		cio.BookingID = cioOld.BookingID
+	}
+
+	//new emp
+	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
+		return
+	}
+	cio.Employee = emp
+
+	if err := entity.DB().Save(&cio).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status":                     "Update Success",
+		"data":                       cio,
+		"cioOld.CheckInOutStatus.ID": cioOld.CheckInOutStatus.ID,
+	})
+}
+
+// PATCH /checkout
+func UpdateCheckOut(c *gin.Context) {
+	//main
+	var cio entity.CheckInOut
+	var cioOld entity.CheckInOut
+
+	//relation
+	//var booking entity.Booking
+	var status entity.CheckInOutStatus
+	var emp entity.Employee
+
+	if err := c.ShouldBindJSON(&cio); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	//check cio haved?
+	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+		return
+	}
+	cio.CheckInOutStatus = status
+
+	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		cio.CheckInTime = cioOld.CheckInTime
+	}
+
+	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		cio.CheckOutTime = cioOld.CheckOutTime
+	}
+	if cio.BookingID == nil {
+		cio.BookingID = cioOld.BookingID
+	}
+
+	//new emp
+	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
+		return
+	}
+	cio.Employee = emp
+
+	if err := entity.DB().Save(&cio).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Update Success",
+		"data":   cio,
+	})
+}
+
 // PATCH /checkinout
 func UpdateCheckInOut(c *gin.Context) {
+	//main
+	var cio entity.CheckInOut
+	var cioOld entity.CheckInOut
 
-	var CheckInOut entity.CheckInOut
+	//relation
+	//booking shouldn't change cuz 1-1 w/ cio
+	//var booking entity.Booking
+	var status entity.CheckInOutStatus
+	var emp entity.Employee
 
-	if err := c.ShouldBindJSON(&CheckInOut); err != nil {
+	if err := c.ShouldBindJSON(&cio); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", CheckInOut.ID).First(&CheckInOut); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Check_In_Outs not found"})
+	//check cio haved?
+	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
 		return
 	}
 
-	if err := entity.DB().Save(&CheckInOut).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+		return
+	} else {
+		cio.CheckInOutStatus = status
+	}
+	if *cioOld.CheckInOutStatusID == 2 {
+		cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
+	}
+	if status.ID == 1 {
+		cio.CheckOutTime = cioOld.CheckOutTime
+	} else if status.ID == 2 {
+		cio.CheckInTime = cioOld.CheckInTime
+	}
+
+	if cio.BookingID == nil {
+		cio.BookingID = cioOld.BookingID
+	}
+
+	//new emp
+	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": CheckInOut})
+	cio.Employee = emp
+
+	if err := entity.DB().Save(&cio).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Update Success",
+		"data":   cio,
+	})
 }
 
 func CheckOut(c *gin.Context) {

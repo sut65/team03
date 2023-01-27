@@ -32,6 +32,7 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 const bgnavbar = createTheme({
   palette: {
@@ -131,7 +132,7 @@ function Navbar() {
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
 
-    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Man" },
+    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
   ]
 
 

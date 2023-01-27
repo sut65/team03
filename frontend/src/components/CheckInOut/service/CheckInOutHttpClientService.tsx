@@ -111,7 +111,7 @@ async function DeleteCheckInOut(data: number) {
 }
 
 // Update CheckInOut
-async function UppdateCheckInOut(data: CheckInOutInterface) {
+async function UpdateCheckInOut(data: CheckInOutInterface) {
     const requestOptions = {
         method: "PATCH",
           headers: {
@@ -159,6 +159,54 @@ async function CheckOut(data: number) {
     return res;
 }
 
+//update checkIn
+async function UpdateCheckIn(data: CheckInOutInterface) {
+    const requestOptions = {
+        method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
+
+    let res = await fetch(`${apiUrl}/checkin`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+//update checkOut
+async function UpdateCheckOut(data: CheckInOutInterface) {
+    const requestOptions = {
+        method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
+
+    let res = await fetch(`${apiUrl}/checkout`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 // List Status
 async function GetEmps() {
     const requestOptions = {
@@ -187,7 +235,9 @@ export {
     GetIOStatus,
     CreateCheckInOut,
     DeleteCheckInOut,
-    UppdateCheckInOut,
+    UpdateCheckInOut,
+    UpdateCheckIn,
+    UpdateCheckOut,
     GetEmps,
     CheckOut,
 };
