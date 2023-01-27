@@ -325,7 +325,7 @@ func ListRooms(c *gin.Context) {
 
 	var rooms []entity.Room
 
-	if err := entity.DB().Preload("RoomType").Preload("RoomZone").Preload("State").Raw("SELECT * FROM rooms").Find(&rooms).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("RoomType").Preload("RoomZone").Preload("State").Raw("SELECT * FROM rooms").Find(&rooms).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

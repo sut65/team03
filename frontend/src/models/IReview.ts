@@ -4,7 +4,7 @@ export interface ReviewInterface {
 
     ID: number;
     Comment: string;
-	Start: number;
+	Star: number;
 	Reviewdate: Date;
     Reviewimega: string;
 

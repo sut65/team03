@@ -36,24 +36,19 @@ func main() {
 			// Officer Routes
 			protected.GET("/Officers", employee.ListOfficers)
 			protected.GET("/Officer/:id", employee.GetOfficer)
-			protected.POST("/Officers", employee.CreateOfficer)
 
 			protected.GET("/Departments", employee.ListDepartments)
 			protected.GET("/Department/:id", employee.GetDepartment)
-			protected.POST("/Departments", employee.CreateDepartment)
 
 			protected.GET("/Positions", employee.ListPositions)
 			protected.GET("/Position/:id", employee.GetPosition)
-			protected.POST("/Positions", employee.CreatePosition)
 
 			protected.GET("/Locations", employee.ListLocations)
 			protected.GET("/Location/:id", employee.GetLocation)
-			protected.POST("/Locations", employee.CreateLocation)
-			protected.PATCH("/Locations", employee.UpdateLocation)
-			protected.DELETE("/Locations/:id", employee.DeleteLocation)
 
 			protected.GET("/Employees", employee.ListEmployees)
 			protected.GET("/Employee/:id", employee.GetEmployee)
+			protected.GET("Employees/officer/:id", employee.ListEmplooyeeByUID)
 			protected.POST("/Employees", employee.CreateEmployee)
 			protected.PATCH("/Employees", employee.UpdateEmployee)
 			protected.DELETE("/Employees/:id", employee.DeleteEmployee)
@@ -136,12 +131,6 @@ func main() {
 			protected.POST("/repairtype", repreq.CreateRepairType)
 			protected.PATCH("/repairtype", repreq.UpdateRepairType)
 			protected.DELETE("/repairtype/:id", repreq.DeleteRepairType)
-			//status
-			protected.GET("/repairstatus/:id", repreq.GetRepairStatus)
-			protected.GET("/repairstatuses", repreq.ListRepairStatuses)
-			protected.POST("/repairstatus", repreq.CreateRepairStatus)
-			protected.PATCH("/repairstatus", repreq.UpdateRepairStatus)
-			protected.DELETE("/repairstatus/:id", repreq.DeleteRepairStatus)
 			//main
 			protected.GET("/repairreq/:id", repreq.GetRepairReq)
 			protected.GET("/repairreqs", repreq.ListRepairReqs)
@@ -150,29 +139,29 @@ func main() {
 			protected.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
 
 			//==================================================Room Routes
-			protected.GET("/Rooms", room.ListRooms)
-			protected.GET("/Room/:id", room.GetRoom)
-			protected.POST("/Rooms", room.CreateRoom)
-			protected.PATCH("/Rooms", room.UpdateRoom)
-			protected.DELETE("/Rooms/:id", room.DeleteRoom)
+			protected.GET("/rooms", room.ListRooms)
+			protected.GET("/room/:id", room.GetRoom)
+			protected.POST("/rooms", room.CreateRoom)
+			protected.PATCH("/rooms", room.UpdateRoom)
+			protected.DELETE("/rooms/:id", room.DeleteRoom)
 
-			protected.GET("/RoomTypes", room.ListRoomTypes)
-			protected.GET("/RoomType/:id", room.GetRoomType)
-			protected.POST("/RoomTypes", room.CreateRoomType)
-			protected.PATCH("/RoomTypes", room.UpdateRoomType)
-			protected.DELETE("/RoomTypes/:id", room.DeleteRoomType)
+			protected.GET("/room_types", room.ListRoomTypes)
+			protected.GET("/room_types/:id", room.GetRoomType)
+			protected.POST("/room_types", room.CreateRoomType)
+			protected.PATCH("/room_types", room.UpdateRoomType)
+			protected.DELETE("/room_typss/:id", room.DeleteRoomType)
 
-			protected.GET("/RoomZones", room.ListRoomZones)
-			protected.GET("/RoomZone/:id", room.GetRoomZone)
-			protected.POST("/RoomZones", room.CreateRoomZone)
-			protected.PATCH("/RoomZones", room.UpdateRoomZone)
-			protected.DELETE("/RoomZones/:id", room.DeleteRoomZone)
+			protected.GET("/room_zones", room.ListRoomZones)
+			protected.GET("/room_zone/:id", room.GetRoomZone)
+			protected.POST("/room_zones", room.CreateRoomZone)
+			protected.PATCH("/room_zones", room.UpdateRoomZone)
+			protected.DELETE("/room_zones/:id", room.DeleteRoomZone)
 
-			protected.GET("/States", room.ListStates)
-			protected.GET("/State/:id", room.GetState)
-			protected.POST("/States", room.CreateState)
-			protected.PATCH("/States", room.UpdateState)
-			protected.DELETE("/States/:id", room.DeleteState)
+			protected.GET("/states", room.ListStates)
+			protected.GET("/state/:id", room.GetState)
+			protected.POST("/states", room.CreateState)
+			protected.PATCH("/states", room.UpdateState)
+			protected.DELETE("/states/:id", room.DeleteState)
 			//===================================================Room
 
 			// ======================================= PAYMENT
@@ -199,7 +188,7 @@ func main() {
 
 			//----------review----------------------
 			// Review Routes
-			protected.GET("/Reviews", reviewht.ListReviews)
+			r.GET("/Reviews", reviewht.ListReviews)
 			protected.GET("/Review/:id", reviewht.GetReview)
 			protected.POST("/Reviews", reviewht.CreateReview)
 			protected.PATCH("/Reviews", reviewht.UpdateReview)
@@ -207,29 +196,25 @@ func main() {
 
 			// Systemwork Routes
 			protected.GET("/Systemworks", reviewht.ListSystemworks)
-			protected.GET("/Systemwork/:id", reviewht.GetSystemwork)
-			protected.POST("/Systemworks", reviewht.CreateSystemwork)
-			protected.PATCH("/Systemworks", reviewht.UpdateSystemwork)
-			protected.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
 
 			//==================================================Storage Routes
-			protected.GET("/Storages", storage.ListStorages)
-			protected.GET("/Storage/:id", storage.GetStorage)
-			protected.POST("/Storages", storage.CreateStorage)
-			protected.PATCH("/Storages", storage.UpdateStorage)
-			protected.DELETE("/Storages/:id", storage.DeleteStorage)
+			protected.GET("/storages", storage.ListStorages)
+			protected.GET("/storage/:id", storage.GetStorage)
+			protected.POST("/storages", storage.CreateStorage)
+			protected.PATCH("/storages", storage.UpdateStorage)
+			protected.DELETE("/storages/:id", storage.DeleteStorage)
 
-			protected.GET("/Products", storage.ListProducts)
-			protected.GET("/Product/:id", storage.GetProduct)
-			protected.POST("/Products", storage.CreateProduct)
-			protected.PATCH("/Products", storage.UpdateProduct)
-			protected.DELETE("/Products/:id", storage.DeleteProduct)
+			protected.GET("/products", storage.ListProducts)
+			protected.GET("/product/:id", storage.GetProduct)
+			protected.POST("/products", storage.CreateProduct)
+			protected.PATCH("/products", storage.UpdateProduct)
+			protected.DELETE("/products/:id", storage.DeleteProduct)
 
-			protected.GET("/ProductTypes", storage.ListProductTypes)
-			protected.GET("/ProductType/:id", storage.GetProductType)
-			protected.POST("/ProductTypes", storage.CreateProductType)
-			protected.PATCH("/ProductTypes", storage.UpdateProductType)
-			protected.DELETE("/ProductTypes/:id", storage.DeleteProductType)
+			protected.GET("/product_types", storage.ListProductTypes)
+			protected.GET("/product_type/:id", storage.GetProductType)
+			protected.POST("/product_types", storage.CreateProductType)
+			protected.PATCH("/pProduct_types", storage.UpdateProductType)
+			protected.DELETE("/pProduct_types/:id", storage.DeleteProductType)
 
 			//===================================================Storage
 

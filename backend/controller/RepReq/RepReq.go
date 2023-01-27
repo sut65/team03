@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/sut65/team03/entity"
 	//"golang.org/x/crypto/bcrypt"
 
@@ -92,89 +94,6 @@ func UpdateRepairType(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": RepairType})
 }
 
-//RepairStatus...................................................................
-// POST /repairstatus
-
-func CreateRepairStatus(c *gin.Context) {
-
-	var RepairStatus entity.RepairStatus
-	if err := c.ShouldBindJSON(&RepairStatus); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if err := entity.DB().Create(&RepairStatus).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
-}
-
-// GET /repairstatus/:id
-func GetRepairStatus(c *gin.Context) {
-
-	var RepairStatus entity.RepairStatus
-
-	id := c.Param("id")
-	if err := entity.DB().Raw("SELECT * FROM repair_statuses WHERE id = ?", id).Scan(&RepairStatus).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
-}
-
-// GET /repairstatuses
-func ListRepairStatuses(c *gin.Context) {
-
-	var RepairStatus []entity.RepairStatus
-	if err := entity.DB().Raw("SELECT * FROM repair_statuses").Scan(&RepairStatus).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
-}
-
-// DELETE /repairstatus/:id
-func DeleteRepairStatus(c *gin.Context) {
-
-	id := c.Param("id")
-
-	if tx := entity.DB().Exec("DELETE FROM repair_statuses WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "repair_statuses not found"})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": id})
-
-	// if err := entity.DB().Raw("DELETE FROM repair_statuses WHERE id = ?", id).Scan(&RepairStatus).Error; err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	// 	return
-	// }
-	// c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
-}
-
-// PATCH /repairstatus
-func UpdateRepairStatus(c *gin.Context) {
-
-	var RepairStatus entity.RepairStatus
-
-	if err := c.ShouldBindJSON(&RepairStatus); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	if tx := entity.DB().Where("id = ?", RepairStatus.ID).First(&RepairStatus); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "repair_statuses not found"})
-		return
-	}
-
-	if err := entity.DB().Save(&RepairStatus).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"data": RepairStatus})
-}
-
 // RepairReq...................................................................
 // POST /repairreq
 func CreateRepairReq(c *gin.Context) {
@@ -182,7 +101,6 @@ func CreateRepairReq(c *gin.Context) {
 	var rr entity.RepairReq
 	var room entity.Room
 	var rtype entity.RepairType
-	var status entity.RepairStatus
 	var customer entity.Customer
 
 	// ผลลัพธ์ที่ได้จาก ui จะถูก bind เข้าตัวแปร rr
@@ -203,12 +121,6 @@ func CreateRepairReq(c *gin.Context) {
 		return
 	}
 
-	// ค้นหา status ด้วย id
-	if tx := entity.DB().Where("id = ?", rr.RepairStatus).First(&status); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
-		return
-	}
-
 	// ค้นหา customer ด้วย id
 	if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
@@ -217,12 +129,11 @@ func CreateRepairReq(c *gin.Context) {
 
 	// 12: สร้าง CheckInOut
 	RepairReq := entity.RepairReq{
-		Room:         room,
-		RepairType:   rtype,
-		Note:         rr.Note,
-		Time:         rr.Time,
-		RepairStatus: status,
-		Customer:     customer,
+		Room:       room,
+		RepairType: rtype,
+		Note:       rr.Note,
+		Time:       rr.Time,
+		Customer:   customer,
 	}
 
 	// 13: save
@@ -252,7 +163,7 @@ func ListRepairReqs(c *gin.Context) {
 
 	var rr []entity.RepairReq
 
-	if err := entity.DB().Raw("SELECT * FROM repair_reqs").Scan(&rr).Error; err != nil {
+	if err := entity.DB().Preload("Room").Preload("RepairType").Preload("Customer").Raw("SELECT * FROM repair_reqs").Find(&rr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -274,21 +185,90 @@ func DeleteRepairReq(c *gin.Context) {
 // PATCH /repairreq
 func UpdateRepairReq(c *gin.Context) {
 
+	//main
 	var rr entity.RepairReq
+	var rrO entity.RepairReq
+	//relation
+	var room entity.Room
+	var rtype entity.RepairType
+	var customer entity.Customer
 
 	if err := c.ShouldBindJSON(&rr); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.Abort()
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", rr.ID).First(&rr); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "repair_reqs not found"})
+	//check rr created ?
+	if tx := entity.DB().Where("id = ?", rr.ID).First(&rrO); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("repair_reqs id = %d not found", rr.ID)})
 		return
+	}
+
+	if rr.Time.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		rr.Time = rrO.Time
+	}
+
+	if rr.Note == "" {
+		rr.Note = rrO.Note
+	}
+
+	//room
+	if rr.RoomID != nil {
+		if tx := entity.DB().Where("id = ?", rr.RoomID).First(&room); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Room not found"})
+			return
+		}
+		rr.Room = room
+	} else {
+		rr.RoomID = rrO.RoomID
+	}
+
+	// customer
+	if rr.CustomerID != nil {
+		if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
+			return
+		}
+		rr.Customer = customer
+	} else {
+		rr.CustomerID = rrO.CustomerID
+	}
+
+	// 	customer
+	// if rr.CustomerID != nil {
+	// 	if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
+	// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
+	// 		return
+	// 	}
+	// 	if rr.CustomerID == rrO.CustomerID {
+	// 		rr.Customer = customer
+	// 	} else {
+	// 		c.JSON(http.StatusBadRequest, gin.H{
+	// 			"error": "new cus doesn't match old cus",
+	// 			"data":  fmt.Sprintf("new cus: %d\nold cus: %d", rr.CustomerID, rrO.CustomerID),
+	// 		})
+	// 		return
+	// 	}
+	// }
+
+	//new type
+	if rr.RepairTypeID != nil {
+		if tx := entity.DB().Where("id = ?", rr.RepairTypeID).First(&rtype); tx.RowsAffected == 0 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Type not found"})
+			return
+		}
+		rr.RepairType = rtype
+	} else {
+		rr.RepairTypeID = rrO.RepairTypeID
 	}
 
 	if err := entity.DB().Save(&rr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": rr})
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Update Success",
+		"data":   rr,
+	})
 }

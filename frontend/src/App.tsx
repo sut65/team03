@@ -7,9 +7,15 @@ import Navbar from "./components/Navbar";
 import Manage_Search from "./components/Employee/Manage_Search";
 import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
+import Manage_Edit from "./components/Employee/Manage_Edit";
 
 import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
 import CheckInOutCreate from "./components/CheckInOut/CheckInOutCreate";
+import CheckInEdit from "./components/CheckInOut/CheckInEdit";
+import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
+import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
+
+import RepRqShow from "./components/RepReq/RepRqShow";
 
 import Bookings from "./components/Booking/Bookings";
 import BookingCreate from "./components/Booking/BookingCreate";
@@ -30,12 +36,20 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
-import Review_Save from "./components/Review/Review_Save";
-import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
-import Manage_Edit from "./components/Employee/Manage_Edit";
-import CheckInEdit from "./components/CheckInOut/CheckInEdit";
-import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
+import Review_Save from "./components/Review/Review_list";
+import Review_list from "./components/Review/Review_list";
+//import Review_Save from "./components/Review/Review_Save";
 
+import RoomShow from "./components/Room/RoomShow";
+import RoomCreate from "./components/Room/RoomCreate";
+import RoomDelete from "./components/Room/RoomDelete";
+import RoomEdit from "./components/Room/RoomEdit";
+import StorageShow from "./components/Storage/StorageShow";
+import StorageCreate from "./components/Storage/StorageCreate";
+import StorageEdit from "./components/Storage/StorageEdit";
+
+import RepRqCreate from "./components/RepReq/RepRqCreate";
+import RepRqEdit from "./components/RepReq/RepRqEdit";
 
 export default function App() {
 
@@ -63,11 +77,10 @@ export default function App() {
 
           <Route path="/" element={<Home />} />
 
-          <Route path="/Man" element={<Manage_Save />} />
-          <Route path="/ManageShow" element={<Manage_Show />} />
-          <Route path="/ManageEdit" element={<Manage_Edit />} />
-
-          
+          <Route path="/Manage-Save" element={<Manage_Save />} />
+          <Route path="/Manage-Show" element={<Manage_Show />} />
+          <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
+       
 
           <Route path="/Book" element={<Bookings />} />
           <Route path="/Book/Create" element={<BookingCreate />} />
@@ -84,15 +97,27 @@ export default function App() {
           <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
           {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
 
-
+          <Route path="/Rep" element={<RepRqShow />} />
+          <Route path="/Rep/Create" element={<RepRqCreate />} />
+          <Route path="/Rep/Edit" element={<RepRqEdit />} />
+          
           <Route path="/RW" element={<Review_Show />} />
-          <Route path="/ReviewSave" element={<Review_Save />} />
+          <Route path="/Reviewlist" element={<Review_list />} />
 
           <Route path="/ss" element={<ServiceShow />} />
           <Route path="/sa" element={<ServiceAdd />} />
           <Route path="/su/:id" element={<ServiceUpdate />} />
           <Route path="/sd" element={<ServiceDelete />} />
-          
+
+          <Route path="/RT" element={<RoomShow />} />
+          <Route path="/RT/Create" element={<RoomCreate />} />
+          <Route path="/RT/Delete" element={<RoomDelete />} />
+          <Route path="/RT/Edit" element={<RoomEdit />} />
+
+          <Route path="/RoomW" element={<StorageShow />} />
+          <Route path="/RoomW/Create" element={<StorageCreate />} />
+          <Route path="/RoomW/Edit" element={<StorageEdit />} />
+
 
         </Routes>
 

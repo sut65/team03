@@ -12,29 +12,25 @@ import Snackbar from "@mui/material/Snackbar";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-import { BookingsInterface } from "../../models/IBooking";
-import { 
-  CheckInOutInterface,
-  CheckInOutStatusInterface, 
-} from "../../models/ICheckInOut";
-import { EmployeeInterface } from "../../models/IEmployee"; 
+import { RoomInterface } from "../../models/IRoom";
+import { CustomerInterface } from "../../models/IReview";
+import { RepairTypeInterface,RepairReqInterface } from "../../models/IRepairReq";
 
-import { GetBookings } from "../Booking/services/BookingHttpClientService";
+import { GetRooms } from "../Room/service/RoomHttpClientService";
+import { GetCustomers, UpdateRepairReq } from "./service/RepRqHttpClientService";
 import { 
-  GetIOStatus,
-  CreateCheckInOut,
-  GetEmps,
-  GetCheckInOut,
-  UpdateCheckInOut,
-  UpdateCheckIn,
- } from "./service/CheckInOutHttpClientService";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { InputLabel, Stack } from "@mui/material";
+    GetRepairTypes,
+    GetRepairReqs,
+    CreateRepairReq,
+} from "./service/RepRqHttpClientService";
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { InputLabel, Stack } from "@mui/material";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -43,16 +39,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CheckInEdit() {
-  const [bookings, setBookings] = useState<BookingsInterface[]>([]);
-  const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
-  //const [emps, setEmps] = useState<EmployeeInterface[]>([]);
-  const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
-  const [cio, setCio] = useState<CheckInOutInterface[]>([]);
-  //const [date, setDate] = React.useState<Date | null>(null);
+function RepRqEdit() {
+  const [rr, setRr] = useState<RepairReqInterface[]>([]);
+  const [rooms, setRooms] = useState<RoomInterface[]>([]);
+  const [types, setTypes] = useState<RepairTypeInterface[]>([]);
+  const [customers, setCustomers] = useState<CustomerInterface[]>([]);
+  const [rep, setRep] = useState<RepairReqInterface>({});
+
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -65,62 +61,73 @@ function CheckInEdit() {
   };
 
   const handleChange = (event: SelectChangeEvent) => {
-    const name = event.target.name as keyof typeof checkinout;
-    setCheckinout({
-      ...checkinout,
+    const name = event.target.name as keyof typeof rep;
+    setRep({
+      ...rep,
       [name]: event.target.value,
     });
   }; 
 
 
-  const getBookings =  async () => {
-    let res = await GetBookings();
+  const getRepairReqs =  async () => {
+    let res = await GetRepairReqs();
     if (res) {
-      setBookings(res);
+      setRr(res);
     }
   };
 
-  const getStatuses =  async () => {
-    let res = await GetIOStatus();
+  const getCustomers =  async () => {
+    let res = await GetCustomers();
     if (res) {
-      setStatuses(res);
+      setCustomers(res);
     }
   };
 
-  const getCheckInOut =  async () => {
-    let res = await GetCheckInOut();
+  const getTypes =  async () => {
+    let res = await GetRepairTypes();
     if (res) {
-      setCio(res);
+      setTypes(res);
+    }
+  };
+
+  const getRooms =  async () => {
+    let res = await GetRooms();
+    if (res) {
+      setRooms(res);
     }
   };
 
   useEffect(() => {
-    getBookings();
-    getStatuses();
-    getCheckInOut();
-    //getEmps();
+    getRepairReqs();
+    getCustomers();
+    getTypes();
+    getRooms();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
   };
-  
+
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: any }>
+  ) => {
+    const id = event.target.id as keyof typeof rep;
+    const { value } = event.target;
+    setRep({ ...rep, [id]: value });  
+  };
 
   async function submit() {
     let data = {
-        //ID: checkinout.ID,
-        ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
-        //BookingID: convertType(checkinout.BookingID),
-        BookingID: null,
-        CheckInOutStatusID: null,
-        //EmployeeID: convertType(checkinout.EmployeeID),
-        EmployeeID: convertType(localStorage.getItem("id")),
-        CheckInTime: checkinout.CheckInTime,
-        CheckOutTime: null,
+        ID: typeof rep.ID === "string" ? parseInt(rep.ID) : 0,
+        RoomID: null,
+        RepairTypeID: convertType(rep.RepairTypeID),
+        CustomerID: convertType(localStorage.getItem("id")),
+        Note: rep.Note,
+        Time: null,
     };
-
-    let res = await UpdateCheckIn(data);
+    console.log(data)
+    let res = await UpdateRepairReq(data);
     if (res) {
       setSuccess(true);
     } else {
@@ -137,7 +144,7 @@ function CheckInEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          อัพเดตข้อมูลสำเร็จ
+         อัพเดตข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
       <Snackbar
@@ -147,7 +154,7 @@ function CheckInEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          อัพเดตข้อมูลไม่สำเร็จ
+         อัพเดตข้อมูลไม่สำเร็จ
         </Alert>
       </Snackbar>
       <Paper>
@@ -164,29 +171,29 @@ function CheckInEdit() {
               color="primary"
               gutterBottom
             >
-              CHECK IN EDIT
+              EDIT REQUEST
             </Typography>
           </Box>
         </Box>
         <Divider />
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
+            <InputLabel id="demo-simple-select-label">Request No.</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 native
-                value={checkinout.ID + ""}
-                label="CheckInOut No."
+                value={rep.ID + ""}
+                label="Request No."
                 onChange={handleChange}
                 inputProps={{
                   name: "ID",
                 }}
               >
                 <option aria-label="None" value="">
-                  กรุณาเลือกหมายเลข CheckInOut
+                  กรุณาเลือก Request No.
                 </option>
-                {cio.map((item: CheckInOutInterface) => (
+                {rr.map((item: RepairReqInterface) => (
                   <option value={item.ID} key={item.ID}>
                     {item.ID}
                   </option>
@@ -194,77 +201,70 @@ function CheckInEdit() {
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6}>
+          <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">Booking No.</InputLabel>
+            <InputLabel id="demo-simple-select-label">Room No.</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 native
-                value={checkinout.BookingID + ""}
-                label="Booking No."
+                value={rep.RoomID + ""}
+                label="Room No."
                 onChange={handleChange}
                 inputProps={{
-                  name: "BookingID",
+                  name: "RoomID",
                 }}
               >
                 <option aria-label="None" value="">
-                  กรุณาเลือก booking
+                  กรุณาเลือก Room No.
                 </option>
-                {bookings.map((item: BookingsInterface) => (
+                {rooms.map((item: RoomInterface) => (
                   <option value={item.ID} key={item.ID}>
                     {item.ID}
                   </option>
                 ))}
               </Select>
             </FormControl>
-          </Grid> */} 
-          {/* <Grid item xs={6}>
+          </Grid>
+          <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">employee</InputLabel>
+            <InputLabel id="demo-simple-select-label">Type Of Problem</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
                 native
-                value={checkinout.EmployeeID + ""}
-                label="employee"
+                value={rep.RepairTypeID + ""}
+                label="Type Of Problem"
                 onChange={handleChange}
                 inputProps={{
-                  name: "EmployeeID",
+                  name: "RepairTypeID",
                 }}
               >
                 <option aria-label="None" value="">
-                  กรุณาเลือก Employee
+                  กรุณาเลือก Type Of Problem
                 </option>
-                {emps.map((item: EmployeeInterface) => (
+                {types.map((item: RepairTypeInterface) => (
                   <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
+                    {item.Name}
                   </option>
                 ))}
               </Select>
             </FormControl>
-          </Grid> */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DesktopDateTimePicker
-                        label="Check-In Time"
-                        value={checkinout.CheckInTime}
-                        onChange={(newValue) => {
-                            setCheckinout({
-                                ...checkinout,
-                                CheckInTime: newValue,
-                              });
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                </LocalizationProvider>
+          </Grid>
+          <Grid item xs={15}>
+          <FormControl fullWidth variant="outlined">
+                <TextField
+                    id="Note"
+                    variant="outlined"
+                    label="Note"
+                    multiline
+                    maxRows={4}
+                    value={rep.Note}
+                    onChange={handleInputChange}
+                />
             </FormControl>
           </Grid>
           <Grid item xs={12}>
             <Button
               component={RouterLink}
-              to="/CNCO"
+              to="/Rep"
               variant="contained"
               color="inherit"
             >
@@ -285,4 +285,4 @@ function CheckInEdit() {
   );
 
 }
-export default CheckInEdit;
+export default RepRqEdit;
