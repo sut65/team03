@@ -39,15 +39,12 @@ func main() {
 
 			protected.GET("/Departments", employee.ListDepartments)
 			protected.GET("/Department/:id", employee.GetDepartment)
-		
 
 			protected.GET("/Positions", employee.ListPositions)
 			protected.GET("/Position/:id", employee.GetPosition)
-			
 
 			protected.GET("/Locations", employee.ListLocations)
 			protected.GET("/Location/:id", employee.GetLocation)
-	
 
 			protected.GET("/Employees", employee.ListEmployees)
 			protected.GET("/Employee/:id", employee.GetEmployee)
@@ -211,23 +208,23 @@ func main() {
 			protected.DELETE("/Systemworks/:id", reviewht.DeleteSystemwork)
 
 			//==================================================Storage Routes
-			protected.GET("/Storages", storage.ListStorages)
-			protected.GET("/Storage/:id", storage.GetStorage)
-			protected.POST("/Storages", storage.CreateStorage)
-			protected.PATCH("/Storages", storage.UpdateStorage)
-			protected.DELETE("/Storages/:id", storage.DeleteStorage)
+			protected.GET("/storages", storage.ListStorages)
+			protected.GET("/storage/:id", storage.GetStorage)
+			protected.POST("/storages", storage.CreateStorage)
+			protected.PATCH("/storages", storage.UpdateStorage)
+			protected.DELETE("/storages/:id", storage.DeleteStorage)
 
-			protected.GET("/Products", storage.ListProducts)
-			protected.GET("/Product/:id", storage.GetProduct)
-			protected.POST("/Products", storage.CreateProduct)
-			protected.PATCH("/Products", storage.UpdateProduct)
-			protected.DELETE("/Products/:id", storage.DeleteProduct)
+			protected.GET("/products", storage.ListProducts)
+			protected.GET("/product/:id", storage.GetProduct)
+			protected.POST("/products", storage.CreateProduct)
+			protected.PATCH("/products", storage.UpdateProduct)
+			protected.DELETE("/products/:id", storage.DeleteProduct)
 
-			protected.GET("/ProductTypes", storage.ListProductTypes)
-			protected.GET("/ProductType/:id", storage.GetProductType)
-			protected.POST("/ProductTypes", storage.CreateProductType)
-			protected.PATCH("/ProductTypes", storage.UpdateProductType)
-			protected.DELETE("/ProductTypes/:id", storage.DeleteProductType)
+			protected.GET("/product_types", storage.ListProductTypes)
+			protected.GET("/product_type/:id", storage.GetProductType)
+			protected.POST("/product_types", storage.CreateProductType)
+			protected.PATCH("/pProduct_types", storage.UpdateProductType)
+			protected.DELETE("/pProduct_types/:id", storage.DeleteProductType)
 
 			//===================================================Storage
 

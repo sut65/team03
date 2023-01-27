@@ -237,7 +237,7 @@ func ListStorages(c *gin.Context) {
 
 	var storages []entity.Storage
 
-	if err := entity.DB().Preload("Product").Preload("ProductTYpe").Raw("SELECT * FROM storages").Find(&storages).Error; err != nil {
+	if err := entity.DB().Preload("Employee").Preload("Product").Preload("ProductType").Raw("SELECT * FROM storages").Find(&storages).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
