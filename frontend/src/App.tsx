@@ -63,15 +63,9 @@ export default function App() {
 
           <Route path="/" element={<Home />} />
 
-          <Route path="/Man" element={<Manage_Save />} />
-          <Route path="/ManageShow" element={<Manage_Show />} />
-          <Route path="/ManageEdit" element={<Manage_Edit />} />
-
-          
-
-
-       <Route path="/Man" element={<Manage_Save />} />
-       <Route path="/ManageShow" element={<Manage_Show />} />
+       <Route path="/Manage-Save" element={<Manage_Save />} />
+       <Route path="/Manage-Show" element={<Manage_Show />} />
+       <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
        
 
           <Route path="/Book" element={<Bookings />} />

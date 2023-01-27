@@ -51,6 +51,7 @@ func main() {
 
 			protected.GET("/Employees", employee.ListEmployees)
 			protected.GET("/Employee/:id", employee.GetEmployee)
+			protected.GET("Employees/officer/:id", employee.ListEmplooyeeByUID)
 			protected.POST("/Employees", employee.CreateEmployee)
 			protected.PATCH("/Employees", employee.UpdateEmployee)
 			protected.DELETE("/Employees/:id", employee.DeleteEmployee)
