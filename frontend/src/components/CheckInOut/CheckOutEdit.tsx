@@ -12,9 +12,9 @@ import Snackbar from "@mui/material/Snackbar";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { BookingsInterface } from "../../models/IBooking";
 import { 
@@ -28,10 +28,13 @@ import {
   GetIOStatus,
   CreateCheckInOut,
   GetEmps,
+  GetCheckInOut,
+  UpdateCheckInOut,
+  UpdateCheckOut,
  } from "./service/CheckInOutHttpClientService";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { InputLabel, Stack } from "@mui/material";
+import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -40,15 +43,16 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CheckInOutCreate() {
+function CheckOutEdit() {
   const [bookings, setBookings] = useState<BookingsInterface[]>([]);
   const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
-  const [emps, setEmps] = useState<EmployeeInterface[]>([]);
+  //const [emps, setEmps] = useState<EmployeeInterface[]>([]);
   const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
-
+  const [cio, setCio] = useState<CheckInOutInterface[]>([]);
+  //const [date, setDate] = React.useState<Date | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-
+  
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -83,41 +87,53 @@ function CheckInOutCreate() {
     }
   };
 
-  const getEmps =  async () => {
-    let res = await GetEmps();
+  const getCheckInOut =  async () => {
+    let res = await GetCheckInOut();
     if (res) {
-      setEmps(res);
+      setCio(res);
     }
   };
+//   const getEmps =  async () => {
+//     let res = await GetEmps();
+//     if (res) {
+//       setEmps(res);
+//     }
+//   };
 
   useEffect(() => {
     getBookings();
     getStatuses();
-    getEmps();
+    getCheckInOut();
+    //getEmps();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
+    if (val === undefined || val === null) val = null;
     return val;
   };
 
+
   async function submit() {
     let data = {
-      BookingID: convertType(checkinout.BookingID),
-      //CheckInOutStatusID: convertType("checkinout.CheckInOutStatusID"),
-      CheckInOutStatusID: 1,
-      //EmployeeID: convertType(checkinout.EmployeeID),
-      EmployeeID: convertType(localStorage.getItem("id")),
-      CheckInTime: checkinout.CheckInTime,
-      CheckOutTime: null,
+        //ID: checkinout.ID,
+        ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
+        BookingID: null,
+        //BookingID: typeof checkinout.BookingID === "string" ? parseInt(checkinout.BookingID) : 0,
+        CheckInOutStatusID: 2,
+        //EmployeeID: convertType(checkinout.EmployeeID),
+        EmployeeID: convertType(localStorage.getItem("id")),
+        CheckInTime: null,
+        CheckOutTime: checkinout.CheckOutTime,
     };
 
-    let res = await CreateCheckInOut(data);
+    let res = await UpdateCheckOut(data);
     if (res) {
       setSuccess(true);
     } else {
       setError(true);
     }
+    console.log(data)
   }
 
   return (
@@ -129,7 +145,7 @@ function CheckInOutCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          อัพเดตข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
       <Snackbar
@@ -139,7 +155,7 @@ function CheckInOutCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          อัพเดตข้อมูลไม่สำเร็จ
         </Alert>
       </Snackbar>
       <Paper>
@@ -156,7 +172,7 @@ function CheckInOutCreate() {
               color="primary"
               gutterBottom
             >
-              Check In
+              Check Out Edit
             </Typography>
           </Box>
         </Box>
@@ -164,7 +180,31 @@ function CheckInOutCreate() {
         <Grid container spacing={3} sx={{ padding: 2 }}>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-            <InputLabel id="demo-simple-select-label">Booking No.</InputLabel>
+              <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={checkinout.ID + ""}
+                label="CheckInOut No."
+                onChange={handleChange}
+                inputProps={{
+                  name: "ID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกหมายเลข CheckInOut
+                </option>
+                {cio.map((item: CheckInOutInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.ID}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {/* <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="demo-simple-select-label">Booking No.</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 native
@@ -185,79 +225,18 @@ function CheckInOutCreate() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>status</p>
-              <Select
-                native
-                value={checkinout.CheckInOutStatusID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "CheckInOutStatusID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก status
-                </option>
-                {statuses.map((item: CheckInOutStatusInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>employee</p>
-              <Select
-                native
-                value={checkinout.EmployeeID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "EmployeeID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Employee
-                </option>
-                {emps.map((item: EmployeeInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={checkinout.CheckInTime}
-                  onChange={(newValue) => {
-                    setCheckinout({
-                      ...checkinout,
-                      CheckInTime: newValue,
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
           </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
                         <DesktopDateTimePicker
-                        label="Check-In Time"
-                        value={checkinout.CheckInTime}
+                        label="Check-Out Time"
+                        value={checkinout.CheckOutTime}
                         onChange={(newValue) => {
                             setCheckinout({
                                 ...checkinout,
-                                CheckInTime: newValue,
+                                CheckOutTime: newValue,
                               });
                         }}
                         renderInput={(params) => <TextField {...params} />}
@@ -290,4 +269,4 @@ function CheckInOutCreate() {
   );
 
 }
-export default CheckInOutCreate;
+export default CheckOutEdit;
