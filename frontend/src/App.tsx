@@ -53,6 +53,7 @@ import StorageEdit from "./components/Storage/StorageEdit";
 
 import RepRqCreate from "./components/RepReq/RepRqCreate";
 import RepRqEdit from "./components/RepReq/RepRqEdit";
+import ProfileCustomer from "./components/Customer/ProfileCustomer";
 
 export default function App() {
 
@@ -125,6 +126,8 @@ export default function App() {
           <Route path="/RoomW/Create" element={<StorageCreate />} />
           <Route path="/RoomW/Edit" element={<StorageEdit />} />
 
+          <Route path="/customer" element={<Customer />} />
+          <Route path="/customer/profile" element={<ProfileCustomer />} /> 
 
         </Routes>
 
