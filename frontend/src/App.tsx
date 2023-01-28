@@ -45,8 +45,8 @@ import Review_list from "./components/Review/Review_list";
 
 import RoomShow from "./components/Room/RoomShow";
 import RoomCreate from "./components/Room/RoomCreate";
-import RoomDelete from "./components/Room/RoomDelete";
 import RoomEdit from "./components/Room/RoomEdit";
+
 import StorageShow from "./components/Storage/StorageShow";
 import StorageCreate from "./components/Storage/StorageCreate";
 import StorageEdit from "./components/Storage/StorageEdit";
@@ -119,7 +119,6 @@ export default function App() {
 
           <Route path="/RT" element={<RoomShow />} />
           <Route path="/RT/Create" element={<RoomCreate />} />
-          <Route path="/RT/Delete" element={<RoomDelete />} />
           <Route path="/RT/Edit" element={<RoomEdit />} />
 
           <Route path="/RoomW" element={<StorageShow />} />
