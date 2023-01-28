@@ -41,9 +41,9 @@ func CreateCheckroom(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
 		return
 	}
-	//ค้นหา Officer ด้วย id
+	//ค้นหา Employee ด้วย id
 	if tx := entity.DB().Where("id = ?", checkroom.Employee).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Officer not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
 		return
 	}
 
@@ -106,7 +106,7 @@ func UpdateCheckroom(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", checkroom.ID).First(&checkroom); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "checkroom not found"})
 		return
 	}
 

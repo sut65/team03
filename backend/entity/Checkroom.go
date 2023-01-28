@@ -34,7 +34,7 @@ type Checkroom struct {
 
 	Date time.Time
 
-	EmloyeeID *uint
+	EmployeeID *uint
 	Employee  Employee `gorm:"references:id"`
 	
 	
