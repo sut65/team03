@@ -24,14 +24,17 @@ function PaymentShow() {
 
     const [payment, setPayment] = useState<PaymentsInterface[]>([]);
 
-    const id_cus = localStorage.getItem("uid");
+    const id_cus = localStorage.getItem("id");
 
 
     const getServices = async () => {
         const apiUrl = `http://localhost:8080/payment/customer/${id_cus}`;
         const requestOptions = {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
         };
 
         await fetch(apiUrl, requestOptions)
