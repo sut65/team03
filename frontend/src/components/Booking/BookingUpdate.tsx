@@ -20,8 +20,9 @@ import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { BranchsInterface } from "../../models/modelBooking/IBranch";
 import { RoomInterface } from "../../models/IRoom";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
-import { Bookings, GetBookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
+import { GetBooking, GetBookings, GetBranchs, GetCustomerByUID, UppdateBooking } from "./services/BookingHttpClientService";
 import { GetRooms } from "../Room/service/RoomHttpClientService";
+import MenuItem from "@mui/material/MenuItem";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -31,10 +32,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function BookingUpdate() {
-    const [booking, setBooking] = useState<BookingsInterface>({});
     const [u_bookings, setU_Bookings] = useState<BookingsInterface[]>([]);
     const [branchs, setBranchs] = useState<BranchsInterface[]>([]);
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
+    const [booking, setBooking] = useState<BookingsInterface>({});
     const [customers, setCustomers] = useState<CustomerInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -56,6 +57,14 @@ function BookingUpdate() {
             ...booking,
             [name]: event.target.value,
         });
+    };
+
+    const onChangeU_Booking = async (event: SelectChangeEvent) => {
+        let res = await GetBooking(event.target.value);
+        console.log(res);
+        if (res) {
+            setBooking(res);
+        }
     };
 
     const getBookings = async () => {
@@ -99,16 +108,24 @@ function BookingUpdate() {
         return val;
     };
 
+    const convertType_C = (data: string | number | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
     async function submit() {
         let data = {
+            ID: booking.ID,
             BranchID: convertType(booking.BranchID),
             RoomID: convertType(booking.RoomID),
             Start: null,
             Stop: null,
-            CustomerID: convertType(booking.CustomerID), //GET user by user(login)ID
+            CustomerID: convertType_C(localStorage.getItem('id')), //GET user by user(login)ID
         };
 
-        let res = await Bookings(data);
+        console.log(data)
+
+        let res = await UppdateBooking(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -140,22 +157,18 @@ function BookingUpdate() {
                 <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>เลือกรายการจองที่จะแก้ไข</p>
-                            <Select
-                                native
+                        <p>เลือกรายการที่จะแก้ไข</p>
+                        <Select
                                 value={booking.ID + ""}
-                                onChange={handleChange}
+                                onChange={onChangeU_Booking}
                                 inputProps={{
                                     name: "ID",
                                 }}
                             >
-                                <option aria-label="None" value="">
-                                    กรุณาเลือกรายการจองที่จะแก้ไข
-                                </option>
-                                {u_bookings.map((item: BookingsInterface) => (
-                                    <option value={item.ID} key={item.ID}>
+                                {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && ( 
+                                    <MenuItem key={item.ID} value={item.ID}>
                                         {item.ID}
-                                    </option>
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -262,7 +275,7 @@ function BookingUpdate() {
                                 }}
                             >
                                 <option value={customers?.ID} key={customers?.ID}>
-                                    {customers?.FirstName}
+                                    {customers?.FirstName} {customers?.LastName}
                                 </option>
                             </Select>
                         </FormControl>

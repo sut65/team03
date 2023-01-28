@@ -5,26 +5,27 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { CHK_PaymentsInterface } from "../../models/ICHK_Payment";
+import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
 import { GetCHK_Payments } from "./services/CHK_PaymentHttpClientService";
 
 function CHK_Payments() {
     const [chk_payments, setCHK_Payments] = useState<CHK_PaymentsInterface[]>([]);
 
-    useEffect(() => {
-        getCHK_Payments();
-    }, []);
-
     const getCHK_Payments = async () => {
         let res = await GetCHK_Payments();
         if (res) {
             setCHK_Payments(res);
+            console.log(res)
         }
     };
 
+    useEffect(() => {
+        getCHK_Payments();
+    }, []);
+
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 50 },
-        { field: "Payment", headerName: "รายการชำระเงิน", width: 250, valueFormatter: (params) => params.value.ID }, //อาจมีการแก้ไข
+        { field: "PaymentID", headerName: "รายการชำระเงิน", width: 250, valueFormatter: (params) => params.value.ID }, //อาจมีการแก้ไข
         { field: "Status", headerName: "สถานะการชำระเงิน", width: 250, valueFormatter: (params) => params.value.Type },
         { field: "Date_time", headerName: "วัน-เวลาที่ชำระเงิน", width: 150 },
         { field: "Amount", headerName: "จำนวนเงินที่ชำระ", width: 150 },

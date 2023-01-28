@@ -5,7 +5,7 @@ import { BranchsInterface } from "../../../models/modelBooking/IBranch";
 const apiUrl = "http://localhost:8080";
 
 async function GetCustomerByUID() {
-    let uid = localStorage.getItem('user');
+    let uid = localStorage.getItem('id');
     const requestOptions = {
         method: "GET",
         headers: {
@@ -60,8 +60,8 @@ async function GetBookings() {
 }
 
 //Get Booking
-async function GetBooking(data: BookingsInterface) {
-    let b_id = data.ID;
+async function GetBooking(data: string | undefined) {
+    let b_id = data;
     const requestOptions = {
         method: "GET",
         headers: {
@@ -202,7 +202,6 @@ async function GetBranchs() {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                console.log(res.data)
                 return res.data;
             } else {
                 return false;

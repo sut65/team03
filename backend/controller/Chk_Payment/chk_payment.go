@@ -39,8 +39,7 @@ func CreateCHK_Payment(c *gin.Context) {
 
 	// 12: สร้าง CHK_Payment
 	chk_p := entity.CHK_Payment{
-		// waiting for payment
-		// Payment:   payment,
+		Payment:           payment,
 		CHK_PaymentStatus: status,
 		Date_time:         chk_payment.Date_time,
 		Amount:            chk_payment.Amount,

@@ -90,14 +90,18 @@ function BookingCreate() {
         return val;
     };
 
+    const convertType_C = (data: string | number | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
     async function submit() {
         let data = {
             BranchID: convertType(booking.BranchID),
             RoomID: convertType(booking.RoomID),
-            Start: null,
-            Stop: null,
-            // CustomerID: convertType(booking.CustomerID), //GET user by user(login)ID
-            CustomerID: convertType("1"),
+            Start: booking.Start,
+            Stop: booking.Stop,
+            CustomerID: convertType_C(localStorage.getItem("id")),
         };
 
         let res = await Bookings(data);
@@ -222,7 +226,7 @@ function BookingCreate() {
                                 }}
                             >
                                 <option value={customers?.ID} key={customers?.ID}>
-                                    {customers?.FirstName}
+                                    {customers?.FirstName} {customers?.LastName}
                                 </option>
                             </Select>
                         </FormControl>
