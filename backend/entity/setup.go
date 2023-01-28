@@ -51,10 +51,9 @@ func SetupDatabase() {
 		&Accessories{},
 		&Service{},
 		// ระบบชำระเงิน
-		&Place{},
-		&Bank{},
-		&Crypto{},
 		&PaymentMethod{},
+		&Method{},
+		&Place{},
 		&Payment{},
 		// ระบบจองห้องพัก
 		&Booking{},
