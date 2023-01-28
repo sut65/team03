@@ -96,9 +96,9 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
-          <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
-          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
-          {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
+          {/* <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
+          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/>  */}
+          <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/> 
 
           <Route path="/Rep" element={<RepRqShow />} />
           <Route path="/Rep/Create" element={<RepRqCreate />} />

@@ -30,6 +30,8 @@ import {
   GetEmps,
   GetCheckInOut,
   UpdateCheckInOut,
+  UpdateCheckIn,
+  UpdateCheckOut,
  } from "./service/CheckInOutHttpClientService";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { InputLabel, Stack } from "@mui/material";
@@ -42,10 +44,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function CheckInOutUpdate() {
+function CheckInOutEdit() {
   const [bookings, setBookings] = useState<BookingsInterface[]>([]);
   const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
-  const [emps, setEmps] = useState<EmployeeInterface[]>([]);
+  //const [emps, setEmps] = useState<EmployeeInterface[]>([]);
   const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
   const [cio, setCio] = useState<CheckInOutInterface[]>([]);
   //const [date, setDate] = React.useState<Date | null>(null);
@@ -92,46 +94,61 @@ function CheckInOutUpdate() {
       setCio(res);
     }
   };
-  const getEmps =  async () => {
-    let res = await GetEmps();
-    if (res) {
-      setEmps(res);
-    }
-  };
 
   useEffect(() => {
     getBookings();
     getStatuses();
     getCheckInOut();
-    getEmps();
+    //getEmps();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
-};
+  };
   
 
-  async function submit() {
+  async function submitCheckIn() {
     let data = {
-        //ID: convertType(checkinout.ID),
         //ID: checkinout.ID,
         ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
         //BookingID: convertType(checkinout.BookingID),
         BookingID: null,
-        CheckInOutStatusID: convertType("checkinout.CheckInOutStatusID"),
+        CheckInOutStatusID: null,
         //EmployeeID: convertType(checkinout.EmployeeID),
         EmployeeID: convertType(localStorage.getItem("id")),
         CheckInTime: checkinout.CheckInTime,
-        CheckOutTime: checkinout.CheckOutTime,
+        CheckOutTime: null,
     };
 
-    let res = await UpdateCheckInOut(data);
+    let res = await UpdateCheckIn(data);
     if (res) {
       setSuccess(true);
     } else {
       setError(true);
     }
+  }
+
+  async function submitCheckOut() {
+    let data = {
+        //ID: checkinout.ID,
+        ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
+        BookingID: null,
+        //BookingID: typeof checkinout.BookingID === "string" ? parseInt(checkinout.BookingID) : 0,
+        CheckInOutStatusID: 2,
+        //EmployeeID: convertType(checkinout.EmployeeID),
+        EmployeeID: convertType(localStorage.getItem("id")),
+        CheckInTime: null,
+        CheckOutTime: checkinout.CheckOutTime,
+    };
+
+    let res = await UpdateCheckOut(data);
+    if (res) {
+      setSuccess(true);
+    } else {
+      setError(true);
+    }
+    console.log(data)
   }
 
   return (
@@ -170,7 +187,7 @@ function CheckInOutUpdate() {
               color="primary"
               gutterBottom
             >
-              CHECK IN-CHECK OUT UPDATE
+              CHECK IN EDIT
             </Typography>
           </Box>
         </Box>
@@ -200,78 +217,6 @@ function CheckInOutUpdate() {
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">Booking No.</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={checkinout.BookingID + ""}
-                label="Booking No."
-                onChange={handleChange}
-                inputProps={{
-                  name: "BookingID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก booking
-                </option>
-                {bookings.map((item: BookingsInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-            <InputLabel id="demo-simple-select-label">status</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={checkinout.CheckInOutStatusID + ""}
-                label="status"
-                onChange={handleChange}
-                inputProps={{
-                  name: "CheckInOutStatusID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก status
-                </option>
-                {statuses.map((item: CheckInOutStatusInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">employee</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={checkinout.EmployeeID + ""}
-                label="employee"
-                onChange={handleChange}
-                inputProps={{
-                  name: "EmployeeID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Employee
-                </option>
-                {emps.map((item: EmployeeInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -289,6 +234,62 @@ function CheckInOutUpdate() {
                         />
                     </Stack>
                 </LocalizationProvider>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              style={{ float: "right" }}
+              onClick={submitCheckIn}
+              variant="contained"
+              color="primary"
+            >
+              บันทึก
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+      <Paper>
+        <Box
+          display="flex"
+          sx={{
+            marginTop: 2,
+          }}
+        >
+          <Box sx={{ paddingX: 2, paddingY: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="primary"
+              gutterBottom
+            >
+              CHECK OUT EDIT
+            </Typography>
+          </Box>
+        </Box>
+        <Divider />
+        <Grid container spacing={3} sx={{ padding: 2 }}>
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={checkinout.ID + ""}
+                label="CheckInOut No."
+                onChange={handleChange}
+                inputProps={{
+                  name: "ID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกหมายเลข CheckInOut
+                </option>
+                {cio.map((item: CheckInOutInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.ID}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
           </Grid>
           <Grid item xs={6}>
@@ -321,7 +322,7 @@ function CheckInOutUpdate() {
             </Button>
             <Button
               style={{ float: "right" }}
-              onClick={submit}
+              onClick={submitCheckOut}
               variant="contained"
               color="primary"
             >
@@ -334,4 +335,4 @@ function CheckInOutUpdate() {
   );
 
 }
-export default CheckInOutUpdate;
+export default CheckInOutEdit;
