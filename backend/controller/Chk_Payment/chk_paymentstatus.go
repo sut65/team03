@@ -37,7 +37,7 @@ func GetStatus(c *gin.Context) {
 // GET /chk_payment/statuses
 func ListStatuses(c *gin.Context) {
 	var chk_paymentstatuses []entity.CHK_PaymentStatus
-	if err := entity.DB().Raw("SELECT * FROM chk_paymentstatuses").Scan(&chk_paymentstatuses).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM chk_payment_statuses").Scan(&chk_paymentstatuses).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -48,7 +48,7 @@ func ListStatuses(c *gin.Context) {
 // DELETE /chk_payment/statuses/:id
 func DeleteStatus(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM chk_paymentstatuses WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM chk_payment_statuses WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "check payment status not found"})
 		return
 	}
