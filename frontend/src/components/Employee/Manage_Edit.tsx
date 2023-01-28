@@ -343,24 +343,6 @@ const getEmployee = async () => {
 
 
         <Grid container spacing={3} sx={{ padding: 2 }} style={{ marginLeft: "0%"}}>
-          {/* <Grid item xs={3}>
-            <FormLabel>ID</FormLabel>
-            <FormControl fullWidth variant="outlined">
-              <Select
-                value={employee.ID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "ID",
-                }}
-              >
-                
-                {em.map((item: EmployeeInterface) => (
-                  <MenuItem value={item.ID}>{item.ID}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-         </Grid> */}
-
          <Grid item xs={3}>
             <FormControl fullWidth variant="outlined">
               <FormLabel>Personal ID</FormLabel>
@@ -374,7 +356,6 @@ const getEmployee = async () => {
               />
             </FormControl>
           </Grid>
-
 
           <Grid item xs={5}>
             <FormControl fullWidth variant="outlined">
@@ -470,22 +451,6 @@ const getEmployee = async () => {
             </FormControl>
           </Grid>
 
-          {/* <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-              <FormLabel>Password</FormLabel>
-
-              <TextField
-                id="Password"
-                variant="outlined"
-                size="medium"
-                value={employee.Password}
-                disabled={btnDisabled}
-                onChange={handleInputChange}
-              />
-            </FormControl>
-          </Grid> */}
-
-
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <FormLabel>Email</FormLabel>
@@ -545,6 +510,7 @@ const getEmployee = async () => {
                 row
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="row-radio-buttons-group"
+                value={employee.Gender}
                 onChange={(event) => {
                   setGender(event.target.value);
                 }}

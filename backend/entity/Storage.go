@@ -11,6 +11,7 @@ type Product struct {
 	Name     string
 	Price    int
 	Storages []Storage `gorm:"foreignKey:ProductID"`
+	Checkroom []Checkroom `gorm:"foreignKey:ProductID"`
 }
 type ProductType struct {
 	gorm.Model

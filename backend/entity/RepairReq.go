@@ -12,15 +12,9 @@ type RepairType struct {
 	RepairReq []RepairReq `gorm:"foreignKey:RepairTypeID"`
 }
 
-type RepairStatus struct {
-	gorm.Model
-	Name      string
-	RepairReq []RepairReq `gorm:"foreignKey:RepairStatusID"`
-}
-
 type RepairReq struct {
 	gorm.Model
-	
+
 	RoomID *uint
 	Room   Room `gorm:"references:ID"`
 
@@ -30,9 +24,6 @@ type RepairReq struct {
 	Note string
 	Time time.Time
 
-	RepairStatusID *uint
-	RepairStatus   RepairStatus `gorm:"references:ID"`
-
 	CustomerID *uint
-	Customer Customer `gorm:"references:ID"`
+	Customer   Customer `gorm:"references:ID"`
 }

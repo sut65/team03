@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { BookingsInterface } from "../../models/IBooking";
+import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { 
   CheckInOutInterface,
   CheckInOutStatusInterface, 
@@ -172,7 +172,7 @@ function CheckOutEdit() {
               color="primary"
               gutterBottom
             >
-              Check Out Edit
+              CHECK OUT EDIT
             </Typography>
           </Box>
         </Box>

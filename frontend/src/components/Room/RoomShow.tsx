@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 
 import Box from "@mui/material/Box";
 
+import { Alert, Snackbar } from "@mui/material";
+
 // //import { UsersInterface } from "../models/IUser";
 
  import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -28,11 +30,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 import { grey } from '@mui/material/colors';
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import moment from "moment";
-import { GetRooms } from "./service/RoomHttpClientService";
+import { GetRooms, Room, DeleteRoom } from "./service/RoomHttpClientService";
 
 
 const theme = createTheme({
@@ -40,9 +44,9 @@ const theme = createTheme({
       primary: {
           main: grey[800],
       },
-      secondary: {
-          main: grey[50],
-      },
+      // secondary: {
+      //     main: grey[50],
+      // },
   },
 });
 
@@ -52,6 +56,14 @@ function RoomShow() {
   const [room, setRoom] = useState<RoomInterface[]>([]);
 
   const id_cus = localStorage.getItem("id");
+
+  const [success, setSuccess] = useState(false);
+  const [successDel, setSuccessDel] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorDel, setErrorDel] = useState(false);
+  const [id, setId] = useState(0);
+
+  
 
   // const getRooms = async () => {
   //     const apiUrl = `http://localhost:8080/service/rooms`;
@@ -72,12 +84,37 @@ function RoomShow() {
   //         });
   // };
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+    setSuccessDel(false);
+    setError(false);
+    setErrorDel(false);
+  };
+
   const getList = async () => {
     let res = await GetRooms();
     if (res) {
       setRoom(res);
     }
   };
+
+  const onDelete = async (id: number) => {
+    let res = await DeleteRoom(id);
+    if (res) {
+      setSuccessDel(true);
+    } else {
+      setErrorDel(true);
+    }
+    getList()
+  }
+
+
 
  const columns: GridColDef[] = [
 
@@ -91,8 +128,23 @@ function RoomShow() {
 
    { field: "State", headerName: "สถานะของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Name,},
 
-   { field: "Time", headerName: "วันที่และเวลา", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
+   { field: "Time", headerName: "วันที่และเวลา", width: 150, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
 
+   {
+    field: "delete",
+    headerName: "DELETE",
+    sortable: false,
+    align:"center",
+    renderCell: (params) => {
+        const onClick = (e: { stopPropagation: () => void; }) => {
+            e.stopPropagation();
+            const id = params.getValue(params.id, "ID");
+            onDelete(id);
+        };
+
+        return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
+    }
+  },
  ];
 
  useEffect(() => {
@@ -108,115 +160,99 @@ function RoomShow() {
 
 
  return (
-
-   <div>
-     <ThemeProvider theme={theme}>
-     <Container maxWidth="md">
-
-       <Box
-
-         display="flex"
-
-         sx={{
-
-           marginTop: 2,
-
-         }}
-
-       >
-
-        <Box flexGrow={1}>
-            <Typography // ตาราง
-              component="h1"
+  <div>
+      <Container maxWidth="lg">
+        <Snackbar
+          open={successDel}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            ลบข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={errorDel}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error">
+            ไม่สามารถลบข้อมูลได้
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={success}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            Add สำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={error}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error">
+            ไม่สามารถ Add ได้
+          </Alert>
+        </Snackbar>
+        <Box
+          display="flex"
+          sx={{
+            marginTop: 2,
+          }}
+        >
+          <Box flexGrow={1}>
+            <Typography
+              component="h2"
               variant="h6"
               color="grey"
               gutterBottom
             >
-
-            ข้อมูลห้อง
-
-           </Typography>
-
-         </Box>
-
-         <Box>
-         <Button //ตัวบันทึก
-                component={RouterLink} //ลิ้งหน้าต่อไป
-                to="/RT/Create"
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  color="second"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-             เพิ่มข้อมูลห้อง
-
-             </Typography>
-           </Button>
-         </Box>
-         <Box>
-         <Button //ตัวบันทึก
-                component={RouterLink} //ลิ้งหน้าต่อไป
-                to="/RT/Edit"
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  color="second"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-             แก้ไขข้อมูลห้อง
-
-             </Typography>
-           </Button>
-         </Box>
-         <Box>
-         <Button //ตัวบันทึก
-                component={RouterLink} //ลิ้งหน้าต่อไป
-                to="/RT/Delete"
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  color="second"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-             ลบข้อมูลห้อง
-
-             </Typography>
-           </Button>
-         </Box>
+              ข้อมูลห้อง
+            </Typography>
+          </Box>
+          <Box>
+            <Button
+              component={RouterLink}
+              to="/RT/Create"
+              variant="contained"
+              color="primary"
+            >
+              Add
+            </Button>
+          </Box>
+          <Box>
+            <Button
+              component={RouterLink}
+              to="/RT/Edit"
+              variant="contained"
+              color="primary"
+            >
+              Edit
+            </Button>
+          </Box>
+          </Box>
+        <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
+          <DataGrid
+            rows={room}
+            getRowId={(row) => row.ID}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+          />
+        </div>
+      </Container>
+    </div>
 
 
-
-       </Box>
-
-       <div style={{ height: 400, width: "100%", marginTop: '20px'}}>
-
-         <DataGrid
-
-           rows={room}
-
-           getRowId={(row) => row.ID}
-
-           columns={columns}
-
-           pageSize={5}
-
-           rowsPerPageOptions={[5]}
-
-         />
-
-       </div>
-
-     </Container>
-     </ThemeProvider>
-   </div>
-
+   
  );
 
 }

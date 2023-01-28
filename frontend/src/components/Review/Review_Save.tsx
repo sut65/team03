@@ -191,6 +191,7 @@ function Review_Save() {
 
       .then((res) => {
         if (res.data) {
+          window.location.reload();
           setSuccess(true);
         } else {
           setError(true);

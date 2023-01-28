@@ -32,6 +32,7 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 const bgnavbar = createTheme({
@@ -53,8 +54,8 @@ const drawerWidth = 320; //ความยาวของ แถบเมนู
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
+  // flexGrow: 1,
+  // padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -122,10 +123,10 @@ function Navbar() {
     { name: "Booking", icon: <ReceiptLongIcon  />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon   />, path: "/Rep" },
     { name: "Subscribe", icon: <PersonAddIcon  />, path: "/Sub" },
-    { name: "Payment", icon: <PaymentIcon  />, path: "/PM" },
+    { name: "Payment", icon: <PaymentIcon  />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
-    
+    { name: "Profile", icon:<AccountCircleIcon />, path: "/customer/profile"},
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
     { name: "Check The Room", icon: <CheckroomIcon  />, path: "/CTR" },
@@ -138,7 +139,6 @@ function Navbar() {
 
  return (
   <ThemeProvider theme={bgnavbar}>
-    <Box sx={{ display: 'flex' }} >
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -200,7 +200,6 @@ function Navbar() {
         <DrawerHeader />
       </Main>
 
-    </Box>
   </ThemeProvider>
 
  );
