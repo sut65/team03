@@ -53,6 +53,7 @@ import StorageEdit from "./components/Storage/StorageEdit";
 
 import RepRqCreate from "./components/RepReq/RepRqCreate";
 import RepRqEdit from "./components/RepReq/RepRqEdit";
+import ProfileCustomer from "./components/Customer/ProfileCustomer";
 
 export default function App() {
 
@@ -96,9 +97,9 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
-          <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
-          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
-          {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
+          {/* <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
+          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/>  */}
+          <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/> 
 
           <Route path="/Rep" element={<RepRqShow />} />
           <Route path="/Rep/Create" element={<RepRqCreate />} />
@@ -125,6 +126,8 @@ export default function App() {
           <Route path="/RoomW/Create" element={<StorageCreate />} />
           <Route path="/RoomW/Edit" element={<StorageEdit />} />
 
+          <Route path="/customer" element={<Customer />} />
+          <Route path="/customer/profile" element={<ProfileCustomer />} /> 
 
         </Routes>
 

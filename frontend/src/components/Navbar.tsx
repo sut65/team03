@@ -32,6 +32,7 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 
 const bgnavbar = createTheme({
@@ -125,7 +126,7 @@ function Navbar() {
     { name: "Payment", icon: <PaymentIcon  />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
-    
+    { name: "Profile", icon:<AccountCircleIcon />, path: "/customer/profile"},
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
     { name: "Check The Room", icon: <CheckroomIcon  />, path: "/CTR" },
