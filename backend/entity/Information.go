@@ -1418,4 +1418,52 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM storages WHERE id = ?", "2").Scan(&Storage2)
 	db.Raw("SELECT * FROM storages WHERE id = ?", "3").Scan(&Storage3)
 
+	//=================================Checkroom===========
+		//Damage
+		Description1 := Damage{
+			Description: "มี",
+		}
+		db.Model(&Damage{}).Create(&Description1)
+
+		Description2 := Damage{
+			Description: "ไม่มี",
+		}
+		db.Model(&Damage{}).Create(&Description2)
+
+		//status
+		S_Name1 := StatusCR{
+			S_Name:"ก่อนเข้าพัก",
+		}
+		db.Model(&StatusCR{}).Create(&S_Name1)
+
+		S_Name2 := StatusCR{
+			S_Name:"หลังเข้าพัก",
+		}
+		db.Model(&StatusCR{}).Create(&S_Name2)
+		//checkroom1
+		db.Model(&Checkroom{}).Create(&Checkroom{
+			Room: 		Room1,
+			Product:     TV,
+			Damage: 	Description1,
+			Status:		S_Name2,
+			Date:       time.Now(),
+			Employee:   Banana,
+		})
+		//checkroom2
+		db.Model(&Checkroom{}).Create(&Checkroom{
+			Room: 		Room2,
+			Product:     TV,
+			Damage: 	Description2,
+			Status:		S_Name1,
+			Date:       time.Now(),
+			Employee:   Hanoi,
+		})
+
+	var Checkroom1 Storage
+	var Checkroom2 Storage
+
+	db.Raw("SELECT * FROM checkrooms WHERE id = ?", "1").Scan(&Checkroom1)
+	db.Raw("SELECT * FROM checkrooms WHERE id = ?", "2").Scan(&Checkroom2)
+
 }
+

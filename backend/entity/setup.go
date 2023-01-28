@@ -69,6 +69,10 @@ func SetupDatabase() {
 		&Product{},
 		&ProductType{},
 		&Storage{},
+		//ระบบตรวจสอบห้องพัก
+		&Checkroom{},
+		&Damage{},
+		&StatusCR{},
 	)
 	db = database
 
