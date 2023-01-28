@@ -33,6 +33,9 @@ import ServiceAdd from "./components/Services/ServiceAdd";
 import ServiceUpdate from "./components/Services/ServiceUpdate";
 import ServiceDelete from "./components/Services/ServiceDelete";
 
+import PaymentAdd from "./components/Payment/PaymentAdd";
+import PaymentShow from "./components/Payment/PaymentShow";
+
 import Home from "./components/Home";
 import SignIn from "./components/Login";
 import Review_Show from "./components/Review/Review_Show";
@@ -93,9 +96,9 @@ export default function App() {
 
           <Route path="/CNCO" element={<CheckInOutShow />} />
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
-          <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
-          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/> 
-          {/* <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/>  */}
+          {/* <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
+          <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/>  */}
+          <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/> 
 
           <Route path="/Rep" element={<RepRqShow />} />
           <Route path="/Rep/Create" element={<RepRqCreate />} />
@@ -108,6 +111,10 @@ export default function App() {
           <Route path="/sa" element={<ServiceAdd />} />
           <Route path="/su/:id" element={<ServiceUpdate />} />
           <Route path="/sd" element={<ServiceDelete />} />
+
+          <Route path="/ps" element={<PaymentShow />} />
+          <Route path="/pa" element={<PaymentAdd />} />
+
 
           <Route path="/RT" element={<RoomShow />} />
           <Route path="/RT/Create" element={<RoomCreate />} />

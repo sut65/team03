@@ -122,7 +122,7 @@ function Navbar() {
     { name: "Booking", icon: <ReceiptLongIcon  />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon   />, path: "/Rep" },
     { name: "Subscribe", icon: <PersonAddIcon  />, path: "/Sub" },
-    { name: "Payment", icon: <PaymentIcon  />, path: "/PM" },
+    { name: "Payment", icon: <PaymentIcon  />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
     

@@ -280,21 +280,11 @@ function CheckInOutShow() {
           <Box>
             <Button
               component={RouterLink}
-              to="/CNCO/CN/Edit"
+              to="/CNCO/Edit"
               variant="contained"
               color="primary"
             >
-              Edit CHECK IN
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              component={RouterLink}
-              to="/CNCO/CO/Edit"
-              variant="contained"
-              color="primary"
-            >
-              Edit CHECK OUT
+              Edit
             </Button>
           </Box>
         </Box>

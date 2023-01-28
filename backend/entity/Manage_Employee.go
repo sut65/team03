@@ -89,4 +89,5 @@ type Employee struct {
 	CHK_Payments []CHK_Payment `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง Storage เพื่อเป็น foreignKey
 	Storages []Storage `gorm:"foreignKey:EmployeeID"`
+	Checkroom []Checkroom `gorm:"foreignKey:EmployeeID"`
 }

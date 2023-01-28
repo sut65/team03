@@ -53,4 +53,5 @@ type Room struct {
 	State   State
 
 	Bookings []Booking `gorm:"foreignKey:RoomID"`
+	Checkroom []Checkroom `gorm:"foreignKey:RoomID"`
 }
