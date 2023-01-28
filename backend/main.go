@@ -185,7 +185,7 @@ func main() {
 			protected.DELETE("/services/:id", service.DeleteService)
 
 			protected.GET("/foods", service.ListFoods)
-			protected.GET("/drink", service.ListDrinks)
+			protected.GET("/drinks", service.ListDrinks)
 			protected.GET("/accessories", service.ListAccessories)
 			// ======================================= SERVICE
 
