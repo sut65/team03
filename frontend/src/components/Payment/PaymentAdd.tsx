@@ -32,7 +32,7 @@ function PaymentAdd() {
     const [picture, setPicture] = useState<string | ArrayBuffer | null>(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const id_cus = localStorage.getItem("uid");
+    const id_cus = localStorage.getItem("id");
 
     const handleImageChange = (event: any) => {
         const image = event.target.files[0];
@@ -98,7 +98,10 @@ function PaymentAdd() {
 
         const requestOptions = {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify(data),
         };
         fetch(`http://localhost:8080/payment`, requestOptions)
@@ -111,24 +114,31 @@ function PaymentAdd() {
                 }
             });
     }
-
+    
     const apiUrl = "http://localhost:8080";
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
     const fetchPaymentMethods = async () => {
-        fetch(`${apiUrl}/paymentmethods`)
+        fetch(`${apiUrl}/paymentmethods`, requestOptions)
             .then(response => response.json())
             .then(res => {
                 setPaymet(res.data);
             })
     }
     const fetchPlaces = async () => {
-        fetch(`${apiUrl}/places`)
+        fetch(`${apiUrl}/places`, requestOptions)
             .then(response => response.json())
             .then(res => {
                 setPlace(res.data);
             })
     }
     const fetchMethodP = async () => {
-        fetch(`${apiUrl}/methods/paymet/${paymetid}`)
+        fetch(`${apiUrl}/methods/paymet/${paymetid}`, requestOptions)
             .then(response => response.json())
             .then(res => {
                 setMethod(res.data);
@@ -139,7 +149,10 @@ function PaymentAdd() {
         const apiUrl = `http://localhost:8080/method/${metid}`;
         const requestOptions = {
             method: "GET",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                "Content-Type": "application/json",
+            },
         };
 
         await fetch(apiUrl, requestOptions)
@@ -312,7 +325,7 @@ function PaymentAdd() {
                                 variant="contained"
                                 color="success"
                                 component={RouterLink}
-                                to="/paymentshow"
+                                to="/ps"
                             >
                                 COMMIT
                             </Button>
