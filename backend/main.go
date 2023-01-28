@@ -13,6 +13,7 @@ import (
 	room "github.com/sut65/team03/controller/Room"
 	service "github.com/sut65/team03/controller/Service"
 	storage "github.com/sut65/team03/controller/Storage"
+	checkroom "github.com/sut65/team03/controller/Checkroom"
 	"github.com/sut65/team03/middlewares"
 
 	"github.com/sut65/team03/entity"
@@ -222,6 +223,26 @@ func main() {
 			protected.DELETE("/pProduct_types/:id", storage.DeleteProductType)
 
 			//===================================================Storage
+			//==================================================Checkroom Routes
+			protected.GET("/checkrooms", checkroom.ListCheckroom)
+			protected.GET("/checkroom/:id", checkroom.GetCheckroom)
+			protected.POST("/checkrooms", checkroom.CreateCheckroom)
+			protected.PATCH("/checkrooms", checkroom.UpdateCheckroom)
+			protected.DELETE("/checkrooms/:id", checkroom.DeleteCheckroom)
+			//Gender
+			protected.GET("/damages", checkroom.ListDamage)
+			protected.GET("/checkrooms/damages/:id", checkroom.GetDamage)
+			protected.POST("/checkrooms/damages", checkroom.CreateDamage)
+			protected.PATCH("/checkrooms/damages", checkroom.UpdateDamage)
+			protected.DELETE("/checkrooms/damages/:id", checkroom.DeleteDamage)
+			//StatusCR
+			protected.GET("/statuscrs", checkroom.ListStatusCR)
+			protected.GET("/checkrooms/statuscrs/:id", checkroom.GetStatusCR)
+			protected.POST("/checkrooms/statuscrs", checkroom.CreateStatusCR)
+			protected.PATCH("/checkrooms/statuscrs", checkroom.UpdateStatusCR)
+			protected.DELETE("/checkrooms/statuscrs/:id", checkroom.DeleteStatusCR)
+
+			//==================================================Checkroom Routes
 
 		}
 	}
