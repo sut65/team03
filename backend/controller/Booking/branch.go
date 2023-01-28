@@ -37,7 +37,7 @@ func GetBranch(c *gin.Context) {
 // GET /branchs
 func ListBranchs(c *gin.Context) {
 	var branchs []entity.Branch
-	if err := entity.DB().Raw("SELECT * FROM branchs").Scan(&branchs).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM branches").Scan(&branchs).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -48,7 +48,7 @@ func ListBranchs(c *gin.Context) {
 // DELETE /branchs/:id
 func DeleteBranch(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM branchs WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM branches WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "branch not found"})
 		return
 	}

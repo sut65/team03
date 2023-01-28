@@ -1,4 +1,5 @@
-import { BookingsInterface, BrachsInterface } from "../../../models/IBooking";
+import { BookingsInterface } from "../../../models/modelBooking/IBooking";
+import { BranchsInterface } from "../../../models/modelBooking/IBranch";
 
 
 const apiUrl = "http://localhost:8080";
@@ -180,11 +181,11 @@ async function UppdateBooking(data: BookingsInterface) {
 }
 
 // // ---Branch---
-// r.GET("/branchs", booking.ListBranchs)
-// r.GET("/branch/:id", booking.GetBranch)
-// r.POST("/branchs", booking.CreateBranch)
-// r.PATCH("/branchs", booking.UpdateBranch)
-// r.DELETE("/branchs/:id", booking.DeleteBranch)
+//	r.GET("/branchs", booking.ListBranchs)
+	// r.GET("/branch/:id", booking.GetBranch)
+	// r.POST("/branchs", booking.CreateBranch)
+	// r.PATCH("/branchs", booking.UpdateBranch)
+	// r.DELETE("/branchs/:id", booking.DeleteBranch)
 // //=================================================== Booking Routes
 
 //GET List Branchs
@@ -201,6 +202,7 @@ async function GetBranchs() {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
+                console.log(res.data)
                 return res.data;
             } else {
                 return false;
@@ -211,7 +213,7 @@ async function GetBranchs() {
 }
 
 //GET Get Branchs
-async function GetBranch(data: BrachsInterface) {
+async function GetBranch(data: BranchsInterface) {
     let br_id = data.ID;
     const requestOptions = {
         method: "GET",
@@ -235,7 +237,7 @@ async function GetBranch(data: BrachsInterface) {
 }
 
 //Craete Branchs
-async function Branchs(data: BrachsInterface) {
+async function Branchs(data: BranchsInterface) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -259,7 +261,7 @@ async function Branchs(data: BrachsInterface) {
 }
 
 // Delete Branch
-async function DeleteBranch(data: BrachsInterface) {
+async function DeleteBranch(data: BranchsInterface) {
     let branch_id = data.ID;
     const requestOptions = {
         method: "DELETE",
@@ -284,7 +286,7 @@ async function DeleteBranch(data: BrachsInterface) {
 }
 
 // Update Branch
-async function UppdateBranch(data: BrachsInterface) {
+async function UppdateBranch(data: BranchsInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {
