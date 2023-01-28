@@ -169,6 +169,11 @@ func main() {
 			protected.GET("/payment/:id", payment.GetPayment)
 			protected.GET("/payment/customer/:id", payment.ListPaymentByUID)
 			protected.POST("/payment", payment.CreatePayment)
+
+			protected.GET("/paymentmethods", payment.ListPaymentMethods)
+			protected.GET("/methods/paymet/:id", payment.ListMethodsByPID)
+			protected.GET("/method/:id", payment.GetMethod)
+			protected.GET("/places", payment.ListPlaces)
 			// ======================================= PAYMENT
 
 			// ======================================= SERVICE
