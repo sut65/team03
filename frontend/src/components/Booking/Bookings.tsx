@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { BookingsInterface } from "../../models/IBooking";
+import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { GetBookings } from "./services/BookingHttpClientService";
 
 function Bookings() {
