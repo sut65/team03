@@ -1434,15 +1434,15 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Damage{}).Create(&Description2)
 
 	//status
-	S_Name1 := StatusCR{
+	S_Name1 := Status{
 		S_Name: "ก่อนเข้าพัก",
 	}
-	db.Model(&StatusCR{}).Create(&S_Name1)
+	db.Model(&Status{}).Create(&S_Name1)
 
-	S_Name2 := StatusCR{
+	S_Name2 := Status{
 		S_Name: "หลังเข้าพัก",
 	}
-	db.Model(&StatusCR{}).Create(&S_Name2)
+	db.Model(&Status{}).Create(&S_Name2)
 	//checkroom1
 	db.Model(&Checkroom{}).Create(&Checkroom{
 		Room:     Room1,

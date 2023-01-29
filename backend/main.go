@@ -236,11 +236,11 @@ func main() {
 			protected.PATCH("/checkrooms/damages", checkroom.UpdateDamage)
 			protected.DELETE("/checkrooms/damages/:id", checkroom.DeleteDamage)
 			//StatusCR
-			protected.GET("/statuscrs", checkroom.ListStatusCR)
-			protected.GET("/checkrooms/statuscrs/:id", checkroom.GetStatusCR)
-			protected.POST("/checkrooms/statuscrs", checkroom.CreateStatusCR)
-			protected.PATCH("/checkrooms/statuscrs", checkroom.UpdateStatusCR)
-			protected.DELETE("/checkrooms/statuscrs/:id", checkroom.DeleteStatusCR)
+			protected.GET("/status", checkroom.ListStatus)
+			protected.GET("/checkrooms/statuscrs/:id", checkroom.GetStatus)
+			protected.POST("/checkrooms/status", checkroom.CreateStatus)
+			protected.PATCH("/checkrooms/status", checkroom.UpdateStatus)
+			protected.DELETE("/checkrooms/status/:id", checkroom.DeleteStatus)
 
 			//==================================================Checkroom Routes
 

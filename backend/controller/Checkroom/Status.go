@@ -5,8 +5,8 @@ import (
 	"github.com/sut65/team03/entity"
 )
 
-func CreateStatusCR(c *gin.Context) {
-	var status entity.StatusCR
+func CreateStatus(c *gin.Context) {
+	var status entity.Status
 	if err := c.ShouldBindJSON(&status); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -20,11 +20,11 @@ func CreateStatusCR(c *gin.Context) {
 }
 
 // GET /status/:id
-func GetStatusCR(c *gin.Context) {
-	var status entity.StatusCR
+func GetStatus(c *gin.Context) {
+	var status entity.Status
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM statuscrs WHERE id = ?", id).Scan(&status).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM statuses WHERE id = ?", id).Scan(&status).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -32,10 +32,10 @@ func GetStatusCR(c *gin.Context) {
 }
 
 // GET /statuss
-func ListStatusCR(c *gin.Context) {
-	var status []entity.StatusCR
+func ListStatus(c *gin.Context) {
+	var status []entity.Status
 
-	if err := entity.DB().Raw("SELECT * FROM statuscrs").Scan(&status).Error; err != nil {
+	if err := entity.DB().Raw("SELECT * FROM statuses").Scan(&status).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -43,9 +43,9 @@ func ListStatusCR(c *gin.Context) {
 }
 
 // DELETE /statuss/:id
-func DeleteStatusCR(c *gin.Context) {
+func DeleteStatus(c *gin.Context) {
 	id := c.Param("id")
-	if tx := entity.DB().Exec("DELETE FROM statuscrs WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := entity.DB().Exec("DELETE FROM statuses WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "status not found"})
 		return
 	}
@@ -54,8 +54,8 @@ func DeleteStatusCR(c *gin.Context) {
 }
 
 // PATCH /statuss
-func UpdateStatusCR(c *gin.Context) {
-	var status entity.StatusCR
+func UpdateStatus(c *gin.Context) {
+	var status entity.Status
 	if err := c.ShouldBindJSON(&status); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
