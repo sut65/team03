@@ -34,6 +34,7 @@ import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 const bgnavbar = createTheme({
   palette: {
@@ -132,7 +133,7 @@ function Navbar() {
     { name: "Check The Room", icon: <CheckroomIcon  />, path: "/CTR" },
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
-
+    { name: "Checkroom", icon: <AssignmentTurnedInIcon />, path: "/checkroom/list" },
     { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
   ]
 

@@ -13,7 +13,7 @@ func CreateCheckroom(c *gin.Context) {
 	var room entity.Room
 	var product entity.Product
 	var damage entity.Damage
-	var status entity.StatusCR
+	var status entity.Status
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&checkroom); err != nil {
@@ -27,25 +27,26 @@ func CreateCheckroom(c *gin.Context) {
 	}
 	
 	//ค้นหา Product ด้วย id
-	if tx := entity.DB().Where("id = ?", checkroom.Product).First(&product); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", checkroom.ProductID).First(&product); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Product not found"})
 		return
 	}
 	//ค้นหา Damage ด้วย id
-	if tx := entity.DB().Where("id = ?", checkroom.Damage).First(&damage); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", checkroom.DamageID).First(&damage); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Damage not found"})
 		return
 	}
 	//ค้นหา Status ด้วย id
-	if tx := entity.DB().Where("id = ?", checkroom.Status).First(&status); tx.RowsAffected == 0 {
+	if tx := entity.DB().Where("id = ?", checkroom.StatusID).First(&status); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
 		return
 	}
 	//ค้นหา Employee ด้วย id
-	if tx := entity.DB().Where("id = ?", checkroom.Employee).First(&employee); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
-		return
-	}
+	 if tx := entity.DB().Where("id = ?", checkroom.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+	 	c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+	 	return
+	 }
+	
 
 	//create entity checkroom
 	checkr := entity.Checkroom{
@@ -78,7 +79,7 @@ func GetCheckroom(c *gin.Context) {
 
 // GET checkroom
 func ListCheckroom(c *gin.Context) {
-	var checkrooms entity.Checkroom
+	var checkrooms []entity.Checkroom
 	if err := entity.DB().Preload("Room").Preload("Product").Preload("Damage").Preload("Status").Preload("Employee").Raw("SELECT * FROM checkrooms").Find(&checkrooms).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -106,7 +107,7 @@ func UpdateCheckroom(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", checkroom.ID).First(&checkroom); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "checkroom not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
 		return
 	}
 

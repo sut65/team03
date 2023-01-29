@@ -30,7 +30,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function App() {
+function Customer() {
   // =========================(Use State)====================================================
 
   const [customer, setCustomer] = useState<CustomerInterface>({});
@@ -489,4 +489,4 @@ function App() {
   );
 }
 
-export default App;
+export default Customer;

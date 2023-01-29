@@ -4,62 +4,43 @@ import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import FormLabel from "@mui/material/FormLabel";
-//import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
-//import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-// import { Navigate } from "react-router-dom";
-// import { DataGrid, GridColDef } from "@mui/x-data-grid";
-// import Typography from "@mui/material/Typography";
-// import Box from "@mui/material/Box";
 import { Link as RouterLink } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Stack from '@mui/material/Stack';
 import HouseIcon from '@mui/icons-material/House';
 import EditIcon from '@mui/icons-material/Edit';
-// import FolderIcon from '@mui/icons-material/Folder';
-
-// import SearchIcon from '@mui/icons-material/Search';
-// import styled from "@emotion/styled";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
-import { GenderInterface } from "../../models/modelCustomer/IGender";
-import { NametitleInterface } from "../../models/modelCustomer/INametitle";
-import { ProvinceInterface } from "../../models/modelCustomer/IProvince";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 
 
 function ProfileCustomer() {
     const [customer, setCustomer] = useState<CustomerInterface>({});
-    const [password, setPassword] = useState<State>({
-        password: "",
-        showPassword: false,});
 
 
-  const apiUrl = "http://localhost:8080";
+    const apiUrl = "http://localhost:8080";
 
   async function GetCustomer() {
-    let uid = localStorage.getItem("user");
+    let uid = localStorage.getItem("id");
     const requestOptions = {
         method: "GET",
         headers: { 
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json" },
     };
-    fetch(`${apiUrl}/customers/${uid}`, requestOptions)
+    fetch(`${apiUrl}/customer/${uid}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
   
             if (res.data) {
-              return res.data
+                setCustomer(res.data);
+                console.log(res.data);
             }else{
               return false
             }
@@ -70,29 +51,6 @@ function ProfileCustomer() {
   }, []);
 
   console.log(customer);
-
-  interface State {
-    password: string;
-    showPassword: boolean;
-  }
-  const handlePassword =
-  (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword({ ...password, [prop]: event.target.value });
-  };
-
-const handleClickShowPassword = () => {
-  setPassword({
-    ...password,
-    showPassword: !password.showPassword,
-  });
-};
-
-const handleMouseDownPassword = (
-  event: React.MouseEvent<HTMLButtonElement>
-) => {
-  event.preventDefault();
-};
-
 
     return (
     <div>
@@ -183,12 +141,10 @@ const handleMouseDownPassword = (
                 <p style={{ color: "grey", fontSize: 17 }}>Phone number</p>
                 <TextField
                 id="Phone"
-                
                 disabled
-                
                 fullWidth
                 required
-                value={customer.Phone+""}
+                value={customer.Phone}
                 />
                 </Grid>
                 </Grid>
@@ -207,44 +163,13 @@ const handleMouseDownPassword = (
                 <TextField
                 type="email"
                 id="outlined-basic"
-                label="กรุณาป้อนอีเมล"
+                disabled
                 required
                 fullWidth
                 value={customer.Email}
                 />
                 </Grid>
-                {/*==============================================(password)====================================================*/}
-                <Grid
-                xs={12}
-                md={9}
-                sx={{ display: "flex", alignItems: "center", margin: 1 }}
-                >
-                <InputLabel
-                htmlFor="outlined-adornment-password"
-                sx={{ marginRight: 3, fontSize: 17 }}
-                >
-                Password:
-                </InputLabel>
-                <OutlinedInput
-                id="outlined-adornment-password"
-                type={password.showPassword ? "text" : "password"}
-                value={customer.Password}
-                onChange={handlePassword("password")}
-                endAdornment={
-                    <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                    >
-                        {password.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                    </InputAdornment>
-                }
-                inputProps={{ maxLength: 10 }}
-                />
-                </Grid>
+                
                 {/*=======================================(select Gender)===========================================================*/}
                 <Grid
                 xs={12}
@@ -260,12 +185,11 @@ const handleMouseDownPassword = (
                 <TextField
                 required
                 id="Gender_ID"
-                value={customer.Gender_ID+""}
+                value={customer.Gender_ID}
                 fullWidth
+                disabled
                 />
-                <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
-                กรุณาเลือกเพศของคุณ
-                </FormHelperText>
+                
                 </Grid>
 
                 {/*=======================================(Province)===========================================================*/}
@@ -280,18 +204,14 @@ const handleMouseDownPassword = (
                 >
                 Province:
                 </FormLabel>
+                
                 <TextField
-                // labelId="demo-simple-select-helper-label"
                 id="Province_ID"
-                // value={customer.Province_ID}
-                fullWidth
+                disabled
                 required
                 value={customer.Province_ID}
-                
+                fullWidth
                 />
-                <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
-                เลือกจังหวัดที่อยู่
-                </FormHelperText>
                 </Grid>
             
 
@@ -299,12 +219,11 @@ const handleMouseDownPassword = (
             <Button variant="outlined" color = "error" startIcon={<DeleteIcon />}>
             Delete
           </Button>
-          <Button variant="outlined" startIcon={<EditIcon />}component={RouterLink}
-          to="/customers">
+          <Button variant="outlined" startIcon={<EditIcon />}>
               Edit
           </Button>
 
-          <Button variant="outlined" color="success" startIcon={<HouseIcon />}>
+          <Button variant="outlined" color="success" startIcon={<HouseIcon />} component={RouterLink} to="/">
               Home
           </Button>
          
