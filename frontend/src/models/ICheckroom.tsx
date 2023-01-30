@@ -19,6 +19,6 @@ export interface CheckroomInterface {
     Status?: StatusInterface;
     Date: Date | null,
 
-    EmployeeID?: number;
+    EmployeeID?: number | null;
     Employee?: EmployeeInterface;
   }
