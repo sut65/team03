@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from "react";
-
 import { Link as RouterLink } from "react-router-dom";
-
 import Typography from "@mui/material/Typography";
-
 import Button from "@mui/material/Button";
-
 import Container from "@mui/material/Container";
-
 import Box from "@mui/material/Box";
-
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import { DepartmentInterface, EmployeeInterface } from "../../models/IEmployee";
@@ -44,7 +38,7 @@ import Review_Save from "./Review_Save";
 import Review_Edit from "./Review_Edit";
 import { ReviewInterface, SystemworkInterface } from "../../models/IReview";
 import Moment from "moment";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import { isTemplateExpression } from "typescript";
 import { error } from "console";
 
@@ -64,7 +58,9 @@ const themeshow = createTheme({
 function Review_list() {
   Moment.locale("th");
 
-const [imageString, setImageString] = React.useState<string | ArrayBuffer | null>(null);
+  const [imageString, setImageString] = React.useState<
+    string | ArrayBuffer | null
+  >(null);
   const [openForCreate, setOpenForCreate] = React.useState(false);
   const [openForEdit, setOpenForEdit] = React.useState(false);
   const [review, setReview] = React.useState<ReviewInterface[]>([]);
@@ -72,17 +68,15 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
   const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
   const [systemwork, setSystemwork] = React.useState<SystemworkInterface[]>([]);
   const [start, setStart] = React.useState<number | null>();
-  
-  const UpdateReview = () => {
 
+  const UpdateReview = () => {
     let UpdateData = {
       ID: review1.ID,
-      Comment: review1.Comment ,
+      Comment: review1.Comment,
       Star: start,
       Reviewimega: imageString,
       DepartmentID: review1.DepartmentID,
       SystemworkID: review1.SystemworkID,
-
     };
     const apiUrl = "http://localhost:8080/Reviews";
     const requestOptions = {
@@ -98,15 +92,13 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
       .then((response) => response.json())
       .then((res) => {
         if (res.data) {
-         // setSuccess(true);
+          // setSuccess(true);
         } else {
           //setError(true);
-
         }
       });
-
-  }
-  console.log(UpdateReview)
+  };
+  console.log(UpdateReview);
   const getDepartment = async () => {
     const apiUrl = `http://localhost:8080/Departments`;
 
@@ -183,9 +175,9 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
     setOpenForCreate(false);
   };
 
-  const handleClickOpenForEdit = (item : ReviewInterface) => {
+  const handleClickOpenForEdit = (item: ReviewInterface) => {
     setReview1(item);
-    setStart(item.Star)
+    setStart(item.Star);
     setOpenForEdit(true);
   };
   const handleCloseForEdit = () => {
@@ -197,10 +189,10 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = () => {
-        const base64Data = reader.result;
-        setImageString(base64Data)
-    }
-}
+      const base64Data = reader.result;
+      setImageString(base64Data);
+    };
+  };
 
   const deleteReview = (id: number) => {
     const apiUrl = "http://localhost:8080/Reviews/" + id;
@@ -257,7 +249,7 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
     getSystemwork();
     // getOfficer();
   }, []);
-  
+
   return (
     <Container>
       {" "}
@@ -342,9 +334,8 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
       >
         <DialogTitle>Edit comment</DialogTitle>
         <DialogContent>
-       
-        <Container maxWidth="md">
-          {/* <Snackbar
+          <Container maxWidth="md">
+            {/* <Snackbar
             open={success}
             autoHideDuration={6000}
             onClose={handleClose}
@@ -360,144 +351,141 @@ const [imageString, setImageString] = React.useState<string | ArrayBuffer | null
               บันทึกข้อมูลไม่สำเร็จ
             </Alert>
           </Snackbar> */}
-  
-          <Paper>
-            <Box
-              display="flex"
-              sx={{
-                marginTop: 2,
-              }}
-            >
-              <Box sx={{ paddingX: 2, paddingY: 1 }}>
-                <Typography
-                  component="h2"
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                >
-                  Review
-                </Typography>
+
+            <Paper>
+              <Box
+                display="flex"
+                sx={{
+                  marginTop: 2,
+                }}
+              >
+                <Box sx={{ paddingX: 2, paddingY: 1 }}>
+                  <Typography
+                    component="h2"
+                    variant="h6"
+                    color="primary"
+                    gutterBottom
+                  >
+                    Review
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-  
-            <Divider />
-  
-            <Grid
-              container
-              spacing={3}
-              sx={{ padding: 2 }}
-              style={{ marginLeft: "10.5%" }}
-            >
-              {/* ComboboxDepartment */}
-              <Grid item xs={3}>
-                <FormLabel>Department</FormLabel>
-                <FormControl fullWidth variant="outlined">
-                  <Select
-                    value={review1.DepartmentID}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: "DepartmentID",
-                    }}
-                  >
-                    <MenuItem value={0} key={0}>
-                      เลือกแผนก
-                    </MenuItem>
-                    {department.map((item: DepartmentInterface) => (
-                      <MenuItem value={item.ID}>{item.Name}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+
+              <Divider />
+
+              <Grid
+                container
+                spacing={3}
+                sx={{ padding: 2 }}
+                style={{ marginLeft: "10.5%" }}
+              >
+                {/* ComboboxDepartment */}
+                <Grid item xs={3}>
+                  <FormLabel>Department</FormLabel>
+                  <FormControl fullWidth variant="outlined">
+                    <Select
+                      value={review1.DepartmentID}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "DepartmentID",
+                      }}
+                    >
+                      <MenuItem value={0} key={0}>
+                        เลือกแผนก
+                      </MenuItem>
+                      {department.map((item: DepartmentInterface) => (
+                        <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* ComboboxPosition */}
+                <Grid item xs={3}>
+                  <FormLabel>System Work</FormLabel>
+                  <FormControl fullWidth variant="outlined">
+                    <Select
+                      value={review1.SystemworkID}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "SystemworkID",
+                      }}
+                    >
+                      <MenuItem value={0} key={0}>
+                        เลือกตำแหน่ง
+                      </MenuItem>
+                      {systemwork.map((item: SystemworkInterface) => (
+                        <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
-  
-              {/* ComboboxPosition */}
-              <Grid item xs={3}>
-                <FormLabel>System Work</FormLabel>
-                <FormControl fullWidth variant="outlined">
-                  <Select
-                    value={review1.SystemworkID}
-                    onChange={handleChange}
-                    inputProps={{
-                      name: "SystemworkID",
-                    }}
-                  >
-                    <MenuItem value={0} key={0}>
-                      เลือกตำแหน่ง
-                    </MenuItem>
-                    {systemwork.map((item: SystemworkInterface) => (
-                      <MenuItem value={item.ID}>{item.Name}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+
+              <Grid
+                container
+                spacing={3}
+                sx={{ padding: 2 }}
+                style={{ marginLeft: "14.5%" }}
+              >
+                <Grid item xs={6}>
+                  <FormControl>
+                    <FormLabel>Start</FormLabel>
+                    <Rating
+                      name="simple-controlled"
+                      defaultValue={review1.Star}
+                      onChange={(event, newValue) => {
+                        setStart(newValue);
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-  
-            <Grid
-              container
-              spacing={3}
-              sx={{ padding: 2 }}
-              style={{ marginLeft: "14.5%" }}
-            >
-              <Grid item xs={6}>
-                <FormControl>
-                  <FormLabel>Start</FormLabel>
-                  <Rating
-                    name="simple-controlled"
-                  defaultValue={review1.Star}
-                  onChange={(event, newValue) => {
-                    setStart(newValue);
-                  }}
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-  
-            <Grid container spacing={3} sx={{ padding: 2 }}>
-              <Grid item xs={10}>
-                <FormControl fullWidth variant="outlined">
-                  <FormLabel>Comment</FormLabel>
-  
-                  <TextField
-                    id="Comment"
-                    variant="outlined"
-                    type="string"
-                    size="medium"
-                    value={review1.Comment || ""}
-                    onChange={handleInputChange}
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-  
+
               <Grid container spacing={3} sx={{ padding: 2 }}>
-              <Grid item xs={10}>
-                <FormControl fullWidth variant="outlined">
-                  <FormLabel>Image</FormLabel>
-                  <img src={`${imageString}`} width="500" height="500"/>
-                  <input type="file" onChange={handleImageChange} />
-                </FormControl>
+                <Grid item xs={10}>
+                  <FormControl fullWidth variant="outlined">
+                    <FormLabel>Comment</FormLabel>
+
+                    <TextField
+                      id="Comment"
+                      variant="outlined"
+                      type="string"
+                      size="medium"
+                      value={review1.Comment || ""}
+                      onChange={handleInputChange}
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
-  
-              {/* วันที่ทำงาน */}
-              <Grid item xs={12}>
-                <Button component={RouterLink} to="/RW" variant="contained">
-                  Back
-                </Button>
-  
-                <Button
-                  style={{ float: "right" }}
-                  onClick={UpdateReview}
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
+
+              <Grid container spacing={3} sx={{ padding: 2 }}>
+                <Grid item xs={10}>
+                  <FormControl fullWidth variant="outlined">
+                    <FormLabel>Image</FormLabel>
+                    <img src={`${imageString}`} width="500" height="500" />
+                    <input type="file" onChange={handleImageChange} />
+                  </FormControl>
+                </Grid>
+
+                {/* วันที่ทำงาน */}
+                <Grid item xs={12}>
+                  <Button component={RouterLink} to="/RW" variant="contained">
+                    Back
+                  </Button>
+
+                  <Button
+                    style={{ float: "right" }}
+                    onClick={UpdateReview}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Submit
+                  </Button>
+                </Grid>
               </Grid>
-  
-            </Grid>
-          </Paper>
-        </Container>
-      
-          
+            </Paper>
+          </Container>
         </DialogContent>
       </Dialog>
     </Container>

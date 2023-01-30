@@ -53,7 +53,7 @@ import {
   });
   
   function Review_Edit() {
-      const [start, setStart] = React.useState<number | null>();
+    const [start, setStart] = React.useState<number | null>();
     const [review, setReview] = React.useState<Partial<ReviewInterface>>({});
     const [user, setUser] = React.useState<CustomerInterface>();
     const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
@@ -117,7 +117,6 @@ import {
   
     const handleImageChange = (event: any) => {
       const image = event.target.files[0];
-  
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = () => {
@@ -144,9 +143,7 @@ import {
       event: React.ChangeEvent<{ id?: string; value: any }>
     ) => {
       const id = event.target.id as keyof typeof Review_Edit;
-  
       const { value } = event.target;
-  
       setReview({ ...review, [id]: value });
     };
   
