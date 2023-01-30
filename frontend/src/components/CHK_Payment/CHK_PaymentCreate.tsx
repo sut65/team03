@@ -16,11 +16,12 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { CHK_Payments, GetEmployeeByUID, GetStatuses, GetPayments} from "./services/CHK_PaymentHttpClientService";
+import { CHK_Payments, GetEmployeeByUID, GetStatuses, GetPayments } from "./services/CHK_PaymentHttpClientService";
 import { EmployeeInterface } from "../../models/IEmployee";
-import { StatusesInterface } from "../../models/modelCHK_Payment/IStatus";
+import { CHK_PaymentStatusesInterface } from "../../models/modelCHK_Payment/IStatus";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
 import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
+import { min } from "date-fns";
 
 
 
@@ -34,8 +35,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 function CHK_PaymentCreate() {
     const [chk_payment, setCHK_Payment] = useState<CHK_PaymentsInterface>({});
     const [payments, setPayments] = useState<PaymentsInterface[]>([]);
-    const [statuses, setStatuses] = useState<StatusesInterface[]>([]);
-    const [employees, setEmployees ] = useState<EmployeeInterface>();
+    const [statuses, setStatuses] = useState<CHK_PaymentStatusesInterface[]>([]);
+    const [employees, setEmployees] = useState<EmployeeInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
 
@@ -56,6 +57,12 @@ function CHK_PaymentCreate() {
             ...chk_payment,
             [name]: event.target.value,
         });
+    };
+
+    const handleInputChange_Text = (event: React.ChangeEvent<{ id?: string; value: any }>) => {
+        const id = event.target.id as keyof typeof chk_payment;
+        const { value } = event.target;
+        setCHK_Payment({ ...chk_payment, [id]: value, });
     };
 
     const getStatuses = async () => {
@@ -91,15 +98,23 @@ function CHK_PaymentCreate() {
         return val;
     };
 
+    const convertType_C = (data: string | number | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
+
     async function submit() {
         let data = {
             PaymentID: convertType(chk_payment.PaymentID),
-            StatusID: convertType(chk_payment.StatusID),
+            CHK_PaymentStatusID: convertType(chk_payment.CHK_PaymentStatusID),
             Date_time: chk_payment.Date_time,
             Amount: convertType(chk_payment.Amount),
             Description: chk_payment.Description,
-            EmployeeID: convertType(chk_payment.EmployeeID),
+            EmployeeID: convertType_C(localStorage.getItem('id')),
         };
+
+        console.log(data);
 
         let res = await CHK_Payments(data);
         if (res) {
@@ -158,16 +173,16 @@ function CHK_PaymentCreate() {
                             <p>สถานะการชำระเงิน</p>
                             <Select
                                 native
-                                value={chk_payment.StatusID + ""}
+                                value={chk_payment.CHK_PaymentStatusID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "StatusID",
+                                    name: "CHK_PaymentStatusID",
                                 }}
                             >
                                 <option aria-label="None" value="">
                                     กรุณาเลือกสถานะการชำระเงิน
                                 </option>
-                                {statuses.map((item: StatusesInterface) => (
+                                {statuses.map((item: CHK_PaymentStatusesInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.Type}
                                     </option>
@@ -181,6 +196,7 @@ function CHK_PaymentCreate() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    disableFuture
                                     value={chk_payment.Date_time}
                                     onChange={(newValue) => {
                                         setCHK_Payment({
@@ -196,20 +212,33 @@ function CHK_PaymentCreate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>จำนวนเงิน</p>
-                            <TextField value={chk_payment.Amount}
-                                id="outlined-basic"
+                            <TextField
+                                type="number"
+                                value={chk_payment.Amount}
+                                id="Amount"
                                 label="กรุณาใส่จำนวนเงิน"
                                 variant="outlined"
+                                inputProps={{
+                                    name: "Amount",
+                                    min: 0
+                                }}
+                                onChange={handleInputChange_Text}
                             />
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>หมายเหตุ</p>
-                            <TextField value={chk_payment.Description}
-                                id="outlined-basic"
+                            <TextField
+                                type="text"
+                                value={chk_payment.Description}
+                                id="Description"
                                 label="ป้อนหมายเหตุที่นี่"
                                 variant="outlined"
+                                inputProps = {{
+                                    name: "Description"
+                                }}
+                                onChange = {handleInputChange_Text}
                             />
                         </FormControl>
                     </Grid>

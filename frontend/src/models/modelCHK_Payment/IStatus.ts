@@ -1,4 +1,4 @@
-export interface StatusesInterface {
+export interface CHK_PaymentStatusesInterface {
     ID: number,
     Type: string,
 }

@@ -115,11 +115,11 @@ function BookingUpdate() {
 
     async function submit() {
         let data = {
-            ID: booking.ID,
+            ID: convertType(booking.ID),
             BranchID: convertType(booking.BranchID),
             RoomID: convertType(booking.RoomID),
-            Start: null,
-            Stop: null,
+            Start: booking.Start,
+            Stop: booking.Stop,
             CustomerID: convertType_C(localStorage.getItem('id')), //GET user by user(login)ID
         };
 
@@ -187,11 +187,6 @@ function BookingUpdate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกสาขาที่จะเข้าพัก
                                 </option>
-                                {branchs.map((item: BranchsInterface) => item.ID === booking.BranchID && (
-                                    <option aria-label="None" value={item.ID} key={item.ID} selected>
-                                        {item.B_name}
-                                    </option>
-                                ))}
                                 {branchs.map((item: BranchsInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.B_name}
@@ -214,11 +209,6 @@ function BookingUpdate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกห้องพัก
                                 </option>
-                                {rooms.map((item: RoomInterface) => item.ID === booking.RoomID && (
-                                    <option value={item.ID} key={item.ID} selected>
-                                        {item.ID}
-                                    </option>
-                                ))}
                                 {rooms.map((item: RoomInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.ID}
@@ -233,6 +223,7 @@ function BookingUpdate() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    disablePast
                                     value={booking.Start}
                                     onChange={(newValue) => {
                                         setBooking({
@@ -250,6 +241,7 @@ function BookingUpdate() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
                                     value={booking.Stop}
                                     onChange={(newValue) => {
                                         setBooking({
