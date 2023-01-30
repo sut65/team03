@@ -54,13 +54,6 @@ function Review_Show() {
   const [openForCreate, setOpenForCreate] = React.useState(false);
   const [review, setReview] = React.useState<ReviewInterface[]>([]);
 
-  const handleClickOpenForCreate = () => {
-    setOpenForCreate(true);
-  };
-  const handleCloseForCreate = () => {
-    setOpenForCreate(false);
-  };
-
   const getReview = async () => {
     const apiUrl = `http://localhost:8080/Reviews`;
 
@@ -94,15 +87,8 @@ function Review_Show() {
   }, []);
 
   return (
-    <Container>
+    <Container  maxWidth="xl">
       {" "}
-      <Button
-        color="secondary"
-        aria-label="add"
-        onClick={() => handleClickOpenForCreate()}
-      >
-        Add
-      </Button>
       <div>
         <Box
           sx={{
@@ -157,17 +143,6 @@ function Review_Show() {
           ))}
         </Grid>
       </div>
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={openForCreate}
-        onClose={handleCloseForCreate}
-      >
-        <DialogTitle>Write comment</DialogTitle>
-        <DialogContent>
-          <Review_Save />
-        </DialogContent>
-      </Dialog>
     </Container>
   );
 }

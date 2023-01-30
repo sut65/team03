@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { BookingsInterface } from "../../models/IBooking";
+import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { 
   CheckInOutInterface,
   CheckInOutStatusInterface, 
@@ -113,7 +113,7 @@ function CheckInEdit() {
         ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
         //BookingID: convertType(checkinout.BookingID),
         BookingID: null,
-        CheckInOutStatusID: 1,
+        CheckInOutStatusID: null,
         //EmployeeID: convertType(checkinout.EmployeeID),
         EmployeeID: convertType(localStorage.getItem("id")),
         CheckInTime: checkinout.CheckInTime,
@@ -164,7 +164,7 @@ function CheckInEdit() {
               color="primary"
               gutterBottom
             >
-              Check In Edit
+              CHECK IN EDIT
             </Typography>
           </Box>
         </Box>

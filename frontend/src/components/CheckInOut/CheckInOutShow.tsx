@@ -90,10 +90,10 @@ function CheckInOutShow() {
     return value.toString();
   }
   const columns: GridColDef[] = [
-    { field: "ID", headerName: "ลำดับ", width: 60 },
+    { field: "ID", headerName: "ลำดับ", width: 100 },
     { field: "CheckInTime", headerName: "Check-In Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
     { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.ID},
+    { field: "Booking", headerName: "Booking ID", width: 120, valueFormatter: (params) => params.value.ID},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
     { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},
     { field: "Employee", headerName: "Employee", width: 110, valueFormatter: (params) => params.value.Eusername,},
@@ -159,6 +159,7 @@ function CheckInOutShow() {
     {
       field: "delete",
       headerName: "DELETE",
+      width: 150,
       sortable: false,
       align:"center",
       renderCell: (params) => {
@@ -263,7 +264,7 @@ function CheckInOutShow() {
               color="primary"
               gutterBottom
             >
-              Check In/Out
+              CHECK IN & CHECK OUT
             </Typography>
           </Box>
           <Box>
@@ -279,21 +280,11 @@ function CheckInOutShow() {
           <Box>
             <Button
               component={RouterLink}
-              to="/CNCO/CN/Edit"
+              to="/CNCO/Edit"
               variant="contained"
               color="primary"
             >
-              Edit Check-In
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              component={RouterLink}
-              to="/CNCO/CO/Edit"
-              variant="contained"
-              color="primary"
-            >
-              Edit Check-Out
+              Edit
             </Button>
           </Box>
         </Box>

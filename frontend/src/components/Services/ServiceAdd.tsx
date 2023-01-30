@@ -95,7 +95,7 @@ function ServiceAdd() {
             })
     }
     const fetchDrinks = async () => {
-        fetch(`${apiUrl}/drink`, requestOptions)
+        fetch(`${apiUrl}/drinks`, requestOptions)
             .then(response => response.json())
             .then(res => {
                 setDrink(res.data);

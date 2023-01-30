@@ -195,7 +195,7 @@ func UpdateCheckIn(c *gin.Context) {
 
 	//relation
 	//var booking entity.Booking
-	var status entity.CheckInOutStatus
+	//var status entity.CheckInOutStatus
 	var emp entity.Employee
 
 	if err := c.ShouldBindJSON(&cio); err != nil {
@@ -209,15 +209,8 @@ func UpdateCheckIn(c *gin.Context) {
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
-		return
-	}
-	cio.CheckInOutStatus = status
+	cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
 
-	if cioOld.CheckInOutStatus.ID == 2 {
-		cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
-	}
 	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
 		cio.CheckInTime = cioOld.CheckInTime
 	}
@@ -243,9 +236,9 @@ func UpdateCheckIn(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"status":                     "Update Success",
-		"data":                       cio,
-		"cioOld.CheckInOutStatus.ID": cioOld.CheckInOutStatus.ID,
+		"status":      "Update Success",
+		"data":        cio,
+		"cioOld data": cioOld,
 	})
 }
 

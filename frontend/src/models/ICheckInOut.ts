@@ -1,4 +1,4 @@
-import { BookingsInterface } from "./IBooking";
+import { BookingsInterface } from "./modelBooking/IBooking";
 import { EmployeeInterface } from "./IEmployee";
 
 //main

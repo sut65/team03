@@ -4,13 +4,10 @@ import {
   Container,
   Divider,
   FormControl,
-  FormControlLabel,
   FormLabel,
   Grid,
   MenuItem,
   Paper,
-  Radio,
-  RadioGroup,
   Rating,
   Select,
   SelectChangeEvent,
@@ -161,16 +158,12 @@ function Review_Save() {
   function submit() {
     let data = {
       Comment: review.Comment ?? "",
-      Start: start,
+      Star: start,
       Reviewdate: reviewdate,
       Reviewimega: imageString,
       CustomerID: user?.ID ?? "",
       DepartmentID: review.DepartmentID,
       SystemworkID: review.SystemworkID,
-      //   Signin: {
-      //     Username: review.Email ?? "",
-      //     Password: review.Password ?? "",
-      //   }
     };
 
     const apiUrl = "http://localhost:8080/Reviews";
