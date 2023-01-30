@@ -184,6 +184,7 @@ function BookingCreate() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    disablePast
                                     value={booking.Start}
                                     onChange={(newValue) => {
                                         setBooking({
@@ -201,6 +202,7 @@ function BookingCreate() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
                                     value={booking.Stop}
                                     onChange={(newValue) => {
                                         setBooking({

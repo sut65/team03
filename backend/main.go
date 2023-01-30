@@ -4,6 +4,7 @@ import (
 	"github.com/sut65/team03/controller"
 	booking "github.com/sut65/team03/controller/Booking"
 	check "github.com/sut65/team03/controller/CheckInOut"
+	checkroom "github.com/sut65/team03/controller/Checkroom"
 	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
 	customer "github.com/sut65/team03/controller/Customer"
 	employee "github.com/sut65/team03/controller/Manage_Employee"
@@ -13,7 +14,6 @@ import (
 	room "github.com/sut65/team03/controller/Room"
 	service "github.com/sut65/team03/controller/Service"
 	storage "github.com/sut65/team03/controller/Storage"
-	checkroom "github.com/sut65/team03/controller/Checkroom"
 	"github.com/sut65/team03/middlewares"
 
 	"github.com/sut65/team03/entity"
@@ -59,7 +59,7 @@ func main() {
 			protected.GET("/booking/:id", booking.GetBooking)
 			protected.GET("/bookings/user/:id", booking.ListBookingsByUID)
 			protected.POST("/bookings", booking.CreateBooking)
-			protected.PATCH("/bookings", booking.UpdateBooking)
+			protected.PATCH("/bookings/:id", booking.UpdateBooking)
 			protected.DELETE("/bookings/:id", booking.DeleteBooking)
 			// ---Branch---
 			protected.GET("/branchs", booking.ListBranchs)
@@ -72,7 +72,7 @@ func main() {
 			protected.GET("/chk_payments", chk_payment.ListCHK_Payments)
 			protected.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
 			protected.POST("/chk_payments", chk_payment.CreateCHK_Payment)
-			protected.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+			protected.PATCH("/chk_payments/:id", chk_payment.UpdateCHK_Payment)
 			protected.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
 			// ---Status---
 			protected.GET("/chk_payment/statuses", chk_payment.ListStatuses)

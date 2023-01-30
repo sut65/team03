@@ -3,7 +3,7 @@ import { RoomInterface } from "../IRoom"
 import { BranchsInterface } from "./IBranch"
 
 export interface BookingsInterface {
-    ID?: string,
+    ID?: number,
     BranchID?: number,
     Branch?: BranchsInterface,
 

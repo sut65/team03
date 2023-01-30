@@ -158,6 +158,7 @@ async function DeleteBooking(data: BookingsInterface) {
 
 // Update Booking
 async function UppdateBooking(data: BookingsInterface) {
+    let b_id = data.ID;
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -167,7 +168,7 @@ async function UppdateBooking(data: BookingsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/bookings/${b_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {

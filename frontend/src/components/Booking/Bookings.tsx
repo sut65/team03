@@ -19,6 +19,7 @@ function Bookings() {
         let res = await GetBookings();
         if (res) {
             setBookings(res);
+            console.log(res);
         }
     };
 

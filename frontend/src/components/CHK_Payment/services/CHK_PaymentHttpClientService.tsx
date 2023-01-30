@@ -1,5 +1,5 @@
 import { CHK_PaymentsInterface } from "../../../models/modelCHK_Payment/ICHK_Payment";
-import { StatusesInterface } from "../../../models/modelCHK_Payment/IStatus";
+import { CHK_PaymentStatusesInterface } from "../../../models/modelCHK_Payment/IStatus";
 
 
 const apiUrl = "http://localhost:8080";
@@ -108,7 +108,7 @@ async function CHK_Payments(data: CHK_PaymentsInterface) {
 
 // Delete CHK_Payment
 async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
-    let booking_id = data.ID;
+    let chkp_id = data.ID;
     const requestOptions = {
         method: "DELETE",
         headers: {
@@ -118,7 +118,7 @@ async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/chk_payments/${booking_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments/${chkp_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -133,6 +133,7 @@ async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
 
 // Update CHK_Payment
 async function UppdateCHK_Payment(data: CHK_PaymentsInterface) {
+    let chkp_id = data.ID;
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -142,7 +143,7 @@ async function UppdateCHK_Payment(data: CHK_PaymentsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments/${chkp_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -185,7 +186,7 @@ async function GetStatuses() {
 }
 
 //Get Status
-async function GetStatus(data: StatusesInterface) {
+async function GetStatus(data: CHK_PaymentStatusesInterface) {
     let s_id = data.ID;
     const requestOptions = {
         method: "GET",
@@ -209,7 +210,7 @@ async function GetStatus(data: StatusesInterface) {
 }
 
 //Craete Statuses
-async function Statuses(data: StatusesInterface) {
+async function Statuses(data: CHK_PaymentStatusesInterface) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -233,7 +234,7 @@ async function Statuses(data: StatusesInterface) {
 }
 
 // Delete Status
-async function DeleteStatus(data: StatusesInterface) {
+async function DeleteStatus(data: CHK_PaymentStatusesInterface) {
     let booking_id = data.ID;
     const requestOptions = {
         method: "DELETE",
@@ -258,7 +259,7 @@ async function DeleteStatus(data: StatusesInterface) {
 }
 
 // Update Status
-async function UpdateStatus(data: StatusesInterface) {
+async function UpdateStatus(data: CHK_PaymentStatusesInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {

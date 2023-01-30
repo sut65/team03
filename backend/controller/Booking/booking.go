@@ -102,13 +102,14 @@ func DeleteBooking(c *gin.Context) {
 // PATCH /bookings
 func UpdateBooking(c *gin.Context) {
 	var booking entity.Booking
-	if err := c.ShouldBindJSON(&booking); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	id := c.Param("id")
+	if tx := entity.DB().Where("id = ?", id).First(&booking); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "booking not found"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", booking.ID).First(&booking); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "booking not found"})
+	if err := c.ShouldBindJSON(&booking); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -116,6 +117,5 @@ func UpdateBooking(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{"data": booking})
 }

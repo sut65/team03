@@ -16,9 +16,9 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import { CHK_Payments, GetCHK_Payments, GetEmployeeByUID, GetStatuses, GetPayments, GetCHK_Payment } from "./services/CHK_PaymentHttpClientService";
+import { GetCHK_Payments, GetEmployeeByUID, GetStatuses, GetPayments, GetCHK_Payment, UppdateCHK_Payment } from "./services/CHK_PaymentHttpClientService";
 import { EmployeeInterface } from "../../models/IEmployee";
-import { StatusesInterface } from "../../models/modelCHK_Payment/IStatus";
+import { CHK_PaymentStatusesInterface } from "../../models/modelCHK_Payment/IStatus";
 import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,9 +32,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function CHK_PaymentUpdate() {
     const [chk_payment, setCHK_Payment] = useState<CHK_PaymentsInterface>({});
-    const [u_chk_payments, setU_CHK_Payments] = useState<CHK_PaymentsInterface[]>([]);
+    const [u_chkpayments, setU_CHKPayments] = useState<CHK_PaymentsInterface[]>([]);
     const [payments, setPayments] = useState<PaymentsInterface[]>([]);
-    const [statuses, setStatuses] = useState<StatusesInterface[]>([]);
+    const [statuses, setStatuses] = useState<CHK_PaymentStatusesInterface[]>([]);
     const [employees, setEmployees] = useState<EmployeeInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -58,12 +58,18 @@ function CHK_PaymentUpdate() {
         });
     };
 
-    const onChangeU_CHK_Payment = async (event: SelectChangeEvent) => {
+    const onChangeU_CHKPayment = async (event: SelectChangeEvent) => {
         let res = await GetCHK_Payment(event.target.value);
         console.log(res);
         if (res) {
             setCHK_Payment(res);
         }
+    };
+
+    const handleInputChange_Text = (event: React.ChangeEvent<{ id?: string; value: any }>) => {
+        const id = event.target.id as keyof typeof chk_payment;
+        const { value } = event.target;
+        setCHK_Payment({ ...chk_payment, [id]: value, });
     };
 
     const getStatuses = async () => {
@@ -83,7 +89,7 @@ function CHK_PaymentUpdate() {
     const getCHK_Payments = async () => {
         let res = await GetCHK_Payments();
         if (res) {
-            setU_CHK_Payments(res);
+            setU_CHKPayments(res);
         }
     }
 
@@ -107,17 +113,25 @@ function CHK_PaymentUpdate() {
         return val;
     };
 
+    const convertType_C = (data: string | number | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
     async function submit() {
         let data = {
+            ID: convertType(chk_payment.ID),
             PaymentID: convertType(chk_payment.PaymentID),
-            StatusID: convertType(chk_payment.StatusID),
+            CHK_PaymentStatusID: convertType(chk_payment.CHK_PaymentStatusID),
             Date_time: chk_payment.Date_time,
             Amount: convertType(chk_payment.Amount),
             Description: chk_payment.Description,
-            EmployeeID: convertType(chk_payment.EmployeeID),
+            EmployeeID: convertType_C(localStorage.getItem('id')),
         };
 
-        let res = await CHK_Payments(data);
+        console.log(data)
+
+        let res = await UppdateCHK_Payment(data);
         if (res) {
             setSuccess(true);
         } else {
@@ -152,21 +166,19 @@ function CHK_PaymentUpdate() {
                             <p>เลือกรายการที่จะแก้ไข</p>
                             <Select
                                 value={chk_payment.ID + ""}
-                                onChange={onChangeU_CHK_Payment}
+                                onChange={onChangeU_CHKPayment}
                                 inputProps={{
                                     name: "ID",
                                 }}
                             >
-                                {u_chk_payments.map((item: CHK_PaymentsInterface) => (
-                                    <MenuItem key={item.ID} value={item.ID}>
+                                {u_chkpayments.map((item: CHK_PaymentsInterface) => (
+                                    <MenuItem value={item.ID} key={item.ID}>
                                         {item.ID}
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                </Grid>
-                <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>เลือกรายการ การชำระเงิน</p>
@@ -181,11 +193,6 @@ function CHK_PaymentUpdate() {
                                 <option aria-label="None" value="">
                                     กรุณาเลือกราย การชำระเงิน
                                 </option>
-                                {payments.map((item: PaymentsInterface) => item.ID === chk_payment.PaymentID && (
-                                    <option value={item.ID} key={item.ID} selected>
-                                        {item.ID}
-                                    </option>
-                                ))}
                                 {payments.map((item: PaymentsInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.ID}
@@ -199,16 +206,16 @@ function CHK_PaymentUpdate() {
                             <p>สถานะการชำระเงิน</p>
                             <Select
                                 native
-                                value={chk_payment.StatusID + ""}
+                                value={chk_payment.CHK_PaymentStatusID + ""}
                                 onChange={handleChange}
                                 inputProps={{
-                                    name: "StatusID",
+                                    name: "CHK_PaymentStatusID",
                                 }}
                             >
                                 <option aria-label="None" value="">
                                     กรุณาเลือกสถานะการชำระเงิน
                                 </option>
-                                {statuses.map((item: StatusesInterface) => (
+                                {statuses.map((item: CHK_PaymentStatusesInterface) => (
                                     <option value={item.ID} key={item.ID}>
                                         {item.Type}
                                     </option>
@@ -222,6 +229,7 @@ function CHK_PaymentUpdate() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    disableFuture
                                     value={chk_payment.Date_time}
                                     onChange={(newValue) => {
                                         setCHK_Payment({
@@ -237,20 +245,33 @@ function CHK_PaymentUpdate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>จำนวนเงิน</p>
-                            <TextField value={chk_payment.Amount}
-                                id="outlined-basic"
+                            <TextField
+                                type="number"
+                                value={chk_payment.Amount || " "}
+                                id="Amount"
                                 label="กรุณาใส่จำนวนเงิน"
                                 variant="outlined"
+                                inputProps={{
+                                    name: "Amount",
+                                    min: 0
+                                }}
+                                onChange={handleInputChange_Text}
                             />
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>หมายเหตุ</p>
-                            <TextField value={chk_payment.Description}
-                                id="outlined-basic"
+                            <TextField
+                                type="text"
+                                value={chk_payment.Description || " "}
+                                id="Description"
                                 label="ป้อนหมายเหตุที่นี่"
                                 variant="outlined"
+                                inputProps = {{
+                                    name: "Description"
+                                }}
+                                onChange = {handleInputChange_Text}
                             />
                         </FormControl>
                     </Grid>
@@ -285,7 +306,7 @@ function CHK_PaymentUpdate() {
                             style={{ float: "right" }}
                             onClick={submit}
                             variant="contained"
-                            color="primary"
+                            color="warning"
                         >
                             บันทึกการแก้ไข
                         </Button>
