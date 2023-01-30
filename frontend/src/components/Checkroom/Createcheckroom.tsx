@@ -176,6 +176,11 @@ useEffect(() => {
     return val;
   };
 
+  const convertTypeC = (data: string | number | null) => {
+    let val = typeof data === "string" ? parseInt(data) : data;
+    return val;
+  };
+
   async function submit() {
     let data = {
       RoomID: convertType(checkroom.RoomID),
@@ -183,7 +188,7 @@ useEffect(() => {
       DamageID: convertType(checkroom.DamageID),
       StatusID: convertType(checkroom.StatusID),
       Date: date,
-      EmployeeID: convertType(checkroom.EmployeeID),
+      EmployeeID: convertTypeC(localStorage.getItem('id')),
     };
     let res = await Checkrooms(data);
     if (res) {
