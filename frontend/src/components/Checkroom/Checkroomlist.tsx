@@ -11,7 +11,7 @@ import { DataGrid, GridApi, GridColDef } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 import moment from "moment";
-import {GetCheckroomslist}  from "./service/service";
+import {GetCheckroomslist, DeleteCheckroom}  from "./service/service";
 
 
 function Checkroomlist() {
@@ -54,56 +54,77 @@ function Checkroomlist() {
           console.log(res);
       }
     };
+    
+    const onDelete = async (id: number) => {
+      let res = await DeleteCheckroom(id);
+      if (res) {
+        setSuccessDelete(true);
+      } else {
+        setErrorDelete(true);
+      }
+      getCheckroomlist()
+    }
    
-  
-    // const onDelete = async (id: number) => {
-    //   let res = await DeleteRepairReq(id);
-    //   if (res) {
-    //     setSuccessDel(true);
-    //   } else {
-    //     setErrorDel(true);
-    //   }
-    //   getList()
-    // }
-  
     const columns: GridColDef[] = [
 
         { field: "RoomID", headerName: "หมายเลขห้อง", width: 100 },
-     
         { field: "Product", headerName: "อุปกรณ์", width: 150 , valueFormatter: (params) => params?.value?.Name,},
-     
         { field: "Damage", headerName: "ความเสียหาย", width: 150 , valueFormatter: (params) => params?.value?.Description,},
-     
         { field: "Status", headerName: "สถานะของห้อง", width: 150 , valueFormatter: (params) => params?.value?.S_Name,},
-     
         { field: "Date", headerName: "วันที่และเวลา", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
-
         { field: "Employee", headerName: "ชื่อ-นามสกุล", width: 150 , valueFormatter: (params) => params?.value?.Employeename,},
+        { field: "delete",
+          headerName: "ลบข้อมูลการตรวจสอบ",
+          width: 150,
+          sortable: false,
+          align:"center",
+          renderCell: (params) => {
+              const onClick = (e: { stopPropagation: () => void; }) => {
+                  e.stopPropagation();
+                  const id = params.getValue(params.id, "ID");
+                  onDelete(id);
+              };
+              return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
+          }
+        },
      
       ];
       useEffect(() => {
         getCheckroomlist();
       }, []);
-   
-     
-   
+  
     return (
         <div>
+      <Container maxWidth="lg">
+        <Snackbar
+          open={successDelete}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="success">
+            ลบข้อมูลสำเร็จ
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={errorDelete}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={handleClose} severity="error">
+            ไม่สามารถลบข้อมูลได้
+          </Alert>
+        </Snackbar>
         <ThemeProvider theme={theme}>
         <Container maxWidth="md">
    
           <Box
-   
             display="flex"
-   
             sx={{
-   
               marginTop: 2,
-   
             }}
-   
           >
-   
            <Box flexGrow={1}>
                <Typography // ตาราง
                  component="h1"
@@ -111,13 +132,9 @@ function Checkroomlist() {
                  color="grey"
                  gutterBottom
                >
-   
                ข้อมูลการตรวจสอบห้องพัก
-   
               </Typography>
-   
             </Box>
-   
             <Box>
             <Button //ตัวบันทึก
                    component={RouterLink} //ลิ้งหน้าต่อไป
@@ -131,7 +148,6 @@ function Checkroomlist() {
                      sx={{ flexGrow: 1 }}
                    >
                 เพิ่มข้อมูล
-   
                 </Typography>
               </Button>
             </Box>
@@ -148,52 +164,25 @@ function Checkroomlist() {
                      sx={{ flexGrow: 1 }}
                    >
                 แก้ไขข้อมูล
-   
+  
                 </Typography>
               </Button>
             </Box>
-            <Box>
-            <Button //ตัวบันทึก
-                   component={RouterLink} //ลิ้งหน้าต่อไป
-                   to="/"//รอเพิ่ม
-                   variant="contained"
-                   color="primary"
-                 >
-                   <Typography
-                     color="second"
-                     component="div"
-                     sx={{ flexGrow: 1 }}
-                   >
-                ลบข้อมูล
-   
-                </Typography>
-              </Button>
-            </Box>
-   
-   
-   
-          </Box>
+           </Box>
    
           <div style={{ height: 400, width: "100%", marginTop: '20px'}}>
    
             <DataGrid
-   
               rows={checkroom}
-   
               getRowId={(row) => row.ID}
-   
               columns={columns}
-   
               pageSize={5}
-   
               rowsPerPageOptions={[5]}
-   
             />
-   
           </div>
-   
         </Container>
         </ThemeProvider>
+      </Container>
       </div>
     );
   }

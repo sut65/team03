@@ -140,8 +140,33 @@ async function GetCheckroomslist() {
     return res;
 }
 
-export {
+
+async function DeleteCheckroom(data: number) {
+    let checkroom = data;
+    const requestOptions = {
+        method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
     
+    let res = await fetch(`${apiUrl}/checkrooms/${checkroom}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+export {
+    DeleteCheckroom,
     GetCheckroomslist,
     Checkrooms,
     GetRoom,
