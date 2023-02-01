@@ -50,7 +50,7 @@ type Employee struct {
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
 	PersonalID   uint64 `gorm:"uniqueIndex"`
-	Employeename string
+	Employeename string `valid:"required~Name not blank"`
 	Email        string `gorm:"uniqueIndex"`
 
 	Eusername string
@@ -88,6 +88,6 @@ type Employee struct {
 	// ส่ง EmployeeID ไปตาราง CHK_Payment เพื่อเป็น foreignKey
 	CHK_Payments []CHK_Payment `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง Storage เพื่อเป็น foreignKey
-	Storages []Storage `gorm:"foreignKey:EmployeeID"`
+	Storages  []Storage   `gorm:"foreignKey:EmployeeID"`
 	Checkroom []Checkroom `gorm:"foreignKey:EmployeeID"`
 }
