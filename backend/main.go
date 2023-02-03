@@ -227,7 +227,7 @@ func main() {
 			protected.GET("/checkrooms", checkroom.ListCheckroom)
 			protected.GET("/checkroom/:id", checkroom.GetCheckroom)
 			protected.POST("/checkrooms", checkroom.CreateCheckroom)
-			protected.PATCH("/checkrooms", checkroom.UpdateCheckroom)
+			protected.PATCH("/checkroomsupdate/:id", checkroom.UpdateCheckroom)
 			protected.DELETE("/checkrooms/:id", checkroom.DeleteCheckroom)
 			//Gender
 			protected.GET("/damages", checkroom.ListDamage)
