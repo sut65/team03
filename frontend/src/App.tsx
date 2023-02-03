@@ -57,6 +57,7 @@ import RepRqEdit from "./components/RepReq/RepRqEdit";
 import Customer from "./components/Customer/CreateCustomer";
 import ProfileCustomer from "./components/Customer/ProfileCustomer";
 import Checkroomlist from "./components/Checkroom/Checkroomlist";
+import CheckroomEdit from "./components/Checkroom/CheckroomEdit";
 import Checkroom from "./components/Checkroom/Createcheckroom";
 
 export default function App() {
@@ -135,6 +136,7 @@ export default function App() {
           
           <Route path="/checkroom/create" element={<Checkroom />} /> 
           <Route path="/checkroom/list" element={<Checkroomlist />} /> 
+          <Route path="/checkroom/edit" element={<CheckroomEdit />} /> 
 
 
         </Routes>
