@@ -60,7 +60,7 @@ type Employee struct {
 	Signin   Signin `gorm:"references:ID"`
 
 	Salary      uint64
-	Phonenumber string
+	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not vaild,required~Tel not blank"`
 	Gender      string
 	DateOfBirth time.Time
 	YearOfStart time.Time

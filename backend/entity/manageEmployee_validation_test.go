@@ -50,6 +50,27 @@ func TestEmployeeValidateNotBlank(t *testing.T) {
 
 		g.Expect(err.Error()).To(gomega.Equal("Email not blank"))
 	})
+
+	t.Run("Check Phonenumber not blank", func(t *testing.T) {
+
+		e := Employee{
+			PersonalID:   "1104200258432",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     "Sobsa01",
+			Phonenumber:  "",//ผิด
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Tel not blank"))
+	})
 }
 
 func TestEmployeeCheckPersonalid(t *testing.T) {
@@ -105,31 +126,31 @@ func TestEmployeeEmailMustBeValid(t *testing.T) {
 
 }
 
-// func TestEmployeetCheckPhonenumber(t *testing.T) {
-// 	g := gomega.NewGomegaWithT(t)
-// 	fixtures := []string{
-// 		"190545200", // ผิดเพราะเลขไม่ครบ 10 และตัวนำหน้าไม่ใช่ 0
-// 		"09548125", // ผิดเพราะเลขไม่ครบ 10
-// 		"b288525", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
-// 		"b28g525b", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
-// 	}
-// 	for _, fixture := range fixtures{
-// 		e := Employee{
-// 			PersonalID:   "1104200258430",
-// 			Employeename: "Sobsa tugwan",
-// 			Email:        "Sobsa@gmail.com",
-// 			Eusername:    "ESobsa",
-// 			Password:     "Sobsa01",
-// 			Phonenumber:  fixture,
-// 			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
-// 		}
+func TestEmployeetCheckPhonenumber(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+	fixtures := []string{
+		"190545200", // ผิดเพราะเลขไม่ครบ 10 และตัวนำหน้าไม่ใช่ 0
+		"09548125", // ผิดเพราะเลขไม่ครบ 10
+		"b288525", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
+		"b28g525b", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
+	}
+	for _, fixture := range fixtures{
+		e := Employee{
+			PersonalID:   "1104200258430",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     "Sobsa01",
+			Phonenumber:  fixture,
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
 
-// 		ok, err := govalidator.ValidateStruct(e)
+		ok, err := govalidator.ValidateStruct(e)
 
-// 		g.Expect(ok).NotTo(gomega.BeTrue())
+		g.Expect(ok).NotTo(gomega.BeTrue())
 
-// 		g.Expect(err).ToNot(gomega.BeNil())
+		g.Expect(err).ToNot(gomega.BeNil())
 
-// 		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not vaild"))
-// 	}
-// }
+		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not vaild"))
+	}
+}
