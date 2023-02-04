@@ -54,7 +54,7 @@ type Employee struct {
 	Email        string `gorm:"uniqueIndex" valid:"email~Email is not vaild,required~Email not blank"`
 
 	Eusername string `valid:"matches(^[E][A-Z][a-zA-Z]+$)~Username must be is Begin with E and The second letter must start with A-Z and must not number,required~Username not blank"`
-	Password  string `valid:"minstringlength(6)~Password must be more than 6 characters,required~Password not blank"`
+	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,required~Password not blank"`
 
 	SigninID *uint
 	Signin   Signin `gorm:"references:ID"`
