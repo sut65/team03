@@ -1,35 +1,19 @@
 import React, { useEffect, useState } from "react";
-
 import { Link as RouterLink, useParams } from "react-router-dom";
-
 import TextField from "@mui/material/TextField";
-
 import Button from "@mui/material/Button";
-
 import FormControl from "@mui/material/FormControl";
-
 import Container from "@mui/material/Container";
-
 import Paper from "@mui/material/Paper";
-
 import Grid from "@mui/material/Grid";
-
 import Box from "@mui/material/Box";
-
 import Typography from "@mui/material/Typography";
-
 import Divider from "@mui/material/Divider";
-
 import Snackbar from "@mui/material/Snackbar";
-
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { UsersInterface } from "../../models/IUser";
 import {
   createTheme,
   FormControlLabel,
@@ -88,6 +72,7 @@ function Manage_Edit() {
   const [dateOfBirth, setDateOfBirth] = React.useState<Date | null>(new Date());
   const [yearOfStart, setYearOfStart] = React.useState<Date | null>(new Date());
   const { id } = useParams();
+  const [message, setAlertMessage] = React.useState("");
 
   //-----------เริ่มดึงข้อมูล-----------//
 //---------------------Department-------------------------------------
@@ -247,13 +232,14 @@ const getEmployee = async () => {
   function editEmployee() {
     let dataemployee = {
       ID: typeof id === "string" ? parseInt(id) : 0,
-      PersonalID: typeof employee.PersonalID === "string" ? parseInt(employee.PersonalID) : employee.PersonalID,
+      PersonalID: employee.PersonalID,
       Employeename:  employee.Employeename ,
       Email: employee.Email,
       Eusername: employee.Eusername,
       Salary: typeof employee.Salary === "string" ? parseInt(employee.Salary) : employee.Salary,
       Phonenumber: employee.Phonenumber,
       Gender: gender,
+      DateOfBirth: dateOfBirth,
       Address: employee.Address,
       DepartmentID: typeof employee.DepartmentID === "string" ? parseInt(employee.DepartmentID) : employee.DepartmentID,
       PositionID: typeof employee.PositionID === "string" ? parseInt(employee.PositionID) : employee.PositionID,
@@ -275,6 +261,7 @@ const getEmployee = async () => {
     fetch(apiUrlUpdate, requestUpdateOptions)
       .then((response) => response.json())
       .then((res) => {
+        console.log(res)
         if (res.data) {
           setSuccess(true);
         //   setErrorMassage("");
@@ -282,7 +269,7 @@ const getEmployee = async () => {
         } else {
           
           setError(true);
-        //   setErrorMassage(res.error);
+          setAlertMessage(res.error);
         }
       });
   }
@@ -314,9 +301,12 @@ const getEmployee = async () => {
         </Alert>
       </Snackbar>
 
-      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar 
+        open={error} 
+        autoHideDuration={6000} 
+        onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
-          ไม่สำเร็จ
+        {message}
         </Alert>
       </Snackbar>
 

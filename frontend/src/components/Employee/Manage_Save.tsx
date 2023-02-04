@@ -208,7 +208,7 @@ const getLocation = async () => {
 
   function submit() {
     let data = {
-      PersonalID: typeof employee.PersonalID === "string" ? parseInt(employee.PersonalID) : 0,
+      PersonalID: employee.PersonalID,
       Employeename:  employee.Employeename ,
       Email: employee.Email ,
       Eusername: employee.Eusername ?? "",

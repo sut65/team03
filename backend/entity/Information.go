@@ -182,7 +182,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	timeyear3 := time.Date(1990, 5, 13, 0, 0, 0, 0, time.Local)
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID:   1430099536148,
+		PersonalID:   "1430099536148",
 		Employeename: "Sobsa tugwan",
 		Email:        "Sobsa@gmail.com",
 		Eusername:    "ESobsa",
@@ -201,7 +201,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID:   1400000005257,
+		PersonalID:   "1400000005257",
 		Employeename: "Hanoi slotmachine",
 		Email:        "Hanoi@gmail.com",
 		Eusername:    "EHanoi",
@@ -220,7 +220,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	db.Model(&Employee{}).Create(&Employee{
-		PersonalID:   1585289653250,
+		PersonalID:   "1585289653250",
 		Employeename: "Banana amoi",
 		Email:        "Banana@gmail.com",
 		Eusername:    "EBanana",

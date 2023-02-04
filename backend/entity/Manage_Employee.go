@@ -49,7 +49,7 @@ type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID   uint64 `gorm:"uniqueIndex"`
+	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild"`
 	Employeename string `valid:"required~Name not blank"`
 	Email        string `gorm:"uniqueIndex"`
 

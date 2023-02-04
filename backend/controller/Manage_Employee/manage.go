@@ -375,6 +375,11 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
+	if _, err := govalidator.ValidateStruct(employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	if tx := entity.DB().Where("id = ?", employee.DepartmentID).First(&department); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Department not found"})
 		return
@@ -403,6 +408,7 @@ func UpdateEmployee(c *gin.Context) {
 		Salary:       employee.Salary,      // ตั้งค่าฟิลด์ Salary
 		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
 		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender
+		DateOfBirth:  employee.DateOfBirth,
 		Address:      employee.Address,     // ตั้งค่าฟิลด์ Address
 	}
 

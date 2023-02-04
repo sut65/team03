@@ -1,7 +1,7 @@
 export interface EmployeeInterface {
 
     ID?: number;
-    PersonalID: number;
+    PersonalID: string;
     Employeename: string;
     Email?: string;
     Eusername?: string;
