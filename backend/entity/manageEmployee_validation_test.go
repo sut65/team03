@@ -51,6 +51,27 @@ func TestEmployeeValidateNotBlank(t *testing.T) {
 		g.Expect(err.Error()).To(gomega.Equal("Email not blank"))
 	})
 
+	t.Run("Check Username not blank", func(t *testing.T) {
+
+		e := Employee{
+			PersonalID:   "1104200258432",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "",//ผิด
+			Password:     "Sobsa01",
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Username not blank"))
+	})
+
 	t.Run("Check Phonenumber not blank", func(t *testing.T) {
 
 		e := Employee{
@@ -152,5 +173,34 @@ func TestEmployeetCheckPhonenumber(t *testing.T) {
 		g.Expect(err).ToNot(gomega.BeNil())
 
 		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not vaild"))
+	}
+}
+
+func TestEmployeetUsername(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+	fixtures := []string{
+		"E0258151", //คำนำหน้าถูก แต่มีตัวเลข
+		"esdfssd", // คำนำหน้าถูก แต่เป็นพิมพ์เล็ก และอักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+		"bdfdf", //คำนำหน้าผิด แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+		"Esfdfdf", //คำนำหน้าถูก แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+	}
+	for _, fixture := range fixtures{
+		e := Employee{
+			PersonalID:   "1104200258430",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    fixture,
+			Password:     "Sobsa01",
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Username must be is Begin with E and The second letter must start with A-Z and must not number"))
 	}
 }
