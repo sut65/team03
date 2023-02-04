@@ -92,6 +92,48 @@ func TestEmployeeValidateNotBlank(t *testing.T) {
 
 		g.Expect(err.Error()).To(gomega.Equal("Tel not blank"))
 	})
+
+	t.Run("Check Address not blank", func(t *testing.T) {
+
+		e := Employee{
+			PersonalID:   "1104200258432",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     "Sobsa01",
+			Phonenumber:  "0905452001",
+			Address:      "",//ผิด
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Address not blank"))
+	})
+
+	t.Run("Check Password not blank", func(t *testing.T) {
+
+		e := Employee{
+			PersonalID:   "1104200258432",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     "",//ผิด
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Password not blank"))
+	})
 }
 
 func TestEmployeeCheckPersonalid(t *testing.T) {
@@ -202,5 +244,32 @@ func TestEmployeetUsername(t *testing.T) {
 		g.Expect(err).ToNot(gomega.BeNil())
 
 		g.Expect(err.Error()).To(gomega.Equal("Username must be is Begin with E and The second letter must start with A-Z and must not number"))
+	}
+}
+
+func TestEmployeetPassword(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+	fixtures := []string{
+		"bdfdf", //คำนำหน้าผิด แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+		"Esf", //คำนำหน้าถูก แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+	}
+	for _, fixture := range fixtures{
+		e := Employee{
+			PersonalID:   "1104200258430",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     fixture,
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Password must be more than 6 characters"))
 	}
 }
