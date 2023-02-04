@@ -49,9 +49,9 @@ type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild"`
+	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild,required~PersonalID not blank"`
 	Employeename string `valid:"required~Name not blank"`
-	Email        string `gorm:"uniqueIndex"`
+	Email        string `gorm:"uniqueIndex" valid:"email~Email is not vaild,required~Email not blank"` 
 
 	Eusername string
 	Password  string

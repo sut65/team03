@@ -1,15 +1,15 @@
 package entity
 
 import (
-
 	"testing"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/onsi/gomega"
 )
 
-func TestEmployeeValidate(t *testing.T) {
+func TestEmployeeValidateNotBlank(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
+	t.Run("Check Name not blank", func(t *testing.T) {
 
 		e := Employee{
 			PersonalID:   "1104200258432",
@@ -28,18 +28,39 @@ func TestEmployeeValidate(t *testing.T) {
 		g.Expect(err).ToNot(gomega.BeNil())
 
 		g.Expect(err.Error()).To(gomega.Equal("Name not blank"))
+	})
 
+	t.Run("Check Email not blank", func(t *testing.T) {
+
+		e := Employee{
+			PersonalID:   "1104200258432",
+			Employeename: "Sobsa tugwan",
+			Email:        "", //ผิด
+			Eusername:    "ESobsa",
+			Password:     "Sobsa01",
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Email not blank"))
+	})
 }
 
 func TestEmployeeCheckPersonalid(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
 	fixtures := []string{
 		"A0000000000000", //ผิดเพราะมีตัวอักษร
-		"125224540000", // ผิดเพราะเลขไม่ครบ 13
+		"125224540000",   // ผิดเพราะเลขไม่ครบ 13
 		"b1522a22552250", //ผิดเพราะมีตัวอักษร
 		"sdhsfgjfjijdfj",
 	}
-	for _, fixture := range fixtures{
+	for _, fixture := range fixtures {
 		e := Employee{
 			PersonalID:   fixture, // ผิด
 			Employeename: "Sobsa tugwan",
@@ -61,28 +82,28 @@ func TestEmployeeCheckPersonalid(t *testing.T) {
 
 }
 
-// func TestEmployeeEmailMustBeValid(t *testing.T) {
-// 	g := gomega.NewGomegaWithT(t)
+func TestEmployeeEmailMustBeValid(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
 
-// 		e := Employee{
-// 			PersonalID:   "1104200258432",
-// 			Employeename: "Sobsa tugwan",
-// 			Email:        "fgss", //ผิด
-// 			Eusername:    "ESobsa",
-// 			Password:     "Sobsa01",
-// 			Phonenumber:  "0905452001",
-// 			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
-// 		}
+	e := Employee{
+		PersonalID:   "1104200258432",
+		Employeename: "Sobsa tugwan",
+		Email:        "fgss", //ผิด
+		Eusername:    "ESobsa",
+		Password:     "Sobsa01",
+		Phonenumber:  "0905452001",
+		Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+	}
 
-// 		ok, err := govalidator.ValidateStruct(e)
+	ok, err := govalidator.ValidateStruct(e)
 
-// 		g.Expect(ok).NotTo(gomega.BeTrue())
+	g.Expect(ok).NotTo(gomega.BeTrue())
 
-// 		g.Expect(err).ToNot(gomega.BeNil())
+	g.Expect(err).ToNot(gomega.BeNil())
 
-// 		g.Expect(err.Error()).To(gomega.Equal("Email is not vaild"))
+	g.Expect(err.Error()).To(gomega.Equal("Email is not vaild"))
 
-// }
+}
 
 // func TestEmployeetCheckPhonenumber(t *testing.T) {
 // 	g := gomega.NewGomegaWithT(t)
@@ -94,7 +115,7 @@ func TestEmployeeCheckPersonalid(t *testing.T) {
 // 	}
 // 	for _, fixture := range fixtures{
 // 		e := Employee{
-// 			PersonalID:   "1104200258430", 
+// 			PersonalID:   "1104200258430",
 // 			Employeename: "Sobsa tugwan",
 // 			Email:        "Sobsa@gmail.com",
 // 			Eusername:    "ESobsa",
