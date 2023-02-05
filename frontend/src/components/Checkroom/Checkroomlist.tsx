@@ -66,7 +66,7 @@ function Checkroomlist() {
     }
    
     const columns: GridColDef[] = [
-
+        { field: "ID", headerName: "ลำดับ", width: 100 },
         { field: "RoomID", headerName: "หมายเลขห้อง", width: 100 },
         { field: "Product", headerName: "อุปกรณ์", width: 150 , valueFormatter: (params) => params?.value?.Name,},
         { field: "Damage", headerName: "ความเสียหาย", width: 150 , valueFormatter: (params) => params?.value?.Description,},
@@ -154,7 +154,7 @@ function Checkroomlist() {
             <Box>
             <Button //ตัวบันทึก
                    component={RouterLink} //ลิ้งหน้าต่อไป
-                   to="/"//รอเพิ่ม
+                   to="/checkroom/edit"//รอเพิ่ม
                    variant="contained"
                    color="primary"
                  >

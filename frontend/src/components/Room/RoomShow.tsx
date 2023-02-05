@@ -44,9 +44,9 @@ const theme = createTheme({
       primary: {
           main: grey[800],
       },
-      // secondary: {
-      //     main: grey[50],
-      // },
+      secondary: {
+          main: grey[50],
+      },
   },
 });
 
@@ -118,8 +118,8 @@ function RoomShow() {
 
  const columns: GridColDef[] = [
 
-   { field: "ID", headerName: "หมายเลขห้อง", width: 100 },
-
+   { field: "Room_No", headerName: "หมายเลขห้อง", width: 150 , valueFormatter: (params) => params?.value?.Room_No,},
+   
    { field: "Employee", headerName: "ชื่อ-นามสกุล", width: 150 , valueFormatter: (params) => params?.value?.Employeename,},
 
    { field: "RoomType", headerName: "ประเภทของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Size,},
@@ -223,7 +223,7 @@ function RoomShow() {
               component={RouterLink}
               to="/RT/Create"
               variant="contained"
-              color="primary"
+              color="info"
             >
               Add
             </Button>
@@ -233,7 +233,7 @@ function RoomShow() {
               component={RouterLink}
               to="/RT/Edit"
               variant="contained"
-              color="primary"
+              color="info"
             >
               Edit
             </Button>

@@ -91,7 +91,7 @@ function Manage_Save() {
   const [offID,setOffID] = React.useState<Number | null>(0);
   const [dateOfBirth, setDateOfBirth] = React.useState<Date | null>(new Date());
   const [yearOfStart, setYearOfStart] = React.useState<Date | null>(new Date());
-
+  const [message, setAlertMessage] = React.useState("");
 
   //-----------เริ่มดึงข้อมูล-----------//
 //---------------------Department-------------------------------------
@@ -173,32 +173,6 @@ const getLocation = async () => {
     });
 };
 
-
-// const getOfficer = async () => {
-//   const apiUrl = `http://localhost:8080/Officers/`;
-
-//   const requestOptions = {
-//     method: "GET",
-
-//     headers: {
-//       Authorization: `Bearer ${localStorage.getItem("token")}`,
-//       "Content-Type": "application/json",
-//     },
-//   };
-//   //การกระทำ //json
-//   fetch(apiUrl, requestOptions)
-//     .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-//     .then((res) => {
-//       //console.log(res.data); //show ข้อมูล
-
-//       if (res.data) {
-//         setOfficer(res.data);
-//       } else {
-//         console.log("else");
-//       }
-//     });
-// };
 //----------------------------------จบการดึงข้อมูล------------------------
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -234,7 +208,7 @@ const getLocation = async () => {
 
   function submit() {
     let data = {
-      PersonalID: typeof employee.PersonalID === "string" ? parseInt(employee.PersonalID) : 0,
+      PersonalID: employee.PersonalID,
       Employeename:  employee.Employeename ,
       Email: employee.Email ,
       Eusername: employee.Eusername ?? "",
@@ -272,11 +246,13 @@ const getLocation = async () => {
     fetch(apiUrl, requestOptions)
       .then((response) => response.json())
 
-      .then((res) => {
+      .then((res) => {       
+        console.log(res)
         if (res.data) {
           setSuccess(true);
         } else {
           setError(true);
+          setAlertMessage(res.error);
         }
       });
   }
@@ -289,7 +265,6 @@ const getLocation = async () => {
     getDepartment();
     getPosition();
     getLocation();
-    // getOfficer();
 
   }, []);
 
@@ -297,8 +272,9 @@ const getLocation = async () => {
   <ThemeProvider theme={bgbutton}>
     <Container maxWidth="xl" >
       <Snackbar
+        id="success"        
         open={success}
-        autoHideDuration={6000}
+        autoHideDuration={8000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -307,9 +283,13 @@ const getLocation = async () => {
         </Alert>
       </Snackbar>
 
-      <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+      <Snackbar 
+        id="error"
+        open={error} 
+        autoHideDuration={8000} 
+        onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          {message}
         </Alert>
       </Snackbar>
 

@@ -165,7 +165,32 @@ async function DeleteCheckroom(data: number) {
     return res;
 }
 
+async function UpdateCheckroom(data: CheckroomInterface) {
+    let cr_id = data.ID
+    const requestOptions = {
+        method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
+
+    let res = await fetch(`${apiUrl}/checkroomsupdate/${cr_id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 export {
+    UpdateCheckroom,
     DeleteCheckroom,
     GetCheckroomslist,
     Checkrooms,

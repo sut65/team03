@@ -49,22 +49,22 @@ type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID   uint64 `gorm:"uniqueIndex"`
-	Employeename string
-	Email        string `gorm:"uniqueIndex"`
+	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild,required~PersonalID not blank"`
+	Employeename string `valid:"required~Name not blank"`
+	Email        string `gorm:"uniqueIndex" valid:"email~Email is not vaild,required~Email not blank"`
 
-	Eusername string
-	Password  string
+	Eusername string `valid:"matches(^[E][A-Z][a-zA-Z]+$)~Username must be is Begin with E and The second letter must start with A-Z and must not number,required~Username not blank"`
+	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,required~Password not blank"`
 
 	SigninID *uint
 	Signin   Signin `gorm:"references:ID"`
 
 	Salary      uint64
-	Phonenumber string
+	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not vaild,required~Tel not blank"`
 	Gender      string
 	DateOfBirth time.Time
 	YearOfStart time.Time
-	Address     string
+	Address     string `valid:"required~Address not blank"`
 
 	// OfficerID ทำหน้าที่เป็น FK
 	OfficerID *uint
@@ -88,6 +88,6 @@ type Employee struct {
 	// ส่ง EmployeeID ไปตาราง CHK_Payment เพื่อเป็น foreignKey
 	CHK_Payments []CHK_Payment `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง Storage เพื่อเป็น foreignKey
-	Storages []Storage `gorm:"foreignKey:EmployeeID"`
+	Storages  []Storage   `gorm:"foreignKey:EmployeeID"`
 	Checkroom []Checkroom `gorm:"foreignKey:EmployeeID"`
 }
