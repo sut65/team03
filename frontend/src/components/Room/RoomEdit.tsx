@@ -16,18 +16,13 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-//import { BookingsInterface } from "../../models/IBooking";
-import { 
-  CheckInOutInterface,
-  CheckInOutStatusInterface, 
-} from "../../models/ICheckInOut";
 import { EmployeeInterface } from "../../models/IEmployee"; 
 
 import { RoomInterface, RoomTypeInterface, RoomZoneInterface, StateInterface } from "../../models/IRoom";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
-import { GetRooms, GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom, UpdateRoom } from "./service/RoomHttpClientService";
+import { GetRooms, GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom, UpdateRoom, GetRoom } from "./service/RoomHttpClientService";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
@@ -55,8 +50,9 @@ function RoomEdit() {
   const [states, setStates] = useState<StateInterface[]>([]);
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   const [roomzone, setRoomZones] = useState<RoomZoneInterface[]>([]);
+ 
   const [rm, setRm] = useState<RoomInterface[]>([]);
-  const [room, setRoom] = useState<RoomInterface>({});
+  const [room, setRoom] = useState<RoomInterface>({Time: new Date(),});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -77,6 +73,14 @@ function RoomEdit() {
       ...room,
       [name]: event.target.value,
     });
+  }; 
+
+  const onChangeRoom = async (event: SelectChangeEvent) => {
+    const id = event.target.value 
+    let res = await GetRoom(id);
+    if (res) {
+      setRoom(res);
+    }
   }; 
 
   const handleInputChangenumber = (
@@ -143,7 +147,7 @@ function RoomEdit() {
 
   async function submit() {
     let data = {
-      ID: typeof room.ID === "string" ? parseInt(room.ID) : 0,
+      ID: convertType(room.ID) || 0,
       RoomTypeID: convertType(room.RoomTypeID),
       RoomZoneID: convertType(room.RoomZoneID),
       StateID: convertType(room.StateID),
@@ -204,12 +208,35 @@ function RoomEdit() {
         
         <Grid container spacing={3} sx={{ padding: 2 }}>
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="demo-simple-select-label">หมายเลขห้อง</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={room.ID + ""}
+                label="หมายเลขห้อง"
+                onChange={onChangeRoom}
+                inputProps={{
+                  name: "Room_No",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกหมายเลขห้อง
+                </option>
+                {rm.map((item: RoomInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Room_No}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+            {/*<FormControl fullWidth variant="outlined">
             <TextField
           id="outlined-number" label="หมายเลขห้อง" type="number" InputLabelProps={{ shrink: true,}} value={room?.ID} onChange={handleInputChangenumber}       
           />
             </FormControl>
-          </Grid>
+        </Grid>*/}
 
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
@@ -317,7 +344,7 @@ function RoomEdit() {
               style={{ float: "right" }}
               onClick={submit}
               variant="contained"
-              color="inherit"
+              color="success"
             >
               บันทึก
             </Button>

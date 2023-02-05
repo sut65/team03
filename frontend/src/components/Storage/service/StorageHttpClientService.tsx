@@ -19,6 +19,7 @@ const apiUrl = "http://localhost:8080";
 // protected.PATCH("/pProduct_types", storage.UpdateProductType)
 // protected.DELETE("/pProduct_types/:id", storage.DeleteProductType)
 
+
 // List Storage
 async function GetStorages() {
 const requestOptions = {
@@ -40,6 +41,29 @@ let res = await fetch(`${apiUrl}/storages`, requestOptions)
     });
 
 return res;
+}
+
+// List Storage
+async function GetStorage(id : any) {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/storage/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
 }
 
 // List ProtypeType
@@ -184,6 +208,31 @@ async function DeleteStorage(data: number) {
 
     return res;
 }
+
+//update room
+async function UpdateStorage(data: StorageInterface) {
+    const requestOptions = {
+        method: "PUT",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        body: JSON.stringify(data),
+    }
+
+    let res = await fetch(`${apiUrl}/storages`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return {status: true,data: res.data};
+            } else {
+                return {status: false,data: res.error};
+            }
+        });
+
+    return res;
+}
+
 export {
     GetStorages,
     GetProducts,
@@ -192,4 +241,6 @@ export {
     GetEmployees,
     Storage,
     DeleteStorage,
+    GetStorage,
+    UpdateStorage,
 };

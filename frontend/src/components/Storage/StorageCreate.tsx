@@ -56,7 +56,10 @@ function StorageCreate() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   //const [storage, setStorage] = useState<StorageInterface[]>([]);
 
-  const [storage, setStorage] = useState<StorageInterface>({});
+  const [storage, setStorage] = useState<StorageInterface>({
+    Time: new Date(),
+    Quantity: 0,
+  });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -87,9 +90,10 @@ function StorageCreate() {
 
     const id = event.target.id as keyof typeof storage;
 
-    const { value } = event.target.value;
+    const { value } = event.target;
 
     setStorage({ ...storage, [id]: value  === "" ? "" : Number(value)  });
+    console.log(`id: ${id} value:${value}`)
 
   };
 
@@ -130,9 +134,12 @@ function StorageCreate() {
     let data = {
       ProductTypeID: convertType(storage.ProductTypeID),
       ProductID: convertType(storage.ProductID),
+      //ProductTypeID: storage.ProductTypeID,
+      //ProductID: storage.ProductID,
       //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
-      Quantity: storage.Quantity,
+      //Quantity: storage?.Quantity,
+      Quantity: typeof storage?.Quantity === "string" ? (storage?.Quantity === "" ? 0 : storage?.Quantity) : storage?.Quantity,
       Time: storage.Time,
     };
     console.log(data)
@@ -187,13 +194,13 @@ function StorageCreate() {
         <Divider />
         
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={6}>
+          {/*<Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
             <TextField
           id="outlined-number" label="รหัสสินค้า" type="number" InputLabelProps={{ shrink: true,}} value={storage?.ID} onChange={handleInputChangenumber}       
           />
             </FormControl>
-          </Grid>
+        </Grid>*/}
 
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
@@ -246,11 +253,13 @@ function StorageCreate() {
           </Grid>
 
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth variant="outlined">
             <TextField
-          id="outlined-number" label="จำนวน" type="number" 
-          InputLabelProps={{ shrink: true,}} value={storage.Quantity} 
-          onChange={handleInputChangenumber}       
+          id="Quantity" label="จำนวน" type="number" 
+          InputLabelProps={{ shrink: true,}} 
+          value={storage?.Quantity} 
+          onChange={handleInputChangenumber}   
+          inputProps={{name: "Quantity"}}    
           />
             </FormControl>
           </Grid>
@@ -373,7 +382,7 @@ function StorageCreate() {
               style={{ float: "right" }}
               onClick={submit}
               variant="contained"
-              color="inherit"
+              color="success"
             >
               บันทึก
             </Button>

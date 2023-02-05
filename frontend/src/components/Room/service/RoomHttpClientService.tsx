@@ -47,6 +47,29 @@ async function GetRooms() {
     return res;
 }
 
+// List Room
+async function GetRoom(id : any) {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/room/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 // List RoomType
 async function GetRoomTypes() {
     const requestOptions = {
@@ -154,9 +177,9 @@ async function CreateRoom(data: RoomInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return {status: true, message: res.data};
             } else {
-                return false;
+                return {status: false, message: res.error};
             }
         });
 
@@ -216,7 +239,7 @@ async function DeleteRoom(data: number) {
 //update room
 async function UpdateRoom(data: RoomInterface) {
     const requestOptions = {
-        method: "PATCH",
+        method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -240,7 +263,7 @@ async function UpdateRoom(data: RoomInterface) {
 //update roomtype
 async function UpdateRoomType(data: RoomTypeInterface) {
     const requestOptions = {
-        method: "PATCH",
+        method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -264,7 +287,7 @@ async function UpdateRoomType(data: RoomTypeInterface) {
 //update roomzone
 async function UpdateRoomZone(data: RoomZoneInterface) {
     const requestOptions = {
-        method: "PATCH",
+        method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -288,7 +311,7 @@ async function UpdateRoomZone(data: RoomZoneInterface) {
 //update state
 async function UpdateState(data: StateInterface) {
     const requestOptions = {
-        method: "PATCH",
+        method: "PUT",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -323,4 +346,5 @@ export {
     UpdateRoomType,
     UpdateRoomZone,
     UpdateState,
+    GetRoom,
 };

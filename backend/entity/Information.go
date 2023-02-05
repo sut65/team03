@@ -311,6 +311,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Room1
 	db.Model(&Room{}).Create(&Room{
 		Employee: Sobsa,
+		Room_No:  "A10",
 		RoomType: Standard,
 		RoomZone: A,
 		State:    on,
@@ -319,6 +320,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Room2
 	db.Model(&Room{}).Create(&Room{
 		Employee: Hanoi,
+		Room_No:  "B20",
 		RoomType: Superior,
 		RoomZone: B,
 		State:    on,
@@ -327,6 +329,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Room3
 	db.Model(&Room{}).Create(&Room{
 		Employee: Banana,
+		Room_No:  "C30",
 		RoomType: Deluxe,
 		RoomZone: C,
 		State:    off,
@@ -1393,6 +1396,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Storage1
 	db.Model(&Storage{}).Create(&Storage{
 		Employee:    Sobsa,
+		ID:          1,
 		Product:     TV,
 		ProductType: Electrical,
 		Quantity:    50,
@@ -1401,6 +1405,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Storage2
 	db.Model(&Storage{}).Create(&Storage{
 		Employee:    Hanoi,
+		ID:          2,
 		Product:     blanket,
 		ProductType: Bedding,
 		Quantity:    55,
@@ -1409,6 +1414,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//Storage3
 	db.Model(&Storage{}).Create(&Storage{
 		Employee:    Banana,
+		ID:          3,
 		Product:     chair,
 		ProductType: Fur,
 		Quantity:    60,
