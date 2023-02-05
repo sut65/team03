@@ -49,9 +49,9 @@ type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild,required~PersonalID not blank"`
+	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not valid,required~PersonalID not blank"`
 	Employeename string `valid:"required~Name not blank"`
-	Email        string `gorm:"uniqueIndex" valid:"email~Email is not vaild,required~Email not blank"`
+	Email        string `gorm:"uniqueIndex" valid:"email~Email is not valid,required~Email not blank"`
 
 	Eusername string `valid:"matches(^[E][A-Z][a-zA-Z]+$)~Username must be is Begin with E and The second letter must start with A-Z and must not number,required~Username not blank"`
 	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,required~Password not blank"`
@@ -60,7 +60,7 @@ type Employee struct {
 	Signin   Signin `gorm:"references:ID"`
 
 	Salary      uint64
-	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not vaild,required~Tel not blank"`
+	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not valid,required~Tel not blank"`
 	Gender      string
 	DateOfBirth time.Time
 	YearOfStart time.Time
