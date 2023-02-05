@@ -8,9 +8,9 @@ import (
 
 type Product struct {
 	gorm.Model
-	Name     string
-	Price    int
-	Storages []Storage `gorm:"foreignKey:ProductID"`
+	Name      string
+	Price     int
+	Storages  []Storage   `gorm:"foreignKey:ProductID"`
 	Checkroom []Checkroom `gorm:"foreignKey:ProductID"`
 }
 type ProductType struct {
@@ -20,6 +20,7 @@ type ProductType struct {
 }
 type Storage struct {
 	gorm.Model
+	ID       uint
 	Quantity int
 	Time     time.Time
 

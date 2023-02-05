@@ -32,26 +32,27 @@ type State struct {
 }
 type Room struct {
 	gorm.Model
-	Time time.Time
+	Room_No string
+	Time    time.Time `valid:"required"`
 
 	//StaffID ทำหน้าที่เป็น FK
 	// StaffID *uint
 	// Staff   Staff
-	EmployeeID *uint
+	EmployeeID *uint `valid:"required"`
 	Employee   Employee
 
 	//RoomTypeID ทำหน้าที่เป็น FK
-	RoomTypeID *uint
+	RoomTypeID *uint `valid:"required"`
 	RoomType   RoomType
 
 	//ZoneID ทำหน้าที่เป็น FK
-	RoomZoneID *uint
+	RoomZoneID *uint `valid:"required"`
 	RoomZone   RoomZone
 
 	//StateID ทำหน้าที่เป็น FK
-	StateID *uint
+	StateID *uint `valid:"required"`
 	State   State
 
-	Bookings []Booking `gorm:"foreignKey:RoomID"`
+	Bookings  []Booking   `gorm:"foreignKey:RoomID"`
 	Checkroom []Checkroom `gorm:"foreignKey:RoomID"`
 }

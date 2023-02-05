@@ -163,7 +163,7 @@ func TestEmployeeCheckPersonalid(t *testing.T) {
 
 		g.Expect(err).ToNot(gomega.BeNil())
 
-		g.Expect(err.Error()).To(gomega.Equal("PersonalID is not vaild"))
+		g.Expect(err.Error()).To(gomega.Equal("PersonalID is not valid"))
 	}
 
 }
@@ -188,7 +188,7 @@ func TestEmployeeEmailMustBeValid(t *testing.T) {
 
 	g.Expect(err).ToNot(gomega.BeNil())
 
-	g.Expect(err.Error()).To(gomega.Equal("Email is not vaild"))
+	g.Expect(err.Error()).To(gomega.Equal("Email is not valid"))
 
 }
 
@@ -219,7 +219,7 @@ func TestEmployeetCheckPhonenumber(t *testing.T) {
 
 		g.Expect(err).ToNot(gomega.BeNil())
 
-		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not vaild"))
+		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not valid"))
 	}
 }
 
