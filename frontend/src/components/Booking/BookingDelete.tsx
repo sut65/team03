@@ -116,12 +116,12 @@ function BookingDelete() {
         <Container maxWidth="md">
             <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    จองห้องพักสำเร็จ
+                    ยกเลิกการจองห้องพักสำเร็จ
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่ไม่สามารถจองห้องพักได้
+                    ไม่สามารถยกเลิกการจองห้องพักได้
                 </Alert>
             </Snackbar>
             <Paper>
