@@ -16,16 +16,16 @@ type Branch struct {
 type Booking struct {
 	gorm.Model
 	//รับเข้ามา
-	BranchID *uint
+	BranchID *uint  `valid:"required~กรุณาระบุสาขาของโรงแรม"`
 	Branch   Branch `gorm:"references:id"`
 	//รับเข้ามา
-	RoomID *uint
-	Room   Room `gorm:"references:id"`
+	RoomID *uint `valid:"required~กรุณาระบุห้องของโรงแรม"`
+	Room   Room  `gorm:"references:id"`
 
-	Start time.Time
-	Stop  time.Time
+	Start time.Time `valid:"required~กรุณาระบุเวลาเริ่มเข้าพัก"`
+	Stop  time.Time `valid:"required~กรุณาระบุเวลาที่สิ้นสุดการพัก"`
 	//รับเข้ามา
-	CustomerID *uint
+	CustomerID *uint    `valid:"required~กรุณาระบุชื่อผู้จอง"`
 	Customer   Customer `gorm:"references:id"`
 
 	CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`

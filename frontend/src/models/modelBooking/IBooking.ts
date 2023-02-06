@@ -13,6 +13,6 @@ export interface BookingsInterface {
     Start?: Date | null,
     Stop?: Date | null,
 
-    CustomerID?: number | null,
+    CustomerID?: number,
     Customer?: CustomerInterface,
 }
