@@ -17,12 +17,27 @@ import Stack from '@mui/material/Stack';
 import HouseIcon from '@mui/icons-material/House';
 import EditIcon from '@mui/icons-material/Edit';
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
+import { NametitleInterface } from "../../models/modelCustomer/INametitle";
+import { GetNametitleByUID } from "./service/servicecus";
+import { FormControl } from "@mui/material";
 
 
 
 function ProfileCustomer() {
     const [customer, setCustomer] = useState<CustomerInterface>({});
+    const [nametitle, setNametitle] = useState<NametitleInterface>();
 
+
+
+    const handleInputChange = (
+      event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+      const id = event.target.id as keyof typeof customer;
+  
+      const { value } = event.target;
+  
+      setCustomer({ ...customer, [id]: value });
+    };
 
     const apiUrl = "http://localhost:8080";
 
@@ -46,8 +61,18 @@ function ProfileCustomer() {
             }
         });
   }
+
+  const getNametitleByUID = async () => {
+    let res = await GetNametitleByUID(customer);
+    if (res) {
+        setNametitle(res);
+        console.log(res);
+    }
+  };
+
   useEffect(() => {
     GetCustomer();
+    getNametitleByUID();
   }, []);
 
   console.log(customer);
@@ -89,12 +114,19 @@ function ProfileCustomer() {
                 >
                 Title:
                 </FormLabel>
+                <FormControl fullWidth variant="outlined">
                 <TextField
-                id="NametitleID"
+                variant="outlined"
+                id="Nametitle_ID"
+                type="number"
                 value={customer.Nametitle_ID}
-                fullWidth
                 disabled
-                />               
+                inputProps={{
+                  nametitle: "Nametitle_ID",
+                }}
+                onChange={handleInputChange}
+                /> 
+                </FormControl>              
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
                 คำนำหน้าชื่อ
                 </FormHelperText>
