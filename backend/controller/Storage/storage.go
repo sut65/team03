@@ -206,9 +206,11 @@ func CreateStorage(c *gin.Context) {
 
 	// 12. สร้าง Storage
 	st := entity.Storage{
+		ID:          storage.ID,
 		Employee:    employee,
 		Product:     product,
 		ProductType: producttype,
+		Quantity:    storage.Quantity,
 		Time:        storage.Time,
 	}
 
@@ -256,24 +258,52 @@ func DeleteStorage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /Storages
+// PUT Storage
 func UpdateStorage(c *gin.Context) {
-
 	var storage entity.Storage
+	var sr entity.Storage
 
 	if err := c.ShouldBindJSON(&storage); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	if tx := entity.DB().Where("id = ?", storage.ID).First(&storage); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "storage not found"})
+	// ค้นหา Room ด้วย ID
+	if tx := entity.DB().Where("id = ?", storage.ID).First(&sr); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Storage not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&storage).Error; err != nil {
+	var employee entity.Employee
+	var product entity.Product
+	var producttype entity.ProductType
+
+	// 9.  ค้นหา Employee ด้วย id
+	if tx := entity.DB().Where("id = ?", storage.EmployeeID).First(&employee); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
+		return
+	}
+
+	// 10. ค้นหา Product ด้วย id
+	if tx := entity.DB().Where("id = ?", storage.ProductID).First(&product); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "product not found"})
+		return
+	}
+
+	// 11. ค้นหา ProductType ด้วย id
+	if tx := entity.DB().Where("id = ?", storage.ProductTypeID).First(&producttype); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "producttype not found"})
+		return
+	}
+
+	//ro.Time = room.Time
+	sr.Product = product
+	sr.ProductType = producttype
+	sr.Quantity = storage.Quantity
+
+	if err := entity.DB().Save(&sr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": storage})
+
+	c.JSON(http.StatusOK, gin.H{"data": sr})
 }

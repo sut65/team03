@@ -86,44 +86,6 @@ function SignIn() {
         }
       }
 
-    // const Signin = async (data: SigninInterface) => {
-    //     const requestOptions = {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify(data),
-    //     };
-
-    //     let res = await fetch("http://localhost:8080/Login", requestOptions)
-    //         .then((response) => response.json())
-    //         .then((res) => {
-    //             if (res.data) {
-    //                 localStorage.setItem("token", res.data.token);
-    //                 localStorage.setItem("uid", res.data.id);
-    //                 localStorage.setItem("user",JSON.stringify(res.data.user));
-
-    //                 console.log(res.data);
-    //                 return res.data;
-    //             } else {
-    //                 return false;
-    //             }
-    //         });
-
-    //     return res;
-    // };
-
-
-    // const submit = async () => {
-    //     let res = await Signin(signin);
-    //     if (res) {
-    //         setSuccess(true);
-    //         setTimeout(() => {
-    //             window.location.reload();
-    //         }, 1000);
-    //     } else {
-    //         setError(true);
-    //     }
-    // };
-
     return (
         <ThemeProvider theme={theme}>
             <Grid container component="main" sx={{ height: "100vh" }}>
@@ -155,7 +117,7 @@ function SignIn() {
                     sm={4}
                     md={7}
                     sx={{
-                        backgroundImage: "url(https://source.unsplash.com/random)",
+                        backgroundImage: "url(https://img.freepik.com/free-photo/hotel-with-swimming-pool_169016-3317.jpg?w=1380&t=st=1675521656~exp=1675522256~hmac=58adb728bd6ac577e5ec92835fcb377bd975638ac318acac5eb2d2fbf6c82f6e)",
                         backgroundRepeat: "no-repeat",
                         backgroundColor: (t) =>
                             t.palette.mode === "light"

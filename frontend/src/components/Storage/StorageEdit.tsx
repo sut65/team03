@@ -27,7 +27,7 @@ import { StorageInterface, ProductTypeInterface, ProductInterface } from "../../
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
-import { GetEmployees, GetProductTypes, GetProducts, CreateStorage } from "./service/StorageHttpClientService";
+import { GetEmployees, GetProductTypes, GetProducts, GetStorage, GetStorages, UpdateStorage } from "./service/StorageHttpClientService";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
@@ -56,9 +56,11 @@ function StorageCreate() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   //const [storage, setStorage] = useState<StorageInterface[]>([]);
 
+  const [st, setSt] = useState<StorageInterface[]>([]);
   const [storage, setStorage] = useState<StorageInterface>({});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMSG, setErrorMSG] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -79,6 +81,14 @@ function StorageCreate() {
     });
   }; 
 
+  const onChangeStorage = async (event: SelectChangeEvent) => {
+    const id = event.target.value 
+    let res = await GetStorage(id);
+    if (res) {
+      setStorage(res);
+    }
+  }; 
+
   const handleInputChangenumber = (
 
     event: React.ChangeEvent<{ id?: string; value: any }>
@@ -93,6 +103,12 @@ function StorageCreate() {
 
   };
 
+  const getStorage =  async () => {
+    let res = await GetStorages();
+    if (res) {
+      setSt(res);
+    }
+  };
 
   const getProduct =  async () => {
     let res = await GetProducts();
@@ -119,6 +135,7 @@ function StorageCreate() {
     getProductType();
     getProduct();
     getEmployee();
+    getStorage();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
@@ -128,19 +145,22 @@ function StorageCreate() {
 
   async function submit() {
     let data = {
+      ID: convertType(storage.ID) || 0,
       ProductTypeID: convertType(storage.ProductTypeID),
       ProductID: convertType(storage.ProductID),
       //EmployeeID: convertType(checkinout.EmployeeID),
-      EmployeeID: convertType(localStorage.getItem("id")),
+      EmployeeID: convertType(localStorage.getItem("id")+""),
       Quantity: storage.Quantity,
       Time: storage.Time,
     };
-
-    let res = await CreateStorage(data);
-    if (res) {
+    console.log(data)
+    let res = await UpdateStorage(data);
+    if (res.status) {
       setSuccess(true);
+      setErrorMSG("")
     } else {
       setError(true);
+      setErrorMSG(res.data)
     }
   }
 
@@ -153,7 +173,7 @@ function StorageCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+        อัพเดตข้อมูลสำเร็จ
         </Alert>
       </Snackbar>
       <Snackbar
@@ -163,7 +183,7 @@ function StorageCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+        อัพเดตข้อมูลไม่สำเร็จ: {errorMSG}
         </Alert>
       </Snackbar>
       <Paper>
@@ -189,9 +209,26 @@ function StorageCreate() {
         <Grid container spacing={3} sx={{ padding: 2 }}>
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-            <TextField
-          id="outlined-number" label="รหัสสินค้า" type="number" InputLabelProps={{ shrink: true,}} value={storage?.ID} onChange={handleInputChangenumber}       
-          />
+            <InputLabel id="demo-simple-select-label">รหัสสินค้า</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={storage.ID + ""}
+                label="รหัสสินค้า"
+                onChange={onChangeStorage}
+                inputProps={{
+                  name: "ID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกรหัสสินค้า
+                </option>
+                {st.map((item: StorageInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.ID}
+                  </option>
+                ))}
+              </Select>
             </FormControl>
           </Grid>
 
@@ -246,9 +283,13 @@ function StorageCreate() {
           </Grid>
 
           <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
+          <FormControl fullWidth variant="outlined">
             <TextField
-          id="outlined-number" label="จำนวน" type="number" InputLabelProps={{ shrink: true,}} value={storage?.ID} onChange={handleInputChangenumber}       
+          id="Quantity" label="จำนวน" type="number" 
+          InputLabelProps={{ shrink: true,}} 
+          value={storage?.Quantity} 
+          onChange={handleInputChangenumber}   
+          inputProps={{name: "Quantity"}}    
           />
             </FormControl>
           </Grid>
@@ -361,7 +402,7 @@ function StorageCreate() {
           <Grid item xs={12}>
             <Button
               component={RouterLink}
-              to="/RT"
+              to="/RoomW"
               variant="contained"
               color="inherit"
             >
@@ -371,7 +412,7 @@ function StorageCreate() {
               style={{ float: "right" }}
               onClick={submit}
               variant="contained"
-              color="inherit"
+              color="success"
             >
               บันทึก
             </Button>
