@@ -20,7 +20,7 @@ type Systemwork struct {
 type Review struct {
 	gorm.Model
 
-	Comment string `valid:"required~Comment not blank,"`
+	Comment string `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Comment not blank,"`
 	Star int
 	Reviewdate time.Time
 	Reviewimage string
