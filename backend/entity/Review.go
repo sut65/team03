@@ -23,7 +23,7 @@ type Review struct {
 	Comment string `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Comment not blank,"`
 	Star int
 	Reviewdate time.Time
-	Reviewimage string
+	Reviewimage string `valid:"image_valid~Invalid image"`
 
 	// CustomerID ทำหน้าที่เป็น FK
 	CustomerID *uint
