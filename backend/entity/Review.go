@@ -20,17 +20,16 @@ type Systemwork struct {
 type Review struct {
 	gorm.Model
 
-	Comment string
+	Comment string `valid:"required~Comment not blank,"`
 	Star int
 	Reviewdate time.Time
-	Reviewimega string
-
+	Reviewimage string
 
 	// CustomerID ทำหน้าที่เป็น FK
 	CustomerID *uint
 	Customer   Customer `gorm:"references:ID"`
 
-	// CustomerID ทำหน้าที่เป็น FK
+	// SystemworkID ทำหน้าที่เป็น FK
 	SystemworkID *uint
 	Systemwork   Systemwork `gorm:"references:ID"`
 
@@ -38,6 +37,4 @@ type Review struct {
 	DepartmentID *uint
 	Department   Department `gorm:"references:ID"`
 
-
-	
 }

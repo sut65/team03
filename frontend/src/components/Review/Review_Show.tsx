@@ -12,7 +12,6 @@ import Box from "@mui/material/Box";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-import { EmployeeInterface } from "../../models/IEmployee";
 import {
   IconButton,
   Table,
@@ -53,6 +52,37 @@ function Review_Show() {
   Moment.locale("th");
   const [openForCreate, setOpenForCreate] = React.useState(false);
   const [review, setReview] = React.useState<ReviewInterface[]>([]);
+  // const c = { width: '200x', height: '200px' };
+  // const d = { width: '0', height: '0' };
+  const imgSize = {width: '200px', height: '200px' }
+  //const [myImageStyle, setMyImage] = React.useState({width: '200px', height: '200px' })
+  const [openImage, setOpenImage] = React.useState(false);
+  const [img ,setimg] = React.useState({})
+
+  //ตรวจสอบภาพ
+  // const CheckImage = (item: ReviewInterface) => {
+  //   if (item.Reviewimage == "")
+  //   {setMyImage({width: '200px', height: '200px' })}
+    
+  // };
+  const CheckImage = (item: ReviewInterface) => {
+    if (item.Reviewimage != ""){
+      return (<img  src={`${item.Reviewimage}`} style={imgSize} onDoubleClick={() => OpenImageonCilck(item)}/>);
+    }
+   
+    
+    
+  };
+
+
+  const OpenImageonCilck = (item: ReviewInterface) => {
+    setOpenImage(true)
+    setimg(item.Reviewimage)
+  };
+
+  const closeImage = () => {
+    setOpenImage(false)
+  };
 
   const getReview = async () => {
     const apiUrl = `http://localhost:8080/Reviews`;
@@ -83,7 +113,6 @@ function Review_Show() {
 
   useEffect(() => {
     getReview();
-    // getOfficer();
   }, []);
 
   return (
@@ -101,15 +130,16 @@ function Review_Show() {
           }}
         ></Box>
 
-        <Grid container columns={6} spacing={3} sx = {{mt:2}} >
+        <Grid container  direction="row" columns={6} spacing={3} sx = {{mt:2}}   >
           {review.map((item: ReviewInterface) => (
-             <Grid item xs={3} key={item.ID} >
-            
+             <Grid item xs="auto"  key={item.ID}    >
+          
             <Paper  >
               <Grid>
                 <TextField
                   sx={{ "& fieldset": { border: "none" } }}
-                  value={item.CustomerID}
+                  value={item.Customer.Email}
+                  
                 />
               </Grid>
               <Grid container columns={12}>
@@ -133,8 +163,9 @@ function Review_Show() {
                 />
                 </Grid>
                 <Grid container display={"flex"} justifyContent={"center"} >
-                  <Grid>
-                <img  src={`${item.Reviewimega}`} width="100%" height="250" />
+                  <Grid>  
+                    {CheckImage(item)}
+                {/* <img  src={`${item.Reviewimage}`} onError={() => CheckImage(item)} style={myImageStyle} onDoubleClick={() => OpenImageonCilck(item)}/> */}
                 </Grid>
                 </Grid>
               
@@ -143,6 +174,14 @@ function Review_Show() {
           ))}
         </Grid>
       </div>
+      <Dialog
+        fullWidth
+        maxWidth="md"
+        open={openImage}
+        onClose={closeImage}
+      >
+        <DialogContent><img src={`${img}`} width = "100%" height ="100%" /></DialogContent>
+      </Dialog>
     </Container>
   );
 }
