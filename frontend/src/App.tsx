@@ -26,8 +26,6 @@ import CHK_Payments from "./components/CHK_Payment/CHK_Payment";
 import CHK_PaymentCreate from "./components/CHK_Payment/CHK_PaymentCreate";
 import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
 
-
-
 import ServiceShow from "./components/Services/ServiceShow";
 import ServiceAdd from "./components/Services/ServiceAdd";
 import ServiceUpdate from "./components/Services/ServiceUpdate";
