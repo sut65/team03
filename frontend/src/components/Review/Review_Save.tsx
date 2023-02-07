@@ -207,6 +207,7 @@ function Review_Save() {
     <ThemeProvider theme={bgbutton}>
       <Container maxWidth="md">
         <Snackbar
+          id="success"   
           open={success}
           autoHideDuration={6000}
           onClose={handleClose}
@@ -217,7 +218,11 @@ function Review_Save() {
           </Alert>
         </Snackbar>
 
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar 
+          id="error"   
+          open={error} 
+          autoHideDuration={6000} 
+          onClose={handleClose}>
           <Alert onClose={handleClose} severity="error">
             บันทึกข้อมูลไม่สำเร็จ {message}
           </Alert>

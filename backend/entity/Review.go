@@ -2,7 +2,7 @@ package entity
 
 import (
 	"time"
-
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -37,4 +37,10 @@ type Review struct {
 	DepartmentID *uint
 	Department   Department `gorm:"references:ID"`
 
+}
+
+func init() {
+	govalidator.TagMap["image_valid"] = govalidator.Validator(func(str string) bool {
+		return govalidator.Matches(str, "^(data:image(.+);base64,.+)$")
+	})
 }
