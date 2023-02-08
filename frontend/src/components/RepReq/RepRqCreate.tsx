@@ -17,7 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { RoomInterface } from "../../models/IRoom";
-import { CustomerInterface } from "../../models/IReview";
+import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { RepairTypeInterface,RepairReqInterface } from "../../models/IRepairReq";
 
 import { GetRooms } from "../Room/service/RoomHttpClientService";
