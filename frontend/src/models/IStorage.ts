@@ -15,8 +15,8 @@ export interface ProductTypeInterface {
 
 //main
 export interface StorageInterface {
-    ID?: number | null;
-    Quantity?: number | null;
+    ID?: number;
+    Quantity?: number;
     Time?: Date | null;
     
     EmployeeID?: number | null;

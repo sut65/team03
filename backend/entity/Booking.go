@@ -16,17 +16,17 @@ type Branch struct {
 type Booking struct {
 	gorm.Model
 	//รับเข้ามา
-	BranchID *uint
-	Branch   Branch `gorm:"references:id"`
+	BranchID *uint  `valid:"required~Please select branch"`
+	Branch   Branch `valid:"-" gorm:"references:id"`
 	//รับเข้ามา
-	RoomID *uint
-	Room   Room `gorm:"references:id"`
+	RoomID *uint `valid:"required~Please select room"`
+	Room   Room  `valid:"-" gorm:"references:id"`
 
-	Start time.Time
-	Stop  time.Time
+	Start time.Time `valid:"required~Please select Start date" govalidator:"func=ValidateStartBeforeStop, func=ValidateStopAfterStartOneDay()"`
+	Stop  time.Time `valid:"required~Please select Stop date" govalidator:"func=ValidateStartBeforeStop, func=ValidateStopAfterStartOneDay()"`
 	//รับเข้ามา
-	CustomerID *uint
-	Customer   Customer `gorm:"references:id"`
+	CustomerID *uint    `valid:"required~Please Signin"`
+	Customer   Customer `valid:"-" gorm:"references:id"`
 
 	CheckInOut []CheckInOut `gorm:"foreignKey:BookingID"`
 }

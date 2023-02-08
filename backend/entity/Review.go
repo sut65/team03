@@ -2,7 +2,7 @@ package entity
 
 import (
 	"time"
-
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -20,17 +20,16 @@ type Systemwork struct {
 type Review struct {
 	gorm.Model
 
-	Comment string
+	Comment string `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Comment not blank,"`
 	Star int
 	Reviewdate time.Time
-	Reviewimega string
-
+	Reviewimage string `valid:"image_valid~Invalid Image"`
 
 	// CustomerID ทำหน้าที่เป็น FK
 	CustomerID *uint
 	Customer   Customer `gorm:"references:ID"`
 
-	// CustomerID ทำหน้าที่เป็น FK
+	// SystemworkID ทำหน้าที่เป็น FK
 	SystemworkID *uint
 	Systemwork   Systemwork `gorm:"references:ID"`
 
@@ -38,6 +37,10 @@ type Review struct {
 	DepartmentID *uint
 	Department   Department `gorm:"references:ID"`
 
+}
 
-	
+func init() {
+	govalidator.TagMap["image_valid"] = govalidator.Validator(func(str string) bool {
+		return govalidator.Matches(str, "^(data:image(.+);base64,.+)$")
+	})
 }

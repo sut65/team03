@@ -23,6 +23,7 @@ export interface StateInterface {
 //main
 export interface RoomInterface {
     ID?: number;
+    Room_No?: string;
     Time?: Date | null;
     
     EmployeeID?: number | null;

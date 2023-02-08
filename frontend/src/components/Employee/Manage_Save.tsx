@@ -208,7 +208,7 @@ const getLocation = async () => {
 
   function submit() {
     let data = {
-      PersonalID: typeof employee.PersonalID === "string" ? parseInt(employee.PersonalID) : 0,
+      PersonalID: employee.PersonalID,
       Employeename:  employee.Employeename ,
       Email: employee.Email ,
       Eusername: employee.Eusername ?? "",
@@ -358,7 +358,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกแผนก
                 </MenuItem>
                 {department.map((item: DepartmentInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -379,7 +378,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกตำแหน่ง
                 </MenuItem>
                 {position.map((item: PositionInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -401,7 +399,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกสถานที่
                 </MenuItem>
                 {location.map((item: LocationInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -589,7 +586,7 @@ const getLocation = async () => {
               Back
             </Button>
 
-            <Button
+            <Button 
               style={{ float: "right" }}
               onClick={submit}
               variant="contained"

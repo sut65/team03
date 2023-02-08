@@ -31,6 +31,7 @@ import { GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom } from 
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
+import { Message } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -56,9 +57,10 @@ function RoomCreate() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   const [roomzone, setRoomZones] = useState<RoomZoneInterface[]>([]);
 
-  const [room, setRoom] = useState<RoomInterface>({});
+  const [room, setRoom] = useState<RoomInterface>({Time: new Date(),});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -89,7 +91,7 @@ function RoomCreate() {
 
     const { value } = event.target;
 
-    setRoom({ ...room, [id]: value  === "" ? "" : Number(value)  });
+    setRoom({ ...room, [id]: value });
 
   };
 
@@ -141,13 +143,16 @@ function RoomCreate() {
       StateID: convertType(room.StateID),
       //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
+      Room_No: room.Room_No,
       Time: room.Time,
     };
 
     let res = await CreateRoom(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("บันทึกข้อมูลสำเร็จ");
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -161,7 +166,8 @@ function RoomCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          {/* บันทึกข้อมูลสำเร็จ */}
+          {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -171,7 +177,8 @@ function RoomCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          {/* บันทึกข้อมูลไม่สำเร็จ */}
+          {message}
         </Alert>
       </Snackbar>
       <Paper>
@@ -198,10 +205,13 @@ function RoomCreate() {
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
             <TextField
-          id="outlined-number" label="หมายเลขห้อง" type="number" InputLabelProps={{ shrink: true,}} value={room?.ID} onChange={handleInputChangenumber}       
+          id="Room_No" label="หมายเลขห้อง" type="string" 
+          InputLabelProps={{ shrink: true,}} value={room?.Room_No} 
+          onChange={handleInputChangenumber}    
+          inputProps={{name: "Room_No"}}    
           />
             </FormControl>
-          </Grid>
+        </Grid>
 
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
@@ -370,7 +380,7 @@ function RoomCreate() {
               style={{ float: "right" }}
               onClick={submit}
               variant="contained"
-              color="inherit"
+              color="success"
             >
               บันทึก
             </Button>

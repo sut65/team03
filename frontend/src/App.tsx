@@ -135,7 +135,7 @@ export default function App() {
 
           
           <Route path="/checkroom/create" element={<Checkroom />} /> 
-          <Route path="/checkroom/list" element={<Checkroomlist />} />
+          <Route path="/checkroom/list" element={<Checkroomlist />} /> 
           <Route path="/checkroom/edit" element={<CheckroomEdit />} /> 
 
 

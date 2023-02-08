@@ -24,12 +24,12 @@ import {
   import * as React from "react";
   import { DepartmentInterface } from "../../models/IEmployee";
   import {
-    CustomerInterface,
     ReviewInterface,
     SystemworkInterface,
   } from "../../models/IReview";
   import { Link as RouterLink } from "react-router-dom";
   import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
   
   const bgbutton = createTheme({
     palette: {
@@ -160,7 +160,7 @@ import {
           Comment: review.Comment ?? "",
           Star: start,
           Reviewdate: reviewdate,
-          Reviewimega: imageString,
+          Reviewimage: imageString,
           CustomerID: user?.ID ?? "",
           DepartmentID: review.DepartmentID,
           SystemworkID: review.SystemworkID,
