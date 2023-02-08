@@ -22,8 +22,8 @@ type Booking struct {
 	RoomID *uint `valid:"required~Please select room"`
 	Room   Room  `valid:"-" gorm:"references:id"`
 
-	Start time.Time `valid:"required~Please select Start date" govalidator:"func=ValidateStartBeforeStop`
-	Stop  time.Time `valid:"required~Please select Stop date" govalidator:"func=ValidateStartBeforeStop`
+	Start time.Time `valid:"required~Please select Start date" govalidator:"func=ValidateStartBeforeStop, func=ValidateStopAfterStartOneDay()"`
+	Stop  time.Time `valid:"required~Please select Stop date" govalidator:"func=ValidateStartBeforeStop, func=ValidateStopAfterStartOneDay()"`
 	//รับเข้ามา
 	CustomerID *uint    `valid:"required~Please Signin"`
 	Customer   Customer `valid:"-" gorm:"references:id"`
