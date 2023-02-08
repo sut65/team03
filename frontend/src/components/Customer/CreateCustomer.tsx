@@ -30,7 +30,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function App() {
+function Customer() {
   // =========================(Use State)====================================================
 
   const [customer, setCustomer] = useState<CustomerInterface>({});
@@ -120,11 +120,14 @@ function App() {
   const apiUrl = "http://localhost:8080";
   const requestOptionsGet = {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+  },
   };
 
   const fetchGender = async () => {
-    fetch(`${apiUrl}/genders`, requestOptionsGet)
+    fetch(`${apiUrl}/customers/genders`, requestOptionsGet)
       .then((response) => response.json())
       .then((result) => {
         setGender(result.data);
@@ -174,7 +177,10 @@ function App() {
     );
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+    },
       body: JSON.stringify(data),
     };
 
@@ -489,4 +495,4 @@ function App() {
   );
 }
 
-export default App;
+export default Customer;

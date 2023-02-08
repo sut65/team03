@@ -4,6 +4,7 @@ import (
 	"github.com/sut65/team03/controller"
 	booking "github.com/sut65/team03/controller/Booking"
 	check "github.com/sut65/team03/controller/CheckInOut"
+	checkroom "github.com/sut65/team03/controller/Checkroom"
 	chk_payment "github.com/sut65/team03/controller/Chk_Payment"
 	customer "github.com/sut65/team03/controller/Customer"
 	employee "github.com/sut65/team03/controller/Manage_Employee"
@@ -13,7 +14,6 @@ import (
 	room "github.com/sut65/team03/controller/Room"
 	service "github.com/sut65/team03/controller/Service"
 	storage "github.com/sut65/team03/controller/Storage"
-	checkroom "github.com/sut65/team03/controller/Checkroom"
 	"github.com/sut65/team03/middlewares"
 
 	"github.com/sut65/team03/entity"
@@ -59,7 +59,7 @@ func main() {
 			protected.GET("/booking/:id", booking.GetBooking)
 			protected.GET("/bookings/user/:id", booking.ListBookingsByUID)
 			protected.POST("/bookings", booking.CreateBooking)
-			protected.PATCH("/bookings", booking.UpdateBooking)
+			protected.PATCH("/bookings/:id", booking.UpdateBooking)
 			protected.DELETE("/bookings/:id", booking.DeleteBooking)
 			// ---Branch---
 			protected.GET("/branchs", booking.ListBranchs)
@@ -72,7 +72,7 @@ func main() {
 			protected.GET("/chk_payments", chk_payment.ListCHK_Payments)
 			protected.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
 			protected.POST("/chk_payments", chk_payment.CreateCHK_Payment)
-			protected.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+			protected.PATCH("/chk_payments/:id", chk_payment.UpdateCHK_Payment)
 			protected.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
 			// ---Status---
 			protected.GET("/chk_payment/statuses", chk_payment.ListStatuses)
@@ -143,25 +143,25 @@ func main() {
 			protected.GET("/rooms", room.ListRooms)
 			protected.GET("/room/:id", room.GetRoom)
 			protected.POST("/rooms", room.CreateRoom)
-			protected.PATCH("/rooms", room.UpdateRoom)
+			protected.PUT("/rooms", room.UpdateRoom)
 			protected.DELETE("/rooms/:id", room.DeleteRoom)
 
 			protected.GET("/room_types", room.ListRoomTypes)
 			protected.GET("/room_types/:id", room.GetRoomType)
 			protected.POST("/room_types", room.CreateRoomType)
-			protected.PATCH("/room_types", room.UpdateRoomType)
+			protected.PUT("/room_types", room.UpdateRoomType)
 			protected.DELETE("/room_typss/:id", room.DeleteRoomType)
 
 			protected.GET("/room_zones", room.ListRoomZones)
 			protected.GET("/room_zone/:id", room.GetRoomZone)
 			protected.POST("/room_zones", room.CreateRoomZone)
-			protected.PATCH("/room_zones", room.UpdateRoomZone)
+			protected.PUT("/room_zones", room.UpdateRoomZone)
 			protected.DELETE("/room_zones/:id", room.DeleteRoomZone)
 
 			protected.GET("/states", room.ListStates)
 			protected.GET("/state/:id", room.GetState)
 			protected.POST("/states", room.CreateState)
-			protected.PATCH("/states", room.UpdateState)
+			protected.PUT("/states", room.UpdateState)
 			protected.DELETE("/states/:id", room.DeleteState)
 			//===================================================Room
 
@@ -170,6 +170,7 @@ func main() {
 			protected.GET("/payment/:id", payment.GetPayment)
 			protected.GET("/payment/customer/:id", payment.ListPaymentByUID)
 			protected.POST("/payment", payment.CreatePayment)
+			protected.PATCH("/payments", payment.UpdatePayment)
 
 			protected.GET("/paymentmethods", payment.ListPaymentMethods)
 			protected.GET("/methods/paymet/:id", payment.ListMethodsByPID)
@@ -185,6 +186,7 @@ func main() {
 			protected.PATCH("/services", service.UpdateService)
 			protected.DELETE("/services/:id", service.DeleteService)
 
+			protected.GET("/room/customer/:id", service.GetRoomByCID)
 			protected.GET("/foods", service.ListFoods)
 			protected.GET("/drinks", service.ListDrinks)
 			protected.GET("/accessories", service.ListAccessories)
@@ -207,7 +209,7 @@ func main() {
 			protected.GET("/storages", storage.ListStorages)
 			protected.GET("/storage/:id", storage.GetStorage)
 			protected.POST("/storages", storage.CreateStorage)
-			protected.PATCH("/storages", storage.UpdateStorage)
+			protected.PUT("/storages", storage.UpdateStorage)
 			protected.DELETE("/storages/:id", storage.DeleteStorage)
 
 			protected.GET("/products", storage.ListProducts)
@@ -227,7 +229,7 @@ func main() {
 			protected.GET("/checkrooms", checkroom.ListCheckroom)
 			protected.GET("/checkroom/:id", checkroom.GetCheckroom)
 			protected.POST("/checkrooms", checkroom.CreateCheckroom)
-			protected.PATCH("/checkrooms", checkroom.UpdateCheckroom)
+			protected.PATCH("/checkroomsupdate/:id", checkroom.UpdateCheckroom)
 			protected.DELETE("/checkrooms/:id", checkroom.DeleteCheckroom)
 			//Gender
 			protected.GET("/damages", checkroom.ListDamage)
@@ -236,11 +238,11 @@ func main() {
 			protected.PATCH("/checkrooms/damages", checkroom.UpdateDamage)
 			protected.DELETE("/checkrooms/damages/:id", checkroom.DeleteDamage)
 			//StatusCR
-			protected.GET("/statuscrs", checkroom.ListStatusCR)
-			protected.GET("/checkrooms/statuscrs/:id", checkroom.GetStatusCR)
-			protected.POST("/checkrooms/statuscrs", checkroom.CreateStatusCR)
-			protected.PATCH("/checkrooms/statuscrs", checkroom.UpdateStatusCR)
-			protected.DELETE("/checkrooms/statuscrs/:id", checkroom.DeleteStatusCR)
+			protected.GET("/status", checkroom.ListStatus)
+			protected.GET("/checkrooms/statuscrs/:id", checkroom.GetStatus)
+			protected.POST("/checkrooms/status", checkroom.CreateStatus)
+			protected.PATCH("/checkrooms/status", checkroom.UpdateStatus)
+			protected.DELETE("/checkrooms/status/:id", checkroom.DeleteStatus)
 
 			//==================================================Checkroom Routes
 

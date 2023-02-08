@@ -1,51 +1,37 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-
-import TextField from "@mui/material/TextField";
-
 import Button from "@mui/material/Button";
-
 import FormControl from "@mui/material/FormControl";
-
 import Container from "@mui/material/Container";
-
 import Paper from "@mui/material/Paper";
-
 import Grid from "@mui/material/Grid";
-
 import Box from "@mui/material/Box";
-
 import Typography from "@mui/material/Typography";
-
 import Divider from "@mui/material/Divider";
-
 import Snackbar from "@mui/material/Snackbar";
-
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-
+import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-//สี
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { grey } from '@mui/material/colors';
-//timedate
-//import dayjs, { Dayjs } from "dayjs";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-//combobox
-// import { ComboBoxComponent } from "@syncfusion/ej2-react-dropdowns";
+
+//import { BookingsInterface } from "../../models/IBooking";
+import { 
+  CheckInOutInterface,
+  CheckInOutStatusInterface, 
+} from "../../models/ICheckInOut";
+import { EmployeeInterface } from "../../models/IEmployee"; 
 
 import { RoomInterface, RoomTypeInterface, RoomZoneInterface, StateInterface } from "../../models/IRoom";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import { InputLabel, Stack } from "@mui/material";
+import { GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom } from "./service/RoomHttpClientService";
 
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from '@mui/material/MenuItem';
-import { EmployeeInterface } from "../../models/IEmployee";
-//import { getDecorators } from "typescript";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { grey } from '@mui/material/colors';
+import { Message } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -58,191 +44,44 @@ const theme = createTheme({
 },
 });
 
-//เด้งขึ้นมาแจ้งเตือนว่าบันทึกสำเร็จ ไม่สำเร็จ 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
-
   ref
 ) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function RoomCreate() {
+  const [roomtypes, setRoomTypes] = useState<RoomTypeInterface[]>([]);
+  const [states, setStates] = useState<StateInterface[]>([]);
+  const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
+  const [roomzone, setRoomZones] = useState<RoomZoneInterface[]>([]);
 
-  //  const [date, setDate] = React.useState<Date | null>(null);
+  const [room, setRoom] = useState<RoomInterface>({Time: new Date(),});
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
 
-  const [room, setRoom] = React.useState<Partial<RoomInterface>>({
-    EmployeeID: 0,
-    RoomTypeID: 0,
-    RoomZoneID: 0,
-    StateID: 0,
-  });
-
-
-  //Partial คือเลือกค่า set ค่าได้เฉพาะตัวได้
-
-  const [success, setSuccess] = React.useState(false);
-
-  const [error, setError] = React.useState(false);
-
-  const [roomtype, setroomtype] = React.useState<RoomTypeInterface[]>(
-    []
-  );
-  const [employee, setEmployee] = React.useState<EmployeeInterface>(
-  );
-
-  //เราส่งมาในรูปแบบอาเรย์ ทำการดึงข้อมูล
-  const [roomzone, setRoomZone] = React.useState<RoomZoneInterface[]>([]);
-  const [state, setState] = React.useState<StateInterface[]>([]);
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date()
-  );
-  //const [user, setUser] = React.useState<DoctorsInterface>();
-
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-  };
-
-  const getRoomZone = async () => {
-    const apiUrl = `http://localhost:8080/room_zones`;
-
-    const requestOptions = {
-      method: "GET",
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-
-    //การกระทำ //json
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-
-      .then((res) => {
-        console.log(res.data); //show ข้อมูล
-
-        if (res.data) {
-          setRoomZone(res.data);
-        } else {
-          console.log("else");
-        }
-      });
-  };
-  //activity
-  const getRoomType = async () => {
-    const apiUrl = `http://localhost:8080/room_types`;
-
-    const requestOptions = {
-      method: "GET",
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    //การกระทำ
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-
-      .then((res) => {
-        console.log(res.data);
-
-        if (res.data) {
-          setroomtype(res.data);
-        } else {
-          console.log("else");
-        }
-      });
-  };
-  //activity
-
-   //activity
-   const getState = async () => {
-    const apiUrl = `http://localhost:8080/states`;
-
-    const requestOptions = {
-      method: "GET",
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    //การกระทำ
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-
-      .then((res) => {
-        console.log(res.data);
-
-        if (res.data) {
-          setState(res.data);
-        } else {
-          console.log("else");
-        }
-      });
-  };
-  //activity
-
-  const getEmployee = async () => {
-    const uid = localStorage.getItem("uid")
-    const apiUrl = `http://localhost:8080/employee/${uid}`;
-
-    const requestOptions = {
-      method: "GET",
-
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    //การกระทำ
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-
-      .then((res) => {
-        console.log(res.data);
-
-        if (res.data) {
-          setEmployee(res.data);
-          room.EmployeeID = res.data.ID
-        } else {
-          console.log("else");
-        }
-      });
-  };
-  //เปิดปิดตัว Alert
   const handleClose = (
     event?: React.SyntheticEvent | Event,
-
     reason?: string
   ) => {
     if (reason === "clickaway") {
       return;
     }
-
     setSuccess(false);
     setError(false);
   };
 
-  console.log(room);
-
-  //ทุกครั้งที่พิมพ์จะทำงานเป็น state เหมาะสำหรับกับคีย์ textfield
- 
-  
-//กดเลือกคอมโบไม่ได้
-  const handleChange = (
-    event: SelectChangeEvent<number>
-  ) => {
+  const handleChange = (event: SelectChangeEvent) => {
     const name = event.target.name as keyof typeof room;
     setRoom({
       ...room,
       [name]: event.target.value,
     });
-  };
+  }; 
 
-  const handleInputChange = (
+  const handleInputChangenumber = (
 
     event: React.ChangeEvent<{ id?: string; value: any }>
 
@@ -257,285 +96,299 @@ function RoomCreate() {
   };
 
 
-  const handleInputChangenumber = (
-
-    event: React.ChangeEvent<{ id?: string; value: any }>
-
-  ) => {
-
-    const id = event.target.id as keyof typeof room;
-
-    const { value } = event.target;
-
-    setRoom({ ...room, [id]: value  === "" ? "" : Number(value)  });
-
+  const getRoomType =  async () => {
+    let res = await GetRoomTypes();
+    if (res) {
+      setRoomTypes(res);
+    }
   };
 
-  function submit() {
-    let data = {
-      //แค่ข้างหน้า ชื่อต้องตรง!!!!!!!
-      EmployeeID: room.EmployeeID,
+  const getRoomZone =  async () => {
+    let res = await GetRoomZones();
+    if (res) {
+      setRoomZones(res);
+    }
+  };
 
-      RoomTypeID: room.RoomTypeID,
+  const getState =  async () => {
+    let res = await GetStates();
+    if (res) {
+      setStates(res);
+    }
+  };
 
-      RoomZoneID: room.RoomZoneID,
-
-      StateID: room.StateID,
-
-      Time: selectedDate,
-      
-      // Num: typeof overtime?.Num === "string" ? (overtime?.Num === "" ? 0 : overtime?.Num) : overtime?.Num,
-    
-    };
-
-    console.log(data)
-
-    const apiUrl = "http://localhost:8080/rooms";
-
-    const requestOptions = {
-      method: "POST",
-
-      headers: 
-      {  Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json" 
-      },
-
-      body: JSON.stringify(data),
-      //แปลงข้อมูล
-    };
-
-    fetch(apiUrl, requestOptions)
-      .then((response) => response.json())
-
-      .then((res) => {
-        if (res.data) {
-          setSuccess(true);
-        } else {
-          setError(true);
-        }
-      });
-  }
+  const getEmployee =  async () => {
+    let res = await GetEmployees();
+    if (res) {
+      setEmployees(res);
+    }
+  };
 
   useEffect(() => {
-    getEmployee();
     getRoomType();
     getRoomZone();
+    getEmployee();
     getState();
   }, []);
 
+  const convertType = (data: string | number | undefined | null) => {
+    let val = typeof data === "string" ? parseInt(data) : data;
+    return val;
+  };
+
+  async function submit() {
+    let data = {
+      RoomTypeID: convertType(room.RoomTypeID),
+      RoomZoneID: convertType(room.RoomZoneID),
+      StateID: convertType(room.StateID),
+      //EmployeeID: convertType(checkinout.EmployeeID),
+      EmployeeID: convertType(localStorage.getItem("id")),
+      Room_No: room.Room_No,
+      Time: room.Time,
+    };
+
+    let res = await CreateRoom(data);
+    if (res.status) {
+      setAlertMessage("บันทึกข้อมูลสำเร็จ");
+      setSuccess(true);
+    } else {
+      setAlertMessage(res.message);
+      setError(true);
+    }
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
-        <Snackbar
-          open={success}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+    <Container maxWidth="md">
+      <Snackbar
+        open={success}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          {/* บันทึกข้อมูลสำเร็จ */}
+          {message}
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={error}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="error">
+          {/* บันทึกข้อมูลไม่สำเร็จ */}
+          {message}
+        </Alert>
+      </Snackbar>
+      <Paper>
+        <Box
+          display="flex"
+          sx={{
+            marginTop: 2,
+          }}
         >
-          <Alert onClose={handleClose} severity="success">
-            Success
-          </Alert>
-        </Snackbar>
-
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error">
-            Error
-          </Alert>
-        </Snackbar>
-
-        <Paper>
-          <Box
-            display="flex"
-            sx={{
-              marginTop: 2,
-            }}
-          >
-            <Box sx={{ paddingX: 2, paddingY: 1 }}>
-              <Typography
-                component="h2"
-                variant="h6"
-                color="grey"
-                gutterBottom
-              >
-                เพิ่มข้อมูลห้อง
-              </Typography>
-            </Box>
+          <Box sx={{ paddingX: 2, paddingY: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="grey"
+              gutterBottom
+            >
+              เพิ่มข้อมูลห้อง
+            </Typography>
           </Box>
-
-          <Divider />
-
-          <Grid container spacing={3} sx={{ padding: 2 }}>
+        </Box>
+        <Divider />
+        
+        <Grid container spacing={3} sx={{ padding: 2 }}>
           <Grid item xs={6}>
-                <p>หมายเลขห้อง</p>
-                <TextField 
-                fullWidth
-                id="ID" InputProps={{inputProps: {min: 10}}} type="number" variant="outlined" value={room?.ID} onChange={handleInputChangenumber} 
-                />
-                  </Grid>
-          {/*<Grid item xs={6}>
-              <p>หมายเลขห้อง</p>
-              <FormControl fullWidth variant="outlined"> 
-                <TextField
-                  value = {room?.ID || "" }
-                   //onChange = {handleChange}
-                  inputProps={{
-                    // name: "DoctorID",
-                    //readOnly: true
-                  }}
-                  // defaultValue={0}
-                >
-                     {/* <MenuItem value={0} key={0}>
-                    กรุณาเลือกชื่อ
-                  </MenuItem> */}
-                  {/* <option aria-label="None" value="">
-                  กรุณาเลือกความละอียด
+            <FormControl fullWidth variant="outlined">
+            <TextField
+          id="Room_No" label="หมายเลขห้อง" type="string" 
+          InputLabelProps={{ shrink: true,}} value={room?.Room_No} 
+          onChange={handleInputChangenumber}    
+          inputProps={{name: "Room_No"}}    
+          />
+            </FormControl>
+        </Grid>
+
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+            <InputLabel id="demo-simple-select-label">ประเภทของห้องพัก</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={room.RoomTypeID + ""}
+                label="ประเภทของห้องพัก."
+                onChange={handleChange}
+                inputProps={{
+                  name: "RoomTypeID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกประเภทห้องพัก
                 </option>
-                {doctor.map((item: DoctorsInterface) => (
+                {roomtypes.map((item: RoomTypeInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Size}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+            <InputLabel id="demo-simple-select-label">โซนของห้องพัก</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={room.RoomZoneID + ""}
+                label="โซนของห้องพัก."
+                onChange={handleChange}
+                inputProps={{
+                  name: "RoomZoneID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกโซนห้องพัก
+                </option>
+                {roomzone.map((item: RoomZoneInterface) => (
                   <option value={item.ID} key={item.ID}>
                     {item.Name}
                   </option>
-                ))} */}
-                  {/* {doctor.map((item: DoctorsInterface) => (
-                    <MenuItem value={item.ID}>{item.Name}</MenuItem>
-                  ))} */}
-                {/*</TextField>
-              </FormControl>
-            </Grid>*/}
-            <Grid item xs={6}>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-              <p>ประเภทของห้องพัก</p>
-                <Select
-                  value = {room.RoomTypeID}
-                  onChange = {handleChange}
-                  inputProps={{
-                    size: "RoomTypeID",
-                  }}
-                  // defaultValue={0}
-                >
-                  <MenuItem value={0} key={0}>
-                    กรุณาเลือกประเภทห้องพัก
-                  </MenuItem>
-                  {roomtype.map((item: RoomTypeInterface) => (
-                    <MenuItem value={item.ID}>{item.Size}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
+            <InputLabel id="demo-simple-select-label">สถานะของห้องพัก</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                native
+                value={room.StateID + ""}
+                label="สถานะของห้องพัก."
+                onChange={handleChange}
+                inputProps={{
+                  name: "StateID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกสถานะห้อง
+                </option>
+                {states.map((item: StateInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          {/* <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <p>สถานะของห้อง</p>
-                <Select
-                  value = {room.RoomTypeID}
-                  onChange = {handleChange}
-                  inputProps={{
-                    name: "RoomTypeID",
-                  }}
-                  // defaultValue={0}
-                >
-                  <MenuItem value={0} key={0}>
-                    กรุณาเลือกสถานะห้อง
-                  </MenuItem>
-                  {state.map((item: StateInterface) => (
-                    <MenuItem value={item.ID}>{item.Name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            {/*<Grid item xs={6}>
-                <p>จำนวนชั่วโมงที่ทำ</p>
-                <TextField 
-                fullWidth
-                id="Num" InputProps={{inputProps: {min: 1}}} type="number" variant="outlined" value={overtime?.Num} onChange={handleInputChangenumber} 
-                />
-                  </Grid>*/}
-            <Grid item xs={6}>
-              <FormControl fullWidth variant="outlined">
-                <p>โซนของห้องพัก</p>
-
-                <Select
-                  value={room.RoomZoneID}
-                  onChange={handleChange}
-                  inputProps={{
-                    name: "RoomZoneID",
-                  }}
-                  // defaultValue={0}
-                >
-                  <MenuItem value={0} key={0}>
-                    กรุณาเลือกโซนห้องพัก
-                  </MenuItem>
-                  {roomzone.map((item: RoomZoneInterface) => (
-                    <MenuItem value={item.ID}>{item.Name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            {/* //วันที่และเวลา */}
-            <Grid item xs={7}>
-            {/* <FormControl fullWidth variant="outlined">
+              <Select
+                native
+                value={room.StateID + ""}
+                onChange={handleChange}
+                inputProps={{
+                  name: "StateID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือกสถานะห้อง
+                </option>
+                {states.map((item: StateInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+                </Grid> */}
+          {/* <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
+              <p>employee</p>
+              <Select
+                native
+                value={checkinout.EmployeeID + ""}
+                onChange={handleChange}
+                inputProps={{
+                  name: "EmployeeID",
+                }}
+              >
+                <option aria-label="None" value="">
+                  กรุณาเลือก Employee
+                </option>
+                {emps.map((item: EmployeeInterface) => (
+                  <option value={item.ID} key={item.ID}>
+                    {item.Eusername}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid> */}
+          {/* <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
               <p>วันที่และเวลา</p>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  value={overtime.Time}
+                  value={checkinout.CheckInTime}
                   onChange={(newValue) => {
-                    setOvertime({
-                      ...overtime,
-                      Time: newValue,
+                    setCheckinout({
+                      ...checkinout,
+                      CheckInTime: newValue,
                     });
                   }}
                   renderInput={(params) => <TextField {...params} />}
                 />
               </LocalizationProvider>
-            </FormControl> */}
-              <FormControl fullWidth variant="outlined">
-                <p>วันที่และเวลา</p>
-
+            </FormControl>
+          </Grid> */}
+          <Grid item xs={6}>
+            <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    //label="กรุณาเลือกวันและเวลา"
-                    value={selectedDate} //แก้
-                    // onChange={(newValue) => {
-                    // setDate(newValue);
-
-                    // }}
-                    onChange={setSelectedDate}
-                  />
+                    <Stack spacing={3}>
+                        <DesktopDateTimePicker
+                        label="วันที่และเวลา"
+                        value={room.Time}
+                        onChange={(newValue) => {
+                            setRoom({
+                                ...room,
+                                Time: newValue,
+                              });
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                        />
+                    </Stack>
                 </LocalizationProvider>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Button component={RouterLink} to="/RT" variant="contained">
-                <Typography
-                  color="secondary"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-                  BACK
-                </Typography>
-              </Button>
-
-              <Button
-                style={{ float: "right" }}
-                onClick={submit}
-                variant="contained"
-                color="primary"
-              >
-                <Typography
-                  color="secondary"
-                  component="div"
-                  sx={{ flexGrow: 1 }}
-                >
-                 ADD
-                </Typography>
-              </Button>
-            </Grid>
+            </FormControl>
           </Grid>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+          <Grid item xs={12}>
+            <Button
+              component={RouterLink}
+              to="/RT"
+              variant="contained"
+              color="inherit"
+            >
+              กลับ
+            </Button>
+            <Button
+              style={{ float: "right" }}
+              onClick={submit}
+              variant="contained"
+              color="success"
+            >
+              บันทึก
+            </Button>
+          </Grid>
+        </Grid>
+      </Paper>
+    </Container>
   );
+
 }
-
 export default RoomCreate;
-

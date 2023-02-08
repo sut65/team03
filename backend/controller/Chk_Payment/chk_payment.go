@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team03/entity"
 )
@@ -16,6 +17,12 @@ func CreateCHK_Payment(c *gin.Context) {
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 8 จะถูก bind เข้าตัวแปร chk_payment
 	if err := c.ShouldBindJSON(&chk_payment); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(chk_payment); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"booking_error": err.Error()})
 		return
 	}
 
@@ -39,11 +46,11 @@ func CreateCHK_Payment(c *gin.Context) {
 
 	// 12: สร้าง CHK_Payment
 	chk_p := entity.CHK_Payment{
-		// waiting for payment
-		// Payment:   payment,
+		Payment:           payment,
 		CHK_PaymentStatus: status,
 		Date_time:         chk_payment.Date_time,
 		Amount:            chk_payment.Amount,
+		Description:       chk_payment.Description,
 		Employee:          employee,
 	}
 
@@ -68,7 +75,7 @@ func GetCHK_Payment(c *gin.Context) {
 
 // GET /chk_payments
 func ListCHK_Payments(c *gin.Context) {
-	var chk_payments entity.CHK_Payment
+	var chk_payments []entity.CHK_Payment
 	if err := entity.DB().Preload("Payment").Preload("CHK_PaymentStatus").Preload("Employee").Raw("SELECT * FROM chk_payments").Find(&chk_payments).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -91,13 +98,15 @@ func DeleteCHK_Payment(c *gin.Context) {
 // PATCH /chk_payments
 func UpdateCHK_Payment(c *gin.Context) {
 	var chk_payment entity.CHK_Payment
-	if err := c.ShouldBindJSON(&chk_payment); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	id := c.Param("id")
+
+	if tx := entity.DB().Where("id = ?", id).First(&chk_payment); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "chk_payment not found"})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", chk_payment.ID).First(&chk_payment); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "chk_payment not found"})
+	if err := c.ShouldBindJSON(&chk_payment); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

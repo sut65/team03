@@ -2,7 +2,7 @@ import { EmployeeInterface } from "./IEmployee";
 
 //product
 export interface ProductInterface {
-    ID: number;
+    ID?: number;
     Name?: string;
     Price: number;
 }
@@ -16,16 +16,16 @@ export interface ProductTypeInterface {
 //main
 export interface StorageInterface {
     ID?: number;
-    Quantity: number;
-    Time?: Date;
+    Quantity?: number;
+    Time?: Date | null;
     
-    EmployeeID?: number;
+    EmployeeID?: number | null;
     Employee?: EmployeeInterface;
 
-    ProductID?: number;
+    ProductID?: number | null;
     Product?: ProductInterface;
 
-    ProductTypeID?: number;
+    ProductTypeID?: number | null;
     ProducType?: ProductTypeInterface;
 
 }

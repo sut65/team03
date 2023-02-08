@@ -71,7 +71,7 @@ func SetupDatabase() {
 		//ระบบตรวจสอบห้องพัก
 		&Checkroom{},
 		&Damage{},
-		&StatusCR{},
+		&Status{},
 	)
 	db = database
 

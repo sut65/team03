@@ -5,7 +5,7 @@ import { BranchsInterface } from "../../../models/modelBooking/IBranch";
 const apiUrl = "http://localhost:8080";
 
 async function GetCustomerByUID() {
-    let uid = localStorage.getItem('user');
+    let uid = localStorage.getItem('id');
     const requestOptions = {
         method: "GET",
         headers: {
@@ -15,6 +15,28 @@ async function GetCustomerByUID() {
     }
 
     let res = await fetch(`${apiUrl}/customer/${uid}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+async function GetCustomers() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    }
+
+    let res = await fetch(`${apiUrl}/customers`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -60,8 +82,8 @@ async function GetBookings() {
 }
 
 //Get Booking
-async function GetBooking(data: BookingsInterface) {
-    let b_id = data.ID;
+async function GetBooking(data: string | undefined) {
+    let b_id = data;
     const requestOptions = {
         method: "GET",
         headers: {
@@ -122,9 +144,10 @@ async function Bookings(data: BookingsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                console.log(res.error);
+                return { status: false, message: res.booking_error };
             }
         });
 
@@ -147,9 +170,9 @@ async function DeleteBooking(data: BookingsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -158,6 +181,7 @@ async function DeleteBooking(data: BookingsInterface) {
 
 // Update Booking
 async function UppdateBooking(data: BookingsInterface) {
+    let b_id = data.ID;
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -167,13 +191,13 @@ async function UppdateBooking(data: BookingsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/bookings/${b_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -202,7 +226,6 @@ async function GetBranchs() {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                console.log(res.data)
                 return res.data;
             } else {
                 return false;
@@ -311,6 +334,7 @@ async function UppdateBranch(data: BranchsInterface) {
 
 export {
     GetCustomerByUID,
+    GetCustomers,
 
     Bookings,
     GetBookings,

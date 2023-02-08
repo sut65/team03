@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
+
 	"github.com/sut65/team03/entity"
 	"golang.org/x/crypto/bcrypt"
 
@@ -26,6 +28,7 @@ func CreateRoomType(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": roomtype})
+
 }
 
 // GET /roomtype/:id
@@ -105,6 +108,7 @@ func CreateRoomZone(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": roomzone})
+
 }
 
 // GET /RoomZone/:id
@@ -266,6 +270,12 @@ func CreateRoom(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(room); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// 9.  ค้นหา Employee ด้วย id
 	if tx := entity.DB().Where("id = ?", room.EmployeeID).First(&employee); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "employee not found"})
@@ -296,6 +306,7 @@ func CreateRoom(c *gin.Context) {
 		RoomType: roomtype,
 		RoomZone: roomzone,
 		State:    state,
+		Room_No:  room.Room_No,
 		Time:     room.Time,
 	}
 
@@ -344,24 +355,204 @@ func DeleteRoom(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// PATCH /Rooms
-func UpdateRoom(c *gin.Context) {
+// // PATCH /Rooms
+// func UpdateRoom(c *gin.Context) {
 
+// 	var room entity.Room
+
+// 	if err := c.ShouldBindJSON(&room); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	if tx := entity.DB().Where("id = ?", room.ID).First(&room); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "room not found"})
+// 		return
+// 	}
+
+// 	if err := entity.DB().Save(&room).Error; err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{"data": room})
+// }
+
+// // PATCH /checkin
+// func UpdateCheckIn(c *gin.Context) {
+// 	//main
+// 	var cio entity.CheckInOut
+// 	var cioOld entity.CheckInOut
+
+// 	//relation
+// 	//var booking entity.Booking
+// 	var status entity.CheckInOutStatus
+// 	var emp entity.Employee
+
+// 	if err := c.ShouldBindJSON(&cio); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	//check cio haved?
+// 	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
+// 		return
+// 	}
+
+// 	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+// 		return
+// 	}
+// 	cio.CheckInOutStatus = status
+
+// 	if cioOld.CheckInOutStatus.ID == 2 {
+// 		cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
+// 	}
+// 	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+// 		cio.CheckInTime = cioOld.CheckInTime
+// 	}
+
+// 	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+// 		cio.CheckOutTime = cioOld.CheckOutTime
+// 	}
+
+// 	if cio.BookingID == nil {
+// 		cio.BookingID = cioOld.BookingID
+// 	}
+
+// 	//new emp
+// 	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
+// 		return
+// 	}
+// 	cio.Employee = emp
+
+// 	if err := entity.DB().Save(&cio).Error; err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		c.Abort()
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"status":                     "Update Success",
+// 		"data":                       cio,
+// 		"cioOld.CheckInOutStatus.ID": cioOld.CheckInOutStatus.ID,
+// 	})
+// }
+
+// // PATCH /room
+// func UpdateRooms(c *gin.Context) {
+// 	//main
+// 	var cio entity.Room
+// 	var cioOld entity.Room
+
+// 	//relation
+// 	//var booking entity.Booking
+// 	var roomtype entity.RoomType
+// 	var roomzone entity.RoomZone
+// 	var state entity.State
+// 	var emp entity.Employee
+
+// 	if err := c.ShouldBindJSON(&cio); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	//check cio haved?
+// 	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
+// 		return
+// 	}
+
+// 	if tx := entity.DB().Where("id = ?", cio.RoomTypeID).First(&roomtype); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+// 		return
+// 	}
+// 	cio.RoomType = roomtype
+
+// 	if tx := entity.DB().Where("id = ?", cio.RoomZoneID).First(&roomzone); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+// 		return
+// 	}
+// 	cio.RoomZone = roomzone
+
+// 	if tx := entity.DB().Where("id = ?", cio.StateID).First(&state); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
+// 		return
+// 	}
+// 	cio.State = state
+
+// 	if cio.Time.String() == "0001-01-01 00:00:00 +0000 UTC" {
+// 		cio.Time = cioOld.Time
+// 	}
+
+// 	if cio.Time.String() == "0001-01-01 00:00:00 +0000 UTC" {
+// 		cio.Time = cioOld.Time
+// 	}
+
+// 	//new emp
+// 	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
+// 		return
+// 	}
+// 	cio.Employee = emp
+
+// 	if err := entity.DB().Save(&cio).Error; err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		c.Abort()
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{
+// 		"status": "Update Success",
+// 		"data":   cio,
+// 	})
+// }
+
+// PUT Room
+func UpdateRoom(c *gin.Context) {
 	var room entity.Room
+	var ro entity.Room
 
 	if err := c.ShouldBindJSON(&room); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	if tx := entity.DB().Where("id = ?", room.ID).First(&room); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "room not found"})
+	// ค้นหา Room ด้วย ID
+	if tx := entity.DB().Where("id = ?", room.ID).First(&ro); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Room not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&room).Error; err != nil {
+	var roomtype entity.RoomType
+	var roomzone entity.RoomZone
+	var state entity.State
+
+	// ค้นหา roomtype ด้วย id
+	if tx := entity.DB().Where("id = ?", room.RoomTypeID).First(&roomtype); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "RoomType not found"})
+		return
+	}
+
+	// ค้นหา roomzone ด้วย id
+	if tx := entity.DB().Where("id = ?", room.RoomZoneID).First(&roomzone); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "RoomZone not found"})
+		return
+	}
+
+	// ค้นหา state ด้วย id
+	if tx := entity.DB().Where("id = ?", room.StateID).First(&state); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "State not found"})
+		return
+	}
+
+	ro.RoomType = roomtype
+	ro.RoomZone = roomzone
+	ro.State = state
+	//ro.Time = room.Time
+
+	if err := entity.DB().Save(&ro).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": room})
+
+	c.JSON(http.StatusOK, gin.H{"data": ro})
 }

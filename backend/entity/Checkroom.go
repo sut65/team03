@@ -11,7 +11,7 @@ type Damage struct {
 	Checkroom    []Checkroom `gorm:"foreignKey:DamageID"`
 }
 
-type StatusCR struct {
+type Status struct {
 	gorm.Model
 	S_Name string
 	Checkroom    []Checkroom `gorm:"foreignKey:StatusID"`
@@ -30,13 +30,13 @@ type Checkroom struct {
 	Damage  Damage `gorm:"references:id"`
 
 	StatusID *uint
-	Status  StatusCR `gorm:"references:id"`
+	Status  Status `gorm:"references:id"`
 
 	Date time.Time
 
 	EmployeeID *uint
-	Employee  Employee `gorm:"references:id"`
+	Employee   Employee
 	
-	
-
 }
+
+/////////////////////////////////////////////////เพิ่ม Fk routes main //////////////////////////////////////

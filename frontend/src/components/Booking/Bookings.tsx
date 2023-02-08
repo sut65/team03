@@ -19,12 +19,13 @@ function Bookings() {
         let res = await GetBookings();
         if (res) {
             setBookings(res);
+            console.log(res);
         }
     };
 
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 50 },
-        { field: "Branch", headerName: "สาขา", width: 250, valueFormatter: (params) => params.value.Name, },
+        { field: "Branch", headerName: "สาขา", width: 250, valueFormatter: (params) => params.value.B_name, },
         { field: "Room", headerName: "ห้องพักหมายเลข", width: 250, valueFormatter: (params) => params.value.ID, },
         { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150 },
         { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150 },

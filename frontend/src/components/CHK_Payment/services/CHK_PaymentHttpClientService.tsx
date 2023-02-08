@@ -1,10 +1,11 @@
-import { CHK_PaymentsInterface, StatusesInterface } from "../../../models/ICHK_Payment";
+import { CHK_PaymentsInterface } from "../../../models/modelCHK_Payment/ICHK_Payment";
+import { CHK_PaymentStatusesInterface } from "../../../models/modelCHK_Payment/IStatus";
 
 
 const apiUrl = "http://localhost:8080";
 
 async function GetEmployeeByUID() {
-    let uid = localStorage.getItem('user');
+    let uid = localStorage.getItem('id');
     const requestOptions = {
         method: "GET",
         headers: {
@@ -27,11 +28,11 @@ async function GetEmployeeByUID() {
 }
 
 // //=================================================== Check Payment Routes
-// r.GET("/chk_payments", chk_payment.ListCHK_Payments)
-// r.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
-// r.POST("/chk_payments", chk_payment.CreateCHK_Payment)
-// r.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
-// r.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
+// protected.GET("/chk_payments", chk_payment.ListCHK_Payments)
+// protected.GET("/chk_payment/:id", chk_payment.GetCHK_Payment)
+// protected.POST("/chk_payments", chk_payment.CreateCHK_Payment)
+// protected.PATCH("/chk_payments", chk_payment.UpdateCHK_Payment)
+// protected.DELETE("/chk_payments/:id", chk_payment.DeleteCHK_Payment)
 
 // List CHK_Payment
 async function GetCHK_Payments() {
@@ -48,6 +49,7 @@ async function GetCHK_Payments() {
         .then((res) => {
             if (res.data) {
                 return res.data;
+                console.log(res.data);
             } else {
                 return false;
             }
@@ -57,8 +59,8 @@ async function GetCHK_Payments() {
 }
 
 //Get CHK_Payment
-async function GetCHK_Payment(data: CHK_PaymentsInterface) {
-    let b_id = data.ID;
+async function GetCHK_Payment(data: string | null) {
+    let b_id = data;
     const requestOptions = {
         method: "GET",
         headers: {
@@ -106,7 +108,7 @@ async function CHK_Payments(data: CHK_PaymentsInterface) {
 
 // Delete CHK_Payment
 async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
-    let booking_id = data.ID;
+    let chkp_id = data.ID;
     const requestOptions = {
         method: "DELETE",
         headers: {
@@ -116,7 +118,7 @@ async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/chk_payments/${booking_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments/${chkp_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -131,6 +133,7 @@ async function DeleteCHK_Payment(data: CHK_PaymentsInterface) {
 
 // Update CHK_Payment
 async function UppdateCHK_Payment(data: CHK_PaymentsInterface) {
+    let chkp_id = data.ID;
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -140,7 +143,7 @@ async function UppdateCHK_Payment(data: CHK_PaymentsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/bookings`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payments/${chkp_id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -169,7 +172,7 @@ async function GetStatuses() {
         },
     };
 
-    let res = await fetch(`${apiUrl}/statuses`, requestOptions)
+    let res = await fetch(`${apiUrl}/chk_payment/statuses`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -183,7 +186,7 @@ async function GetStatuses() {
 }
 
 //Get Status
-async function GetStatus(data: StatusesInterface) {
+async function GetStatus(data: CHK_PaymentStatusesInterface) {
     let s_id = data.ID;
     const requestOptions = {
         method: "GET",
@@ -207,7 +210,7 @@ async function GetStatus(data: StatusesInterface) {
 }
 
 //Craete Statuses
-async function Statuses(data: StatusesInterface) {
+async function Statuses(data: CHK_PaymentStatusesInterface) {
     const requestOptions = {
         method: "POST",
         headers: {
@@ -231,7 +234,7 @@ async function Statuses(data: StatusesInterface) {
 }
 
 // Delete Status
-async function DeleteStatus(data: StatusesInterface) {
+async function DeleteStatus(data: CHK_PaymentStatusesInterface) {
     let booking_id = data.ID;
     const requestOptions = {
         method: "DELETE",
@@ -256,7 +259,7 @@ async function DeleteStatus(data: StatusesInterface) {
 }
 
 // Update Status
-async function UpdateStatus(data: StatusesInterface) {
+async function UpdateStatus(data: CHK_PaymentStatusesInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {
@@ -279,7 +282,28 @@ async function UpdateStatus(data: StatusesInterface) {
     return res;
 }
 
+// ===================================================================== ETC
+async function GetPayments() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
 
+    let res = await fetch(`${apiUrl}/payments`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
 
 
 export {
@@ -296,5 +320,7 @@ export {
     Statuses,
     UpdateStatus,
     DeleteStatus,
+
+    GetPayments,
 };
 

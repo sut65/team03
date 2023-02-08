@@ -19,9 +19,10 @@ import TextField from "@mui/material/TextField";
 import { RoomInterface } from "../../models/IRoom";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { GetRooms } from "../Room/service/RoomHttpClientService";
-import { DeleteBooking, GetBookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
+import { DeleteBooking, GetBooking, GetBookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
 import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { BranchsInterface } from "../../models/modelBooking/IBranch";
+import MenuItem from "@mui/material/MenuItem";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -31,8 +32,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function BookingDelete() {
-    const [booking, setBooking] = useState<BookingsInterface>({});
-    const [u_bookings, setU_Bookings] = useState<BookingsInterface[]>([]);
+    const [u_bookings, setU_Bookings] = useState<BookingsInterface[]>([]); // for select
+    const [s_booking, setS_Booking] = useState<BookingsInterface>(); // for Show 
     const [branchs, setBranchs] = useState<BranchsInterface[]>([]);
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
     const [customers, setCustomers] = useState<CustomerInterface>();
@@ -50,18 +51,18 @@ function BookingDelete() {
         setError(false);
     };
 
-    const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof booking;
-        setBooking({
-            ...booking,
-            [name]: event.target.value,
-        });
+    const onChangeU_Booking = async (event: SelectChangeEvent) => {
+        let res = await GetBooking(event.target.value);
+        console.log(res);
+        if (res) {
+            setS_Booking(res);
+        }
     };
 
     const getBookings = async () => {
         let res = await GetBookings();
         if (res) {
-            setU_Bookings(res);
+            setU_Bookings(res);;
         }
     };
 
@@ -93,9 +94,14 @@ function BookingDelete() {
         getCustomerByUID();
     }, []);
 
+    const convertType_C = (data: string | number | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
     async function submit() {
         let data = {
-            ID: booking.ID,
+            ID: s_booking?.ID,
         };
 
         let res = await DeleteBooking(data);
@@ -110,12 +116,12 @@ function BookingDelete() {
         <Container maxWidth="md">
             <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    จองห้องพักสำเร็จ
+                    ยกเลิกการจองห้องพักสำเร็จ
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่ไม่สามารถจองห้องพักได้
+                    ไม่สามารถยกเลิกการจองห้องพักได้
                 </Alert>
             </Snackbar>
             <Paper>
@@ -132,20 +138,15 @@ function BookingDelete() {
                         <FormControl fullWidth variant="outlined">
                             <p>เลือกรายการจองที่จะยกเลิก</p>
                             <Select
-                                native
-                                value={booking.ID + ""}
-                                onChange={handleChange}
+                                onChange={onChangeU_Booking}
                                 inputProps={{
                                     name: "ID",
                                 }}
                             >
-                                <option aria-label="None" value="">
-                                    กรุณาเลือกรายการจองที่จะแก้ไข
-                                </option>
-                                {u_bookings.map((item: BookingsInterface) => (
-                                    <option value={item.ID} key={item.ID}>
+                                {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && ( 
+                                    <MenuItem key={item.ID} value={item.ID}>
                                         {item.ID}
-                                    </option>
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
@@ -156,13 +157,8 @@ function BookingDelete() {
                             <Select
                                 native
                                 disabled
-                                value={booking.BranchID + ""}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "BranchID",
-                                }}
                             >
-                                {branchs.map((item: BranchsInterface) => item.ID === booking.BranchID && (
+                                {branchs.map((item: BranchsInterface) => item.ID === s_booking?.BranchID && (
                                     <option aria-label="None" value={item.ID} key={item.ID} selected>
                                         {item.B_name}
                                     </option>
@@ -176,14 +172,9 @@ function BookingDelete() {
                             <Select
                                 native
                                 disabled
-                                value={booking.RoomID + ""}
-                                onChange={handleChange}
-                                inputProps={{
-                                    name: "RoomID",
-                                }}
                             >
-                                {rooms.map((item: RoomInterface) => item.ID === booking.RoomID && (
-                                    <option value={item.ID} key={item.ID} selected>
+                                {rooms.map((item: RoomInterface) => item.ID === s_booking?.RoomID && (
+                                    <option aria-label="None" value={item.ID} key={item.ID} selected>
                                         {item.ID}
                                     </option>
                                 ))}
@@ -196,12 +187,11 @@ function BookingDelete() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    value={booking.Start}
+                                    value={s_booking?.Start}
                                     disabled
                                     onChange={(newValue) => {
-                                        setBooking({
-                                            ...booking,
-                                            Start: newValue,
+                                        setS_Booking({
+                                            ...s_booking
                                         });
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
@@ -214,12 +204,11 @@ function BookingDelete() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    value={booking.Stop}
+                                    value={s_booking?.Stop}
                                     disabled
                                     onChange={(newValue) => {
-                                        setBooking({
-                                            ...booking,
-                                            Stop: newValue,
+                                        setS_Booking({
+                                            ...s_booking,
                                         });
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
@@ -227,20 +216,15 @@ function BookingDelete() {
                             </LocalizationProvider>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>จองโดย</p>
                             <Select
                                 native
-                                value={booking.CustomerID + ""}
-                                onChange={handleChange}
                                 disabled
-                                inputProps={{
-                                    name: "CustomerID",
-                                }}
                             >
                                 <option value={customers?.ID} key={customers?.ID}>
-                                    {customers?.FirstName}," ", {customers?.LastName}
+                                    {customers?.FirstName} {customers?.LastName}
                                 </option>
                             </Select>
                         </FormControl>

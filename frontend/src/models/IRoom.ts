@@ -23,18 +23,19 @@ export interface StateInterface {
 //main
 export interface RoomInterface {
     ID?: number;
-    Time?: Date;
+    Room_No?: string;
+    Time?: Date | null;
     
-    EmployeeID?: number;
+    EmployeeID?: number | null;
     Employee?: EmployeeInterface;
 
-    RoomTypeID?: number;
+    RoomTypeID?: number | null;
     RoomType?: RoomTypeInterface;
 
-    RoomZoneID?: number;
+    RoomZoneID?: number | null;
     RoomZone?: RoomZoneInterface;
 
-    StateID?: number;
+    StateID?: number | null;
     State?: StateInterface;
 }
 

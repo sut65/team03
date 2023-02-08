@@ -32,7 +32,9 @@ import BedroomParentIcon from '@mui/icons-material/BedroomParent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
 import HomeIcon from '@mui/icons-material/Home';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 const bgnavbar = createTheme({
   palette: {
@@ -121,17 +123,16 @@ function Navbar() {
     { name: "หน้าหลัก", icon: <HomeIcon  />, path: "/" },
     { name: "Booking", icon: <ReceiptLongIcon  />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon   />, path: "/Rep" },
-    { name: "Subscribe", icon: <PersonAddIcon  />, path: "/Sub" },
+    { name: "Subscribe", icon: <PersonAddIcon  />, path: "/customer/create" },
     { name: "Payment", icon: <PaymentIcon  />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
-    
+    { name: "Profile", icon:<AccountCircleIcon />, path: "/customer/profile"},
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
-    { name: "Check The Room", icon: <CheckroomIcon  />, path: "/CTR" },
+    { name: "Check The Room", icon: <CheckroomIcon  />, path: "/checkroom/list" },
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
-
     { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
   ]
 

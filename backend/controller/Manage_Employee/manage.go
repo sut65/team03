@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team03/entity"
 	"golang.org/x/crypto/bcrypt"
 
@@ -243,6 +244,11 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
+	if _, err := govalidator.ValidateStruct(employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	println(employee.OfficerID)
 	// 9. ค้นหา Officer ด้วย id //tx.RowsAffected ตรวจสอบแถว
 	if tx := entity.DB().Where("id = ?", employee.OfficerID).First(&officer); tx.RowsAffected == 0 {
@@ -369,6 +375,11 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
+	if _, err := govalidator.ValidateStruct(employee); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	if tx := entity.DB().Where("id = ?", employee.DepartmentID).First(&department); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Department not found"})
 		return
@@ -387,9 +398,9 @@ func UpdateEmployee(c *gin.Context) {
 	}
 
 	updateEm := entity.Employee{
-		Department:   department, // โยงความสัมพันธ์กับ Entity Department
-		Position:     position,   // โยงความสัมพันธ์กับ Entity Position
-		Location:     location,   // โยงความสัมพันธ์กับ Entity Location
+		Department:   department,          // โยงความสัมพันธ์กับ Entity Department
+		Position:     position,            // โยงความสัมพันธ์กับ Entity Position
+		Location:     location,            // โยงความสัมพันธ์กับ Entity Location
 		PersonalID:   employee.PersonalID, // ตั้งค่าฟิลด์ PersonalID
 		Employeename: employee.Employeename,
 		Email:        employee.Email,
@@ -397,6 +408,7 @@ func UpdateEmployee(c *gin.Context) {
 		Salary:       employee.Salary,      // ตั้งค่าฟิลด์ Salary
 		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
 		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender
+		DateOfBirth:  employee.DateOfBirth,
 		Address:      employee.Address,     // ตั้งค่าฟิลด์ Address
 	}
 
