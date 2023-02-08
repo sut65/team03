@@ -30,7 +30,7 @@ type Accessories struct {
 	Service []Service `gorm:"foreignKey:AccessoriesID"`
 }
 
-// หลัก 1
+// หลัก 1.
 type Service struct {
 	gorm.Model
 	CustomerID    int      `valid:"-"`
