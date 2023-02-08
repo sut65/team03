@@ -103,10 +103,9 @@ func (b Booking) ValidateStartBeforeStop() error {
 	return nil
 }
 
-func (b Booking) ValidateStopAtMostOneYearInFuture() error {
-	today := time.Now().UTC()
-	maxStop := today.AddDate(0, 0, 2)
-	if b.Stop.After(maxStop) {
+func (b Booking) ValidateStopAfterStartOneDay() error {
+	minStop := b.Start.AddDate(0, 0, 2)
+	if b.Stop.Before(minStop) {
 		return fmt.Errorf("Stop time must be at most one year in the future")
 	}
 	return nil
@@ -123,6 +122,25 @@ func TestValidateStartBeforeStop(t *testing.T) {
 			CustomerID: &test,
 		}
 		err := booking.ValidateStartBeforeStop()
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			fmt.Println("Validation succeeded")
+		}
+	})
+}
+
+func TestValdateStopAfterStart(t *testing.T) {
+	t.Run("check stop after start one day", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			RoomID:     &test,
+			CustomerID: &test,
+		}
+		err := booking.ValidateStopAfterStartOneDay()
 		if err != nil {
 			fmt.Println(err.Error())
 		} else {
