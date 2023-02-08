@@ -188,6 +188,7 @@ func main() {
 
 			protected.GET("/room/customer/:id", service.GetRoomByCID)
 			protected.GET("/foods", service.ListFoods)
+			protected.PATCH("/foods", service.UpdateFood)
 			protected.GET("/drinks", service.ListDrinks)
 			protected.GET("/accessories", service.ListAccessories)
 			// ======================================= SERVICE
