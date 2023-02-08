@@ -1,10 +1,12 @@
 import { AccessoriesInterface, DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
-import { Alert, Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
+import { GetAccessories, GetDrinks, GetFoods, GetRoom, GetServiceByID, UpdateService, UpdateFood } from "./service/ServiceHttpClientService";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const theme = createTheme({
     palette: {
@@ -17,6 +19,13 @@ const theme = createTheme({
     },
 });
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function ServiceUpdate() {
 
     const [service, setService] = useState<Partial<ServicesInterface>>({});
@@ -26,7 +35,10 @@ function ServiceUpdate() {
     const [time] = useState<Date | null>(new Date());
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
+    const [room, setRoom] = useState('');
     const { id } = useParams();
+    const id_cus = localStorage.getItem("id");
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -40,89 +52,96 @@ function ServiceUpdate() {
     };
 
     // for combobox information
-    const handleChange = (
-        event: SelectChangeEvent<number>
-    ) => {
+    const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof service;
         setService({
             ...service,
-            [name]: event.target.value
+            [name]: event.target.value,
         });
     };
 
-    function submit() {
-        let data = {
-            ID: typeof id === "string" ? parseInt(id) : 0,
-            CustomerID: Number(localStorage.getItem("id")),
-            Time: time,
-            FoodID: typeof service.FoodID === "string" ? parseInt(service.FoodID) : service.FoodID,
-            DrinkID: typeof service.DrinkID === "string" ? parseInt(service.DrinkID) : service.DrinkID,
-            AccessoriesID: typeof service.AccessoriesID === "string" ? parseInt(service.AccessoriesID) : service.AccessoriesID,
-        };
-
-        console.log(data);
-
-        const requestOptions = {
-            method: "PATCH",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-        fetch(`http://localhost:8080/services`, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setSuccess(true);
-                } else {
-                    setError(true);
-                }
-            });
-    }
-
-    const apiUrl = "http://localhost:8080";
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
+    const convertType = (data: string | number | undefined | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
     };
-    const fetchFoods = async () => {
-        fetch(`${apiUrl}/foods`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setFood(res.data);
-            })
+
+    const convertTypeNotNull = (data: string | number | undefined) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
+    async function submit() {
+        let data = {
+            ID: convertTypeNotNull(id),
+            CustomerID: convertType(id_cus),
+            Time: time,
+            FoodID: convertTypeNotNull(service.FoodID),
+            DrinkID: convertTypeNotNull(service.DrinkID),
+            AccessoriesID: convertTypeNotNull(service.AccessoriesID),
+        };
+
+        let res = await UpdateService(data);
+        if (res.status) {
+            setAlertMessage("Update Order Successfully");
+            setSuccess(true);
+        } else {
+            setAlertMessage(res.message);
+            setError(true);
+        }
     }
-    const fetchDrinks = async () => {
-        fetch(`${apiUrl}/drinks`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setDrink(res.data);
-            })
+
+    async function updatefood() {
+        let data = {
+            ID: convertTypeNotNull(service.FoodID),
+        };
+
+        let res = await UpdateFood(data);
+        if (res.status) {
+            setAlertMessage("Update Order Successfully");
+            setSuccess(true);
+        } else {
+            setAlertMessage(res.message);
+            setError(true);
+        }
     }
-    const fetchAccessories = async () => {
-        fetch(`${apiUrl}/accessories`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setAccessorie(res.data);
-            })
-    }
-    const fetchService = async () => {
-        fetch(`${apiUrl}/service/${id}`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setService(res.data);
-            })
-    }
+
+    const getfoods = async () => {
+        let res = await GetFoods();
+        if (res) {
+            setFood(res);
+        }
+    };
+    const getdrinks = async () => {
+        let res = await GetDrinks();
+        if (res) {
+            setDrink(res);
+        }
+    };
+    const getaccessories = async () => {
+        let res = await GetAccessories();
+        if (res) {
+            setAccessorie(res);
+        }
+    };
+    const getservicebyid = async () => {
+        let res = await GetServiceByID(id);
+        if (res) {
+            setService(res);
+        }
+    };
+    const getroom = async () => {
+        let res = await GetRoom(id_cus);
+        if (res) {
+            setRoom(res);
+        }
+    };
 
     useEffect(() => {
-        fetchFoods();
-        fetchDrinks();
-        fetchAccessories();
-        fetchService();
+        getfoods();
+        getdrinks();
+        getaccessories();
+        getservicebyid();
+        getroom();
     }, []);
 
     return (
@@ -130,24 +149,26 @@ function ServiceUpdate() {
             <ThemeProvider theme={theme}>
                 <Container maxWidth="md">
                     <Snackbar
+                        id="success"
                         open={success}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="success">
-                            CHANGE ORDER SUCCESS
+                            {message}
                         </Alert>
                     </Snackbar>
 
                     <Snackbar
+                        id="error"
                         open={error}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="error">
-                            CHANGE ORDER FAIL
+                            {message}
                         </Alert>
                     </Snackbar>
 
@@ -156,7 +177,7 @@ function ServiceUpdate() {
                             <TextField
                                 fullWidth
                                 label="Room Number"
-                                value={404}
+                                value={room}
                                 InputProps={{
                                     readOnly: true,
                                 }}
@@ -226,7 +247,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.FoodID}
+                                    value={service.FoodID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "FoodID",
@@ -242,7 +263,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.DrinkID}
+                                    value={service.DrinkID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "DrinkID",
@@ -258,7 +279,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.AccessoriesID}
+                                    value={service.AccessoriesID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "AccessoriesID",

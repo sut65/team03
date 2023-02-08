@@ -7,6 +7,7 @@ import { grey } from '@mui/material/colors';
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import moment from "moment";
+import { GetService } from "./service/ServiceHttpClientService";
 
 const theme = createTheme({
     palette: {
@@ -19,34 +20,19 @@ const theme = createTheme({
     },
 });
 
-
 function ServiceShow() {
-
     const [service, setService] = useState<ServicesInterface[]>([]);
-
     const id_cus = localStorage.getItem("id");
 
-    const getServices = async () => {
-        const apiUrl = `http://localhost:8080/services/customer/${id_cus}`;
-        const requestOptions = {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-        };
-
-        fetch(apiUrl, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setService(res.data);
-                }
-            });
+    const getservice = async () => {
+        let res = await GetService(id_cus + "");
+        if (res) {
+            setService(res);
+        }
     };
 
     useEffect(() => {
-        getServices();
+        getservice();
     }, []);
 
     return (
@@ -96,11 +82,11 @@ function ServiceShow() {
                                         {service.map((item: ServicesInterface) => (
                                             <TableRow key={item.ID}>
                                                 <TableCell align="center">{item.ID}</TableCell>
-                                                <TableCell align="center">{item.Customer.FirstName}</TableCell>
+                                                <TableCell align="center">{item.Customer?.FirstName}</TableCell>
                                                 <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
-                                                <TableCell align="center">{item.Food.Name}</TableCell>
-                                                <TableCell align="center">{item.Drink.Name}</TableCell>
-                                                <TableCell align="center">{item.Accessories.Name}</TableCell>
+                                                <TableCell align="center">{item.Food?.Name}</TableCell>
+                                                <TableCell align="center">{item.Drink?.Name}</TableCell>
+                                                <TableCell align="center">{item.Accessories?.Name}</TableCell>
                                                 <TableCell align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                                                         <Button

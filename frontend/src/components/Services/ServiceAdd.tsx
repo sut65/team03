@@ -1,10 +1,11 @@
 import { AccessoriesInterface, DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
-import { Alert, Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
-
+import { AddService, GetAccessories, GetDrinks, GetFoods, GetRoom } from "./service/ServiceHttpClientService";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const theme = createTheme({
     palette: {
@@ -17,6 +18,13 @@ const theme = createTheme({
     },
 });
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function ServiceAdd() {
 
     const [service, setService] = useState<Partial<ServicesInterface>>({});
@@ -26,6 +34,8 @@ function ServiceAdd() {
     const [Accessorie, setAccessorie] = useState<AccessoriesInterface[]>([]);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
+    const [room, setRoom] = useState('');
     const id_cus = localStorage.getItem("id");
 
     const handleClose = (
@@ -40,79 +50,73 @@ function ServiceAdd() {
     };
 
     // for combobox information
-    const handleChange = (
-        event: SelectChangeEvent<number>
-    ) => {
+    const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof service;
         setService({
-            ...service,
-            [name]: event.target.value
+          ...service,
+          [name]: event.target.value,
         });
+      }; 
+
+    const convertType = (data: string | number | undefined | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
     };
 
-    function submit() {
+    const convertTypeNotNull = (data: string | number | undefined) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
+    async function submit() {
         let data = {
-            CustomerID: typeof id_cus === "string" ? parseInt(id_cus) : 0,
+            CustomerID: convertType(id_cus),
             Time: time,
-            FoodID: typeof service.FoodID === "string" ? parseInt(service.FoodID) : 0,
-            DrinkID: typeof service.DrinkID === "string" ? parseInt(service.DrinkID) : 0,
-            AccessoriesID: typeof service.AccessoriesID === "string" ? parseInt(service.AccessoriesID) : 0,
+            FoodID: convertTypeNotNull(service.FoodID),
+            DrinkID: convertTypeNotNull(service.DrinkID),
+            AccessoriesID: convertTypeNotNull(service.AccessoriesID),
         };
 
-
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-        fetch(`http://localhost:8080/service`, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setSuccess(true);
-                } else {
-                    setError(true);
-                }
-            });
+        let res = await AddService(data);
+        if (res.status) {
+            setAlertMessage("Save Order Successfully");
+            setSuccess(true);
+        } else {
+            setAlertMessage(res.message);
+            setError(true);
+        }
     }
 
-    const apiUrl = "http://localhost:8080";
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
+    const getfoods = async () => {
+        let res = await GetFoods();
+        if (res) {
+            setFood(res);
+        }
     };
-    const fetchFoods = async () => {
-        fetch(`${apiUrl}/foods`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setFood(res.data);
-            })
-    }
-    const fetchDrinks = async () => {
-        fetch(`${apiUrl}/drinks`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setDrink(res.data);
-            })
-    }
-    const fetchAccessories = async () => {
-        fetch(`${apiUrl}/accessories`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setAccessorie(res.data);
-            })
-    }
+    const getdrinks = async () => {
+        let res = await GetDrinks();
+        if (res) {
+            setDrink(res);
+        }
+    };
+    const getaccessories = async () => {
+        let res = await GetAccessories();
+        if (res) {
+            setAccessorie(res);
+        }
+    };
+    const getroom = async () => {
+        let res = await GetRoom(id_cus);
+        if (res) {
+            setRoom(res);
+        }
+    };
 
     useEffect(() => {
-        fetchFoods();
-        fetchDrinks();
-        fetchAccessories();
+        getfoods();
+        getdrinks();
+        getaccessories();
+        getroom();
     }, []);
 
     return (
@@ -120,24 +124,26 @@ function ServiceAdd() {
             <ThemeProvider theme={theme}>
                 <Container maxWidth="md">
                     <Snackbar
+                        id="success"
                         open={success}
-                        autoHideDuration={2000}
+                        autoHideDuration={4000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="success">
-                            ORDER SUCCESS
+                            {message}
                         </Alert>
                     </Snackbar>
 
                     <Snackbar
+                        id="error"
                         open={error}
-                        autoHideDuration={2000}
+                        autoHideDuration={4000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="error">
-                            ORDER FAIL
+                            {message}
                         </Alert>
                     </Snackbar>
 
@@ -146,7 +152,7 @@ function ServiceAdd() {
                             <TextField
                                 fullWidth
                                 label="Room Number"
-                                value={404}
+                                value={room}
                                 InputProps={{
                                     readOnly: true,
                                 }}
@@ -205,7 +211,7 @@ function ServiceAdd() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.FoodID}
+                                    value={service.FoodID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "FoodID",
@@ -215,7 +221,7 @@ function ServiceAdd() {
                                         Choose Food
                                     </option>
                                     {food.map((item: FoodsInterface) => (
-                                        <option value={item.ID}>{item.Name}</option>
+                                        <option value={item.ID} key={item.ID}>{item.Name}</option>
                                     ))}
                                 </Select>
                             </FormControl>
@@ -224,7 +230,7 @@ function ServiceAdd() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.DrinkID}
+                                    value={service.DrinkID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "DrinkID",
@@ -243,7 +249,7 @@ function ServiceAdd() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.AccessoriesID}
+                                    value={service.AccessoriesID + ""}
                                     onChange={handleChange}
                                     inputProps={{
                                         name: "AccessoriesID",
