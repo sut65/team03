@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team03/entity"
 )
@@ -16,6 +17,12 @@ func CreateCHK_Payment(c *gin.Context) {
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 8 จะถูก bind เข้าตัวแปร chk_payment
 	if err := c.ShouldBindJSON(&chk_payment); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(chk_payment); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"booking_error": err.Error()})
 		return
 	}
 
