@@ -1,50 +1,132 @@
 package entity
 
-// import (
-// 	"testing"
-// 	"time"
+import (
+	"fmt"
+	"testing"
+	"time"
 
-// 	"github.com/asaskevich/govalidator"
-// 	. "github.com/onsi/gomega"
-// )
+	"github.com/asaskevich/govalidator"
+	. "github.com/onsi/gomega"
+)
 
-// // ตรวจสอบค่าว่างของการจองห้องพักแล้วถูกทั้งหมด
-// func TestBookingValidate(t *testing.T) {
-// 	g := NewGomegaWithT(t)
+// ตรวจสอบค่าว่างของการจองห้องพักแล้วถูกทั้งหมด
+func TestBookingValidateNotBlank(t *testing.T) {
+	g := NewGomegaWithT(t)
 
-// 	t.Run("check booking not blank", func(t *testing.T) {
-// 		booking := Booking{"1", "2", "2", nil, nil}
+	t.Run("check start not blank", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Time{},
+			Stop:       time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			RoomID:     &test,
+			CustomerID: &test,
+		}
 
-// 		// ตรวจสอบด้วย govalidator
-// 		ok, err := govalidator.ValidateStruct(booking)
+		ok, err := govalidator.ValidateStruct(booking)
+		g.Expect(ok).To(BeFalse())
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(Equal("Please select Start date"))
+	})
 
-// 		// ok ต้องเป็นค่า true แปลว่าต้องจับ error ไม่ได้
-// 		g.Expect(ok).ToNot(BeTrue())
+	t.Run("check stop not blank", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Time{},
+			RoomID:     &test,
+			CustomerID: &test,
+		}
+		ok, err := govalidator.ValidateStruct(booking)
+		g.Expect(ok).To(BeFalse())
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(Equal("Please select Stop date"))
+	})
 
-// 		// err ต้องเป็นค่า nil แปลว่าต้องจับ error ไม่ได้
-// 		g.Expect(err).ToNot(BeNil())
+	t.Run("check branch is not nil", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   nil,
+			Start:      time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			RoomID:     &test,
+			CustomerID: &test,
+		}
 
-// 		g.Expect(err.Error()).To(Equal("booking not blank"))
-// 	})
+		ok, err := govalidator.ValidateStruct(booking)
 
-// t.Run("check start not blank", func(t *testing.T) {
-// 	booking := Booking{
-// 		BranchID: new(uint),
-// 		RoomID:   new(uint),
-// 		// Start:      time.Time{},
-// 		Stop:       time.Time{},
-// 		CustomerID: new(uint),
-// 	}
-// 	// ตรวจสอบด้วย govalidator
-// 	ok, err := govalidator.ValidateStruct(booking)
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please select branch"))
+	})
 
-// 	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
-// 	g.Expect(ok).ToNot(BeTrue())
+	t.Run("check room is not nil", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			RoomID:     nil,
+			CustomerID: &test,
+		}
 
-// 	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
-// 	g.Expect(err).ToNot(BeNil())
+		ok, err := govalidator.ValidateStruct(booking)
 
-// 	// err.Error ต้องมี error message แสดงออกมา
-// 	g.Expect(err.Error()).To(Equal("กรุณาระบุเวลาเริ่มเข้าพัก"))
-// })
-// }
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please select room"))
+	})
+
+	t.Run("check customer is not nil", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			RoomID:     &test,
+			CustomerID: nil,
+		}
+
+		ok, err := govalidator.ValidateStruct(booking)
+
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please Signin"))
+	})
+}
+
+func (b Booking) ValidateStartBeforeStop() error {
+	if b.Start.After(b.Stop) {
+		return fmt.Errorf("Start time must be before stop time")
+	}
+	return nil
+}
+
+func (b Booking) ValidateStopAtMostOneYearInFuture() error {
+	today := time.Now().UTC()
+	maxStop := today.AddDate(0, 0, 2)
+	if b.Stop.After(maxStop) {
+		return fmt.Errorf("Stop time must be at most one year in the future")
+	}
+	return nil
+}
+
+func TestValidateStartBeforeStop(t *testing.T) {
+	t.Run("check start before stop", func(t *testing.T) {
+		test := uint(1)
+		booking := Booking{
+			BranchID:   &test,
+			Start:      time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			Stop:       time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			RoomID:     &test,
+			CustomerID: &test,
+		}
+		err := booking.ValidateStartBeforeStop()
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			fmt.Println("Validation succeeded")
+		}
+	})
+}
