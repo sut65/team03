@@ -22,7 +22,7 @@ type CHK_Payment struct {
 	CHK_PaymentStatusID *uint             `valid:"required~Please select Status"`
 	CHK_PaymentStatus   CHK_PaymentStatus `valid:"-" gorm:"references:id"`
 	Date_time           time.Time         `valid:"required~Please select date time"  govalidator:"func=ValidateDateTimeNotFuture"`
-	Amount              int               `valid:"required~Please input Amount"`
+	Amount              int               `valid:"required~Please input Amount" govalidator:"func=ValidateAmountPositive()"`
 	Description         string
 	//รับเข้ามา
 	EmployeeID *uint    `valid:"required~Please Signin"`

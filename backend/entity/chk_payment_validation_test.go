@@ -122,3 +122,28 @@ func TestValidateDateTimeNotFuture(t *testing.T) {
 		fmt.Println("Validation succeeded")
 	}
 }
+
+func (chkp CHK_Payment) ValidateAmountPositive() error {
+	if chkp.Amount <= 0 {
+		return fmt.Errorf("Amount must be a positive integer")
+	}
+	return nil
+}
+
+func TestValidateAmountPositive(t *testing.T) {
+	test := uint(1)
+	chkp := CHK_Payment{
+		PaymentID:           &test,
+		CHK_PaymentStatusID: &test,
+		Date_time:           time.Date(2024, 2, 7, 0, 0, 0, 0, time.UTC),
+		Amount:              -17000,
+		Description:         "-",
+		EmployeeID:          &test,
+	}
+	err := chkp. ValidateAmountPositive()
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("Validation succeeded")
+	}
+}
