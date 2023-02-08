@@ -1,11 +1,13 @@
-import { Alert, Button, FormControl, Grid, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Button, FormControl, Grid, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { ServicesInterface } from "../../models/modelService/IService";
 import { grey } from '@mui/material/colors';
 import Container from "@mui/material/Container";
 import moment from "moment";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { DeleteService, GetRoom, GetService } from "./service/ServiceHttpClientService";
 
 const theme = createTheme({
     palette: {
@@ -18,6 +20,12 @@ const theme = createTheme({
     },
 });
 
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function ServiceDelete() {
 
@@ -25,6 +33,8 @@ function ServiceDelete() {
     const [services, setServices] = useState<Partial<ServicesInterface>>({});
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
+    const [room, setRoom] = useState('');
     const n_cus = localStorage.getItem("name");
     const id_cus = localStorage.getItem("id");
 
@@ -47,51 +57,38 @@ function ServiceDelete() {
         setError(false);
     };
 
-    function submit() {
-        let data = {
-            ID: services.ID ?? "",
-        };
+    const convertType = (data: string | number | undefined | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
 
-        const requestOptions = {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-        fetch(`http://localhost:8080/services/${services.ID}`, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setSuccess(true);
-                } else {
-                    setError(true);
-                }
-            });
+    async function submit() {
+        let res = await DeleteService(services.ID);
+        if (res.status) {
+            setAlertMessage("Cancle Order Successfully");
+            setSuccess(true);
+        } else {
+            setAlertMessage(res.message);
+            setError(true);
+        }
     }
 
-    const getServices = async () => {
-        const apiUrl = `http://localhost:8080/services/customer/${id_cus}`;
-        const requestOptions = {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-        };
-
-        fetch(apiUrl, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setService(res.data);
-                }
-            });
+    const getservice = async () => {
+        let res = await GetService(id_cus + "");
+        if (res) {
+            setService(res);
+        }
+    };
+    const getroom = async () => {
+        let res = await GetRoom(id_cus);
+        if (res) {
+            setRoom(res);
+        }
     };
 
     useEffect(() => {
-        getServices();
+        getservice();
+        getroom();
     }, [success]);
 
     return (
@@ -99,74 +96,77 @@ function ServiceDelete() {
             <ThemeProvider theme={theme}>
                 <Container maxWidth="md">
                     <Snackbar
+                        id="success"
                         open={success}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="success">
-                            DELETE SUCCESS
+                            {message}
                         </Alert>
                     </Snackbar>
 
                     <Snackbar
+                        id="error"
                         open={error}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="error">
-                            DELETE FAIL
+                            {message}
                         </Alert>
                     </Snackbar>
-                    <Grid container spacing={2} rowGap={3}>
-                        <Grid container columnGap={58.3}>
-                            <Grid>
-                                <FormControl>
-                                    <TextField
-                                        label="Customer Name"
-                                        value={n_cus}
-                                        InputProps={{
-                                            readOnly: true,
-                                        }}
-                                        variant="standard"
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid>
-                                <TextField
-                                    label="Room Number"
-                                    value={404}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                    variant="standard"
-                                />
-                            </Grid>
-                        </Grid>
 
-                        <Grid container columnGap={42}>
-                            <Grid xs={4.5}>
+                    <Grid container spacing={1} sx={{ padding: 3 }}>
+                        <Grid item xs={6}>
+                            <FormControl>
                                 <TextField
-                                    fullWidth
-                                    label=" "
-                                    defaultValue="Choose bill number if you want to cancle."
-                                    variant="standard"
+                                    label="Customer Name"
+                                    value={n_cus}
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                />
-                            </Grid>
-                            <Grid>
-                                <TextField
-                                    required
-                                    label="Type Bill Number"
                                     variant="standard"
-                                    id="ID"
-                                    value={services.ID || ""}
-                                    onChange={handleInputChange}
                                 />
-                            </Grid>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                style={{ float: "right" }}
+                                label="Room Number"
+                                value={room}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                variant="standard"
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={1} sx={{ padding: 3 }}>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label=" "
+                                defaultValue="Choose bill number if you want to cancle."
+                                variant="standard"
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                required
+                                style={{ float: "right" }}
+                                label="Type Bill Number"
+                                variant="standard"
+                                id="ID"
+                                value={services.ID || ""}
+                                onChange={handleInputChange}
+                            />
                         </Grid>
                     </Grid>
 
@@ -190,11 +190,11 @@ function ServiceDelete() {
                                             {service.map((item: ServicesInterface) => (
                                                 <TableRow key={item.ID}>
                                                     <TableCell align="center">{item.ID}</TableCell>
-                                                    <TableCell align="center">{item.Customer.FirstName}</TableCell>
+                                                    <TableCell align="center">{item.Customer?.FirstName}</TableCell>
                                                     <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY")}</TableCell>
-                                                    <TableCell align="center">{item.Food.Name}</TableCell>
-                                                    <TableCell align="center">{item.Drink.Name}</TableCell>
-                                                    <TableCell align="center">{item.Accessories.Name}</TableCell>
+                                                    <TableCell align="center">{item.Food?.Name}</TableCell>
+                                                    <TableCell align="center">{item.Drink?.Name}</TableCell>
+                                                    <TableCell align="center">{item.Accessories?.Name}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
