@@ -24,11 +24,6 @@ import Snackbar from "@mui/material/Snackbar";
 
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { UsersInterface } from "../../models/IUser";
 import {
   createTheme,
@@ -49,6 +44,9 @@ import {
   PositionInterface,
 } from "../../models/IEmployee";
 import { grey } from "@mui/material/colors";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 const bgbutton = createTheme({
   palette: {
@@ -220,9 +218,9 @@ const getLocation = async () => {
       YearOfStart: yearOfStart,
       Address: employee.Address ?? "",
       OfficerID: user?.ID ?? "",
-      DepartmentID: employee.DepartmentID ,
-      PositionID: employee.PositionID ,
-      LocationID: employee.LocationID,
+      DepartmentID: Number(employee.DepartmentID),
+      PositionID: Number(employee.PositionID),
+      LocationID: Number(employee.LocationID),
       Signin: {
         Username: employee.Eusername ?? "",
         Password: employee.Password ?? "",
@@ -351,16 +349,17 @@ const getLocation = async () => {
             <FormLabel>Department</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
+                native
                 value={employee.DepartmentID}
                 onChange={handleChange}
                 inputProps={{
                   name: "DepartmentID",
                 }}
               >
-                <MenuItem value={0} key={0}>
-                </MenuItem>
+                <option value={0} key={0}>
+                </option>
                 {department.map((item: DepartmentInterface) => (
-                  <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                  <option value={item.ID}>{item.Name}</option>
                 ))}
               </Select>
             </FormControl>
@@ -371,16 +370,17 @@ const getLocation = async () => {
             <FormLabel>Position</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
+                native
                 value={employee.PositionID}
                 onChange={handleChange}
                 inputProps={{
                   name: "PositionID",
                 }}
               >
-                <MenuItem value={0} key={0}>
-                </MenuItem>
+                <option value={0} key={0}>
+                </option>
                 {position.map((item: PositionInterface) => (
-                  <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                  <option value={item.ID}>{item.Name}</option>
                 ))}
               </Select>
             </FormControl>
@@ -392,16 +392,17 @@ const getLocation = async () => {
 
             <FormControl fullWidth variant="outlined">
               <Select
+                native
                 value={employee.LocationID}
                 onChange={handleChange}
                 inputProps={{
                   name: "LocationID",
                 }}
               >
-                <MenuItem value={0} key={0}>
-                </MenuItem>
+                <option value={0} key={0}>
+                </option>
                 {location.map((item: LocationInterface) => (
-                  <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                  <option value={item.ID}>{item.Name}</option>
                 ))}
               </Select>
             </FormControl>

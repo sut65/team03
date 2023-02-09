@@ -14,7 +14,7 @@ import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import CssBaseline from "@mui/material/CssBaseline";
-import { Divider, Drawer, ListItem, ListItemIcon, ListItemText, MenuItem, ThemeProvider } from "@mui/material";
+import { Button, Divider, Drawer, Grid, ListItem, ListItemIcon, ListItemText, MenuItem, ThemeProvider } from "@mui/material";
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -35,6 +35,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import RoomPreferencesIcon from '@mui/icons-material/RoomPreferences';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import PeopleIcon from '@mui/icons-material/People';
 
 const bgnavbar = createTheme({
   palette: {
@@ -134,6 +135,7 @@ function Navbar() {
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
     { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
+    { name: "Customer List", icon: <PeopleIcon  />, path: "/customer/showforadmin" },
   ]
 
 
@@ -153,9 +155,12 @@ function Navbar() {
           </IconButton>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
             <Typography variant="h6" color="secondary" noWrap component="div">
-              G03 Hotel
+              <div>
+                G03 Hotel
+              </div>
             </Typography>
             <MenuItem onClick={SignOut}><LogoutIcon style={{ marginRight: ".5rem" }}/>Log out</MenuItem>
+            <Button variant="contained" color="secondary" >BOOK NOW</Button>
           </Box>
           
         </Toolbar>
@@ -199,7 +204,6 @@ function Navbar() {
       <Main open={open}>
         <DrawerHeader />
       </Main>
-
   </ThemeProvider>
 
  );

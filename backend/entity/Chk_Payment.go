@@ -16,15 +16,15 @@ type CHK_PaymentStatus struct {
 type CHK_Payment struct {
 	gorm.Model
 	//รับเข้ามา
-	PaymentID *uint
-	Payment   Payment `gorm:"references:id"`
+	PaymentID *uint   `valid:"required~Please select Payment"`
+	Payment   Payment `valid:"-" gorm:"references:id"`
 	//รับเข้ามา
-	CHK_PaymentStatusID *uint
-	CHK_PaymentStatus   CHK_PaymentStatus `gorm:"references:id"`
-	Date_time           time.Time
-	Amount              int
+	CHK_PaymentStatusID *uint             `valid:"required~Please select Status"`
+	CHK_PaymentStatus   CHK_PaymentStatus `valid:"-" gorm:"references:id"`
+	Date_time           time.Time         `valid:"required~Please select date time"  govalidator:"func=ValidateDateTimeNotFuture"`
+	Amount              int               `valid:"required~Please input Amount" govalidator:"func=ValidateAmountPositive()"`
 	Description         string
 	//รับเข้ามา
-	EmployeeID *uint
-	Employee   Employee `gorm:"references:id"`
+	EmployeeID *uint    `valid:"required~Please Signin"`
+	Employee   Employee `valid:"-" gorm:"references:id"`
 }

@@ -67,7 +67,7 @@ func CreatePayment(c *gin.Context) {
 func GetPayment(c *gin.Context) {
 	var payment entity.Payment
 	id := c.Param("id")
-	if tx := entity.DB().Where("id = ?", id).First(&payment); tx.RowsAffected == 0 {
+	if tx := entity.DB().Preload("PaymentMethod").Preload("Method").Preload("Place").Preload("Customer").Where("id = ?", id).First(&payment); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "payment not found"})
 		return
 	}
@@ -95,6 +95,56 @@ func ListPaymentByUID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": payments})
+}
+
+// PATCH /payments
+func UpdatePayment(c *gin.Context) {
+	var payment entity.Payment
+	var customer entity.Customer
+	var paymentmethod entity.PaymentMethod
+	var place entity.Place
+	var method entity.Method
+
+	if err := c.ShouldBindJSON(&payment); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payment.PaymentMethodID).First(&paymentmethod); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "paymentmethod not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payment.CustomerID).First(&customer); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payment.PlaceID).First(&place); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "place not found"})
+		return
+	}
+
+	if tx := entity.DB().Where("id = ?", payment.MethodID).First(&method); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "method not found"})
+		return
+	}
+
+	patchpayment := entity.Payment{
+		Time:          payment.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		PaymentMethod: paymentmethod,
+		Place:         place,
+		Method:        method,
+		Customer:      customer,
+		Picture:       payment.Picture,
+	}
+
+	if err := entity.DB().Where("id = ?", payment.ID).Updates(&patchpayment).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": payment})
 }
 
 // GET /paymentmethods

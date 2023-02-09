@@ -86,7 +86,7 @@ func main() {
 			protected.GET("/customers", customer.ListCustomers)
 			protected.GET("/customer/:id", customer.GetCustomerByID)
 			protected.POST("/customers", customer.CreateCustomer)
-			protected.PATCH("/customers", customer.UpdateCustomer)
+			protected.PATCH("/customersupdate/:id", customer.UpdateCustomer)
 			protected.DELETE("/customers/:id", customer.DeleteCustomer)
 			//Gender
 			protected.GET("/customers/genders", customer.ListGender)
@@ -170,6 +170,7 @@ func main() {
 			protected.GET("/payment/:id", payment.GetPayment)
 			protected.GET("/payment/customer/:id", payment.ListPaymentByUID)
 			protected.POST("/payment", payment.CreatePayment)
+			protected.PATCH("/payments", payment.UpdatePayment)
 
 			protected.GET("/paymentmethods", payment.ListPaymentMethods)
 			protected.GET("/methods/paymet/:id", payment.ListMethodsByPID)
@@ -185,7 +186,9 @@ func main() {
 			protected.PATCH("/services", service.UpdateService)
 			protected.DELETE("/services/:id", service.DeleteService)
 
+			protected.GET("/room/customer/:id", service.GetRoomByCID)
 			protected.GET("/foods", service.ListFoods)
+			protected.PATCH("/foods", service.UpdateFood)
 			protected.GET("/drinks", service.ListDrinks)
 			protected.GET("/accessories", service.ListAccessories)
 			// ======================================= SERVICE

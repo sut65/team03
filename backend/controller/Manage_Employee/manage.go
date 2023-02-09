@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team03/entity"
 	"golang.org/x/crypto/bcrypt"
@@ -240,6 +242,7 @@ func CreateEmployee(c *gin.Context) {
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -398,9 +401,9 @@ func UpdateEmployee(c *gin.Context) {
 	}
 
 	updateEm := entity.Employee{
-		Department:   department, // โยงความสัมพันธ์กับ Entity Department
-		Position:     position,   // โยงความสัมพันธ์กับ Entity Position
-		Location:     location,   // โยงความสัมพันธ์กับ Entity Location
+		Department:   department,          // โยงความสัมพันธ์กับ Entity Department
+		Position:     position,            // โยงความสัมพันธ์กับ Entity Position
+		Location:     location,            // โยงความสัมพันธ์กับ Entity Location
 		PersonalID:   employee.PersonalID, // ตั้งค่าฟิลด์ PersonalID
 		Employeename: employee.Employeename,
 		Email:        employee.Email,
@@ -409,7 +412,7 @@ func UpdateEmployee(c *gin.Context) {
 		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
 		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender
 		DateOfBirth:  employee.DateOfBirth,
-		Address:      employee.Address,     // ตั้งค่าฟิลด์ Address
+		Address:      employee.Address, // ตั้งค่าฟิลด์ Address
 	}
 
 	if tx := entity.DB().Where("id = ?", employee.ID).Updates(&updateEm); tx.RowsAffected == 0 {
