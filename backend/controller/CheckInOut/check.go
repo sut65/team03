@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team03/entity"
+
 	//"golang.org/x/crypto/bcrypt"
 
 	"github.com/gin-gonic/gin"
@@ -100,13 +102,20 @@ func UpdateCheckInOutStatus(c *gin.Context) {
 
 func CreateCheckInOut(c *gin.Context) {
 
-	var cio entity.CheckInOut
+	var cio entity.CheckInOut //main
+	//var co entity.CheckInOut //new
 	var booking entity.Booking
 	var status entity.CheckInOutStatus
 	var emp entity.Employee
 
 	// ผลลัพธ์ที่ได้จาก ui จะถูก bind เข้าตัวแปร cio
 	if err := c.ShouldBindJSON(&cio); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(cio); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -348,6 +357,12 @@ func UpdateCheckInOut(c *gin.Context) {
 	}
 	cio.Employee = emp
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(cio); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	if err := entity.DB().Save(&cio).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		c.Abort()
@@ -370,11 +385,18 @@ func CheckOut(c *gin.Context) {
 		return
 	}
 
-	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		cio.CheckOutTime = time.Now()
-	}
+	// if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+	// 	cio.CheckOutTime = time.Now()
+	// }
 
+	cio.CheckOutTime = time.Now()
 	cio.CheckInOutStatus.ID = 2
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(cio); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	if err := entity.DB().Save(&cio).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

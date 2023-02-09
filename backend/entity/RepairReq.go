@@ -15,15 +15,15 @@ type RepairType struct {
 type RepairReq struct {
 	gorm.Model
 
-	RoomID *uint
-	Room   Room `gorm:"references:ID"`
+	RoomID *uint `valid:"required~Please select room"`
+	Room   Room  `valid:"-" gorm:"references:ID"`
 
-	RepairTypeID *uint
-	RepairType   RepairType `gorm:"references:ID"`
+	RepairTypeID *uint      `valid:"required~Please select type of problem"`
+	RepairType   RepairType `valid:"-" gorm:"references:ID"`
 
-	Note string
-	Time time.Time
+	Note string    `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Please enter comment,"`
+	Time time.Time `valid:"required~Please select time"`
 
-	CustomerID *uint
-	Customer   Customer `gorm:"references:ID"`
+	CustomerID *uint    `valid:"required~Please Signin"`
+	Customer   Customer `valid:"-" gorm:"references:ID"`
 }

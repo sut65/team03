@@ -6,11 +6,11 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Alert, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 
 import { RepairReqInterface } from "../../models/IRepairReq";
-import { DataGrid, GridApi, GridCellValue, GridColDef } from "@mui/x-data-grid";
-import { GetRepairReqs,DeleteRepairReq } from "./service/RepRqHttpClientService";
+import { DataGrid, GridApi, GridCellValue, GridColDef, GridRowParams } from "@mui/x-data-grid";
+import { GetRepairReqs,DeleteRepairReq, GetRepairReqByCID } from "./service/RepRqHttpClientService";
 import moment from "moment";
 import { error } from "console";
 
@@ -25,6 +25,7 @@ function RepRqShow() {
   const [successDel, setSuccessDel] = useState(false);
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
+  const id_cus = localStorage.getItem("id");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -46,6 +47,13 @@ function RepRqShow() {
     }
   };
 
+  const getRepReqByCID = async () => {
+    let res = await GetRepairReqByCID(id_cus + "");
+    if (res) {
+        setRpRq(res);
+    }
+  };
+
   const onDelete = async (id: number) => {
     let res = await DeleteRepairReq(id);
     if (res) {
@@ -53,35 +61,65 @@ function RepRqShow() {
     } else {
       setErrorDel(true);
     }
-    getList()
+    //getRepReqByID()
+    // getList()
+    getRepReqByCID()
   }
 
   const columns: GridColDef[] = [
     { field: "ID", headerName: "No.", width: 80 },
     { field: "Room", headerName: "Room", width: 110, valueFormatter: (params) => params.value.ID},
-    { field: "RepairType", headerName: "Type", width: 200, valueFormatter: (params) => params.value.Name,},
-    { field: "Note", headerName: "Note", width: 375, valueFormatter: (params) => params.value.Note},
+    { field: "RepairType", headerName: "Type", width: 170, valueFormatter: (params) => params.value.Name,},
+    { field: "Note", headerName: "Note", width: 300, valueFormatter: (params) => params.value.Note},
     { field: "Time", headerName: "Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
     { field: "Customer", headerName: "Customer", width: 100, valueFormatter: (params) => params.value.FirstName},
     {
       field: "delete",
-      headerName: "DELETE",
-      sortable: false,
+      headerName: "",
+      sortable: true,
+      width: 120,
       align:"center",
-      renderCell: (params) => {
-          const onClick = (e: { stopPropagation: () => void; }) => {
-              e.stopPropagation();
-              const id = params.getValue(params.id, "ID");
-              onDelete(id);
-          };
-
-          return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
-      }
+      headerAlign: "center",
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+          <Button 
+              //to="/prescription/edit"
+              size="small"
+              //variant="contained"
+              color="error"
+              onClick={() => {
+                 onDelete(row.ID);
+              }}
+              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              endIcon={<DeleteOutlineIcon />}
+          >
+              DELETE
+          </Button>,
+    },
+    {
+      field: "edit",
+      headerName: " ",
+      sortable: true,
+      width: 90,
+      align:"center",
+      headerAlign: "center",
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+          <Button component={RouterLink} 
+              to={`/Rep/Edit/${row.ID}`}
+              size="small"
+              //variant="contained"
+              color="warning"
+              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              endIcon={<CreateOutlinedIcon />}
+          >
+              Edit
+          </Button>,
     },
   ];
 
   useEffect(() => {
-    getList();
+    //getRepReqByID()
+    // getList()
+    getRepReqByCID()
   }, []);
 
   return (
@@ -153,7 +191,7 @@ function RepRqShow() {
               Request
             </Button>
           </Box>
-          <Box>
+          {/* <Box>
             <Button
               component={RouterLink}
               to="/Rep/Edit"
@@ -162,7 +200,7 @@ function RepRqShow() {
             >
               Edit
             </Button>
-          </Box>
+          </Box> */}
         </Box>
         <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
           <DataGrid
