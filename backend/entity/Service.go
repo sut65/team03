@@ -30,16 +30,16 @@ type Accessories struct {
 	Service []Service `gorm:"foreignKey:AccessoriesID"`
 }
 
-// หลัก 1
+// หลัก 1.
 type Service struct {
 	gorm.Model
-	CustomerID    *uint
+	CustomerID    int      `valid:"-"`
 	Customer      Customer `gorm:"references:id"`
 	Time          time.Time
-	FoodID        *uint
-	Food          Food `gorm:"references:id"`
-	DrinkID       *uint
-	Drink         Drink `gorm:"references:id"`
-	AccessoriesID *uint
+	FoodID        int         `valid:"required~Please Choose some order of Food"`
+	Food          Food        `gorm:"references:id"`
+	DrinkID       int         `valid:"required~Please Choose some order of Drink"`
+	Drink         Drink       `gorm:"references:id"`
+	AccessoriesID int         `valid:"required~Please Choose some order of Accessories"`
 	Accessories   Accessories `gorm:"references:id"`
 }

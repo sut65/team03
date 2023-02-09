@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-import { DepartmentInterface, EmployeeInterface } from "../../models/IEmployee";
+import { DepartmentInterface } from "../../models/IEmployee";
 import {
   IconButton,
   Table,
@@ -35,12 +35,9 @@ import moment from "moment";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Margin } from "@mui/icons-material";
 import Review_Save from "./Review_Save";
-import Review_Edit from "./Review_Edit";
 import { ReviewInterface, SystemworkInterface } from "../../models/IReview";
 import Moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
-import { isTemplateExpression } from "typescript";
-import { error } from "console";
 
 const themeshow = createTheme({
   palette: {
@@ -68,13 +65,15 @@ function Review_list() {
   const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
   const [systemwork, setSystemwork] = React.useState<SystemworkInterface[]>([]);
   const [start, setStart] = React.useState<number | null>();
+  const [success, setSuccess] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   const UpdateReview = () => {
     let UpdateData = {
       ID: review1.ID,
       Comment: review1.Comment,
       Star: start,
-      Reviewimega: imageString,
+      Reviewimage: imageString,
       DepartmentID: review1.DepartmentID,
       SystemworkID: review1.SystemworkID,
     };
@@ -99,6 +98,7 @@ function Review_list() {
       });
   };
   console.log(UpdateReview);
+
   const getDepartment = async () => {
     const apiUrl = `http://localhost:8080/Departments`;
 
@@ -149,6 +149,20 @@ function Review_list() {
           console.log("else");
         }
       });
+  };
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSuccess(false);
+
+    setError(false);
   };
 
   const handleInputChange = (
@@ -242,7 +256,7 @@ function Review_list() {
         }
       });
   };
-
+  console.log(review)
   useEffect(() => {
     getReview();
     getDepartment();
@@ -268,7 +282,7 @@ function Review_list() {
                 <Grid item xs={6}>
                   <TextField
                     sx={{ "& fieldset": { border: "none" } }}
-                    value={item.CustomerID}
+                    value={item.Customer.Email}
                   />
                   <IconButton aria-label="edit" style={{ float: "right" }}>
                     <EditIcon onClick={() => handleClickOpenForEdit(item)} />
@@ -304,7 +318,7 @@ function Review_list() {
                 <Grid container display={"flex"} justifyContent={"center"}>
                   <Grid>
                     <img
-                      src={`${item.Reviewimega}`}
+                      src={`${item.Reviewimage}`}
                       width="100%"
                       height="250"
                     />
@@ -335,7 +349,7 @@ function Review_list() {
         <DialogTitle>Edit comment</DialogTitle>
         <DialogContent>
           <Container maxWidth="md">
-            {/* <Snackbar
+            <Snackbar
             open={success}
             autoHideDuration={6000}
             onClose={handleClose}
@@ -350,7 +364,7 @@ function Review_list() {
             <Alert onClose={handleClose} severity="error">
               บันทึกข้อมูลไม่สำเร็จ
             </Alert>
-          </Snackbar> */}
+          </Snackbar>
 
             <Paper>
               <Box

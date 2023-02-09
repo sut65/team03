@@ -26,8 +26,6 @@ import CHK_Payments from "./components/CHK_Payment/CHK_Payment";
 import CHK_PaymentCreate from "./components/CHK_Payment/CHK_PaymentCreate";
 import CHK_PaymentUpdate from "./components/CHK_Payment/CHK_PaymentUpdate";
 
-
-
 import ServiceShow from "./components/Services/ServiceShow";
 import ServiceAdd from "./components/Services/ServiceAdd";
 import ServiceUpdate from "./components/Services/ServiceUpdate";
@@ -35,6 +33,7 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 
 import PaymentAdd from "./components/Payment/PaymentAdd";
 import PaymentShow from "./components/Payment/PaymentShow";
+import PaymentUpdate from "./components/Payment/PaymentUpdate";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
@@ -59,6 +58,8 @@ import ProfileCustomer from "./components/Customer/ProfileCustomer";
 import Checkroomlist from "./components/Checkroom/Checkroomlist";
 import CheckroomEdit from "./components/Checkroom/CheckroomEdit";
 import Checkroom from "./components/Checkroom/Createcheckroom";
+import EditCustomer from "./components/Customer/EditCustomer";
+import CustomerlistforAdmin from "./components/Customer/ShowCustomerforAdmin";
 
 export default function App() {
 
@@ -120,6 +121,7 @@ export default function App() {
 
           <Route path="/ps" element={<PaymentShow />} />
           <Route path="/pa" element={<PaymentAdd />} />
+          <Route path="/pu/:id" element={<PaymentUpdate />} />
 
 
           <Route path="/RT" element={<RoomShow />} />
@@ -132,6 +134,8 @@ export default function App() {
 
           <Route path="/customer/create" element={<Customer />} />
           <Route path="/customer/profile" element={<ProfileCustomer />} /> 
+          <Route path="/customer/edit" element={<EditCustomer />} /> 
+          <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />
 
           
           <Route path="/checkroom/create" element={<Checkroom />} /> 
@@ -149,4 +153,3 @@ export default function App() {
 
 }
 
-///Ui สมัคร customer อันนี้ => <Customer />

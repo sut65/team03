@@ -89,10 +89,20 @@ function CheckInOutShow() {
   function getStringValue(value: any): string {
     return value.toString();
   }
+
+  function formatTime (time : string){
+    const data = new Date(time)
+    console.log(data.getFullYear())
+    if(String(data.getFullYear()) === "1"){
+      return 
+    }else{
+      return moment(time).format('DD-MM-yyyy เวลา hh:mm')
+    }
+  }
   const columns: GridColDef[] = [
     { field: "ID", headerName: "ลำดับ", width: 100 },
     { field: "CheckInTime", headerName: "Check-In Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
+    { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => formatTime(params.value)},
     { field: "Booking", headerName: "Booking ID", width: 120, valueFormatter: (params) => params.value.ID},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
     { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},

@@ -398,9 +398,9 @@ func UpdateEmployee(c *gin.Context) {
 	}
 
 	updateEm := entity.Employee{
-		Department:   department, // โยงความสัมพันธ์กับ Entity Department
-		Position:     position,   // โยงความสัมพันธ์กับ Entity Position
-		Location:     location,   // โยงความสัมพันธ์กับ Entity Location
+		Department:   department,          // โยงความสัมพันธ์กับ Entity Department
+		Position:     position,            // โยงความสัมพันธ์กับ Entity Position
+		Location:     location,            // โยงความสัมพันธ์กับ Entity Location
 		PersonalID:   employee.PersonalID, // ตั้งค่าฟิลด์ PersonalID
 		Employeename: employee.Employeename,
 		Email:        employee.Email,

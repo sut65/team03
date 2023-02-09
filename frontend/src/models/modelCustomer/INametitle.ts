@@ -1,4 +1,4 @@
 export interface NametitleInterface {
     ID?: number;
-    Nametitle ?: string;
+    NT_Name ?: string;
   }

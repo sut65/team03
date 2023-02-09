@@ -358,7 +358,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกแผนก
                 </MenuItem>
                 {department.map((item: DepartmentInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -379,7 +378,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกตำแหน่ง
                 </MenuItem>
                 {position.map((item: PositionInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -401,7 +399,6 @@ const getLocation = async () => {
                 }}
               >
                 <MenuItem value={0} key={0}>
-                  เลือกสถานที่
                 </MenuItem>
                 {location.map((item: LocationInterface) => (
                   <MenuItem value={item.ID}>{item.Name}</MenuItem>
