@@ -57,7 +57,7 @@ type Employee struct {
 	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,matches([A-Z])~Password must contain at least 1 character A-Z.,required~Password not blank"`
 
 	SigninID *uint `valid:"-"`
-	Signin   Signin `gorm:"references:ID"`
+	Signin   Signin `gorm:"references:ID" valid:"-"` 
 
 	Salary      uint64
 	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not valid,required~Tel not blank"`
@@ -71,16 +71,16 @@ type Employee struct {
 	Officer   Officer `gorm:"references:ID"`
 
 	// DepartmentID ทำหน้าที่เป็น FK
-	DepartmentID *uint
-	Department   Department `gorm:"references:ID"`
+	DepartmentID *uint `valid:"-"`
+	Department   Department `gorm:"references:ID" valid:"-"` 
 
 	// PositionID ทำหน้าที่เป็น FK
-	PositionID *uint
-	Position   Position `gorm:"references:ID"`
+	PositionID *uint `valid:"-"`
+	Position   Position `gorm:"references:ID" valid:"-"`
 
 	// LocationID ทำหน้าที่เป็น FK
-	LocationID *uint
-	Location   Location `gorm:"references:ID"`
+	LocationID *uint `valid:"-"`
+	Location   Location `gorm:"references:ID" valid:"-"`
 
 	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey

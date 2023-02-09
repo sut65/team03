@@ -20,7 +20,7 @@ type Systemwork struct {
 type Review struct {
 	gorm.Model
 
-	Comment string `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Comment not blank,"`
+	Comment string `valid:"matches([a-zA-Z0-9ก-๙]$)~Comment no special characters,stringlength(0|200)~Comment length must be between 0 - 200,required~Comment not blank"`
 	Star int
 	Reviewdate time.Time
 	Reviewimage string `valid:"image_valid~Invalid Image"`
