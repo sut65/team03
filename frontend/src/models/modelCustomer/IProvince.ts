@@ -1,4 +1,4 @@
 export interface ProvinceInterface {
     ID?: number;
-    Province ?: string;
+    P_Name ?: string;
   }

@@ -37,13 +37,10 @@ function Customer() {
   const [gender, setGender] = useState<GenderInterface[]>([]);
   const [province, setProvince] = useState<ProvinceInterface[]>([]);
   const [nametitle, setNametitle] = useState<NametitleInterface[]>([]);
-
   const [first, setFirstname] = useState<string>("");
   const [last, setLastname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  
   const [phone, setPhone] = useState<string>("");
-
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -197,10 +194,13 @@ function Customer() {
             setError(true);
         }
         });
-      
-    
-    }
-  };
+        setInterval(() => {
+          window.location.assign("/");
+        }, 1000);
+      } else {
+        setError(true);
+      }
+    };
   return (
     <div>
       <Container maxWidth="sm" sx={{ marginTop: 6 }}>
@@ -252,7 +252,7 @@ function Customer() {
                 >
                   {nametitle.map((item) => (
                     <MenuItem key={item.ID} value={item.ID}>
-                      {item.Nametitle}
+                      {item.NT_Name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -404,7 +404,7 @@ function Customer() {
                 >
                   {gender.map((item) => (
                     <MenuItem key={item.ID} value={item.ID}>
-                      {item.Gender}
+                      {item.G_Name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -437,7 +437,7 @@ function Customer() {
                 >
                   {province.map((item) => (
                     <MenuItem key={item.ID} value={item.ID}>
-                      {item.Province}
+                      {item.P_Name}
                     </MenuItem>
                   ))}
                 </Select>

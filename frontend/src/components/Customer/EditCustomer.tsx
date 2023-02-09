@@ -10,7 +10,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link, Link as RouterLink, useParams } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Stack from '@mui/material/Stack';
@@ -18,176 +18,189 @@ import HouseIcon from '@mui/icons-material/House';
 import EditIcon from '@mui/icons-material/Edit';
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { NametitleInterface } from "../../models/modelCustomer/INametitle";
-import { DeleteCustomer, GetNametitleByUID } from "./service/servicecus";
+import { GetCustomerByID, GetCustomerByUID, GetNametitleByUID, UpdateCustomer } from "./service/servicecus";
 import { FormControl, Select, SelectChangeEvent } from "@mui/material";
 import { ProvinceInterface } from "../../models/modelCustomer/IProvince";
 import { GenderInterface } from "../../models/modelCustomer/IGender";
+import { Agent } from "http";
 
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+  
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  
 
-
-function ProfileCustomer() {
+function EditCustomer() {
+    const { id } = useParams();
     const [customer, setCustomer] = useState<CustomerInterface>({});
     const [nametitle, setNametitle] = useState<NametitleInterface[]>([]);
     const [gender, setGender] = useState<GenderInterface[]>([]);
     const [province, setProvince] = useState<ProvinceInterface[]>([]);
-    let navigate = useNavigate();
-    
-
-
-    const handleChange = (event: SelectChangeEvent) => {
-      const name = event.target.name as keyof typeof customer;
-      console.log(event.target.name);
-      console.log(event.target.value);
-      
-      setCustomer({
-        ...customer,
-        [name]: event.target.value,
-      });
-      console.log(customer);
-    };
-
-    const handleInputChange = (
-      event: React.ChangeEvent<{ id?: string; value: any }>
-    ) => {
-      const id = event.target.id as keyof typeof customer;
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [password, setPassword] = React.useState<State>({
+      password: "",
+      showPassword: false,
+    });
   
-      const { value } = event.target;
+    // ==============================(handle password)=====================================
   
-      setCustomer({ ...customer, [id]: value });
-    };
-    const Onclick = async (id: number) => {
-      let res = await DeleteCustomer(id);
-      if (res) {
-        window.location.reload();
-        localStorage.clear();
-        window.location.href = "/";
-      }
+    interface State {
+      password: string;
+      showPassword: boolean;
     }
+  
+    const handlePassword =
+      (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword({ ...password, [prop]: event.target.value });
+      };
+  
+    const handleClickShowPassword = () => {
+      setPassword({
+        ...password,
+        showPassword: !password.showPassword,
+      });
+    };
+  
+    const handleMouseDownPassword = (
+      event: React.MouseEvent<HTMLButtonElement>
+    ) => {
+      event.preventDefault();
+    };
     
 
-    //-----------เริ่มดึงข้อมูล-----------//
-//---------------------Department-------------------------------------
-const getNametitle = async () => {
-  const apiUrl = `http://localhost:8080/nametitles`;
-
-  const requestOptions = {
-    method: "GET",
-
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  //การกระทำ //json
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-    .then((res) => {
-    //   console.log(res.data); //show ข้อมูล
-
-      if (res.data) {
-        setNametitle(res.data);
-      } else {
-        // console.log("else");
-      }
-    });
-};
-//---------------------Position-------------------------------------
-const getGender = async () => {
-  const apiUrl = `http://localhost:8080/customers/genders`;
-
-  const requestOptions = {
-    method: "GET",
-
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  //การกระทำ //json
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-    .then((res) => {
-    //   console.log(res.data); //show ข้อมูล
-
-      if (res.data) {
-        setGender(res.data);
-      } else {
-        // console.log("else");
-      }
-    });
-};
-//---------------------Position-----------------------------
-const getProvince = async () => {
-  const apiUrl = `http://localhost:8080/provinces`;
-
-  const requestOptions = {
-    method: "GET",
-
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  //การกระทำ //json
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-    .then((res) => {
-    //   console.log(res.data); //show ข้อมูล
-
-      if (res.data) {
-        setProvince(res.data);
-      } else {
-        // console.log("else");
-      }
-    });
-};
-
-    const apiUrl = "http://localhost:8080";
-
-  async function GetCustomer() {
-    let uid = localStorage.getItem("id");
-    const requestOptions = {
-        method: "GET",
-        headers: { 
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "application/json" },
-    };
-    fetch(`${apiUrl}/customer/${uid}`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-  
-            if (res.data) {
-                setCustomer(res.data);
-                console.log(res.data);
-            }else{
-              return false
-            }
+      const handleClose = (
+        event?: React.SyntheticEvent | Event,
+    
+        reason?: string
+      ) => {
+        if (reason === "clickaway") {
+          return;
+        }
+    
+        setSuccess(false);
+        setError(false);
+      };
+    
+      const handleChange = (event: SelectChangeEvent) => {
+        const name = event.target.name as keyof typeof customer;
+        console.log(event.target.name);
+        console.log(event.target.value);
+        setCustomer({
+          ...customer,
+          [name]: event.target.value,
         });
-  }
+        console.log(customer);
+      };
+    
+      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name;
+        console.log(name);
+        setCustomer({ ...customer, [name]: e.target.value });
+      };
+    
+  // =========================(Fetch API)====================================================
 
-  // const getNametitleByUID = async () => {
-  //   let res = await GetNametitleByUID(customer);
-  //   if (res) {
-  //       setNametitle(res);
-  //       console.log(res);
-  //   }
-  // };
+  const apiUrl = "http://localhost:8080";
+  const requestOptionsGet = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
+  },
+  };
+
+  const fetchGender = async () => {
+    fetch(`${apiUrl}/customers/genders`, requestOptionsGet)
+      .then((response) => response.json())
+      .then((result) => {
+        setGender(result.data);
+      });
+  };
+  const fetchNametitle = async () => {
+    fetch(`${apiUrl}/nametitles`, requestOptionsGet)
+      .then((response) => response.json())
+      .then((result) => {
+        setNametitle(result.data);
+      });
+  };
+  const fetchProvince = async () => {
+    fetch(`${apiUrl}/provinces`, requestOptionsGet)
+      .then((response) => response.json())
+      .then((result) => {
+        setProvince(result.data);
+      });
+  };
+
+  const fetchCustomer = async () => {
+    let res = await GetCustomerByUID();
+    res && setCustomer(res);
+};
 
   useEffect(() => {
-    GetCustomer();
-    getGender();
-    getNametitle();
-    getProvince();
-    // getNametitleByUID();
+    fetchGender();
+    fetchNametitle();
+    fetchProvince();
+    fetchCustomer();
   }, []);
 
-  console.log(customer);
+  const convertType = (data: string | number | undefined) => {
+    let val = typeof data === "string" ? parseInt(data) : data;
+    return val;
+  };
+
+  async function update() {
+    let newdata = {
+      ID: customer.ID,
+      NametitleID: convertType(customer.Nametitle_ID),
+      GenderID: convertType(customer.Gender_ID),
+      ProvinceID: convertType(customer.Province_ID),
+      Firstname: customer.FirstName,
+      Lastname: customer.LastName,
+      Age: customer.Age,
+      Phone: customer.Phone,
+      Email: customer.Email,
+      Password: customer.Password,
+    };
+    console.log(newdata);
+    console.log(JSON.stringify(newdata))
+    let res = await UpdateCustomer(newdata);
+    if (res) {
+        setSuccess(true);
+        console.log(newdata)
+    } else {
+        setError(true);
+    }
+    console.log(JSON.stringify(newdata))
+  };
+
 
     return (
     <div>
+        <Snackbar
+        open={success}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          บันทึกข้อมูลสำเร็จ
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={error}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleClose} severity="error">
+          บันทึกข้อมูลไม่สำเร็จ
+        </Alert>
+      </Snackbar>
         <Container maxWidth="sm" sx={{ marginTop: 6 }}>
     <Paper
       elevation={4}
@@ -226,7 +239,6 @@ const getProvince = async () => {
                 <FormControl fullWidth variant="outlined">
                 <Select
                 native
-                disabled
                 value={customer.Nametitle_ID+""}
                 onChange={handleChange}
                 inputProps={{
@@ -247,22 +259,27 @@ const getProvince = async () => {
                 <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>First name</p>
                 <TextField
-                id="Fristname"
-                disabled
-                fullWidth
-                required
-                value={customer.FirstName}
+                  id="Fristname"
+                  type="string"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  value={customer.FirstName}
+                  onChange={handleInputChange}
                 />
-                </Grid>
+              </Grid>
+            
                 {/*=============================================(Last name)=====================================================*/}
                 <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>Last name</p>
                 <TextField
                 id="lastname"
-                disabled
+                variant="outlined"
+                name="Lastname"
                 fullWidth
                 required
                 value={customer.LastName}
+                onChange={handleInputChange}
                 />
                 </Grid>
                 </Grid>
@@ -272,8 +289,7 @@ const getProvince = async () => {
                 <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>Age</p>
                 <TextField
-                id="Age"
-                disabled              
+                id="Age"             
                 fullWidth
                 required
                  value={customer.Age}
@@ -284,7 +300,6 @@ const getProvince = async () => {
                 <p style={{ color: "grey", fontSize: 17 }}>Phone number</p>
                 <TextField
                 id="Phone"
-                disabled
                 fullWidth
                 required
                 value={customer.Phone}
@@ -306,7 +321,6 @@ const getProvince = async () => {
                 <TextField
                 type="email"
                 id="outlined-basic"
-                disabled
                 required
                 fullWidth
                 value={customer.Email}
@@ -327,11 +341,10 @@ const getProvince = async () => {
                 </FormLabel>
                 <Select
                 native
-                disabled
                 value={customer.Gender_ID+""}
                 onChange={handleChange}
                 inputProps={{
-                  name: "Nametitle_ID",
+                  name: "Gender_ID",
                 }}
               >
                 {gender.map((item: GenderInterface) => (
@@ -356,7 +369,6 @@ const getProvince = async () => {
                 
                 <Select
                 native
-                disabled
                 value={customer.Province_ID+""}
                 onChange={handleChange}
                 inputProps={{
@@ -368,19 +380,29 @@ const getProvince = async () => {
                 ))}
               </Select>
                 </Grid>
+    
+        <Grid
+                container
+                xs={12}
+                md={12}
+                gap={2}
+                sx={{ justifyContent: "center", margin: 1 }}
+              >
+                <Button variant="contained" size="large" onClick={update}>
+                  บันทึกการแก้ไข
+                </Button>
+                
+                <Link to="/customer/profile" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    style={{ backgroundColor: "#fff", color: "#1976d2" }}
+                  >
+                    กลับ
+                  </Button>
+                </Link>
+              </Grid>
             
-
-          <Stack direction="row"  spacing={40} >
-
-          <Button variant="outlined" color="success" startIcon={<HouseIcon />} component={RouterLink} to="/">
-              Home
-          </Button>
-
-          <Button variant="outlined" startIcon={<EditIcon />} onClick={() => navigate(`/customer/edit`)} >
-              Edit
-          </Button>
-         
-        </Stack>
             
         </Grid></Paper></form></Container></div>
     )
@@ -389,4 +411,4 @@ const getProvince = async () => {
 
 }
 
-export default ProfileCustomer;
+export default EditCustomer;

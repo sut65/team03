@@ -86,7 +86,7 @@ func main() {
 			protected.GET("/customers", customer.ListCustomers)
 			protected.GET("/customer/:id", customer.GetCustomerByID)
 			protected.POST("/customers", customer.CreateCustomer)
-			protected.PATCH("/customers", customer.UpdateCustomer)
+			protected.PATCH("/customersupdate/:id", customer.UpdateCustomer)
 			protected.DELETE("/customers/:id", customer.DeleteCustomer)
 			//Gender
 			protected.GET("/customers/genders", customer.ListGender)

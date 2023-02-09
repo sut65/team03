@@ -58,6 +58,8 @@ import ProfileCustomer from "./components/Customer/ProfileCustomer";
 import Checkroomlist from "./components/Checkroom/Checkroomlist";
 import CheckroomEdit from "./components/Checkroom/CheckroomEdit";
 import Checkroom from "./components/Checkroom/Createcheckroom";
+import EditCustomer from "./components/Customer/EditCustomer";
+import CustomerlistforAdmin from "./components/Customer/ShowCustomerforAdmin";
 
 export default function App() {
 
@@ -132,6 +134,8 @@ export default function App() {
 
           <Route path="/customer/create" element={<Customer />} />
           <Route path="/customer/profile" element={<ProfileCustomer />} /> 
+          <Route path="/customer/edit" element={<EditCustomer />} /> 
+          <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />
 
           
           <Route path="/checkroom/create" element={<Checkroom />} /> 
@@ -149,4 +153,3 @@ export default function App() {
 
 }
 
-///Ui สมัคร customer อันนี้ => <Customer />
