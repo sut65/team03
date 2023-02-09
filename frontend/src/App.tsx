@@ -11,8 +11,6 @@ import Manage_Edit from "./components/Employee/Manage_Edit";
 
 import CheckInOutShow from "./components/CheckInOut/CheckInOutShow";
 import CheckInOutCreate from "./components/CheckInOut/CheckInOutCreate";
-import CheckInEdit from "./components/CheckInOut/CheckInEdit";
-import CheckOutEdit from "./components/CheckInOut/CheckOutEdit";
 import CheckInOutEdit from "./components/CheckInOut/CheckInOutEdit";
 
 import RepRqShow from "./components/RepReq/RepRqShow";
@@ -33,7 +31,7 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 
 import PaymentAdd from "./components/Payment/PaymentAdd";
 import PaymentShow from "./components/Payment/PaymentShow";
-import PaymentUpdate from "./components/Payment/PaymentUpdate";
+//import PaymentUpdate from "./components/Payment/PaymentUpdate";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
@@ -105,11 +103,11 @@ export default function App() {
           <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
           {/* <Route path="/CNCO/CN/Edit" element={<CheckInEdit />}/> 
           <Route path="/CNCO/CO/Edit" element={<CheckOutEdit />}/>  */}
-          <Route path="/CNCO/Edit" element={<CheckInOutEdit />}/> 
+          <Route path="/CNCO/Edit/:id" element={<CheckInOutEdit />}/> 
 
           <Route path="/Rep" element={<RepRqShow />} />
           <Route path="/Rep/Create" element={<RepRqCreate />} />
-          <Route path="/Rep/Edit" element={<RepRqEdit />} />
+          <Route path="/Rep/Edit/:id" element={<RepRqEdit />} />
           
           <Route path="/RW" element={<Review_Show />} />
           <Route path="/Reviewlist" element={<Review_list />} />
@@ -121,7 +119,7 @@ export default function App() {
 
           <Route path="/ps" element={<PaymentShow />} />
           <Route path="/pa" element={<PaymentAdd />} />
-          <Route path="/pu/:id" element={<PaymentUpdate />} />
+          {/* <Route path="/pu/:id" element={<PaymentUpdate />} /> */}
 
 
           <Route path="/RT" element={<RoomShow />} />

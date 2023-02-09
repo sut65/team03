@@ -2,6 +2,7 @@ import { CheckInOutInterface } from "../../../models/ICheckInOut";
 import { RepairReqInterface } from "../../../models/IRepairReq";
 
 const apiUrl = "http://localhost:8080";
+
 			// //========================= repreq routes
 			// //type
 			// protected.GET("/repairtype/:id", repreq.GetRepairType)
@@ -15,6 +16,7 @@ const apiUrl = "http://localhost:8080";
 			// protected.POST("/repairreq", repreq.CreateRepairReq)
 			// protected.PATCH("/repairreq", repreq.UpdateRepairReq)
 			// protected.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
+
 
 // List Type
 async function GetRepairTypes() {
@@ -62,6 +64,8 @@ async function GetRepairStatuses() {
     return res;
 }
 
+
+
 // List repairreqs
 async function GetRepairReqs() {
     const requestOptions = {
@@ -82,6 +86,28 @@ async function GetRepairReqs() {
             }
         });
 
+    return res;
+}
+
+// List repairreqs
+async function GetRepairReqByCID(id: string) {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/repairreq/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
     return res;
 }
 
@@ -123,9 +149,9 @@ async function CreateRepairReq(data: RepairReqInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -181,6 +207,26 @@ async function UpdateRepairReq(data: RepairReqInterface) {
     return res;
 }
 
+async function GetRoomListByID(id: string | null) {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+    let res = await fetch(`${apiUrl}/rooms/customer/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+
 export {
     GetRepairTypes,
     GetRepairStatuses,
@@ -189,5 +235,7 @@ export {
     UpdateRepairReq,
     DeleteRepairReq,
     GetCustomers,
+    GetRepairReqByCID,
+    GetRoomListByID,
 };
 
