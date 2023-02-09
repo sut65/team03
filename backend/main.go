@@ -133,8 +133,9 @@ func main() {
 			protected.PATCH("/repairtype", repreq.UpdateRepairType)
 			protected.DELETE("/repairtype/:id", repreq.DeleteRepairType)
 			//main
-			protected.GET("/repairreq/:id", repreq.GetRepairReq)
+			protected.GET("/repairreq/:id", repreq.GetRepairReqByCid)
 			protected.GET("/repairreqs", repreq.ListRepairReqs)
+			protected.GET("/rooms/customer/:id", repreq.GetListRoomByCID)
 			protected.POST("/repairreq", repreq.CreateRepairReq)
 			protected.PATCH("/repairreq", repreq.UpdateRepairReq)
 			protected.DELETE("/repairreq/:id", repreq.DeleteRepairReq)
