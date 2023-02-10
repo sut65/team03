@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,7 @@ func CreateBooking(c *gin.Context) {
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(booking); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"booking_error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -48,8 +49,8 @@ func CreateBooking(c *gin.Context) {
 	bk := entity.Booking{
 		Branch:   branch,
 		Room:     room,
-		Start:    booking.Start,
-		Stop:     booking.Stop,
+		Start:    time.Date(booking.Stop.Year(), booking.Stop.Month(), booking.Stop.Day(), 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(booking.Start.Year(), booking.Start.Month(), booking.Start.Day(), 0, 0, 0, 0, time.UTC),
 		Customer: customer,
 	}
 
@@ -109,6 +110,7 @@ func DeleteBooking(c *gin.Context) {
 // PATCH /bookings
 func UpdateBooking(c *gin.Context) {
 	var booking entity.Booking
+
 	id := c.Param("id")
 	if tx := entity.DB().Where("id = ?", id).First(&booking); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "booking not found"})
@@ -116,6 +118,12 @@ func UpdateBooking(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&booking); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(booking); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
