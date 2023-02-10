@@ -48,7 +48,6 @@ function RepRqCreate() {
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const id_cus = localStorage.getItem("id");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -125,7 +124,7 @@ function RepRqCreate() {
     console.log(data)
     let res = await CreateRepairReq(data);
     if (res.status) {
-      setAlertMessage("Check In Success")
+      setAlertMessage("Create Request Success")
       setSuccess(true);
     } else {
       setAlertMessage(res.message);
@@ -242,7 +241,7 @@ function RepRqCreate() {
               variant="contained"
               color="inherit"
             >
-              กลับ
+              BACK
             </Button>
             <Button
               style={{ float: "right" }}
@@ -250,7 +249,7 @@ function RepRqCreate() {
               variant="contained"
               color="primary"
             >
-              บันทึก
+              SAVE
             </Button>
           </Grid>
         </Grid>

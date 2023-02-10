@@ -32,7 +32,7 @@ func TestRpRqValidateNotBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
 	test := uint(1)
 
-	t.Run("check Comment not blank", func(t *testing.T) {
+	t.Run("check note not blank", func(t *testing.T) {
 		//Comment ห้ามว่าง
 		rr := RepairReq{
 			RoomID:       &test,
@@ -48,7 +48,7 @@ func TestRpRqValidateNotBlank(t *testing.T) {
 		// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
 		g.Expect(err).ToNot(BeNil())
 		// err.Error ต้องมี error message แสดงออกมา
-		g.Expect(err.Error()).To(Equal("Please enter comment"))
+		g.Expect(err.Error()).To(Equal("Please enter note"))
 	})
 
 	t.Run("check time not blank", func(t *testing.T) {
@@ -116,7 +116,7 @@ func TestRpRqValidateNotBlank(t *testing.T) {
 	})
 }
 
-func TestRpRqMustBeValid(t *testing.T) {
+func TestRpRqLength(t *testing.T) {
 	g := NewGomegaWithT(t)
 	test := uint(1)
 
@@ -143,5 +143,32 @@ func TestRpRqMustBeValid(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error ต้องมี error message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("Comment length must be between 0 - 200"))
+	g.Expect(err.Error()).To(Equal("Note length must be between 0 - 200"))
+}
+
+func TestNoteNoSpecial(t *testing.T) {
+	g := NewGomegaWithT(t)
+	test := uint(1)
+
+	// ข้อมูลถูกต้องบาง field
+	rr := RepairReq{
+		RoomID:       &test,
+		RepairTypeID: &test,
+		Note:         "lol+++",
+		Time:         time.Now(),
+		CustomerID:   &test,
+	}
+
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(rr)
+
+	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
+	g.Expect(ok).ToNot(BeTrue())
+
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).ToNot(BeNil())
+
+	// err.Error ต้องมี error message แสดงออกมา
+	g.Expect(err.Error()).To(Equal("Note must not contain special characters"))
+
 }
