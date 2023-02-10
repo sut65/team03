@@ -46,7 +46,7 @@ func TestRoomRoom_No_Format(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("หมายเลขห้อง ต้องขึ้นต้นด้วย A-D ตามด้วยตัวเลข 2 หลัก"))
+	g.Expect(err.Error()).To(Equal("หมายเลขห้องต้องขึ้นต้นด้วย A-D ตามด้วยตัวเลข 2 หลัก"))
 }
 
 func TestRoom_No__Null(t *testing.T) {
