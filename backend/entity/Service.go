@@ -33,13 +33,16 @@ type Accessories struct {
 // หลัก 1.
 type Service struct {
 	gorm.Model
-	CustomerID    int      `valid:"-"`
-	Customer      Customer `gorm:"references:id"`
-	Time          time.Time
-	FoodID        int         `valid:"required~Please Choose some order of Food"`
-	Food          Food        `gorm:"references:id"`
-	DrinkID       int         `valid:"required~Please Choose some order of Drink"`
-	Drink         Drink       `gorm:"references:id"`
-	AccessoriesID int         `valid:"required~Please Choose some order of Accessories"`
-	Accessories   Accessories `gorm:"references:id"`
+	CustomerID      int      `valid:"required~Please Login"`
+	Customer        Customer `gorm:"references:id"`
+	Time            time.Time
+	FoodID          int         `valid:"required~Choose Food"`
+	Food            Food        `gorm:"references:id"`
+	FoodItem        int         `valid:"range(0|50)"`
+	DrinkID         int         `valid:"required~Choose Drink"`
+	Drink           Drink       `gorm:"references:id"`
+	DrinkItem       int         `valid:"range(0|50)"`
+	AccessoriesID   int         `valid:"required~Choose Accessories"`
+	Accessories     Accessories `gorm:"references:id"`
+	AccessoriesItem int         `valid:"range(0|50)"`
 }
