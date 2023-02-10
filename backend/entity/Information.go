@@ -347,463 +347,463 @@ func SetupIntoDatabase(db *gorm.DB) {
 	var Customer2 Customer
 
 	//Gender
-	Gender1 := Gender{
-		Gender: "Male",
+	G_Name1 := Gender{
+		G_Name: "Male",
 	}
-	db.Model(&Gender{}).Create(&Gender1)
+	db.Model(&Gender{}).Create(&G_Name1)
 
-	Gender2 := Gender{
-		Gender: "Female",
+	G_Name2 := Gender{
+		G_Name: "Female",
 	}
-	db.Model(&Gender{}).Create(&Gender2)
+	db.Model(&Gender{}).Create(&G_Name2)
 
-	Gender3 := Gender{
-		Gender: "Commom",
+	G_Name3 := Gender{
+		G_Name: "Commom",
 	}
-	db.Model(&Gender{}).Create(&Gender3)
+	db.Model(&Gender{}).Create(&G_Name3)
 
-	Gender4 := Gender{
-		Gender: "Neuter",
+	G_Name4 := Gender{
+		G_Name: "Neuter",
 	}
-	db.Model(&Gender{}).Create(&Gender4)
+	db.Model(&Gender{}).Create(&G_Name4)
 
-	Gender5 := Gender{
-		Gender: "Other",
+	G_Name5 := Gender{
+		G_Name: "Other",
 	}
-	db.Model(&Gender{}).Create(&Gender5)
+	db.Model(&Gender{}).Create(&G_Name5)
 
 	//Province
-	Province1 := Province{
-		Province: "Amnat Charoen",
+	P_Name1 := Province{
+		P_Name: "Amnat Charoen",
 	}
-	db.Model(&Province{}).Create(&Province1)
+	db.Model(&Province{}).Create(&P_Name1)
 
-	Province2 := Province{
-		Province: "Ang Thong",
+	P_Name2 := Province{
+		P_Name: "Ang Thong",
 	}
-	db.Model(&Province{}).Create(&Province2)
+	db.Model(&Province{}).Create(&P_Name2)
 
-	Province3 := Province{
-		Province: "Ayutthaya",
+	P_Name3 := Province{
+		P_Name: "Ayutthaya",
 	}
-	db.Model(&Province{}).Create(&Province3)
+	db.Model(&Province{}).Create(&P_Name3)
 
-	Province4 := Province{
-		Province: "Bangkok",
+	P_Name4 := Province{
+		P_Name: "Bangkok",
 	}
-	db.Model(&Province{}).Create(&Province4)
+	db.Model(&Province{}).Create(&P_Name4)
 
 	////////////////////////////////////เพิ่มม//////////////////////////////////////////////
-	Province5 := Province{
-		Province: "Bueng Kan",
+	P_Name5 := Province{
+		P_Name: "Bueng Kan",
 	}
-	db.Model(&Province{}).Create(&Province5)
+	db.Model(&Province{}).Create(&P_Name5)
 
-	Province6 := Province{
-		Province: "Buriram",
+	P_Name6 := Province{
+		P_Name: "Buriram",
 	}
-	db.Model(&Province{}).Create(&Province6)
+	db.Model(&Province{}).Create(&P_Name6)
 
-	Province7 := Province{
-		Province: "Chachoengsao",
+	P_Name7 := Province{
+		P_Name: "Chachoengsao",
 	}
-	db.Model(&Province{}).Create(&Province7)
+	db.Model(&Province{}).Create(&P_Name7)
 
-	Province8 := Province{
-		Province: "Chai Nat",
+	P_Name8 := Province{
+		P_Name: "Chai Nat",
 	}
-	db.Model(&Province{}).Create(&Province8)
+	db.Model(&Province{}).Create(&P_Name8)
 
-	Province9 := Province{
-		Province: "Chaiyaphum",
+	P_Name9 := Province{
+		P_Name: "Chaiyaphum",
 	}
-	db.Model(&Province{}).Create(&Province9)
+	db.Model(&Province{}).Create(&P_Name9)
 
-	Province10 := Province{
-		Province: "Chanthaburi",
+	P_Name10 := Province{
+		P_Name: "Chanthaburi",
 	}
-	db.Model(&Province{}).Create(&Province10)
+	db.Model(&Province{}).Create(&P_Name10)
 
-	Province11 := Province{
-		Province: "Chiang Mai",
+	P_Name11 := Province{
+		P_Name: "Chiang Mai",
 	}
-	db.Model(&Province{}).Create(&Province11)
+	db.Model(&Province{}).Create(&P_Name11)
 
-	Province12 := Province{
-		Province: "Chiang Rai",
+	P_Name12 := Province{
+		P_Name: "Chiang Rai",
 	}
-	db.Model(&Province{}).Create(&Province12)
+	db.Model(&Province{}).Create(&P_Name12)
 
-	Province13 := Province{
-		Province: "Chonburi",
+	P_Name13 := Province{
+		P_Name: "Chonburi",
 	}
-	db.Model(&Province{}).Create(&Province13)
+	db.Model(&Province{}).Create(&P_Name13)
 
-	Province14 := Province{
-		Province: "Chumphon",
+	P_Name14 := Province{
+		P_Name: "Chumphon",
 	}
-	db.Model(&Province{}).Create(&Province14)
+	db.Model(&Province{}).Create(&P_Name14)
 
-	Province15 := Province{
-		Province: "Kalasin",
+	P_Name15 := Province{
+		P_Name: "Kalasin",
 	}
-	db.Model(&Province{}).Create(&Province15)
+	db.Model(&Province{}).Create(&P_Name15)
 
-	Province16 := Province{
-		Province: "Kamphaeng Phet",
+	P_Name16 := Province{
+		P_Name: "Kamphaeng Phet",
 	}
-	db.Model(&Province{}).Create(&Province16)
+	db.Model(&Province{}).Create(&P_Name16)
 
-	Province17 := Province{
-		Province: "Kanchanaburi",
+	P_Name17 := Province{
+		P_Name: "Kanchanaburi",
 	}
-	db.Model(&Province{}).Create(&Province17)
+	db.Model(&Province{}).Create(&P_Name17)
 
-	Province18 := Province{
-		Province: "Khon Kaen",
+	P_Name18 := Province{
+		P_Name: "Khon Kaen",
 	}
-	db.Model(&Province{}).Create(&Province18)
+	db.Model(&Province{}).Create(&P_Name18)
 
-	Province19 := Province{
-		Province: "Krabi",
+	P_Name19 := Province{
+		P_Name: "Krabi",
 	}
-	db.Model(&Province{}).Create(&Province19)
+	db.Model(&Province{}).Create(&P_Name19)
 
-	Province20 := Province{
-		Province: "Lampang",
+	P_Name20 := Province{
+		P_Name: "Lampang",
 	}
-	db.Model(&Province{}).Create(&Province20)
+	db.Model(&Province{}).Create(&P_Name20)
 
-	Province21 := Province{
-		Province: "Lamphun",
+	P_Name21 := Province{
+		P_Name: "Lamphun",
 	}
-	db.Model(&Province{}).Create(&Province21)
+	db.Model(&Province{}).Create(&P_Name21)
 
-	Province22 := Province{
-		Province: "Loei",
+	P_Name22 := Province{
+		P_Name: "Loei",
 	}
-	db.Model(&Province{}).Create(&Province22)
+	db.Model(&Province{}).Create(&P_Name22)
 
-	Province23 := Province{
-		Province: "Lopburi",
+	P_Name23 := Province{
+		P_Name: "Lopburi",
 	}
-	db.Model(&Province{}).Create(&Province23)
+	db.Model(&Province{}).Create(&P_Name23)
 
-	Province24 := Province{
-		Province: "Mae Hong Son",
+	P_Name24 := Province{
+		P_Name: "Mae Hong Son",
 	}
-	db.Model(&Province{}).Create(&Province24)
+	db.Model(&Province{}).Create(&P_Name24)
 
-	Province25 := Province{
-		Province: "Maha Sarakham",
+	P_Name25 := Province{
+		P_Name: "Maha Sarakham",
 	}
-	db.Model(&Province{}).Create(&Province25)
+	db.Model(&Province{}).Create(&P_Name25)
 
-	Province26 := Province{
-		Province: "Mukdahan",
+	P_Name26 := Province{
+		P_Name: "Mukdahan",
 	}
-	db.Model(&Province{}).Create(&Province26)
+	db.Model(&Province{}).Create(&P_Name26)
 
-	Province27 := Province{
-		Province: "Nakhon Nayok",
+	P_Name27 := Province{
+		P_Name: "Nakhon Nayok",
 	}
-	db.Model(&Province{}).Create(&Province27)
+	db.Model(&Province{}).Create(&P_Name27)
 
-	Province28 := Province{
-		Province: "Nakhon Pathom",
+	P_Name28 := Province{
+		P_Name: "Nakhon Pathom",
 	}
-	db.Model(&Province{}).Create(&Province28)
+	db.Model(&Province{}).Create(&P_Name28)
 
-	Province29 := Province{
-		Province: "Nakhon Phanom",
+	P_Name29 := Province{
+		P_Name: "Nakhon Phanom",
 	}
-	db.Model(&Province{}).Create(&Province29)
+	db.Model(&Province{}).Create(&P_Name29)
 
-	Province30 := Province{
-		Province: "Nakhon Ratchasima",
+	P_Name30 := Province{
+		P_Name: "Nakhon Ratchasima",
 	}
-	db.Model(&Province{}).Create(&Province30)
+	db.Model(&Province{}).Create(&P_Name30)
 
-	Province31 := Province{
-		Province: "Nakhon Sawan",
+	P_Name31 := Province{
+		P_Name: "Nakhon Sawan",
 	}
-	db.Model(&Province{}).Create(&Province31)
+	db.Model(&Province{}).Create(&P_Name31)
 
-	Province32 := Province{
-		Province: "Nakhon Si Thammarat",
+	P_Name32 := Province{
+		P_Name: "Nakhon Si Thammarat",
 	}
-	db.Model(&Province{}).Create(&Province32)
+	db.Model(&Province{}).Create(&P_Name32)
 
-	Province33 := Province{
-		Province: "Nan",
+	P_Name33 := Province{
+		P_Name: "Nan",
 	}
-	db.Model(&Province{}).Create(&Province33)
+	db.Model(&Province{}).Create(&P_Name33)
 
-	Province34 := Province{
-		Province: "Narathiwat",
+	P_Name34 := Province{
+		P_Name: "Narathiwat",
 	}
-	db.Model(&Province{}).Create(&Province34)
+	db.Model(&Province{}).Create(&P_Name34)
 
-	Province35 := Province{
-		Province: "Nong Bua Lamphu",
+	P_Name35 := Province{
+		P_Name: "Nong Bua Lamphu",
 	}
-	db.Model(&Province{}).Create(&Province35)
+	db.Model(&Province{}).Create(&P_Name35)
 
-	Province36 := Province{
-		Province: "Nong Khai",
+	P_Name36 := Province{
+		P_Name: "Nong Khai",
 	}
-	db.Model(&Province{}).Create(&Province36)
+	db.Model(&Province{}).Create(&P_Name36)
 
-	Province37 := Province{
-		Province: "Nonthaburi",
+	P_Name37 := Province{
+		P_Name: "Nonthaburi",
 	}
-	db.Model(&Province{}).Create(&Province37)
+	db.Model(&Province{}).Create(&P_Name37)
 
-	Province38 := Province{
-		Province: "Pathum Thani",
+	P_Name38 := Province{
+		P_Name: "Pathum Thani",
 	}
-	db.Model(&Province{}).Create(&Province38)
+	db.Model(&Province{}).Create(&P_Name38)
 
-	Province39 := Province{
-		Province: "Pattani",
+	P_Name39 := Province{
+		P_Name: "Pattani",
 	}
-	db.Model(&Province{}).Create(&Province39)
+	db.Model(&Province{}).Create(&P_Name39)
 
-	Province40 := Province{
-		Province: "Phang Nga",
+	P_Name40 := Province{
+		P_Name: "Phang Nga",
 	}
-	db.Model(&Province{}).Create(&Province40)
+	db.Model(&Province{}).Create(&P_Name40)
 
-	Province41 := Province{
-		Province: "Phatthalung",
+	P_Name41 := Province{
+		P_Name: "Phatthalung",
 	}
-	db.Model(&Province{}).Create(&Province41)
+	db.Model(&Province{}).Create(&P_Name41)
 
-	Province42 := Province{
-		Province: "Phayao",
+	P_Name42 := Province{
+		P_Name: "Phayao",
 	}
-	db.Model(&Province{}).Create(&Province42)
+	db.Model(&Province{}).Create(&P_Name42)
 
-	Province43 := Province{
-		Province: "Phetchabun",
+	P_Name43 := Province{
+		P_Name: "Phetchabun",
 	}
-	db.Model(&Province{}).Create(&Province43)
+	db.Model(&Province{}).Create(&P_Name43)
 
-	Province44 := Province{
-		Province: "Phetchaburi",
+	P_Name44 := Province{
+		P_Name: "Phetchaburi",
 	}
-	db.Model(&Province{}).Create(&Province44)
+	db.Model(&Province{}).Create(&P_Name44)
 
-	Province45 := Province{
-		Province: "Phichit",
+	P_Name45 := Province{
+		P_Name: "Phichit",
 	}
-	db.Model(&Province{}).Create(&Province45)
+	db.Model(&Province{}).Create(&P_Name45)
 
-	Province46 := Province{
-		Province: "Phitsanulok",
+	P_Name46 := Province{
+		P_Name: "Phitsanulok",
 	}
-	db.Model(&Province{}).Create(&Province46)
+	db.Model(&Province{}).Create(&P_Name46)
 
-	Province47 := Province{
-		Province: "Phrae",
+	P_Name47 := Province{
+		P_Name: "Phrae",
 	}
-	db.Model(&Province{}).Create(&Province47)
+	db.Model(&Province{}).Create(&P_Name47)
 
-	Province48 := Province{
-		Province: "Phuket",
+	P_Name48 := Province{
+		P_Name: "Phuket",
 	}
-	db.Model(&Province{}).Create(&Province48)
+	db.Model(&Province{}).Create(&P_Name48)
 
-	Province49 := Province{
-		Province: "Prachin Buri",
+	P_Name49 := Province{
+		P_Name: "Prachin Buri",
 	}
-	db.Model(&Province{}).Create(&Province49)
+	db.Model(&Province{}).Create(&P_Name49)
 
-	Province50 := Province{
-		Province: "Prachuap Khiri Khan",
+	P_Name50 := Province{
+		P_Name: "Prachuap Khiri Khan",
 	}
-	db.Model(&Province{}).Create(&Province50)
+	db.Model(&Province{}).Create(&P_Name50)
 
-	Province51 := Province{
-		Province: "Ranong",
+	P_Name51 := Province{
+		P_Name: "Ranong",
 	}
-	db.Model(&Province{}).Create(&Province51)
+	db.Model(&Province{}).Create(&P_Name51)
 
-	Province52 := Province{
-		Province: "Ratchaburi",
+	P_Name52 := Province{
+		P_Name: "Ratchaburi",
 	}
-	db.Model(&Province{}).Create(&Province52)
+	db.Model(&Province{}).Create(&P_Name52)
 
-	Province53 := Province{
-		Province: "Rayong",
+	P_Name53 := Province{
+		P_Name: "Rayong",
 	}
-	db.Model(&Province{}).Create(&Province53)
+	db.Model(&Province{}).Create(&P_Name53)
 
-	Province54 := Province{
-		Province: "Roi Et",
+	P_Name54 := Province{
+		P_Name: "Roi Et",
 	}
-	db.Model(&Province{}).Create(&Province54)
+	db.Model(&Province{}).Create(&P_Name54)
 
-	Province55 := Province{
-		Province: "Sa Kaeo",
+	P_Name55 := Province{
+		P_Name: "Sa Kaeo",
 	}
-	db.Model(&Province{}).Create(&Province55)
+	db.Model(&Province{}).Create(&P_Name55)
 
-	Province56 := Province{
-		Province: "Sakon Nakhon",
+	P_Name56 := Province{
+		P_Name: "Sakon Nakhon",
 	}
-	db.Model(&Province{}).Create(&Province56)
+	db.Model(&Province{}).Create(&P_Name56)
 
-	Province57 := Province{
-		Province: "Samut Prakan",
+	P_Name57 := Province{
+		P_Name: "Samut Prakan",
 	}
-	db.Model(&Province{}).Create(&Province57)
+	db.Model(&Province{}).Create(&P_Name57)
 
-	Province58 := Province{
-		Province: "Samut Sakhon",
+	P_Name58 := Province{
+		P_Name: "Samut Sakhon",
 	}
-	db.Model(&Province{}).Create(&Province58)
+	db.Model(&Province{}).Create(&P_Name58)
 
-	Province59 := Province{
-		Province: "Samut Songkhram",
+	P_Name59 := Province{
+		P_Name: "Samut Songkhram",
 	}
-	db.Model(&Province{}).Create(&Province59)
+	db.Model(&Province{}).Create(&P_Name59)
 
-	Province60 := Province{
-		Province: "Saraburi",
+	P_Name60 := Province{
+		P_Name: "Saraburi",
 	}
-	db.Model(&Province{}).Create(&Province60)
+	db.Model(&Province{}).Create(&P_Name60)
 
-	Province61 := Province{
-		Province: "Satun",
+	P_Name61 := Province{
+		P_Name: "Satun",
 	}
-	db.Model(&Province{}).Create(&Province61)
+	db.Model(&Province{}).Create(&P_Name61)
 
-	Province62 := Province{
-		Province: "Sing Buri",
+	P_Name62 := Province{
+		P_Name: "Sing Buri",
 	}
-	db.Model(&Province{}).Create(&Province62)
+	db.Model(&Province{}).Create(&P_Name62)
 
-	Province63 := Province{
-		Province: "Sisaket",
+	P_Name63 := Province{
+		P_Name: "Sisaket",
 	}
-	db.Model(&Province{}).Create(&Province63)
+	db.Model(&Province{}).Create(&P_Name63)
 
-	Province64 := Province{
-		Province: "Songkhla",
+	P_Name64 := Province{
+		P_Name: "Songkhla",
 	}
-	db.Model(&Province{}).Create(&Province64)
+	db.Model(&Province{}).Create(&P_Name64)
 
-	Province65 := Province{
-		Province: "Sukhothai",
+	P_Name65 := Province{
+		P_Name: "Sukhothai",
 	}
-	db.Model(&Province{}).Create(&Province65)
+	db.Model(&Province{}).Create(&P_Name65)
 
-	Province66 := Province{
-		Province: "Suphan Buri",
+	P_Name66 := Province{
+		P_Name: "Suphan Buri",
 	}
-	db.Model(&Province{}).Create(&Province66)
+	db.Model(&Province{}).Create(&P_Name66)
 
-	Province67 := Province{
-		Province: "Surat Thani",
+	P_Name67 := Province{
+		P_Name: "Surat Thani",
 	}
-	db.Model(&Province{}).Create(&Province67)
+	db.Model(&Province{}).Create(&P_Name67)
 
-	Province68 := Province{
-		Province: "Surin",
+	P_Name68 := Province{
+		P_Name: "Surin",
 	}
-	db.Model(&Province{}).Create(&Province68)
+	db.Model(&Province{}).Create(&P_Name68)
 
-	Province69 := Province{
-		Province: "Tak",
+	P_Name69 := Province{
+		P_Name: "Tak",
 	}
-	db.Model(&Province{}).Create(&Province69)
+	db.Model(&Province{}).Create(&P_Name69)
 
-	Province70 := Province{
-		Province: "Trang",
+	P_Name70 := Province{
+		P_Name: "Trang",
 	}
-	db.Model(&Province{}).Create(&Province70)
+	db.Model(&Province{}).Create(&P_Name70)
 
-	Province71 := Province{
-		Province: "Trat",
+	P_Name71 := Province{
+		P_Name: "Trat",
 	}
-	db.Model(&Province{}).Create(&Province71)
+	db.Model(&Province{}).Create(&P_Name71)
 
-	Province72 := Province{
-		Province: "Ubon Ratchathani",
+	P_Name72 := Province{
+		P_Name: "Ubon Ratchathani",
 	}
-	db.Model(&Province{}).Create(&Province72)
+	db.Model(&Province{}).Create(&P_Name72)
 
-	Province73 := Province{
-		Province: "Udon Thani",
+	P_Name73 := Province{
+		P_Name: "Udon Thani",
 	}
-	db.Model(&Province{}).Create(&Province73)
+	db.Model(&Province{}).Create(&P_Name73)
 
-	Province74 := Province{
-		Province: "Uthai Thani",
+	P_Name74 := Province{
+		P_Name: "Uthai Thani",
 	}
-	db.Model(&Province{}).Create(&Province74)
+	db.Model(&Province{}).Create(&P_Name74)
 
-	Province75 := Province{
-		Province: "Uttaradit",
+	P_Name75 := Province{
+		P_Name: "Uttaradit",
 	}
-	db.Model(&Province{}).Create(&Province75)
+	db.Model(&Province{}).Create(&P_Name75)
 
-	Province76 := Province{
-		Province: "Yala",
+	P_Name76 := Province{
+		P_Name: "Yala",
 	}
-	db.Model(&Province{}).Create(&Province76)
+	db.Model(&Province{}).Create(&P_Name76)
 
-	Province77 := Province{
-		Province: "Yasothon",
+	P_Name77 := Province{
+		P_Name: "Yasothon",
 	}
-	db.Model(&Province{}).Create(&Province77)
+	db.Model(&Province{}).Create(&P_Name77)
 
 	/////////////////////////////////////////////////
 
 	//Nametitle  =============================แก้ 1/23/2023===================================================================
-	Nametitle1 := Nametitle{
-		Nametitle: "Mr.",
+	NT_Name1 := Nametitle{
+		NT_Name: "Mr.",
 	}
-	db.Model(&Nametitle{}).Create(&Nametitle1)
+	db.Model(&Nametitle{}).Create(&NT_Name1)
 
-	Nametitle2 := Nametitle{
-		Nametitle: "Mrs.",
+	NT_Name2 := Nametitle{
+		NT_Name: "Mrs.",
 	}
-	db.Model(&Nametitle{}).Create(&Nametitle2)
+	db.Model(&Nametitle{}).Create(&NT_Name2)
 
-	Nametitle3 := Nametitle{
-		Nametitle: "Ms.",
+	NT_Name3 := Nametitle{
+		NT_Name: "Ms.",
 	}
-	db.Model(&Nametitle{}).Create(&Nametitle3)
+	db.Model(&Nametitle{}).Create(&NT_Name3)
 
 	//Csutomer
 	password1, _ := bcrypt.GenerateFromPassword([]byte("SD123456"), 14)
 	Customer1 = Customer{
-		Gender:    Gender1,
-		Province:  Province1,
+		Gender:    G_Name1,
+		Province:  P_Name1,
 		FirstName: "Sandee",
 		LastName:  "Masuk",
 		Password:  string(password1),
 		Age:       30,
 		Phone:     "095-7456921",
 		Email:     "Sandee12@gmail.com",
-		Nametitle: Nametitle1,
+		Nametitle: NT_Name1,
 		Signin:    loginCustomer1,
 	}
 	db.Model(&Customer{}).Create(&Customer1)
 
 	password2, _ := bcrypt.GenerateFromPassword([]byte("NC332548"), 14)
 	Customer2 = Customer{
-		Gender:    Gender2,
-		Province:  Province2,
+		Gender:    G_Name2,
+		Province:  P_Name2,
 		FirstName: "Nicha",
 		LastName:  "Memak",
 		Password:  string(password2),
 		Age:       25,
 		Phone:     "084-5215667",
 		Email:     "Nicha@gmail.com",
-		Nametitle: Nametitle2,
+		Nametitle: NT_Name2,
 		Signin:    loginCustomer2,
 	}
 	db.Model(&Customer{}).Create(&Customer2)

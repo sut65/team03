@@ -76,9 +76,10 @@ async function CreateCheckInOut(data: CheckInOutInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                console.log(res.error);
+                return { status: false, message: res.error };
             }
         });
 
@@ -101,9 +102,9 @@ async function DeleteCheckInOut(data: number) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 

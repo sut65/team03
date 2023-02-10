@@ -338,7 +338,7 @@ function Review_Save() {
               <FormControl fullWidth variant="outlined">
                 <FormLabel>Image</FormLabel>
                 <img src={`${imageString}`} width="500" height="500"/>
-                <input type="file" onChange={handleImageChange} />
+                <input type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
               </FormControl>
             </Grid>
 

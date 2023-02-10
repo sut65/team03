@@ -17,11 +17,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { RoomInterface } from "../../models/IRoom";
-import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { RepairTypeInterface,RepairReqInterface } from "../../models/IRepairReq";
 
 import { GetRooms } from "../Room/service/RoomHttpClientService";
-import { GetCustomers } from "./service/RepRqHttpClientService";
+import { GetCustomers, GetRoomListByID } from "./service/RepRqHttpClientService";
 import { 
     GetRepairTypes,
     GetRepairReqs,
@@ -31,6 +30,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
+import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -44,9 +44,11 @@ function RepRqCreate() {
   const [types, setTypes] = useState<RepairTypeInterface[]>([]);
   const [customers, setCustomers] = useState<CustomerInterface[]>([]);
   const [rep, setRep] = useState<RepairReqInterface>({});
+  const [message, setAlertMessage] = useState("");
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const id_cus = localStorage.getItem("id");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -69,7 +71,8 @@ function RepRqCreate() {
 
 
   const getRooms =  async () => {
-    let res = await GetRooms();
+    let res = await GetRoomListByID(localStorage.getItem("id"));
+    console.log(res)
     if (res) {
       setRooms(res);
     }
@@ -77,6 +80,7 @@ function RepRqCreate() {
 
   const getCustomers =  async () => {
     let res = await GetCustomers();
+    console.log(res)
     if (res) {
       setCustomers(res);
     }
@@ -84,6 +88,8 @@ function RepRqCreate() {
 
   const getTypes =  async () => {
     let res = await GetRepairTypes();
+    console.log(res)
+    
     if (res) {
       setTypes(res);
     }
@@ -118,9 +124,11 @@ function RepRqCreate() {
     };
     console.log(data)
     let res = await CreateRepairReq(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Check In Success")
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -134,7 +142,7 @@ function RepRqCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -144,7 +152,7 @@ function RepRqCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          fail: {message}
         </Alert>
       </Snackbar>
       <Paper>

@@ -9,30 +9,87 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestBookingNotBlank(t *testing.T) {
+func TestCheckInOutValidateNotBlank(t *testing.T) {
 	g := NewGomegaWithT(t)
+	test := uint(1)
 
-	var Sobsa Employee
-	db.Raw("SELECT * FROM employees WHERE employeename  = ?", "Sobsa tugwan").Scan(&Sobsa)
+	t.Run("check check-in time not blank", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          &test,
+			CheckInTime:        time.Time{},
+			CheckOutTime:       time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			CheckInOutStatusID: &test,
+			EmployeeID:         &test,
+		}
 
-	var checkout CheckInOutStatus
-	db.Raw("SELECT * FROM Check_In_Out_Statuses WHERE id = ?", "1").Scan(&checkout)
+		ok, err := govalidator.ValidateStruct(cio)
 
-	var n uint = 1
-	var val *uint = &n
-	var val2 *uint = &n
+		g.Expect(ok).To(BeFalse())
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(Equal("Please select check-in time"))
+	})
 
-	cio := CheckInOut{
-		BookingID:          nil,
-		CheckInTime:        time.Now(),
-		CheckOutTime:       time.Now(),
-		CheckInOutStatusID: val,
-		EmployeeID:         val2,
-	}
+	t.Run("check check-out time not blank", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          &test,
+			CheckInTime:        time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			CheckOutTime:       time.Time{},
+			CheckInOutStatusID: &test,
+			EmployeeID:         &test,
+		}
 
-	ok, err := govalidator.ValidateStruct(cio)
+		ok, err := govalidator.ValidateStruct(cio)
 
-	g.Expect(ok).ToNot(BeTrue())
-	g.Expect(err).ToNot(BeNil())
-	g.Expect(err.Error()).To(Equal("Booking Not Blank"))
+		g.Expect(ok).To(BeFalse())
+		g.Expect(err).To(HaveOccurred())
+		g.Expect(err.Error()).To(Equal("Please select check-out time"))
+	})
+
+	t.Run("check booking not blank", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          nil,
+			CheckInTime:        time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			CheckOutTime:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			CheckInOutStatusID: &test,
+			EmployeeID:         &test,
+		}
+
+		ok, err := govalidator.ValidateStruct(cio)
+
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please select booking"))
+	})
+
+	t.Run("check status not blank", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          &test,
+			CheckInTime:        time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			CheckOutTime:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			CheckInOutStatusID: nil,
+			EmployeeID:         &test,
+		}
+
+		ok, err := govalidator.ValidateStruct(cio)
+
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please select status"))
+	})
+
+	t.Run("check employee not blank", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          &test,
+			CheckInTime:        time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+			CheckOutTime:       time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			CheckInOutStatusID: &test,
+			EmployeeID:         nil,
+		}
+
+		ok, err := govalidator.ValidateStruct(cio)
+
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please Signin"))
+	})
 }

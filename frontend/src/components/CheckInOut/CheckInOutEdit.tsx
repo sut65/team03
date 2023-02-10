@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Container from "@mui/material/Container";
@@ -53,6 +53,7 @@ function CheckInOutEdit() {
   //const [date, setDate] = React.useState<Date | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const { id } = useParams();
   
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -107,11 +108,15 @@ function CheckInOutEdit() {
     return val;
   };
   
+  const convertTypeNotNull = (data: string | number | undefined) => {
+    let val = typeof data === "string" ? parseInt(data) : data;
+    return val;
+  };
 
   async function submitCheckIn() {
     let data = {
-        //ID: checkinout.ID,
-        ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
+        ID: convertTypeNotNull(id),
+        // ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
         //BookingID: convertType(checkinout.BookingID),
         BookingID: null,
         CheckInOutStatusID: null,
@@ -132,7 +137,7 @@ function CheckInOutEdit() {
   async function submitCheckOut() {
     let data = {
         //ID: checkinout.ID,
-        ID: typeof checkinout.ID === "string" ? parseInt(checkinout.ID) : 0,
+        ID: convertTypeNotNull(id),
         BookingID: null,
         //BookingID: typeof checkinout.BookingID === "string" ? parseInt(checkinout.BookingID) : 0,
         CheckInOutStatusID: 2,
@@ -193,7 +198,7 @@ function CheckInOutEdit() {
         </Box>
         <Divider />
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
               <Select
@@ -216,7 +221,7 @@ function CheckInOutEdit() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -268,7 +273,7 @@ function CheckInOutEdit() {
         </Box>
         <Divider />
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
               <Select
@@ -291,7 +296,7 @@ function CheckInOutEdit() {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

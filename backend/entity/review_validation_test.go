@@ -74,3 +74,26 @@ func TestReviewMustBeValid(t *testing.T) {
 	// err.Error ต้องมี error message แสดงออกมา
 	g.Expect(err.Error()).To(gomega.Equal("Comment length must be between 0 - 200"))
 }
+
+func TestReviewNoSpecial(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+
+	// ข้อมูลถูกต้องบาง field
+	re := Review{
+		Comment: "ประทับใจทุกอย่างของโรงแรม05412++", //
+		Star: 5,
+		Reviewdate: time.Now(),
+	}
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(re)
+
+	// ok ต้องไม่เป็นค่า true แปลว่าต้องจับ error ได้
+	g.Expect(ok).ToNot(gomega.BeTrue())
+
+	// err ต้องไม่เป็นค่า nil แปลว่าต้องจับ error ได้
+	g.Expect(err).ToNot(gomega.BeNil())
+
+	// err.Error ต้องมี error message แสดงออกมา
+	g.Expect(err.Error()).To(gomega.Equal("Comment no special characters"))
+
+}

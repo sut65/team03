@@ -90,20 +90,52 @@ func DeleteCustomer(c *gin.Context) {
 // PATCH /customers
 func UpdateCustomer(c *gin.Context) {
 	var customer entity.Customer
+	var nametitle entity.Nametitle
+	var gender entity.Gender
+	var province entity.Province
+
 	if err := c.ShouldBindJSON(&customer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", customer.ID).First(&customer); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "customer not found"})
+	// ค้นหา nametitle ด้วย id
+	if tx := entity.DB().Where("id = ?", customer.Nametitle_ID).First(&nametitle); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "nametitle not found"})
 		return
 	}
 
-	if err := entity.DB().Save(&customer).Error; err != nil {
+	// ค้นหา gender ด้วย id
+	if tx := entity.DB().Where("id = ?", customer.Gender_ID).First(&gender); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
+		return
+	}
+
+	// ค้นหา province ด้วย id
+	if tx := entity.DB().Where("id = ?", customer.Province_ID).First(&province); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "province not found"})
+		return
+	}
+
+	password, _ := bcrypt.GenerateFromPassword([]byte(customer.Password), 14)
+
+	// สร้าง Customer
+	update := entity.Customer{
+		Nametitle: nametitle,
+		Gender:      gender,
+		Province:     province,
+		FirstName:   customer.FirstName,
+		LastName:    customer.LastName,
+		Password:    string(password),
+		Age:         customer.Age,
+		Phone:       customer.Phone,
+		Email:       customer.Email,
+	}
+
+	// บันทึก
+	if err := entity.DB().Where("id = ?", customer.ID).Updates(&update).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"data": customer})
+	c.JSON(http.StatusCreated, gin.H{"data": update})
 }

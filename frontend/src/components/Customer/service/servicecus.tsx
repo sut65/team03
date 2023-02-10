@@ -32,6 +32,13 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
             
             
             const apiUrl = "http://localhost:8080";
+            const requestOptionsGet = {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  "Content-Type": "application/json",
+                },
+              };
 
             async function GetCustomerByUID() {
                 let uid = localStorage.getItem('id');
@@ -54,7 +61,16 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                     });
             
                 return res;
-            }
+            };
+            const GetCustomerByID = async (uid: string) => {
+                let res = await fetch(`${apiUrl}/customer/${uid}`, requestOptionsGet)
+                  .then((response) => response.json())
+                  .then((result) => {
+                    return result.data ? result.data : false;
+                  });
+              
+                return res;
+              };
 
 
             async function GetNametitleByUID(data: CustomerInterface) {
@@ -82,44 +98,66 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
             
             
 
-                // Delete Booking
-                async function DeleteCustomer(data: CustomerInterface) {
-                    let c_id = data.ID;
-                    const requestOptions = {
-                        method: "DELETE",
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("token")}`,
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(data),
-                    }
-
-                    let res = await fetch(`${apiUrl}/customers/${c_id}`, requestOptions)
-                        .then((response) => response.json())
-                        .then((res) => {
-                            if (res.data) {
-                                return res.data;
-                            } else {
-                                return false;
-                            }
-                        });
-
-                    return res;
+            async function GetCustomerlist() {
+                const requestOptions = {
+                    method: "GET",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                      },
+                };
+            
+                let res = await fetch(`${apiUrl}/customers`, requestOptions)
+                    .then((response) => response.json())
+                    .then((res) => {
+                        if (res.data) {
+                            return res.data;
+                        } else {
+                            return false;
+                        }
+                    });
+            
+                return res;
+            }
+            
+            
+            async function DeleteCustomer(data: number) {
+                let customer= data;
+                const requestOptions = {
+                    method: "DELETE",
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                      },
+                    body: JSON.stringify(data),
                 }
+                
+                let res = await fetch(`${apiUrl}/customers/${customer}`, requestOptions)
+                    .then((response) => response.json())
+                    .then((res) => {
+                        if (res.data) {
+                            return res.data;
+                        } else {
+                            return false;
+                        }
+                    });
+            
+                return res;
+            }
 
                 // Update customer
-                async function UppdateCustomer(data: CustomerInterface) {
-                    let cus_id = data.ID;
+                async function UpdateCustomer(data: CustomerInterface) {
+                    let cu_id = data.ID
                     const requestOptions = {
                         method: "PATCH",
-                        headers: {
+                          headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
-                        },
+                          },
                         body: JSON.stringify(data),
                     }
-
-                    let res = await fetch(`${apiUrl}/customers/${cus_id}`, requestOptions)
+                
+                    let res = await fetch(`${apiUrl}/customersupdate/${cu_id}`, requestOptions)
                         .then((response) => response.json())
                         .then((res) => {
                             if (res.data) {
@@ -128,9 +166,10 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                                 return false;
                             }
                         });
-
+                
                     return res;
                 }
+                
 
                 async function GetNametitle() {
                     const requestOptions = {
@@ -157,7 +196,9 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                 export{
                     GetNametitle,
                     GetCustomerByUID,
-                    UppdateCustomer,
+                    UpdateCustomer,
                     DeleteCustomer,
                     GetNametitleByUID,
+                    GetCustomerByID,
+                    GetCustomerlist,
                 }
