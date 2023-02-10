@@ -242,18 +242,21 @@ function ServiceUpdate() {
         let res = await GetFoodItemS(id);
         if (res) {
             setFoodItemS(res);
+            setFoodItemWant(res);
         }
     }
     const getdrinkitems = async () => {
         let res = await GetDrinkItemS(id);
         if (res) {
             setDrinkItemS(res);
+            setDrinkItemWant(res);
         }
     }
     const getaccessorieitems = async () => {
         let res = await GetAccessoriesItemS(id);
         if (res) {
             setAccessorieItemS(res);
+            setAccessorieItemWant(res);
         }
     }
 
@@ -274,11 +277,11 @@ function ServiceUpdate() {
             status.current = false;
         } else {
             getfooditem();
-            setFoodItemSum((fooditem + fooditems) - fooditemwant)
+            setFoodItemSum((fooditem + fooditems) - fooditemwant);
             getdrinkitem();
-            setDrinkItemSum((drinkitem + drinkitems) - drinkitemwant)
+            setDrinkItemSum((drinkitem + drinkitems) - drinkitemwant);
             getaccessorieitem();
-            setAccessorieItemSum((accessorieitem + accessorieitems) - accessorieitemwant)
+            setAccessorieItemSum((accessorieitem + accessorieitems) - accessorieitemwant);
         }
     });
 
@@ -438,7 +441,7 @@ function ServiceUpdate() {
                                 type='number'
                                 variant="standard"
                                 id="FoodItem"
-                                value={fooditemwant}
+                                value={service.FoodItem}
                                 onChange={handleInputFoodChange}
                             />
                         </Grid>
@@ -448,7 +451,7 @@ function ServiceUpdate() {
                                 type='number'
                                 variant="standard"
                                 id="DrinkItem"
-                                value={drinkitemwant}
+                                value={service.DrinkItem}
                                 onChange={handleInputDrinkChange}
                             />
                         </Grid>
@@ -458,7 +461,7 @@ function ServiceUpdate() {
                                 type='number'
                                 variant="standard"
                                 id="AccessoriesItem"
-                                value={accessorieitemwant}
+                                value={service.AccessoriesItem}
                                 onChange={handleInputAccessorieChange}
                             />
                         </Grid>
