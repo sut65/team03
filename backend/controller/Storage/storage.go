@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team03/entity"
 	"golang.org/x/crypto/bcrypt"
 
@@ -182,6 +183,12 @@ func CreateStorage(c *gin.Context) {
 	var storage entity.Storage
 
 	if err := c.ShouldBindJSON(&storage); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(storage); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
