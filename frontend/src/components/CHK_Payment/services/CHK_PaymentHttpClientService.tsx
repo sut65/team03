@@ -97,9 +97,10 @@ async function CHK_Payments(data: CHK_PaymentsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                console.log(res.error);
+                return { status: false, message: res.error };
             }
         });
 
@@ -147,9 +148,10 @@ async function UppdateCHK_Payment(data: CHK_PaymentsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                console.log(res.error);
+                return { status: false, message: res.error };
             }
         });
 

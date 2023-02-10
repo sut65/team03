@@ -1105,16 +1105,16 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4001,
 		Room:     Room1,
-		Start:    time.Now(),
-		Stop:     time.Now(),
+		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer1,
 	})
 
 	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4002,
 		Room:     Room2,
-		Start:    time.Now(),
-		Stop:     time.Now(),
+		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer2,
 	})
 
