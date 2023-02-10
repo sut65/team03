@@ -46,11 +46,13 @@ function RepRqEdit() {
   const [types, setTypes] = useState<RepairTypeInterface[]>([]);
   const [customers, setCustomers] = useState<CustomerInterface[]>([]);
   const [rep, setRep] = useState<RepairReqInterface>({});
+  const [message, setAlertMessage] = useState("");
 
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const { id } = useParams();
   const id_cus = localStorage.getItem("id");
+
   
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -70,7 +72,6 @@ function RepRqEdit() {
       [name]: event.target.value,
     });
   }; 
-
 
   const getRepairReqs =  async () => {
     let res = await GetRepairReqs();
@@ -132,13 +133,15 @@ function RepRqEdit() {
         RepairTypeID: convertType(rep.RepairTypeID),
         CustomerID: convertType(localStorage.getItem("id")),
         Note: rep.Note,
-        Time: null,
+        Time: new Date(),
     };
     console.log(data)
     let res = await UpdateRepairReq(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Edit Request Success")
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -152,7 +155,7 @@ function RepRqEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-         อัพเดตข้อมูลสำเร็จ
+        {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -162,7 +165,7 @@ function RepRqEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-         อัพเดตข้อมูลไม่สำเร็จ
+         {message}
         </Alert>
       </Snackbar>
       <Paper>
@@ -185,30 +188,6 @@ function RepRqEdit() {
         </Box>
         <Divider />
         <Grid container spacing={3} sx={{ padding: 2 }}>
-          {/* <Grid item xs={4}>
-            <FormControl fullWidth variant="outlined">
-            <InputLabel id="demo-simple-select-label">Request No.</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={rep.ID + ""}
-                label="Request No."
-                onChange={handleChange}
-                inputProps={{
-                  name: "ID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Request No.
-                </option>
-                {rr.map((item: RepairReqInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
             <InputLabel id="demo-simple-select-label">Room No.</InputLabel>
@@ -276,7 +255,7 @@ function RepRqEdit() {
               variant="contained"
               color="inherit"
             >
-              กลับ
+              BACK
             </Button>
             <Button
               style={{ float: "right" }}
@@ -284,7 +263,7 @@ function RepRqEdit() {
               variant="contained"
               color="primary"
             >
-              บันทึก
+              SAVE
             </Button>
           </Grid>
         </Grid>

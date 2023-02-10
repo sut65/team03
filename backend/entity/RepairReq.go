@@ -21,7 +21,7 @@ type RepairReq struct {
 	RepairTypeID *uint      `valid:"required~Please select type of problem"`
 	RepairType   RepairType `valid:"-" gorm:"references:ID"`
 
-	Note string    `valid:"stringlength(0|200)~Comment length must be between 0 - 200,required~Please enter comment,"`
+	Note string    `valid:"matches([a-zA-Z0-9ก-๙]$)~Note must not contain special characters,stringlength(0|200)~Note length must be between 0 - 200,required~Please enter note,"`
 	Time time.Time `valid:"required~Please select time"`
 
 	CustomerID *uint    `valid:"required~Please Signin"`

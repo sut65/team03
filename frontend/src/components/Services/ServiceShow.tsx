@@ -62,19 +62,22 @@ function ServiceShow() {
                 </Grid>
 
                 <div>
-                    <Container maxWidth="md">
+                    <Container maxWidth="xl">
                         <div style={{ height: 500, width: "100%", marginTop: "20px" }}>
                             <TableContainer >
                                 <Table aria-label="simple table">
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="center" width="20%"> Bill Number </TableCell>
-                                            <TableCell align="center" width="20%"> Customer name </TableCell>
-                                            <TableCell align="center" width="20%"> Bill Time </TableCell>
-                                            <TableCell align="center" width="20%"> Food </TableCell>
-                                            <TableCell align="center" width="20%"> Drink </TableCell>
-                                            <TableCell align="center" width="20%"> Accessorie </TableCell>
-                                            <TableCell align="center" width="20%"> - Edit - </TableCell>
+                                            <TableCell align="center" width="20%">Bill</TableCell>
+                                            <TableCell align="center" width="20%">Customer</TableCell>
+                                            <TableCell align="center" width="20%">Bill Time</TableCell>
+                                            <TableCell align="center" width="20%">Food</TableCell>
+                                            <TableCell align="center" width="20%">Item</TableCell>
+                                            <TableCell align="center" width="20%">Drink</TableCell>
+                                            <TableCell align="center" width="20%">Item</TableCell>
+                                            <TableCell align="center" width="20%">Accessorie</TableCell>
+                                            <TableCell align="center" width="20%">Item</TableCell>
+                                            <TableCell align="center" width="20%">- Edit -</TableCell>
                                         </TableRow>
                                     </TableHead>
 
@@ -85,8 +88,11 @@ function ServiceShow() {
                                                 <TableCell align="center">{item.Customer?.FirstName}</TableCell>
                                                 <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
                                                 <TableCell align="center">{item.Food?.Name}</TableCell>
+                                                <TableCell align="center">{item.FoodItem}</TableCell>
                                                 <TableCell align="center">{item.Drink?.Name}</TableCell>
+                                                <TableCell align="center">{item.DrinkItem}</TableCell>
                                                 <TableCell align="center">{item.Accessories?.Name}</TableCell>
+                                                <TableCell align="center">{item.AccessoriesItem}</TableCell>
                                                 <TableCell align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                                                         <Button

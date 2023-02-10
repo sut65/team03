@@ -952,11 +952,14 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	// ===============     ตารางหลัก     ===============
 	db.Model(&Service{}).Create(&Service{
-		Customer:    Customer1,
-		Time:        time.Now(),
-		Food:        Noodles,
-		Drink:       Pepsi,
-		Accessories: Bed,
+		Customer:        Customer1,
+		Time:            time.Now(),
+		Food:            Noodles,
+		FoodItem:        1,
+		Drink:           Pepsi,
+		DrinkItem:       2,
+		Accessories:     Bed,
+		AccessoriesItem: 1,
 	})
 
 	// ===============     PAYMENT     ===============
@@ -1105,16 +1108,16 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4001,
 		Room:     Room1,
-		Start:    time.Now(),
-		Stop:     time.Now(),
+		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer1,
 	})
 
 	db.Model(&Booking{}).Create(&Booking{
 		Branch:   b4002,
 		Room:     Room2,
-		Start:    time.Now(),
-		Stop:     time.Now(),
+		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer2,
 	})
 

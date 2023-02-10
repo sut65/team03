@@ -95,11 +95,6 @@ function BookingCreate() {
         return val;
     };
 
-    const convertType_C = (data: string | number | null) => {
-        let val = typeof data === "string" ? parseInt(data) : data;
-        return val;
-    };
-
     async function submit() {
         let data = {
             BranchID: convertType(booking.BranchID),
@@ -109,8 +104,6 @@ function BookingCreate() {
             CustomerID: convertType(booking.CustomerID),
         };
 
-        console.log(booking);
-
         console.log(data);
 
         let res = await Bookings(data);
@@ -118,7 +111,6 @@ function BookingCreate() {
             setAlertMessage("จองห้องพักสำเร็จ");
             setSuccess(true);
         } else {
-            console.log(res.message);
             setAlertMessage(res.message);
             setError(true);
         }
@@ -193,10 +185,9 @@ function BookingCreate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>วันที่เข้าพัก</p>
-                            {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    disablePast
+                                    // disablePast
                                     value={booking.Start}
                                     onChange={(newValue) => {
                                         setBooking({
@@ -214,7 +205,7 @@ function BookingCreate() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
+                                    // minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
                                     value={booking.Stop}
                                     onChange={(newValue) => {
                                         setBooking({

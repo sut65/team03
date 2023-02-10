@@ -146,8 +146,7 @@ async function Bookings(data: BookingsInterface) {
             if (res.data) {
                 return { status: true, message: res.data };
             } else {
-                console.log(res.error);
-                return { status: false, message: res.booking_error };
+                return { status: false, message: res.error };
             }
         });
 
