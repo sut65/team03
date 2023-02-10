@@ -952,11 +952,14 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	// ===============     ตารางหลัก     ===============
 	db.Model(&Service{}).Create(&Service{
-		Customer:    Customer1,
-		Time:        time.Now(),
-		Food:        Noodles,
-		Drink:       Pepsi,
-		Accessories: Bed,
+		Customer:        Customer1,
+		Time:            time.Now(),
+		Food:            Noodles,
+		FoodItem:        1,
+		Drink:           Pepsi,
+		DrinkItem:       2,
+		Accessories:     Bed,
+		AccessoriesItem: 1,
 	})
 
 	// ===============     PAYMENT     ===============
