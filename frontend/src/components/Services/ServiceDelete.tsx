@@ -57,12 +57,12 @@ function ServiceDelete() {
         setError(false);
     };
 
-    const convertType = (data: string | number | undefined | null) => {
+    const convertTypeNotNull = (data: string | number | undefined) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
     };
 
-    async function submit() {
+    async function confirm() {
         let res = await DeleteService(services.ID);
         if (res.status) {
             setAlertMessage("Cancle Order Successfully");
@@ -171,7 +171,7 @@ function ServiceDelete() {
                     </Grid>
 
                     <div>
-                        <Container maxWidth="md">
+                        <Container maxWidth="xl">
                             <div style={{ height: 500, width: "100%", marginTop: "20px" }}>
                                 <TableContainer >
                                     <Table aria-label="simple table">
@@ -181,8 +181,11 @@ function ServiceDelete() {
                                                 <TableCell align="center" width="20%"> Customer name </TableCell>
                                                 <TableCell align="center" width="20%"> Bill Time </TableCell>
                                                 <TableCell align="center" width="20%"> Food </TableCell>
+                                                <TableCell align="center" width="20%"> Food Item </TableCell>
                                                 <TableCell align="center" width="20%"> Drink </TableCell>
+                                                <TableCell align="center" width="20%"> Drink Item </TableCell>
                                                 <TableCell align="center" width="20%"> Accessorie </TableCell>
+                                                <TableCell align="center" width="20%"> Accessorie Item </TableCell>
                                             </TableRow>
                                         </TableHead>
 
@@ -191,10 +194,13 @@ function ServiceDelete() {
                                                 <TableRow key={item.ID}>
                                                     <TableCell align="center">{item.ID}</TableCell>
                                                     <TableCell align="center">{item.Customer?.FirstName}</TableCell>
-                                                    <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY")}</TableCell>
+                                                    <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
                                                     <TableCell align="center">{item.Food?.Name}</TableCell>
+                                                    <TableCell align="center">{item.FoodItem}</TableCell>
                                                     <TableCell align="center">{item.Drink?.Name}</TableCell>
+                                                    <TableCell align="center">{item.DrinkItem}</TableCell>
                                                     <TableCell align="center">{item.Accessories?.Name}</TableCell>
+                                                    <TableCell align="center">{item.AccessoriesItem}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
@@ -216,7 +222,7 @@ function ServiceDelete() {
 
                             <Button
                                 style={{ float: "right" }}
-                                onClick={submit}
+                                onClick={confirm}
                                 variant="contained"
                                 color="success"
                             >
