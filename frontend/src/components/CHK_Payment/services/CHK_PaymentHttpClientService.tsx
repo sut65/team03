@@ -99,7 +99,6 @@ async function CHK_Payments(data: CHK_PaymentsInterface) {
             if (res.data) {
                 return { status: true, message: res.data };
             } else {
-                console.log(res.error);
                 return { status: false, message: res.error };
             }
         });

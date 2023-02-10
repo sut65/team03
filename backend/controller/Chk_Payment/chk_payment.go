@@ -22,7 +22,7 @@ func CreateCHK_Payment(c *gin.Context) {
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(chk_payment); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"booking_error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

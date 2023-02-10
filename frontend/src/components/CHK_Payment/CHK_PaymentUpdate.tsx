@@ -167,7 +167,7 @@ function CHK_PaymentUpdate() {
                 <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>เลือกรายการ การชำระเงิน</p>
+                            <p>เลือกรายการการชำระเงิน</p>
                             <Select
                                 native
                                 value={chk_payment.PaymentID + ""}
@@ -177,7 +177,7 @@ function CHK_PaymentUpdate() {
                                 }}
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกราย การชำระเงิน
+                                    กรุณาเลือกรายการชำระเงิน
                                 </option>
                                 {payments.map((item: PaymentsInterface) => (
                                     <option value={item.ID} key={item.ID}>
