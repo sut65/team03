@@ -107,7 +107,8 @@ function CheckInOutCreate() {
       CheckInOutStatusID: 1,
       EmployeeID: convertType(localStorage.getItem("id")),
       CheckInTime: checkinout.CheckInTime,
-      CheckOutTime: new Date(1, 1, 1, 1, 1, 1, 1),
+      //CheckOutTime: new Date(1, 1, 1, 1, 1, 1, 1),
+      CheckOutTime: null,
     };
 
     let res = await CreateCheckInOut(data);

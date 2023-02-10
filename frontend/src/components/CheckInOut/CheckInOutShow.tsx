@@ -72,7 +72,7 @@ function CheckInOutShow() {
   function formatTime (time : string){
     const data = new Date(time)
     console.log(data.getFullYear())
-    if(String(data.getFullYear()) === "1901"){
+    if(String(data.getFullYear()) === "1"){
       return " "
     }else{
       return moment(time).format('DD-MM-yyyy เวลา hh:mm')

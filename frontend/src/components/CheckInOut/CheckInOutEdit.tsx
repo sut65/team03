@@ -54,6 +54,7 @@ function CheckInOutEdit() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const { id } = useParams();
+  const [message, setAlertMessage] = useState("");
   
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -127,9 +128,11 @@ function CheckInOutEdit() {
     };
 
     let res = await UpdateCheckIn(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Check In Success")
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -148,9 +151,11 @@ function CheckInOutEdit() {
     };
 
     let res = await UpdateCheckOut(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Check Out Success")
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
     console.log(data)
@@ -165,7 +170,7 @@ function CheckInOutEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          อัพเดตข้อมูลสำเร็จ
+         {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -175,7 +180,7 @@ function CheckInOutEdit() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          อัพเดตข้อมูลไม่สำเร็จ
+          {message}
         </Alert>
       </Snackbar>
       <Paper>
