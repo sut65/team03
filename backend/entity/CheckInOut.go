@@ -23,7 +23,7 @@ type CheckInOut struct {
 	Booking   Booking `valid:"-" gorm:"references:ID"`
 
 	CheckInTime  time.Time `valid:"required~Please select check-in time"`
-	CheckOutTime time.Time `valid:"required~Please select check-out time"`
+	CheckOutTime time.Time
 
 	CheckInOutStatusID *uint            `valid:"required~Please select status"`
 	CheckInOutStatus   CheckInOutStatus `valid:"-" gorm:"references:ID"`
