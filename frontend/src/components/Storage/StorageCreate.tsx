@@ -16,11 +16,6 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-//import { BookingsInterface } from "../../models/IBooking";
-import { 
-  CheckInOutInterface,
-  CheckInOutStatusInterface, 
-} from "../../models/ICheckInOut";
 import { EmployeeInterface } from "../../models/IEmployee"; 
 
 import { StorageInterface, ProductTypeInterface, ProductInterface } from "../../models/IStorage";
@@ -31,6 +26,7 @@ import { GetEmployees, GetProductTypes, GetProducts, CreateStorage } from "./ser
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
+import { Message } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -62,6 +58,7 @@ function StorageCreate() {
   });
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -142,11 +139,15 @@ function StorageCreate() {
       Quantity: typeof storage?.Quantity === "string" ? (storage?.Quantity === "" ? 0 : storage?.Quantity) : storage?.Quantity,
       Time: storage.Time,
     };
+
     console.log(data)
+
     let res = await CreateStorage(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("บันทึกข้อมูลสำเร็จ");
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -160,7 +161,8 @@ function StorageCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+         {/* บันทึกข้อมูลสำเร็จ */}
+          {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -170,7 +172,8 @@ function StorageCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+         {/* บันทึกข้อมูลไม่สำเร็จ */}
+         {message}
         </Alert>
       </Snackbar>
       <Paper>

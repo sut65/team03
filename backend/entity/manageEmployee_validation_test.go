@@ -7,6 +7,29 @@ import (
 	"github.com/onsi/gomega"
 )
 
+func TestEmployeePass(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+
+	// ข้อมูลถูกต้องหมดทุก field
+	e := Employee{
+		PersonalID:   "1104200258432",
+		Employeename: "Sobsa tugwan",
+		Email:        "Sobsa@gmail.com",
+		Eusername:    "ESobsa",
+		Password:     "Sobsa01",
+		Phonenumber:  "0905452001",
+		Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+	}
+	// ตรวจสอบด้วย govalidator
+	ok, err := govalidator.ValidateStruct(e)
+
+	// ok ต้องเป็น true แปลว่าไม่มี error
+	g.Expect(ok).To(gomega.BeTrue())
+
+	// err เป็นค่า nil แปลว่าไม่มี error
+	g.Expect(err).To(gomega.BeNil())
+}
+
 func TestEmployeeValidateNotBlank(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
 	t.Run("Check Name not blank", func(t *testing.T) {
@@ -163,7 +186,7 @@ func TestEmployeeCheckPersonalid(t *testing.T) {
 
 		g.Expect(err).ToNot(gomega.BeNil())
 
-		g.Expect(err.Error()).To(gomega.Equal("PersonalID is not vaild"))
+		g.Expect(err.Error()).To(gomega.Equal("PersonalID is not valid"))
 	}
 
 }
@@ -188,7 +211,7 @@ func TestEmployeeEmailMustBeValid(t *testing.T) {
 
 	g.Expect(err).ToNot(gomega.BeNil())
 
-	g.Expect(err.Error()).To(gomega.Equal("Email is not vaild"))
+	g.Expect(err.Error()).To(gomega.Equal("Email is not valid"))
 
 }
 
@@ -219,7 +242,7 @@ func TestEmployeetCheckPhonenumber(t *testing.T) {
 
 		g.Expect(err).ToNot(gomega.BeNil())
 
-		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not vaild"))
+		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not valid"))
 	}
 }
 
@@ -281,4 +304,34 @@ func TestEmployeetPassword(t *testing.T) {
 
 		g.Expect(err.Error()).To(gomega.Equal("Password must be more than or equal to 6 characters"))
 	}
+
+	t.Run("Check Password", func(t *testing.T) {
+
+		fixtures := []string{
+			"bdfdf453", //คำนำหน้าผิด แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+			"5532323sf", //คำนำหน้าถูก แต่อักษรตัวที่สองเป็นพิมพ์เล็ก ซึ่งผิด
+		}
+		//Address ห้ามว่าง
+		for _, fixture := range fixtures{
+		e := Employee{
+			PersonalID:   "1104200258430",
+			Employeename: "Sobsa tugwan",
+			Email:        "Sobsa@gmail.com",
+			Eusername:    "ESobsa",
+			Password:     fixture,
+			Phonenumber:  "0905452001",
+			Address:      "219 m.10, nongprajak s, nongsham d, Ayutthaya 13000",
+		}
+
+		ok, err := govalidator.ValidateStruct(e)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Password must contain at least 1 character A-Z."))
+	}
+})
+
+
 }

@@ -301,7 +301,7 @@ func CreateRoom(c *gin.Context) {
 	}
 
 	// 13. สร้าง Room
-	rm := entity.Room{
+	rr := entity.Room{
 		Employee: employee,
 		RoomType: roomtype,
 		RoomZone: roomzone,
@@ -310,11 +310,11 @@ func CreateRoom(c *gin.Context) {
 		Time:     room.Time,
 	}
 
-	if err := entity.DB().Create(&rm).Error; err != nil {
+	if err := entity.DB().Create(&rr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": rm})
+	c.JSON(http.StatusOK, gin.H{"data": rr})
 }
 
 // GET /Room/:id

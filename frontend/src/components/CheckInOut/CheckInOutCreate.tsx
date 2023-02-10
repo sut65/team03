@@ -45,7 +45,7 @@ function CheckInOutCreate() {
   const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
   const [emps, setEmps] = useState<EmployeeInterface[]>([]);
   const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
-
+  const [message, setAlertMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -104,18 +104,20 @@ function CheckInOutCreate() {
   async function submit() {
     let data = {
       BookingID: convertType(checkinout.BookingID),
-      //CheckInOutStatusID: convertType("checkinout.CheckInOutStatusID"),
       CheckInOutStatusID: 1,
-      //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
       CheckInTime: checkinout.CheckInTime,
+      //CheckOutTime: new Date(1, 1, 1, 1, 1, 1, 1),
       CheckOutTime: null,
     };
 
     let res = await CreateCheckInOut(data);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Check In Success")
       setSuccess(true);
     } else {
+      console.log(res.message);
+      setAlertMessage(res.message);
       setError(true);
     }
   }
@@ -129,7 +131,7 @@ function CheckInOutCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+         {message}
         </Alert>
       </Snackbar>
       <Snackbar
@@ -139,7 +141,7 @@ function CheckInOutCreate() {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+         {message}
         </Alert>
       </Snackbar>
       <Paper>
@@ -186,72 +188,12 @@ function CheckInOutCreate() {
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>status</p>
-              <Select
-                native
-                value={checkinout.CheckInOutStatusID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "CheckInOutStatusID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก status
-                </option>
-                {statuses.map((item: CheckInOutStatusInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>employee</p>
-              <Select
-                native
-                value={checkinout.EmployeeID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "EmployeeID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Employee
-                </option>
-                {emps.map((item: EmployeeInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={checkinout.CheckInTime}
-                  onChange={(newValue) => {
-                    setCheckinout({
-                      ...checkinout,
-                      CheckInTime: newValue,
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
                         <DesktopDateTimePicker
+                        disablePast
                         label="Check-In Time"
                         value={checkinout.CheckInTime}
                         onChange={(newValue) => {

@@ -16,13 +16,13 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
+
 import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { BranchsInterface } from "../../models/modelBooking/IBranch";
 import { RoomInterface } from "../../models/IRoom";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { GetBooking, GetBookings, GetBranchs, GetCustomerByUID, UppdateBooking } from "./services/BookingHttpClientService";
 import { GetRooms } from "../Room/service/RoomHttpClientService";
-import MenuItem from "@mui/material/MenuItem";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -39,6 +39,7 @@ function BookingUpdate() {
     const [customers, setCustomers] = useState<CustomerInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -61,7 +62,6 @@ function BookingUpdate() {
 
     const onChangeU_Booking = async (event: SelectChangeEvent) => {
         let res = await GetBooking(event.target.value);
-        console.log(res);
         if (res) {
             setBooking(res);
         }
@@ -91,6 +91,10 @@ function BookingUpdate() {
     const getCustomer = async () => {
         let res = await GetCustomerByUID();
         if (res) {
+            setBooking({
+                ...booking,
+                CustomerID: res.ID,
+            });
             setCustomers(res);
         }
     }
@@ -120,29 +124,31 @@ function BookingUpdate() {
             RoomID: convertType(booking.RoomID),
             Start: booking.Start,
             Stop: booking.Stop,
-            CustomerID: convertType_C(localStorage.getItem('id')), //GET user by user(login)ID
+            CustomerID: convertType(booking.CustomerID),
         };
 
-        console.log(data)
+        console.log(data);
 
         let res = await UppdateBooking(data);
-        if (res) {
+        if (res.status) {
+            setAlertMessage("แก้ไขการจองห้องพักสำเร็จ");
             setSuccess(true);
         } else {
+            setAlertMessage(res.message);
             setError(true);
         }
     }
 
     return (
         <Container maxWidth="md">
-            <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
+            <Snackbar open={success} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    จองห้องพักสำเร็จ
+                    {message}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่ไม่สามารถจองห้องพักได้
+                    {message}
                 </Alert>
             </Snackbar>
             <Paper>
@@ -159,16 +165,20 @@ function BookingUpdate() {
                         <FormControl fullWidth variant="outlined">
                         <p>เลือกรายการที่จะแก้ไข</p>
                         <Select
+                                native
                                 value={booking.ID + ""}
                                 onChange={onChangeU_Booking}
                                 inputProps={{
                                     name: "ID",
                                 }}
                             >
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกรายการที่จะแก้ไข
+                                </option>
                                 {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && ( 
-                                    <MenuItem key={item.ID} value={item.ID}>
+                                    <option value={item.ID} key={item.ID}>
                                         {item.ID}
-                                    </MenuItem>
+                                    </option>
                                 ))}
                             </Select>
                         </FormControl>
@@ -220,10 +230,9 @@ function BookingUpdate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>วันที่เข้าพัก</p>
-                            {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    disablePast
+                                    // disablePast
                                     value={booking.Start}
                                     onChange={(newValue) => {
                                         setBooking({
@@ -241,7 +250,7 @@ function BookingUpdate() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
-                                    minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
+                                    // minDate={booking.Start}
                                     value={booking.Stop}
                                     onChange={(newValue) => {
                                         setBooking({

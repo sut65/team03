@@ -7,9 +7,10 @@ import Box from "@mui/material/Box";
 import { Alert, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 
 import { CheckInOutInterface } from "../../models/ICheckInOut";
-import { DataGrid, GridApi, GridCellValue, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridApi, GridCellValue, GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
 import { GetCheckInOut,DeleteCheckInOut, CheckOut } from "./service/CheckInOutHttpClientService";
 import moment from "moment";
 import { error } from "console";
@@ -26,25 +27,7 @@ function CheckInOutShow() {
   const [successDel, setSuccessDel] = useState(false);
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
-  const [id, setId] = useState(0);
-  //let strid:string = ""
-  
-
-  // const theme = createTheme({
-  //   palette: {
-  //     primary: {
-  //       // Purple and green play nicely together.
-  //       main: purple[500],
-  //     },
-  //     secondary: {
-  //       // This is green.A700 as hex.
-  //       main: '#11cb5f',
-  //     },
-  //     custom: {
-  //       main: '#d32f2f'
-  //     },
-  //   },
-  // });
+  //const [id, setId] = useState(0);
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -86,124 +69,88 @@ function CheckInOutShow() {
     getList()
   }
 
-  function getStringValue(value: any): string {
-    return value.toString();
+  function formatTime (time : string){
+    const data = new Date(time)
+    console.log(data.getFullYear())
+    if(String(data.getFullYear()) === "1"){
+      return " "
+    }else{
+      return moment(time).format('DD-MM-yyyy เวลา hh:mm')
+    }
   }
   const columns: GridColDef[] = [
     { field: "ID", headerName: "ลำดับ", width: 100 },
     { field: "CheckInTime", headerName: "Check-In Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "Booking", headerName: "Booking ID", width: 120, valueFormatter: (params) => params.value.ID},
+    { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => formatTime(params.value)},
+    { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.ID},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
     { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},
-    { field: "Employee", headerName: "Employee", width: 110, valueFormatter: (params) => params.value.Eusername,},
-    // { field: "Delete", headerName: "Delete", width: 80, valueFormatter: (params) => <Button onClick={() => deleteCheckInOut(params.value.ID)}>Edit</Button> },
-    // { field: "Delete",
-    //   renderCell: (cellValues) => {
-    //     function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, cellValues: GridRenderCellParams<any, any, any>) {
-    //       throw new Error("Function not implemented.");
-    //     }
-
-    //     return (
-    //       <Button
-    //         variant="contained"
-    //         color="primary"
-    //         onClick={(e) =>{
-    //           handleClick(e, cellValues);
-    //         }}
-    //       >
-    //       Delete
-    //       </Button>
-    //     )
-    //   }}
-    // {
-    //   field: "test",
-    //   headerName: "test",
-    //   sortable: false,
-    //   renderCell: (params) => {
-    //     const onClick = (e: { stopPropagation: () => void; }) => {
-    //       e.stopPropagation(); // don't select this row after clicking
-  
-    //       const api: GridApi = params.api;
-    //       const thisRow: Record<string, GridCellValue> = {};
-  
-    //       api
-    //         .getAllColumns()
-    //         .filter((c) => c.field !== "__check__" && !!c)
-    //         .forEach(
-    //           (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-    //         );
-  
-    //       return alert(JSON.stringify(thisRow, null, 4));
-    //     };
-  
-    //     return <Button onClick={onClick}>CO</Button>;
-    //   }
-    // },
+    { field: "Employee", headerName: "Employee", width: 120, valueFormatter: (params) => params.value.Eusername,},
     {
       field: "checkout",
-      headerName: "CHECK-OUT",
-      width: 150,
-      sortable: false,
+      headerName: "",
+      sortable: true,
+      width: 120,
       align:"center",
-      renderCell: (params) => {
-          const onClick = (e: { stopPropagation: () => void; }) => {
-              e.stopPropagation();
-              const id = params.getValue(params.id, "ID");
-              onCheckOut(id);
-          };
-
-          return <Button onClick={onClick} color="success" endIcon={<CheckCircleIcon />}>CheckOut</Button>;
-      }
+      headerAlign: "center",
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+          <Button 
+              //to="/prescription/edit"
+              size="small"
+              //variant="contained"
+              color="success"
+              onClick={() => {
+                onCheckOut(row.ID);
+              }}
+              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              endIcon={<CheckCircleIcon />}
+          >
+              CHECK-OUT
+          </Button>,
     },
     {
       field: "delete",
-      headerName: "DELETE",
-      width: 150,
-      sortable: false,
+      headerName: "",
+      sortable: true,
+      width: 120,
       align:"center",
-      renderCell: (params) => {
-          const onClick = (e: { stopPropagation: () => void; }) => {
-              e.stopPropagation();
-              const id = params.getValue(params.id, "ID");
-              onDelete(id);
-          };
-
-          return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
-      }
+      headerAlign: "center",
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+          <Button 
+              //to="/prescription/edit"
+              size="small"
+              //variant="contained"
+              color="error"
+              onClick={() => {
+                 onDelete(row.ID);
+              }}
+              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              endIcon={<DeleteOutlineIcon />}
+          >
+              DELETE
+          </Button>,
     },
-    // {
-    //   field: "edit",
-    //   headerName: "EDIT",
-    //   sortable: false,
-    //   align:"center",
-    //   renderCell: (params) => {
-    //       // const onClick = (e: { stopPropagation: () => void; }) => {
-    //       //     e.stopPropagation();
-    //       //     const id = params.getValue(params.id, "ID");
-    //       //     //onEdit(id);
-    //       //     //alert(id)
-    //       //     // let test = getStringValue(id)
-    //       //     // alert(test)
-              
-    //       // };
-    //       const onClick = (e: { stopPropagation: () => void; }) => {
-    //         e.stopPropagation();
-    //         setId(params.getValue(params.id, "ID"));
-    //       };
-        
-    //      let strid = id.toString();
-    //       return <Button onClick={onClick}  color="error" component={RouterLink} to={"/employee/update/" + id } endIcon={<DeleteOutlineIcon />} >EDIT</Button>;
-    //   }
-    // },
-    
-    
+    {
+      field: "edit",
+      headerName: " ",
+      sortable: true,
+      width: 90,
+      align:"center",
+      headerAlign: "center",
+      renderCell: ({ row }: Partial<GridRowParams>) =>
+          <Button component={RouterLink} 
+              to={`/CNCO/Edit/${row.ID}`}
+              size="small"
+              //variant="contained"
+              color="warning"
+              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              endIcon={<CreateOutlinedIcon />}
+          >
+              Edit
+          </Button>,
+    },
   ];
-  // const deleteCheckInOut = (id: number) => {
-  //   alert(id)
-  // }
 
-  //<Button component={RouterLink} to="/user/create" variant="contained" color="primary"> สร้างข้อมูล </Button>
   useEffect(() => {
     getList();
   }, []);
@@ -275,16 +222,6 @@ function CheckInOutShow() {
               color="primary"
             >
               check in
-            </Button>
-          </Box>
-          <Box>
-            <Button
-              component={RouterLink}
-              to="/CNCO/Edit"
-              variant="contained"
-              color="primary"
-            >
-              Edit
             </Button>
           </Box>
         </Box>

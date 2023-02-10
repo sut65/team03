@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"fmt"
-
+	"github.com/asaskevich/govalidator"
 	"github.com/sut65/team03/entity"
+
 	//"golang.org/x/crypto/bcrypt"
 
 	"github.com/gin-gonic/gin"
@@ -109,6 +109,12 @@ func CreateRepairReq(c *gin.Context) {
 		return
 	}
 
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(rr); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	// ค้นหา room ด้วย id
 	if tx := entity.DB().Where("id = ?", rr.RoomID).First(&room); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Room not found"})
@@ -126,6 +132,8 @@ func CreateRepairReq(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
 		return
 	}
+
+	//if room id where booking
 
 	// 12: สร้าง CheckInOut
 	RepairReq := entity.RepairReq{
@@ -145,13 +153,12 @@ func CreateRepairReq(c *gin.Context) {
 }
 
 // GET /repairreq/:id
-func GetRepairReq(c *gin.Context) {
+func GetRepairReqByCid(c *gin.Context) {
 
-	var rr entity.RepairReq
-
+	var rr []entity.RepairReq
 	id := c.Param("id")
 
-	if err := entity.DB().Raw("SELECT * FROM repair_reqs WHERE id = ?", id).Scan(&rr).Error; err != nil {
+	if err := entity.DB().Preload("Room").Preload("RepairType").Preload("Customer").Raw("SELECT * FROM repair_reqs WHERE customer_id = ?", id).Find(&rr).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -168,6 +175,17 @@ func ListRepairReqs(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": rr})
+}
+
+// GET /rooms/customer/:id
+func GetListRoomByCID(c *gin.Context) {
+	var booking []entity.Booking
+	id := c.Param("id")
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE customer_id = ?", id).Find(&booking).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": booking})
 }
 
 // DELETE /repairreq/:id
@@ -201,74 +219,66 @@ func UpdateRepairReq(c *gin.Context) {
 
 	//check rr created ?
 	if tx := entity.DB().Where("id = ?", rr.ID).First(&rrO); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("repair_reqs id = %d not found", rr.ID)})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "repair_reqs id = %d not found"})
 		return
 	}
 
-	if rr.Time.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		rr.Time = rrO.Time
-	}
+	//check min field
+	if rr.Note != "" || rr.RoomID != nil || rr.RepairTypeID != nil {
 
-	if rr.Note == "" {
-		rr.Note = rrO.Note
-	}
+		if rr.Note == "" {
+			rr.Note = rrO.Note
+		}
 
-	//room
-	if rr.RoomID != nil {
-		if tx := entity.DB().Where("id = ?", rr.RoomID).First(&room); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Room not found"})
+		//room
+		if rr.RoomID != nil {
+			if tx := entity.DB().Where("id = ?", rr.RoomID).First(&room); tx.RowsAffected == 0 {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Room not found"})
+				return
+			}
+			rr.Room = room
+		} else {
+			rr.RoomID = rrO.RoomID
+		}
+
+		// customer
+		if rr.CustomerID != nil {
+			if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
+				return
+			}
+			rr.Customer = customer
+		} else {
+			rr.CustomerID = rrO.CustomerID
+		}
+
+		//new type
+		if rr.RepairTypeID != nil {
+			if tx := entity.DB().Where("id = ?", rr.RepairTypeID).First(&rtype); tx.RowsAffected == 0 {
+				c.JSON(http.StatusBadRequest, gin.H{"error": "Type not found"})
+				return
+			}
+			rr.RepairType = rtype
+		} else {
+			rr.RepairTypeID = rrO.RepairTypeID
+		}
+
+		// แทรกการ validate ไว้ช่วงนี้ของ controller
+		if _, err := govalidator.ValidateStruct(rr); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		rr.Room = room
-	} else {
-		rr.RoomID = rrO.RoomID
-	}
 
-	// customer
-	if rr.CustomerID != nil {
-		if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
+		if err := entity.DB().Save(&rr).Error; err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		rr.Customer = customer
+		c.JSON(http.StatusOK, gin.H{
+			"status": "Update Success",
+			"data":   rr,
+		})
 	} else {
-		rr.CustomerID = rrO.CustomerID
-	}
-
-	// 	customer
-	// if rr.CustomerID != nil {
-	// 	if tx := entity.DB().Where("id = ?", rr.CustomerID).First(&customer); tx.RowsAffected == 0 {
-	// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Customer not found"})
-	// 		return
-	// 	}
-	// 	if rr.CustomerID == rrO.CustomerID {
-	// 		rr.Customer = customer
-	// 	} else {
-	// 		c.JSON(http.StatusBadRequest, gin.H{
-	// 			"error": "new cus doesn't match old cus",
-	// 			"data":  fmt.Sprintf("new cus: %d\nold cus: %d", rr.CustomerID, rrO.CustomerID),
-	// 		})
-	// 		return
-	// 	}
-	// }
-
-	//new type
-	if rr.RepairTypeID != nil {
-		if tx := entity.DB().Where("id = ?", rr.RepairTypeID).First(&rtype); tx.RowsAffected == 0 {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Type not found"})
-			return
-		}
-		rr.RepairType = rtype
-	} else {
-		rr.RepairTypeID = rrO.RepairTypeID
-	}
-
-	if err := entity.DB().Save(&rr).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please enter at least 1 field"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "Update Success",
-		"data":   rr,
-	})
 }

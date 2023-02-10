@@ -49,18 +49,18 @@ type Employee struct {
 	gorm.Model
 
 	// รับข้อมูล PersonalID ที่ไม่ซ้ำกัน
-	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not vaild,required~PersonalID not blank"`
+	PersonalID   string `gorm:"uniqueIndex" valid:"matches(^([0-9]{13})$)~PersonalID is not valid,required~PersonalID not blank"`
 	Employeename string `valid:"required~Name not blank"`
-	Email        string `gorm:"uniqueIndex" valid:"email~Email is not vaild,required~Email not blank"`
+	Email        string `gorm:"uniqueIndex" valid:"email~Email is not valid,required~Email not blank"`
 
 	Eusername string `valid:"matches(^[E][A-Z][a-zA-Z]+$)~Username must be is Begin with E and The second letter must start with A-Z and must not number,required~Username not blank"`
-	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,required~Password not blank"`
+	Password  string `valid:"minstringlength(6)~Password must be more than or equal to 6 characters,matches([A-Z])~Password must contain at least 1 character A-Z.,required~Password not blank"`
 
-	SigninID *uint
-	Signin   Signin `gorm:"references:ID"`
+	SigninID *uint `valid:"-"`
+	Signin   Signin `gorm:"references:ID" valid:"-"` 
 
 	Salary      uint64
-	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not vaild,required~Tel not blank"`
+	Phonenumber string `valid:"matches(^(0)([0-9]{9})$)~Phonenumber is not valid,required~Tel not blank"`
 	Gender      string
 	DateOfBirth time.Time
 	YearOfStart time.Time
@@ -71,16 +71,16 @@ type Employee struct {
 	Officer   Officer `gorm:"references:ID"`
 
 	// DepartmentID ทำหน้าที่เป็น FK
-	DepartmentID *uint
-	Department   Department `gorm:"references:ID"`
+	DepartmentID *uint `valid:"-"`
+	Department   Department `gorm:"references:ID" valid:"-"` 
 
 	// PositionID ทำหน้าที่เป็น FK
-	PositionID *uint
-	Position   Position `gorm:"references:ID"`
+	PositionID *uint `valid:"-"`
+	Position   Position `gorm:"references:ID" valid:"-"`
 
 	// LocationID ทำหน้าที่เป็น FK
-	LocationID *uint
-	Location   Location `gorm:"references:ID"`
+	LocationID *uint `valid:"-"`
+	Location   Location `gorm:"references:ID" valid:"-"`
 
 	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey

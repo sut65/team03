@@ -6,19 +6,19 @@ import (
 
 type Gender struct {
 	gorm.Model
-	Gender   string
+	G_Name   string
 	Customer []Customer `gorm:"foreignKey:Gender_ID"`
 }
 
 type Province struct {
 	gorm.Model
-	Province string
+	P_Name string
 	Customer []Customer `gorm:"foreignKey:Province_ID"`
 }
 
 type Nametitle struct {
 	gorm.Model
-	Nametitle string
+	NT_Name string
 	Customer    []Customer `gorm:"foreignKey:Nametitle_ID"`
 }
 

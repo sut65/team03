@@ -19,15 +19,15 @@ type CheckInOut struct {
 	gorm.Model
 
 	// Booking uint
-	BookingID *uint
-	Booking   Booking `gorm:"references:ID"`
+	BookingID *uint   `valid:"required~Please select booking"`
+	Booking   Booking `valid:"-" gorm:"references:ID"`
 
-	CheckInTime  time.Time
+	CheckInTime  time.Time `valid:"required~Please select check-in time"`
 	CheckOutTime time.Time
 
-	CheckInOutStatusID *uint
-	CheckInOutStatus   CheckInOutStatus `gorm:"references:ID"`
+	CheckInOutStatusID *uint            `valid:"required~Please select status"`
+	CheckInOutStatus   CheckInOutStatus `valid:"-" gorm:"references:ID"`
 
-	EmployeeID *uint
-	Employee   Employee `gorm:"references:ID"`
+	EmployeeID *uint    `valid:"required~Please Signin"`
+	Employee   Employee `valid:"-" gorm:"references:ID"`
 }

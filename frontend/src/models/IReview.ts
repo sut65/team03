@@ -1,4 +1,5 @@
 import { DepartmentInterface } from "./IEmployee";
+import { CustomerInterface } from "./modelCustomer/ICustomer";
 
 export interface ReviewInterface {
 
@@ -6,7 +7,7 @@ export interface ReviewInterface {
     Comment: string;
 	Star: number;
 	Reviewdate: Date;
-    Reviewimega: string;
+    Reviewimage: string;
 
     // entity
     CustomerID : number;
@@ -21,26 +22,10 @@ export interface ReviewInterface {
    //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
 }
 
-export interface OfficerInterface {
-
-    ID: number;
-    Officername: string;
-
-   //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
-}
-
 export interface SystemworkInterface {
 
     ID: number;
     Name: string;
-//หลังบ้าน ไปเว็บ เว็บมา models
-   //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
-}
-
-export interface CustomerInterface {
-
-    ID: number;
-    FirstName: string;
 //หลังบ้าน ไปเว็บ เว็บมา models
    //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
 }

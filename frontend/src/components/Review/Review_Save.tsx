@@ -21,12 +21,12 @@ import { createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { DepartmentInterface } from "../../models/IEmployee";
 import {
-  CustomerInterface,
   ReviewInterface,
   SystemworkInterface,
 } from "../../models/IReview";
 import { Link as RouterLink } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 
 const bgbutton = createTheme({
   palette: {
@@ -59,6 +59,7 @@ function Review_Save() {
   const [error, setError] = React.useState(false);
   const [imageString, setImageString] = React.useState<string | ArrayBuffer | null>(null);
   const [reviewdate, setReviewdate] = React.useState<Date | null>(new Date());
+  const [message, setAlertMessage] = React.useState("");
 
   const getDepartment = async () => {
     const apiUrl = `http://localhost:8080/Departments`;
@@ -160,7 +161,7 @@ function Review_Save() {
       Comment: review.Comment ?? "",
       Star: start,
       Reviewdate: reviewdate,
-      Reviewimega: imageString,
+      Reviewimage: imageString,
       CustomerID: user?.ID ?? "",
       DepartmentID: review.DepartmentID,
       SystemworkID: review.SystemworkID,
@@ -183,11 +184,13 @@ function Review_Save() {
       .then((response) => response.json())
 
       .then((res) => {
+        console.log(res)
         if (res.data) {
           window.location.reload();
           setSuccess(true);
         } else {
           setError(true);
+          setAlertMessage(res.error);
         }
       });
   }
@@ -204,6 +207,7 @@ function Review_Save() {
     <ThemeProvider theme={bgbutton}>
       <Container maxWidth="md">
         <Snackbar
+          id="success"   
           open={success}
           autoHideDuration={6000}
           onClose={handleClose}
@@ -214,9 +218,13 @@ function Review_Save() {
           </Alert>
         </Snackbar>
 
-        <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
+        <Snackbar 
+          id="error"   
+          open={error} 
+          autoHideDuration={6000} 
+          onClose={handleClose}>
           <Alert onClose={handleClose} severity="error">
-            บันทึกข้อมูลไม่สำเร็จ
+            บันทึกข้อมูลไม่สำเร็จ {message}
           </Alert>
         </Snackbar>
 
@@ -259,7 +267,6 @@ function Review_Save() {
                   }}
                 >
                   <MenuItem value={0} key={0}>
-                    เลือกแผนก
                   </MenuItem>
                   {department.map((item: DepartmentInterface) => (
                     <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -280,7 +287,6 @@ function Review_Save() {
                   }}
                 >
                   <MenuItem value={0} key={0}>
-                    เลือกตำแหน่ง
                   </MenuItem>
                   {systemwork.map((item: SystemworkInterface) => (
                     <MenuItem value={item.ID}>{item.Name}</MenuItem>
@@ -332,7 +338,7 @@ function Review_Save() {
               <FormControl fullWidth variant="outlined">
                 <FormLabel>Image</FormLabel>
                 <img src={`${imageString}`} width="500" height="500"/>
-                <input type="file" onChange={handleImageChange} />
+                <input type="file" accept=".jpg, .jpeg, .png" onChange={handleImageChange} />
               </FormControl>
             </Grid>
 

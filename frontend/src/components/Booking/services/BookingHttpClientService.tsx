@@ -27,6 +27,28 @@ async function GetCustomerByUID() {
     return res;
 }
 
+async function GetCustomers() {
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    }
+
+    let res = await fetch(`${apiUrl}/customers`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 /* -----------------------------------------------------------------------Booking--------------------------------------------------------------*/
 // //=================================================== Booking Routes
 // r.GET("/bookings", booking.ListBookings)
@@ -122,9 +144,9 @@ async function Bookings(data: BookingsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -147,9 +169,9 @@ async function DeleteBooking(data: BookingsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -172,9 +194,9 @@ async function UppdateBooking(data: BookingsInterface) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -311,6 +333,7 @@ async function UppdateBranch(data: BranchsInterface) {
 
 export {
     GetCustomerByUID,
+    GetCustomers,
 
     Bookings,
     GetBookings,

@@ -3,6 +3,7 @@ package controller
 import (
 	"net/http"
 
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"github.com/sut65/team03/entity"
 )
@@ -17,6 +18,11 @@ func CreateService(c *gin.Context) {
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 9 จะถูก bind เข้าตัวแปร service
 	if err := c.ShouldBindJSON(&service); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if _, err := govalidator.ValidateStruct(service); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -47,11 +53,14 @@ func CreateService(c *gin.Context) {
 
 	// 14: สร้าง Service
 	sv := entity.Service{
-		Customer:    customer,
-		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
-		Food:        food,
-		Drink:       drink,
-		Accessories: accessorie,
+		Customer:        customer,
+		Time:            service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		Food:            food,
+		FoodItem:        service.FoodItem,
+		Drink:           drink,
+		DrinkItem:       service.DrinkItem,
+		Accessories:     accessorie,
+		AccessoriesItem: service.AccessoriesItem,
 	}
 
 	//15: save
@@ -100,14 +109,13 @@ func ListServicesByUID(c *gin.Context) {
 func DeleteService(c *gin.Context) {
 	id := c.Param("id")
 	if tx := entity.DB().Exec("DELETE FROM services WHERE id = ?", id); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "service not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please type some bill."})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
-// customer/:id
 // PATCH /services
 func UpdateService(c *gin.Context) {
 	var service entity.Service
@@ -115,8 +123,6 @@ func UpdateService(c *gin.Context) {
 	var food entity.Food
 	var drink entity.Drink
 	var accessorie entity.Accessories
-
-	// id := c.Param("id")
 
 	if err := c.ShouldBindJSON(&service); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -144,11 +150,14 @@ func UpdateService(c *gin.Context) {
 	}
 
 	patchservice := entity.Service{
-		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
-		Food:        food,
-		Drink:       drink,
-		Accessories: accessorie,
-		Customer:    customer,
+		Time:            service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		Food:            food,
+		FoodItem:        service.FoodItem,
+		Drink:           drink,
+		DrinkItem:       service.DrinkItem,
+		Accessories:     accessorie,
+		AccessoriesItem: service.AccessoriesItem,
+		Customer:        customer,
 	}
 
 	if err := entity.DB().Where("id = ?", service.ID).Updates(&patchservice).Error; err != nil {
@@ -170,6 +179,38 @@ func ListFoods(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": foods})
 }
 
+// GET /food/item/:id
+func GetFoodItem(c *gin.Context) {
+	var food entity.Food
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT item FROM foods WHERE id = ?", id).First(&food); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": food})
+}
+
+// PATCH /foods
+func UpdateFood(c *gin.Context) {
+	var food entity.Food
+
+	if err := c.ShouldBindJSON(&food); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	patchfood := entity.Food{
+		Item: food.Item, // ข้อมูลที่รับเข้ามาจาก frontend
+	}
+
+	if err := entity.DB().Where("id = ?", food.ID).Updates(&patchfood).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": patchfood})
+}
+
 // GET /drinks
 func ListDrinks(c *gin.Context) {
 	var drinks []entity.Drink
@@ -181,6 +222,38 @@ func ListDrinks(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": drinks})
 }
 
+// GET /drink/item/:id
+func GetDrinkItem(c *gin.Context) {
+	var drink entity.Drink
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT item FROM drinks WHERE id = ?", id).First(&drink); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "drink not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": drink})
+}
+
+// PATCH /drinks
+func UpdateDrink(c *gin.Context) {
+	var drink entity.Drink
+
+	if err := c.ShouldBindJSON(&drink); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	patchdrink := entity.Drink{
+		Item: drink.Item, // ข้อมูลที่รับเข้ามาจาก frontend
+	}
+
+	if err := entity.DB().Where("id = ?", drink.ID).Updates(&patchdrink).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": patchdrink})
+}
+
 // GET /accessories
 func ListAccessories(c *gin.Context) {
 	var accessories []entity.Accessories
@@ -190,4 +263,47 @@ func ListAccessories(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": accessories})
+}
+
+// GET /accessorie/item/:id
+func GetAccessoriesItem(c *gin.Context) {
+	var accessories entity.Accessories
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT item FROM accessories WHERE id = ?", id).First(&accessories); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "accessorie not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": accessories})
+}
+
+// PATCH /accessories
+func UpdateAccessorie(c *gin.Context) {
+	var accessories entity.Accessories
+
+	if err := c.ShouldBindJSON(&accessories); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	patchaccessories := entity.Accessories{
+		Item: accessories.Item, // ข้อมูลที่รับเข้ามาจาก frontend
+	}
+
+	if err := entity.DB().Where("id = ?", accessories.ID).Updates(&patchaccessories).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": patchaccessories})
+}
+
+// GET /room/customer/:id
+func GetRoomByCID(c *gin.Context) {
+	var booking entity.Booking
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT room_id FROM bookings WHERE customer_id = ?", id).First(&booking); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "room not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": booking})
 }

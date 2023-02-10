@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -32,27 +33,49 @@ type State struct {
 }
 type Room struct {
 	gorm.Model
-	Room_No string
-	Time    time.Time `valid:"required"`
+	Room_No string    `gorm:"uniqueIndex" valid:"matches(^[A-D]\\d{2}$)~หมายเลขห้องต้องขึ้นต้นด้วย A-D ตามด้วยตัวเลข 2 หลัก, required~กรุณากรอกหมายเลขห้อง"`
+	Time    time.Time `valid:"IsnotPast~วันที่และเวลาไม่ถูกต้อง"`
 
 	//StaffID ทำหน้าที่เป็น FK
 	// StaffID *uint
 	// Staff   Staff
-	EmployeeID *uint `valid:"required"`
-	Employee   Employee
+	EmployeeID *uint
+	Employee   Employee `valid:"-" gorm:"references:id"`
 
 	//RoomTypeID ทำหน้าที่เป็น FK
-	RoomTypeID *uint `valid:"required"`
-	RoomType   RoomType
+	RoomTypeID *uint
+	RoomType   RoomType `valid:"-" gorm:"references:id"`
 
 	//ZoneID ทำหน้าที่เป็น FK
-	RoomZoneID *uint `valid:"required"`
-	RoomZone   RoomZone
+	RoomZoneID *uint
+	RoomZone   RoomZone `valid:"-" gorm:"references:id"`
 
 	//StateID ทำหน้าที่เป็น FK
-	StateID *uint `valid:"required"`
-	State   State
+	StateID *uint
+	State   State `valid:"-" gorm:"references:id"`
 
 	Bookings  []Booking   `gorm:"foreignKey:RoomID"`
 	Checkroom []Checkroom `gorm:"foreignKey:RoomID"`
+}
+
+func init() {
+	govalidator.CustomTypeTagMap.Set("IsFuture", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now())
+	})
+
+	govalidator.CustomTypeTagMap.Set("IsPresent", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now().AddDate(0, 0, -1)) && t.Before(time.Now().AddDate(0, 0, 1))
+	})
+
+	govalidator.CustomTypeTagMap.Set("IsPast", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.Before(time.Now())
+	})
+	govalidator.CustomTypeTagMap.Set("IsnotPast", func(i interface{}, o interface{}) bool {
+		t := i.(time.Time)
+		// ย้อนหลังไม่เกิน 1 วัน
+		return t.After(time.Now().AddDate(0, 0, -1))
+	})
 }
