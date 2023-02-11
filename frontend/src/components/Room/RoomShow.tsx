@@ -14,7 +14,7 @@ import { Alert, Snackbar } from "@mui/material";
 
 // //import { UsersInterface } from "../models/IUser";
 
- import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 import { RoomInterface, RoomTypeInterface, RoomZoneInterface,StateInterface } from "../../models/IRoom";
 
@@ -128,22 +128,30 @@ function RoomShow() {
 
    { field: "State", headerName: "สถานะของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Name,},
 
+   { field: "Amount", headerName: "ราคาของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Amount,},
+
    { field: "Time", headerName: "วันที่และเวลา", width: 150, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
 
    {
     field: "delete",
-    headerName: "DELETE",
-    sortable: false,
+    headerName: "",
+    sortable: true,
+    width: 120,
     align:"center",
-    renderCell: (params) => {
-        const onClick = (e: { stopPropagation: () => void; }) => {
-            e.stopPropagation();
-            const id = params.getValue(params.id, "ID");
-            onDelete(id);
-        };
-
-        return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
-    }
+    headerAlign: "center",
+    renderCell: ({ row }: Partial<GridRowParams>) =>
+        <Button 
+            size="small"
+            //variant="contained"
+            color="error"
+            onClick={() => {
+               onDelete(row.ID);
+            }}
+            sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+            endIcon={<DeleteOutlineIcon />}
+        >
+            DELETE
+        </Button>,
   },
  ];
 

@@ -236,6 +236,7 @@ const getEmployee = async () => {
       Employeename:  employee.Employeename ,
       Email: employee.Email,
       Eusername: employee.Eusername,
+      Password: employee.Password,
       Salary: typeof employee.Salary === "string" ? parseInt(employee.Salary) : employee.Salary,
       Phonenumber: employee.Phonenumber,
       Gender: gender,
@@ -343,6 +344,7 @@ const getEmployee = async () => {
                 disabled={btnDisabled}
                 value={employee.PersonalID}
                 onChange={handleInputChange}
+                inputProps = {{ maxLength : 13 }}
               />
             </FormControl>
           </Grid>
@@ -443,6 +445,25 @@ const getEmployee = async () => {
 
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
+              <FormLabel>Password</FormLabel>
+
+              <TextField
+                id="Password"
+                variant="outlined"
+                type="string"
+                size="medium"
+                disabled={btnDisabled}
+                value={employee.Password}
+                onChange={handleInputChange}
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+          
+          <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
+
+          <Grid item xs={4}>
+            <FormControl fullWidth variant="outlined">
               <FormLabel>Email</FormLabel>
 
               <TextField
@@ -455,9 +476,6 @@ const getEmployee = async () => {
               />
             </FormControl>
           </Grid>
-        </Grid>
-          
-          <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
 
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
@@ -474,7 +492,9 @@ const getEmployee = async () => {
               />
             </FormControl>
           </Grid>
+        </Grid>
 
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           <Grid item xs={4}>
             <FormControl fullWidth variant="outlined">
               <FormLabel>Salary</FormLabel>
@@ -484,8 +504,8 @@ const getEmployee = async () => {
                 variant="outlined"
                 type="string"
                 size="medium"
-                value={employee.Salary}
                 disabled={btnDisabled}
+                value={employee.Salary || ""}
                 onChange={handleInputChange}
               />
             </FormControl>
