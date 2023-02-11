@@ -30,7 +30,7 @@ type Customer struct {
 
 	FirstName string `valid:"required~FirstName not blank"`
 	LastName  string `valid:"required~LastName not blank"`
-	Password  string	
+	Password  string	`valid:"minstringlength(8)~Password must be more than or equal to 8 characters,matches([A-Z])~Password must contain at least 1 character A-Z.,required~Password not blank"`
 	Age      	int   `valid:"required~กรุณาระบุอายุ, range(0|150)~อายุไม่สามารถติดลบได้"` 
 	Phone     string `gorm:"uniqueIndex"`
 	Email     string `gorm:"uniqueIndex" valid:"email~Email is not valid,required~Email is not valid"`
