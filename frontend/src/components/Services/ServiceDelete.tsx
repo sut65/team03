@@ -181,20 +181,6 @@ function ServiceDelete() {
         }
     });
 
-    console.log(servicess);
-    console.log(servicess.FoodID);
-    console.log('fooditem ' + fooditem);
-    console.log('fooditem service ' + fooditems);
-    console.log('foodsum ' + fooditemsum);
-    console.log(servicess.DrinkID);
-    console.log('drinkitem ' + drinkitem);
-    console.log('drinkitem service ' + drinkitems);
-    console.log('drinksum ' + drinkitemsum);
-    console.log(servicess.AccessoriesID);
-    console.log('accessitem ' + accessorieitem);
-    console.log('accessitem service ' + accessorieitems);
-    console.log('accesssum ' + accessorieitemsum);
-
     return (
         <div>
             <ThemeProvider theme={theme}>
