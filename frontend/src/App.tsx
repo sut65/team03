@@ -113,6 +113,11 @@ export default function App() {
                 <Route path="/ps" element={<PaymentShow />} />
                 <Route path="/pa" element={<PaymentAdd />} />
                 <Route path="/pu/:id" element={<PaymentUpdate />} />
+
+                <Route path="/customer/create" element={<Customer />} />
+                <Route path="/customer/profile" element={<ProfileCustomer />} /> 
+                <Route path="/customer/edit" element={<EditCustomer />} /> 
+                <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />
                 </>
             )
             }
