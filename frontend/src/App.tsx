@@ -31,7 +31,7 @@ import ServiceDelete from "./components/Services/ServiceDelete";
 
 import PaymentAdd from "./components/Payment/PaymentAdd";
 import PaymentShow from "./components/Payment/PaymentShow";
-//import PaymentUpdate from "./components/Payment/PaymentUpdate";
+import PaymentUpdate from "./components/Payment/PaymentUpdate";
 
 import Home from "./components/Home";
 import SignIn from "./components/Login";
@@ -112,7 +112,7 @@ export default function App() {
 
                 <Route path="/ps" element={<PaymentShow />} />
                 <Route path="/pa" element={<PaymentAdd />} />
-                {/* <Route path="/pu/:id" element={<PaymentUpdate />} /> */}
+                <Route path="/pu/:id" element={<PaymentUpdate />} />
                 </>
             )
             }
