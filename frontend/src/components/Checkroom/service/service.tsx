@@ -112,7 +112,7 @@ async function Checkrooms(data: CheckroomInterface) {
                 return { status: true, message: res.data };
             } else {
                 console.log(res.error);
-                return { status: false, message: res.checkroom_error };
+                return { status: false, message: res.error };
             }
         });
 
