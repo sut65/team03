@@ -29,6 +29,22 @@ func TestCheckroomValidateNotBlank(t *testing.T) {
 		g.Expect(err.Error()).To(Equal("Please select Status"))
 	})
 
+	t.Run("check damage is not nil", func(t *testing.T) {
+		cr := Checkroom{
+			StatusID:   &test,
+			RoomID:     nil,
+			ProductID:  &test,
+			DamageID:  &test,
+			Date:   time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+			EmployeeID: &test,
+		}
+
+	ok, err := govalidator.ValidateStruct(cr)
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Please select Room"))
+	})
+
 	
 
 }
