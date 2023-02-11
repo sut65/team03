@@ -6,6 +6,7 @@ import (
 	"github.com/sut65/team03/entity"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"github.com/asaskevich/govalidator"
 )
 
 func CreateCustomer(c *gin.Context) {
@@ -18,6 +19,13 @@ func CreateCustomer(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error not access": err.Error()})
 		return
 	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(customer); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"customer_error": err.Error()})
+		return
+	}
+
 	//ค้นหา Gender ด้วย id
 	if tx := entity.DB().Where("id = ?", customer.Gender_ID).First(&gender); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Gender not found"})

@@ -232,14 +232,18 @@ return (
                   value={checkroom.RoomID + ""}
                   onChange={handleChange}
                   fullWidth
+                  native
                   inputProps={{
                     name: "RoomID",
                   }}
                 >
-                  {room.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกหมายเลขห้อง
+                  </option>
+                  {room.map((item: RoomInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.ID}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -247,7 +251,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Product)===========================================================*/}
               <Grid
                 xs={12}
                 
@@ -264,15 +268,19 @@ return (
                   id="PrductID"
                   value={checkroom.ProductID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "ProductID",
                   }}
                   fullWidth
                 >
-                  {Product.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกคำนำหน้า
+                  </option>
+                  {Product.map((item: ProductInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -280,7 +288,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Damage)===========================================================*/}
               <Grid
                 xs={12}
               
@@ -297,15 +305,19 @@ return (
                   id="DamageID"
                   value={checkroom.DamageID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "DamageID",
                   }}
                   fullWidth
                 >
-                  {damage.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกความเสียหาย
+                  </option>
+                  {damage.map((item: DamageInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.Description}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -313,7 +325,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Status)===========================================================*/}
               <Grid
                 xs={12}
                 
@@ -330,15 +342,19 @@ return (
                   id="StatusID"
                   value={checkroom.StatusID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "StatusID",
                   }}
                   fullWidth
                 >
-                  {status.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                   <option aria-label="None" value="">
+                    กรุณาเลือกสถานะของห้องพัก
+                  </option>
+                  {status.map((item: StatusInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.S_Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
