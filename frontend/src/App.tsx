@@ -119,13 +119,23 @@ export default function App() {
 
               {role === "Employee" && (
               <>
+              <Route path="/" element={<Home />} />
+              
               <Route path="/RT" element={<RoomShow />} />
               <Route path="/RT/Create" element={<RoomCreate />} />
               <Route path="/RT/Edit" element={<RoomEdit />} />
 
+              <Route path="/CPM" element={<CHK_Payments />} />
+              <Route path="/CPM/Create" element={<CHK_PaymentCreate />} />
+              <Route path="/CPM/Edit" element={<CHK_PaymentUpdate />} />
+
               <Route path="/RoomW" element={<StorageShow />} />
               <Route path="/RoomW/Create" element={<StorageCreate />} />
               <Route path="/RoomW/Edit" element={<StorageEdit />} />
+
+              <Route path="/CNCO" element={<CheckInOutShow />} />
+              <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
+              <Route path="/CNCO/Edit/:id" element={<CheckInOutEdit />}/> 
 
               <Route path="/checkroom/create" element={<Checkroom />} />
               <Route path="/checkroom/list" element={<Checkroomlist />} />
