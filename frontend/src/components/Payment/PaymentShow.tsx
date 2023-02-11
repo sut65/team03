@@ -1,9 +1,10 @@
-import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
 import { grey } from '@mui/material/colors';
+import { GetPayment } from "./service/PaymentHttpClientService";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import moment from "moment";
@@ -21,34 +22,19 @@ const theme = createTheme({
 
 
 function PaymentShow() {
-
     const [payment, setPayment] = useState<PaymentsInterface[]>([]);
-
     const id_cus = localStorage.getItem("id");
 
-
-    const getServices = async () => {
-        const apiUrl = `http://localhost:8080/payment/customer/${id_cus}`;
-        const requestOptions = {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-        };
-
-        await fetch(apiUrl, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setPayment(res.data);
-                }
-            });
+    const getpayment = async () => {
+        let res = await GetPayment(id_cus + "");
+        if (res) {
+            setPayment(res);
+        }
     };
 
     useEffect(() => {
-        getServices();
-    }, []);
+        getpayment();
+    }, []);    
 
     return (
         <ThemeProvider theme={theme}>
@@ -81,6 +67,7 @@ function PaymentShow() {
                                             <TableCell align="center" width="20%"> Name </TableCell>
                                             <TableCell align="center" width="20%"> Place </TableCell>
                                             <TableCell align="center" width="20%"> Slip </TableCell>
+                                            <TableCell align="center" width="20%"> - Edit - </TableCell>
                                         </TableRow>
                                     </TableHead>
 
@@ -88,12 +75,22 @@ function PaymentShow() {
                                         {payment.map((item: PaymentsInterface) => (
                                             <TableRow key={item.ID}>
                                                 <TableCell align="center">{item.ID}</TableCell>
-                                                <TableCell align="center">{item.Customer.FirstName}</TableCell>
+                                                <TableCell align="center">{item.Customer?.FirstName}</TableCell>
                                                 <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
-                                                <TableCell align="center">{item.PaymentMethod.Name}</TableCell>
-                                                <TableCell align="center">{item.Method.Name}</TableCell>
-                                                <TableCell align="center">{item.Place.Name}</TableCell>
+                                                <TableCell align="center">{item.PaymentMethod?.Name}</TableCell>
+                                                <TableCell align="center">{item.Method?.Name}</TableCell>
+                                                <TableCell align="center">{item.Place?.Name}</TableCell>
                                                 <TableCell align="center"><img src={`${item.Picture}`} width="75" height="90" /></TableCell>
+                                                <TableCell align="center">
+                                                    <ButtonGroup color="primary" aria-label="outlined primary button group">
+                                                        <Button
+                                                            color="warning"
+                                                            component={RouterLink}
+                                                            to={`/pu/${item.ID}`}
+                                                        >
+                                                            Edit</Button>
+                                                    </ButtonGroup>
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

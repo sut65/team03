@@ -1,11 +1,14 @@
-import { Alert, Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { useEffect, useState } from "react";
+import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { forwardRef, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ThemeProvider } from "@emotion/react";
 import { grey } from "@mui/material/colors";
+import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces } from "./service/PaymentHttpClientService";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+
 
 const theme = createTheme({
     palette: {
@@ -16,6 +19,13 @@ const theme = createTheme({
             main: grey[50],
         },
     },
+});
+
+const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+    ref
+) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function PaymentAdd() {
@@ -30,6 +40,7 @@ function PaymentAdd() {
     const [place, setPlace] = useState<PlacesInterface[]>([]);
     const [image, setImage] = useState<string | ArrayBuffer | null>(null);
     const [picture, setPicture] = useState<string | ArrayBuffer | null>(null);
+    const [message, setAlertMessage] = useState("");
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const id_cus = localStorage.getItem("id");
@@ -67,7 +78,7 @@ function PaymentAdd() {
         });
     };
 
-    const handleChange = (event: SelectChangeEvent<number>) => {
+    const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof payment;
         setPayment({
             ...payment,
@@ -86,90 +97,70 @@ function PaymentAdd() {
         setError(false);
     };
 
-    function submit() {
+    const convertType = (data: string | number | undefined | null) => {
+        let val = typeof data === "string" ? parseInt(data) : data;
+        return val;
+    };
+
+    async function submit() {
         let data = {
-            CustomerID: typeof id_cus === "string" ? parseInt(id_cus) : 0,
-            PaymentMethodID: typeof payment.PaymentMethodID === "string" ? parseInt(payment.PaymentMethodID) : 0,
-            MethodID: typeof payment.MethodID === "string" ? parseInt(payment.MethodID) : 0,
-            PlaceID: typeof payment.PlaceID === "string" ? parseInt(payment.PlaceID) : 0,
+            CustomerID: convertType(id_cus),
+            PaymentMethodID: convertType(payment.PaymentMethodID),
+            MethodID: convertType(payment.MethodID),
+            PlaceID: convertType(payment.PlaceID),
             Time: time,
             Picture: image,
         };
 
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        };
-        fetch(`http://localhost:8080/payment`, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setSuccess(true);
-                } else {
-                    setError(true);
-                }
-            });
+        console.log(data);
+        
+        let res = await AddPayment(data);
+        if (res.status) {
+            setAlertMessage("Save Payment Successfully");
+            setSuccess(true);
+        } else {
+            setAlertMessage(res.message);
+            setError(true);
+        }
     }
-    
-    const apiUrl = "http://localhost:8080";
-    const requestOptions = {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
-        },
+
+    const getpaymentMethods = async () => {
+        let res = await GetPaymentMethods();
+        if (res) {
+            setPaymet(res);
+        }
     };
-    const fetchPaymentMethods = async () => {
-        fetch(`${apiUrl}/paymentmethods`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setPaymet(res.data);
-            })
-    }
-    const fetchPlaces = async () => {
-        fetch(`${apiUrl}/places`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setPlace(res.data);
-            })
-    }
-    const fetchMethodP = async () => {
-        fetch(`${apiUrl}/methods/paymet/${paymetid}`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                setMethod(res.data);
-            })
-    }
-
-    const getMethod = async () => {
-        const apiUrl = `http://localhost:8080/method/${metid}`;
-        const requestOptions = {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-                "Content-Type": "application/json",
-            },
-        };
-
-        await fetch(apiUrl, requestOptions)
-            .then((response) => response.json())
-            .then((res) => {
-                if (res.data) {
-                    setDestination(res.data.Destination);
-                    setPicture(res.data.Picture);
-                }
-            });
+    const getplaces = async () => {
+        let res = await GetPlaces();
+        if (res) {
+            setPlace(res);
+        }
+    };
+    const getmethodp = async () => {
+        let res = await GetMethodP(paymetid);
+        if (res) {
+            setMethod(res);
+        }
+    };
+    const getdestination = async () => {
+        let res = await GetDestination(metid);
+        if (res) {
+            setDestination(res);
+        }
+    };
+    const getpicture = async () => {
+        let res = await GetPicture(metid);
+        if (res) {
+            setPicture(res);
+        }
     };
 
     useEffect(() => {
-        fetchPaymentMethods();
-        fetchPlaces();
-        fetchMethodP();
-        getMethod();
+        getpaymentMethods();
+        getmethodp();
+        getdestination();
+        getpicture();
+        getplaces();
     }, [paymetid, metid]);
 
     return (
@@ -178,24 +169,26 @@ function PaymentAdd() {
             <ThemeProvider theme={theme}>
                 <Container maxWidth="md">
                     <Snackbar
+                        id="success"
                         open={success}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="success">
-                            PAYMENT SUCCESS
+                            {message}
                         </Alert>
                     </Snackbar>
 
                     <Snackbar
+                        id="error"
                         open={error}
                         autoHideDuration={2000}
                         onClose={handleClose}
                         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     >
                         <Alert onClose={handleClose} severity="error">
-                            PAYMENT FAIL
+                            {message}
                         </Alert>
                     </Snackbar>
                     <Grid container
@@ -215,7 +208,7 @@ function PaymentAdd() {
                                     <FormControl fullWidth variant="outlined">
                                         <Select
                                             native
-                                            value={payment.PaymentMethodID}
+                                            value={payment.PaymentMethodID + ""}
                                             onChange={handlePayMet}
                                             inputProps={{
                                                 name: "PaymentMethodID",
@@ -267,7 +260,7 @@ function PaymentAdd() {
                                     <FormLabel> Where </FormLabel>
                                     <Select
                                         native
-                                        value={payment.PlaceID}
+                                        value={payment.PlaceID + ""}
                                         onChange={handleChange}
                                         inputProps={{
                                             name: "PlaceID",
@@ -320,12 +313,18 @@ function PaymentAdd() {
                     <Grid container spacing={1} sx={{ padding: 3 }}>
                         <Grid item xs={12}>
                             <Button
+                                component={RouterLink}
+                                to="/ps"
+                                variant="contained"
+                                color="error"
+                            >
+                                BACK
+                            </Button>
+                            <Button
                                 style={{ float: "right" }}
                                 onClick={submit}
                                 variant="contained"
                                 color="success"
-                                component={RouterLink}
-                                to="/ps"
                             >
                                 COMMIT
                             </Button>

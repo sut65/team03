@@ -1,17 +1,17 @@
 import { CustomerInterface } from "../modelCustomer/ICustomer";
 
 export interface PaymentsInterface {
-    ID?: number,
-    CustomerID: number,
-    Customer: CustomerInterface;
-    PaymentMethodID: number,
-    PaymentMethod: PaymentMethodsInterface;
-    MethodID: number,
-    Method: MethodsInterface
-    PlaceID: number,
-    Place: PlacesInterface
-    Time: Date | null,
-    Picture: string;
+    ID?: number ;
+    CustomerID?: number | null;
+    Customer?: CustomerInterface;
+    PaymentMethodID?: number | null;
+    PaymentMethod?: PaymentMethodsInterface;
+    MethodID?: number | null;
+    Method?: MethodsInterface;
+    PlaceID?: number | null;
+    Place?: PlacesInterface;
+    Time?: Date | null;
+    Picture?: string | ArrayBuffer | null;
 }
 
 export interface PaymentMethodsInterface {
