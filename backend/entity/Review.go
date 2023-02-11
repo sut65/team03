@@ -26,16 +26,16 @@ type Review struct {
 	Reviewimage string `valid:"image_valid~Invalid Image"`
 
 	// CustomerID ทำหน้าที่เป็น FK
-	CustomerID *uint
-	Customer   Customer `gorm:"references:ID"`
+	CustomerID *uint `valid:"-"`
+	Customer   Customer `gorm:"references:ID" valid:"-"`
 
 	// SystemworkID ทำหน้าที่เป็น FK
-	SystemworkID *uint
-	Systemwork   Systemwork `gorm:"references:ID"`
+	SystemworkID *uint `valid:"-"`
+	Systemwork   Systemwork `gorm:"references:ID" valid:"-"`
 
 	// DepartmentID ทำหน้าที่เป็น FK
-	DepartmentID *uint
-	Department   Department `gorm:"references:ID"`
+	DepartmentID *uint `valid:"-"`
+	Department   Department `gorm:"references:ID" valid:"-"`
 
 }
 

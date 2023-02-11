@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 //เพิ่ม
-
+import { Message } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
@@ -48,7 +48,7 @@ function Checkroom() {
     const [Product, setProduct] = useState<ProductInterface[]>([]);
     const [date, setDate] = useState<Date | null>(new Date());
     const [employee, setEmployee] = React.useState<EmployeeInterface>();
-
+    const [message, setAlertMessage] = useState("");
     
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -177,10 +177,13 @@ useEffect(() => {
       EmployeeID: convertTypeC(localStorage.getItem('id')),
     };
     let res = await Checkrooms(data);
-    if (res) {
-        setSuccess(true);
+    if (res.status) {
+      setAlertMessage("บันทึกสำเร็จ");
+      setSuccess(true);
     } else {
-        setError(true);
+      console.log(res.message);
+      setAlertMessage(res.message);
+      setError(true);
     }
   }
 
@@ -229,14 +232,18 @@ return (
                   value={checkroom.RoomID + ""}
                   onChange={handleChange}
                   fullWidth
+                  native
                   inputProps={{
                     name: "RoomID",
                   }}
                 >
-                  {room.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกหมายเลขห้อง
+                  </option>
+                  {room.map((item: RoomInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.ID}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -244,7 +251,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Product)===========================================================*/}
               <Grid
                 xs={12}
                 
@@ -261,15 +268,19 @@ return (
                   id="PrductID"
                   value={checkroom.ProductID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "ProductID",
                   }}
                   fullWidth
                 >
-                  {Product.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกคำนำหน้า
+                  </option>
+                  {Product.map((item: ProductInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -277,7 +288,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Damage)===========================================================*/}
               <Grid
                 xs={12}
               
@@ -294,15 +305,19 @@ return (
                   id="DamageID"
                   value={checkroom.DamageID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "DamageID",
                   }}
                   fullWidth
                 >
-                  {damage.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกความเสียหาย
+                  </option>
+                  {damage.map((item: DamageInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.Description}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -310,7 +325,7 @@ return (
                 </FormHelperText>
               </Grid>
 
-              {/*=======================================(Province)===========================================================*/}
+              {/*=======================================(Status)===========================================================*/}
               <Grid
                 xs={12}
                 
@@ -327,15 +342,19 @@ return (
                   id="StatusID"
                   value={checkroom.StatusID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "StatusID",
                   }}
                   fullWidth
                 >
-                  {status.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                   <option aria-label="None" value="">
+                    กรุณาเลือกสถานะของห้องพัก
+                  </option>
+                  {status.map((item: StatusInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.S_Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -377,7 +396,8 @@ return (
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+           {/* บันทึกข้อมูลสำเร็จ */}
+           {message}
         </Alert>
       </Snackbar>
 
@@ -388,7 +408,8 @@ return (
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+             {/* บันทึกข้อมูลไม่สำเร็จ */}
+         {message}
         </Alert>
       </Snackbar>
     </div>

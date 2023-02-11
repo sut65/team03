@@ -28,6 +28,7 @@ import {
   GetIOStatus,
   CreateCheckInOut,
   GetEmps,
+  GetBookingByDate,
  } from "./service/CheckInOutHttpClientService";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
@@ -48,6 +49,20 @@ function CheckInOutCreate() {
   const [message, setAlertMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  let today = new Date();
+
+  // function filterBookingsByToday(bookings: BookingsInterface[]) {
+  //   const today = new Date();
+  //   return bookings.filter((booking) => {
+  //     const bookingDate = new Date(booking.Start);
+  //     return (
+  //       bookingDate.getFullYear() === today.getFullYear() &&
+  //       bookingDate.getMonth() === today.getMonth() &&
+  //       bookingDate.getDate() === today.getDate()
+  //     );
+  //   });
+  // }
+  
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -70,8 +85,9 @@ function CheckInOutCreate() {
 
 
   const getBookings =  async () => {
-    let res = await GetBookings();
+    let res = await GetBookingByDate();
     if (res) {
+      console.log(res)
       setBookings(res);
     }
   };
@@ -101,13 +117,13 @@ function CheckInOutCreate() {
     return val;
   };
 
+
   async function submit() {
     let data = {
       BookingID: convertType(checkinout.BookingID),
       CheckInOutStatusID: 1,
       EmployeeID: convertType(localStorage.getItem("id")),
       CheckInTime: checkinout.CheckInTime,
-      //CheckOutTime: new Date(1, 1, 1, 1, 1, 1, 1),
       CheckOutTime: null,
     };
 
@@ -116,7 +132,6 @@ function CheckInOutCreate() {
       setAlertMessage("Check In Success")
       setSuccess(true);
     } else {
-      console.log(res.message);
       setAlertMessage(res.message);
       setError(true);
     }
@@ -193,7 +208,6 @@ function CheckInOutCreate() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
                         <DesktopDateTimePicker
-                        disablePast
                         label="Check-In Time"
                         value={checkinout.CheckInTime}
                         onChange={(newValue) => {

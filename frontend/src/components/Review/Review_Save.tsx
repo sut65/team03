@@ -163,8 +163,8 @@ function Review_Save() {
       Reviewdate: reviewdate,
       Reviewimage: imageString,
       CustomerID: user?.ID ?? "",
-      DepartmentID: review.DepartmentID,
-      SystemworkID: review.SystemworkID,
+      DepartmentID: Number(review.DepartmentID),
+      SystemworkID: Number(review.SystemworkID),
     };
 
     const apiUrl = "http://localhost:8080/Reviews";
@@ -209,7 +209,7 @@ function Review_Save() {
         <Snackbar
           id="success"   
           open={success}
-          autoHideDuration={6000}
+          autoHideDuration={8000}
           onClose={handleClose}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
@@ -260,16 +260,17 @@ function Review_Save() {
               <FormLabel>Department</FormLabel>
               <FormControl fullWidth variant="outlined">
                 <Select
+                  native
                   value={review.DepartmentID}
                   onChange={handleChange}
                   inputProps={{
                     name: "DepartmentID",
                   }}
                 >
-                  <MenuItem value={0} key={0}>
-                  </MenuItem>
+                  <option value={0} key={0}>
+                  </option>
                   {department.map((item: DepartmentInterface) => (
-                    <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                    <option value={item.ID}>{item.Name}</option>
                   ))}
                 </Select>
               </FormControl>
@@ -280,16 +281,17 @@ function Review_Save() {
               <FormLabel>System Work</FormLabel>
               <FormControl fullWidth variant="outlined">
                 <Select
+                  native
                   value={review.SystemworkID}
                   onChange={handleChange}
                   inputProps={{
                     name: "SystemworkID",
                   }}
                 >
-                  <MenuItem value={0} key={0}>
-                  </MenuItem>
+                  <option value={0} key={0}>
+                  </option>
                   {systemwork.map((item: SystemworkInterface) => (
-                    <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                    <option value={item.ID}>{item.Name}</option>
                   ))}
                 </Select>
               </FormControl>

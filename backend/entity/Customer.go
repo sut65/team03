@@ -24,25 +24,25 @@ type Nametitle struct {
 
 type Customer struct {
 	gorm.Model
+ 
+	Nametitle_ID *uint `valid:"required~Please select Nametitle"`
+	Nametitle    Nametitle `valid:"-" gorm:"references:id"`
 
-	Nametitle_ID *uint
-	Nametitle    Nametitle
-
-	FirstName string
-	LastName  string
-	Password  string
-	Age       uint
+	FirstName string `valid:"required~FirstName not blank"`
+	LastName  string `valid:"required~LastName not blank"`
+	Password  string	`valid:"minstringlength(8)~Password must be more than or equal to 8 characters,matches([A-Z])~Password must contain at least 1 character A-Z.,required~Password not blank"`
+	Age      	int   `valid:"required~กรุณาระบุอายุ, range(0|150)~อายุไม่สามารถติดลบได้"` 
 	Phone     string `gorm:"uniqueIndex"`
-	Email     string `gorm:"uniqueIndex"`
+	Email     string `gorm:"uniqueIndex" valid:"email~Email is not valid,required~Email is not valid"`
 
-	SigninID *uint
-	Signin   Signin `gorm:"references:ID"`
+	SigninID *uint `valid:"-"`
+	Signin   Signin `gorm:"references:ID" valid:"-"` 
 
-	Gender_ID *uint
-	Gender    Gender
+	Gender_ID *uint  `valid:"required~Please select Gender"`
+	Gender    Gender `valid:"-" gorm:"references:id"`
 
-	Province_ID *uint
-	Province    Province
+	Province_ID *uint  `valid:"required~Please select Province"`
+	Province    Province `valid:"-" gorm:"references:id"`
 
 
 

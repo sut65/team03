@@ -10,10 +10,9 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 
 import { CheckInOutInterface } from "../../models/ICheckInOut";
-import { DataGrid, GridApi, GridCellValue, GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { GetCheckInOut,DeleteCheckInOut, CheckOut } from "./service/CheckInOutHttpClientService";
 import moment from "moment";
-import { error } from "console";
 
 //color
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -27,7 +26,7 @@ function CheckInOutShow() {
   const [successDel, setSuccessDel] = useState(false);
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
-  //const [id, setId] = useState(0);
+  const [message, setAlertMessage] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -61,9 +60,11 @@ function CheckInOutShow() {
 
   const onCheckOut = async (id: number) => {
     let res = await CheckOut(id);
-    if (res) {
+    if (res.status) {
+      setAlertMessage("Check Out Success")
       setSuccess(true);
     } else {
+      setAlertMessage(res.message);
       setError(true);
     }
     getList()
@@ -75,13 +76,13 @@ function CheckInOutShow() {
     if(String(data.getFullYear()) === "1"){
       return " "
     }else{
-      return moment(time).format('DD-MM-yyyy เวลา hh:mm')
+      return moment(time).format('DD-MM-yyyy เวลา hh:mm A')
     }
   }
   const columns: GridColDef[] = [
-    { field: "ID", headerName: "ลำดับ", width: 100 },
-    { field: "CheckInTime", headerName: "Check-In Time", width: 180, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm')},
-    { field: "CheckOutTime", headerName: "Check-Out Time", width: 180, valueFormatter: (params) => formatTime(params.value)},
+    { field: "ID", headerName: "ลำดับ", width: 80 },
+    { field: "CheckInTime", headerName: "Check-In Time", width: 190, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm A')},
+    { field: "CheckOutTime", headerName: "Check-Out Time", width: 190, valueFormatter: (params) => formatTime(params.value)},
     { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.ID},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
     { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},
@@ -185,7 +186,7 @@ function CheckInOutShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="success">
-            Check Out สำเร็จ
+            {message}
           </Alert>
         </Snackbar>
         <Snackbar
@@ -195,7 +196,7 @@ function CheckInOutShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="error">
-            ไม่สามารถ Check Out ได้
+            {message}
           </Alert>
         </Snackbar>
         <Box
