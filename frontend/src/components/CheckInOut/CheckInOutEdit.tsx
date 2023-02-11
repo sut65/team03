@@ -21,21 +21,26 @@ import {
   CheckInOutInterface,
   CheckInOutStatusInterface, 
 } from "../../models/ICheckInOut";
-import { EmployeeInterface } from "../../models/IEmployee"; 
 
 import { GetBookings } from "../Booking/services/BookingHttpClientService";
 import { 
   GetIOStatus,
-  CreateCheckInOut,
-  GetEmps,
   GetCheckInOut,
-  UpdateCheckInOut,
   UpdateCheckIn,
   UpdateCheckOut,
  } from "./service/CheckInOutHttpClientService";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { InputLabel, Stack } from "@mui/material";
+
+import { Stack } from "@mui/material";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -44,18 +49,44 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+    return (
+        <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+        >
+        {value === index && (
+            <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+            </Box>
+        )}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 function CheckInOutEdit() {
-  const [bookings, setBookings] = useState<BookingsInterface[]>([]);
-  const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
-  //const [emps, setEmps] = useState<EmployeeInterface[]>([]);
   const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
-  const [cio, setCio] = useState<CheckInOutInterface[]>([]);
-  //const [date, setDate] = React.useState<Date | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const { id } = useParams();
   const [message, setAlertMessage] = useState("");
-  
+  const [value, setValue] = React.useState(0);
+
+  const handleChangeTab = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -74,35 +105,6 @@ function CheckInOutEdit() {
       [name]: event.target.value,
     });
   }; 
-
-
-  const getBookings =  async () => {
-    let res = await GetBookings();
-    if (res) {
-      setBookings(res);
-    }
-  };
-
-  const getStatuses =  async () => {
-    let res = await GetIOStatus();
-    if (res) {
-      setStatuses(res);
-    }
-  };
-
-  const getCheckInOut =  async () => {
-    let res = await GetCheckInOut();
-    if (res) {
-      setCio(res);
-    }
-  };
-
-  useEffect(() => {
-    getBookings();
-    getStatuses();
-    getCheckInOut();
-    //getEmps();
-  }, []);
 
   const convertType = (data: string | number | undefined | null) => {
     let val = typeof data === "string" ? parseInt(data) : data;
@@ -161,6 +163,8 @@ function CheckInOutEdit() {
     console.log(data)
   }
 
+
+
   return (
     <Container maxWidth="md">
       <Snackbar
@@ -183,8 +187,9 @@ function CheckInOutEdit() {
           {message}
         </Alert>
       </Snackbar>
+      <Divider />
       <Paper>
-        <Box
+      <Box
           display="flex"
           sx={{
             marginTop: 2,
@@ -197,149 +202,100 @@ function CheckInOutEdit() {
               color="primary"
               gutterBottom
             >
-              CHECK IN EDIT
+              CHECK IN/OUT EDIT
             </Typography>
           </Box>
         </Box>
-        <Divider />
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={checkinout.ID + ""}
-                label="CheckInOut No."
-                onChange={handleChange}
-                inputProps={{
-                  name: "ID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกหมายเลข CheckInOut
-                </option>
-                {cio.map((item: CheckInOutInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DesktopDateTimePicker
-                        label="Check-In Time"
-                        value={checkinout.CheckInTime}
-                        onChange={(newValue) => {
-                            setCheckinout({
-                                ...checkinout,
-                                CheckInTime: newValue,
-                              });
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                </LocalizationProvider>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              style={{ float: "right" }}
-              onClick={submitCheckIn}
-              variant="contained"
-              color="primary"
-            >
-              บันทึก
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
-      <Paper>
-        <Box
-          display="flex"
-          sx={{
-            marginTop: 2,
-          }}
-        >
-          <Box sx={{ paddingX: 2, paddingY: 1 }}>
-            <Typography
-              component="h2"
-              variant="h6"
-              color="primary"
-              gutterBottom
-            >
-              CHECK OUT EDIT
-            </Typography>
-          </Box>
-        </Box>
-        <Divider />
-        <Grid container spacing={3} sx={{ padding: 2 }}>
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="demo-simple-select-label">CheckInOut No.</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={checkinout.ID + ""}
-                label="CheckInOut No."
-                onChange={handleChange}
-                inputProps={{
-                  name: "ID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกหมายเลข CheckInOut
-                </option>
-                {cio.map((item: CheckInOutInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <Stack spacing={3}>
-                        <DesktopDateTimePicker
-                        label="Check-Out Time"
-                        value={checkinout.CheckOutTime}
-                        onChange={(newValue) => {
-                            setCheckinout({
-                                ...checkinout,
-                                CheckOutTime: newValue,
-                              });
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                        />
-                    </Stack>
-                </LocalizationProvider>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              component={RouterLink}
-              to="/CNCO"
-              variant="contained"
-              color="inherit"
-            >
-              กลับ
-            </Button>
-            <Button
-              style={{ float: "right" }}
-              onClick={submitCheckOut}
-              variant="contained"
-              color="primary"
-            >
-              บันทึก
-            </Button>
-          </Grid>
-        </Grid>
+      <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChangeTab} aria-label="basic tabs example">
+                <Tab label="Check In" {...a11yProps(0)} />
+                <Tab label="Check Out" {...a11yProps(1)} />
+                </Tabs>
+            </Box>
+                <TabPanel value={value} index={0}>
+                    <Grid container spacing={3} sx={{ padding: 2 }}>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth variant="outlined">
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <Stack spacing={3}>
+                                    <DesktopDateTimePicker
+                                    label="Check-In Time"
+                                    value={checkinout.CheckInTime}
+                                    onChange={(newValue) => {
+                                        setCheckinout({
+                                            ...checkinout,
+                                            CheckInTime: newValue,
+                                        });
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </Stack>
+                            </LocalizationProvider>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button
+                            component={RouterLink}
+                            to="/CNCO"
+                            variant="contained"
+                            color="inherit"
+                            >
+                            BACK
+                            </Button>
+                        <Button
+                        style={{ float: "right" }}
+                        onClick={submitCheckIn}
+                        variant="contained"
+                        color="primary"
+                        >
+                        SAVE
+                        </Button>
+                    </Grid>
+                    </Grid>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Grid container spacing={3} sx={{ padding: 2 }}>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth variant="outlined">
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <Stack spacing={3}>
+                                        <DesktopDateTimePicker
+                                        label="Check-Out Time"
+                                        value={checkinout.CheckOutTime}
+                                        onChange={(newValue) => {
+                                            setCheckinout({
+                                                ...checkinout,
+                                                CheckOutTime: newValue,
+                                            });
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </Stack>
+                                </LocalizationProvider>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                            component={RouterLink}
+                            to="/CNCO"
+                            variant="contained"
+                            color="inherit"
+                            >
+                            BACK
+                            </Button>
+                            <Button
+                            style={{ float: "right" }}
+                            onClick={submitCheckOut}
+                            variant="contained"
+                            color="primary"
+                            >
+                            SAVE
+                            </Button>
+                        </Grid>
+                        </Grid>
+                </TabPanel>
+            </Box>
       </Paper>
     </Container>
   );

@@ -99,15 +99,18 @@ code {
 }
 
 .grid-item-21 {
+  display: flex;
   grid-column: 1 / 2;
   height: 600px;
   width: 450px;
   overflow: hidden;
   margin-left: 11%;
-  margin-top: 10%;
+  margin-top: 6%;
 }
 
 .grid-item-info{
+ background: #9e9e9e;
+ color: white;
  display: flex;
  justify-content: center;
  align-items: center;

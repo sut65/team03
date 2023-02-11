@@ -61,6 +61,7 @@ func main() {
 			protected.POST("/bookings", booking.CreateBooking)
 			protected.PATCH("/bookings/:id", booking.UpdateBooking)
 			protected.DELETE("/bookings/:id", booking.DeleteBooking)
+			protected.GET("/bookingbydate", booking.ListBookingsBydate)
 			// ---Branch---
 			protected.GET("/branchs", booking.ListBranchs)
 			protected.GET("/branch/:id", booking.GetBranch)

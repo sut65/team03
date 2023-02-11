@@ -315,6 +315,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Standard,
 		RoomZone: A,
 		State:    on,
+		Amount:   3000,
 		Time:     time.Now(),
 	})
 	//Room2
@@ -324,6 +325,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Superior,
 		RoomZone: B,
 		State:    on,
+		Amount:   4000,
 		Time:     time.Now(),
 	})
 	//Room3
@@ -333,6 +335,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Deluxe,
 		RoomZone: C,
 		State:    off,
+		Amount:   5000,
 		Time:     time.Now(),
 	})
 	var Room1 Room
@@ -1121,10 +1124,23 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Customer: Customer2,
 	})
 
+	now := time.Now()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+
+	db.Model(&Booking{}).Create(&Booking{
+		Branch:   b4002,
+		Room:     Room3,
+		Start:    today,
+		Stop:     today.AddDate(0, 0, 1),
+		Customer: Customer2,
+	})
+
 	var booking1 Booking
 	var booking2 Booking
+	var booking3 Booking
 	db.Raw("SELECT * FROM bookings WHERE id = ?", "1").Scan(&booking1)
 	db.Raw("SELECT * FROM bookings WHERE id = ?", "2").Scan(&booking2)
+	db.Raw("SELECT * FROM bookings WHERE id = ?", "3").Scan(&booking3)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := CHK_PaymentStatus{
@@ -1177,23 +1193,13 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
 		Booking:          booking1,
 		CheckInTime:      time.Now(),
-		CheckOutTime:     time.Now(),
+		CheckOutTime:     time.Time{},
 		CheckInOutStatus: checkout,
 		Employee:         Sobsa,
 	})
 
-	db.Model(&CheckInOut{}).Create(&CheckInOut{
-		Booking:          booking2,
-		CheckInTime:      time.Now(),
-		CheckOutTime:     time.Now(),
-		CheckInOutStatus: checkin,
-		Employee:         Banana,
-	})
-
 	var CheckInOut1 CheckInOut
-	var CheckInOut2 CheckInOut
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&CheckInOut1)
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&CheckInOut2)
 
 	//******************ระบบ review********************
 	// Set Data Systemwork
@@ -1277,6 +1283,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Price: 7000,
 	}
 	db.Model(&Product{}).Create(&aircon)
+
+	plug := Product{
+		Name:  "plug",
+		Price: 200,
+	}
+	db.Model(&Product{}).Create(&plug)
 
 	lamp := Product{
 		Name:  "lamp",

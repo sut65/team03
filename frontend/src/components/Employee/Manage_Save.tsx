@@ -324,6 +324,8 @@ const getLocation = async () => {
                 size="medium"
                 value={employee.PersonalID || ""}
                 onChange={handleInputChange}
+                inputProps = {{ maxLength : 13 }}
+                
               />
             </FormControl>
           </Grid>

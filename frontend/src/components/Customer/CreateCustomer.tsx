@@ -19,6 +19,7 @@ import { GenderInterface } from "../../models/modelCustomer/IGender";
 import { NametitleInterface } from "../../models/modelCustomer/INametitle";
 import { ProvinceInterface } from "../../models/modelCustomer/IProvince";
 import { Link } from "react-router-dom";
+import { Message } from "@mui/icons-material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -43,6 +44,7 @@ function Customer() {
   const [phone, setPhone] = useState<string>("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
 
   const [password, setPassword] = React.useState<State>({
     password: "",
@@ -94,14 +96,14 @@ function Customer() {
     const name = event.target.name as keyof typeof customer;
     console.log(event.target.name);
     console.log(event.target.value);
-    
+
     setCustomer({
       ...customer,
       [name]: event.target.value,
     });
     console.log(customer);
   };
-  
+
   const handleInputChange = (
     event: React.ChangeEvent<{ id?: string; value: any }>
   ) => {
@@ -120,7 +122,7 @@ function Customer() {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
-  },
+    },
   };
 
   const fetchGender = async () => {
@@ -163,7 +165,7 @@ function Customer() {
       Password: password.password,
       Email: email,
       Age: convertType(customer.Age),
-      Phone:  phone,
+      Phone: phone,
       Gender_ID: convertType(customer.Gender_ID),
       Nametitle_ID: convertType(customer.Nametitle_ID),
       Province_ID: convertType(customer.Province_ID),
@@ -177,7 +179,7 @@ function Customer() {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         "Content-Type": "application/json",
-    },
+      },
       body: JSON.stringify(data),
     };
 
@@ -189,18 +191,19 @@ function Customer() {
         .then((res) => {
           console.log(res);
           if (res.data) {
-            setSuccess(true);
-          }   else {
-            setError(true);
-        }
+            return { status: true, message: res.data };
+          } else {
+            console.log(res.error);
+            return { status: false, message: res.error };
+          }
         });
-        setInterval(() => {
-          window.location.assign("/");
-        }, 1000);
-      } else {
-        setError(true);
-      }
-    };
+      setInterval(() => {
+        window.location.assign("/");
+      }, 1000);
+    } else {
+      setError(true);
+    }
+  };
   return (
     <div>
       <Container maxWidth="sm" sx={{ marginTop: 6 }}>
@@ -222,13 +225,13 @@ function Customer() {
             variant="outlined"
             sx={{ padding: 2, paddingTop: 1, marginBottom: 2 }}
 
-            
+
           >
-          
+
             <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
 
-               {/*=======================================(Lock Memberlevel)===========================================================*/}
-               <Grid
+              {/*=======================================(Lock Memberlevel)===========================================================*/}
+              <Grid
                 xs={12}
                 md={8}
                 sx={{ display: "flex", alignItems: "center", margin: 1 }}
@@ -243,24 +246,27 @@ function Customer() {
                   // labelId="demo-simple-select-helper-label"
                   id="NametitleID"
                   value={customer.Nametitle_ID + ""}
-                  
+                  native
                   onChange={handleChange}
                   inputProps={{
                     name: "Nametitle_ID",
                   }}
                   fullWidth
                 >
-                  {nametitle.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกคำนำหน้า
+                  </option>
+                  {nametitle.map((item: NametitleInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.NT_Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
                   คำนำหน้าชื่อ
                 </FormHelperText>
               </Grid>
-              
+
               {/*============================================(First name)======================================================*/}
               <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>First name</p>
@@ -301,7 +307,7 @@ function Customer() {
                   id="Age"
                   type="number"
                   label="อายุ"
-                  InputProps={{inputProps:{min:0, max:100}}} 
+                  InputProps={{ inputProps: { min: 0, max: 100 } }}
                   value={customer.Age || ""}
                   fullWidth
                   required
@@ -398,14 +404,18 @@ function Customer() {
                   value={customer.Gender_ID + ""}
                   onChange={handleChange}
                   fullWidth
+                  native
                   inputProps={{
                     name: "Gender_ID",
                   }}
                 >
-                  {gender.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                 <option aria-label="None" value="">
+                    กรุณาเลือกเพศ
+                  </option>
+                  {gender.map((item: GenderInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.G_Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
@@ -430,22 +440,26 @@ function Customer() {
                   id="Province_ID"
                   value={customer.Province_ID + ""}
                   onChange={handleChange}
+                  native
                   inputProps={{
                     name: "Province_ID",
                   }}
                   fullWidth
                 >
-                  {province.map((item) => (
-                    <MenuItem key={item.ID} value={item.ID}>
+                  <option aria-label="None" value="">
+                    กรุณาเลือกจังหวัด
+                  </option>
+                  {province.map((item: ProvinceInterface) => (
+                    <option value={item.ID} key={item.ID}>
                       {item.P_Name}
-                    </MenuItem>
+                    </option>
                   ))}
                 </Select>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
                   เลือกจังหวัดที่อยู่
                 </FormHelperText>
               </Grid>
-                         
+
               <Grid
                 container
                 xs={12}
@@ -477,7 +491,7 @@ function Customer() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+          {message}
         </Alert>
       </Snackbar>
 
@@ -488,7 +502,8 @@ function Customer() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+          {/* บันทึกข้อมูลไม่สำเร็จ */}
+          {message}
         </Alert>
       </Snackbar>
     </div>

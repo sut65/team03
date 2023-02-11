@@ -38,6 +38,29 @@ async function GetCheckInOut() {
     return res;
 }
 
+// List CheckInOut
+async function GetBookingByDate() {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/bookingbydate`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
 // List Status
 async function GetIOStatus() {
     const requestOptions = {
@@ -151,9 +174,9 @@ async function CheckOut(data: number) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data;
+                return { status: true, message: res.data };
             } else {
-                return false;
+                return { status: false, message: res.error };
             }
         });
 
@@ -241,5 +264,6 @@ export {
     UpdateCheckOut,
     GetEmps,
     CheckOut,
+    GetBookingByDate,
 };
 

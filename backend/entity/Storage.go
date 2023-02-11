@@ -22,7 +22,7 @@ type ProductType struct {
 type Storage struct {
 	gorm.Model
 	ID       uint
-	Quantity int       `valid:"required~จำนวนต้องมากกว่าศูนย์, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"`
+	Quantity int       `valid:"required~กรุณากรอกจำนวนที่มากกว่าศูนย์, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"`
 	Time     time.Time `valid:"IsnotPast~วันที่และเวลาไม่ถูกต้อง"` // เป็นปัจจุบัน +- 3 นาที
 
 	//EmployeeID ทำหน้าที่เป็น FK

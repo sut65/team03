@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { useEffect, useState } from 'react';
 import Box from "@mui/material/Box";
 
 import Toolbar from "@mui/material/Toolbar";
@@ -106,6 +106,7 @@ function Navbar() {
 
   const themep = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [role, setRole] = useState("");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -120,7 +121,7 @@ function Navbar() {
     window.location.href = "/";
   }
 
-  const menu = [
+ const CustomerMenu = [
     { name: "หน้าหลัก", icon: <HomeIcon  />, path: "/" },
     { name: "Booking", icon: <ReceiptLongIcon  />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon   />, path: "/Rep" },
@@ -129,14 +130,43 @@ function Navbar() {
     { name: "Review", icon: <ReviewsIcon />, path: "/RW" },
     { name: "Service", icon: <RoomServiceIcon  />, path: "/ss" },
     { name: "Profile", icon:<AccountCircleIcon />, path: "/customer/profile"},
+  ]
+  const EmployeeMenu = [
+    { name: "หน้าหลัก", icon: <HomeIcon  />, path: "/" },
     { name: "Check IN - Check Out", icon: <FactCheckIcon  />, path: "/CNCO" },
     { name: "Check Payment", icon: <PriceCheckIcon  />, path: "/CPM" },
     { name: "Check The Room", icon: <CheckroomIcon  />, path: "/checkroom/list" },
     { name: "Room Information", icon: <BedroomParentIcon />, path: "/RT" },
     { name: "Room Warehouse", icon: <WarehouseIcon  />, path: "/RoomW" },
-    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
     { name: "Customer List", icon: <PeopleIcon  />, path: "/customer/showforadmin" },
   ]
+  const OfficerMenu = [
+    { name: "หน้าหลัก", icon: <HomeIcon  />, path: "/" },
+    { name: "Manage Employee Information", icon: <ManageAccountsIcon  />, path: "/Manage-Show" },
+  ]
+
+  var menu: any[];
+  switch (role) {
+    case "Customer" :
+      menu = CustomerMenu;
+      break;
+    case "Employee" :
+      menu = EmployeeMenu;
+      break;
+    case "Officer" :
+      menu = OfficerMenu;
+      break;
+    default :
+      menu = [];
+      break;
+  }
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
+    if (getToken) {
+      setRole(localStorage.getItem("role") || "");
+    } 
+  }, []);
 
 
  return (

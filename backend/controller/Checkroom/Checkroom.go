@@ -5,6 +5,7 @@ import (
 	
 	"github.com/sut65/team03/entity"
 	"github.com/gin-gonic/gin"
+	"github.com/asaskevich/govalidator"
 	
 )
 
@@ -20,6 +21,14 @@ func CreateCheckroom(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error not access": err.Error()})
 		return
 	}
+
+	// แทรกการ validate ไว้ช่วงนี้ของ controller
+	if _, err := govalidator.ValidateStruct(checkroom); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"checkroom_error": err.Error()})
+		return
+	}
+
+
 	//ค้นหา Room ด้วย id
 	if tx := entity.DB().Where("id = ?", checkroom.RoomID).First(&room); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Roomzone not found"})
