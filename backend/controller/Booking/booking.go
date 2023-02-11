@@ -49,8 +49,8 @@ func CreateBooking(c *gin.Context) {
 	bk := entity.Booking{
 		Branch:   branch,
 		Room:     room,
-		Start:    time.Date(booking.Stop.Year(), booking.Stop.Month(), booking.Stop.Day(), 0, 0, 0, 0, time.UTC),
-		Stop:     time.Date(booking.Start.Year(), booking.Start.Month(), booking.Start.Day(), 0, 0, 0, 0, time.UTC),
+		Start:    time.Date(booking.Start.Year(), booking.Start.Month(), booking.Start.Day(), 0, 0, 0, 0, time.UTC),
+		Stop:     time.Date(booking.Stop.Year(), booking.Stop.Month(), booking.Stop.Day(), 0, 0, 0, 0, time.UTC),
 		Customer: customer,
 	}
 
@@ -89,6 +89,21 @@ func ListBookingsByUID(c *gin.Context) {
 	var bookings []entity.Booking
 	id := c.Param("id")
 	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE userid = ?", id).Find(&bookings).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": bookings})
+}
+
+// GET /bookingbydate
+func ListBookingsBydate(c *gin.Context) {
+	now := time.Now()
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	//formattedDate := today.Format("2006-01-02")
+
+	var bookings []entity.Booking
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE start = ?", today).Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

@@ -126,6 +126,18 @@ func CreateCheckInOut(c *gin.Context) {
 		return
 	}
 
+	//check booking in check in out
+	// if tx := entity.DB().Exec("SELECT * FROM Check_In_Outs WHERE booking_id = ?", cio.BookingID); tx.RowsAffected != 0 {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "This item has already been check in"})
+	// 	c.Abort()
+	// 	return
+	// }
+	if tx := entity.DB().Where("booking_id = ?", cio.BookingID).First(&cio); tx.RowsAffected != 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "This item has already been check in"})
+		c.Abort()
+		return
+	}
+
 	// ค้นหา status ด้วย id
 	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
@@ -137,8 +149,6 @@ func CreateCheckInOut(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
 		return
 	}
-
-	//fmt.Println(cio.CheckOutTime)
 
 	// 12: สร้าง CheckInOut
 	CheckInOut := entity.CheckInOut{
@@ -320,72 +330,6 @@ func UpdateCheckOut(c *gin.Context) {
 	})
 }
 
-// // PATCH /checkinout
-// func UpdateCheckInOut(c *gin.Context) {
-// 	//main
-// 	var cio entity.CheckInOut
-// 	var cioOld entity.CheckInOut
-
-// 	//relation
-// 	//booking shouldn't change cuz 1-1 w/ cio
-// 	//var booking entity.Booking
-// 	var status entity.CheckInOutStatus
-// 	var emp entity.Employee
-
-// 	if err := c.ShouldBindJSON(&cio); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-
-// 	//check cio haved?
-// 	if tx := entity.DB().Where("id = ?", cio.ID).First(&cioOld); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("CIO id = %d not found", cio.ID)})
-// 		return
-// 	}
-
-// 	if tx := entity.DB().Where("id = ?", cio.CheckInOutStatusID).First(&status); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Status not found"})
-// 		return
-// 	} else {
-// 		cio.CheckInOutStatus = status
-// 	}
-// 	if *cioOld.CheckInOutStatusID == 2 {
-// 		cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
-// 	}
-// 	if status.ID == 1 {
-// 		cio.CheckOutTime = cioOld.CheckOutTime
-// 	} else if status.ID == 2 {
-// 		cio.CheckInTime = cioOld.CheckInTime
-// 	}
-
-// 	if cio.BookingID == nil {
-// 		cio.BookingID = cioOld.BookingID
-// 	}
-
-// 	//new emp
-// 	if tx := entity.DB().Where("id = ?", cio.EmployeeID).First(&emp); tx.RowsAffected == 0 {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employee not found"})
-// 		return
-// 	}
-// 	cio.Employee = emp
-
-// 	// แทรกการ validate ไว้ช่วงนี้ของ controller
-// 	if _, err := govalidator.ValidateStruct(cio); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		return
-// 	}
-
-// 	if err := entity.DB().Save(&cio).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-// 		c.Abort()
-// 		return
-// 	}
-// 	c.JSON(http.StatusOK, gin.H{
-// 		"status": "Update Success",
-// 		"data":   cio,
-// 	})
-// }
-
 func CheckOut(c *gin.Context) {
 	id := c.Param("id")
 	var cio entity.CheckInOut
@@ -399,6 +343,9 @@ func CheckOut(c *gin.Context) {
 
 	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
 		cio.CheckOutTime = time.Now()
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "This item has already been check out"})
+		return
 	}
 
 	// cio.CheckOutTime = time.Now()

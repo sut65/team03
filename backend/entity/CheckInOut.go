@@ -3,6 +3,7 @@ package entity
 import (
 	"time"
 
+	"github.com/asaskevich/govalidator"
 	"gorm.io/gorm"
 )
 
@@ -22,12 +23,30 @@ type CheckInOut struct {
 	BookingID *uint   `valid:"required~Please select booking"`
 	Booking   Booking `valid:"-" gorm:"references:ID"`
 
-	CheckInTime  time.Time `valid:"required~Please select check-in time"`
-	CheckOutTime time.Time
+	CheckInTime  time.Time `valid:"required~Please select check-in time, Now~Invalid check-in time (do not be in the past)"`
+	CheckOutTime time.Time `valid:"IsAfterCheckIn~check out time must be after in check in time"`
 
 	CheckInOutStatusID *uint            `valid:"required~Please select status"`
 	CheckInOutStatus   CheckInOutStatus `valid:"-" gorm:"references:ID"`
 
 	EmployeeID *uint    `valid:"required~Please Signin"`
 	Employee   Employee `valid:"-" gorm:"references:ID"`
+}
+
+func init() {
+	// govalidator.CustomTypeTagMap.Set("IsAfterAndPresent", func(i interface{}, context interface{}) bool {
+	// 	t := i.(time.Time)
+	// 	return t.After(time.Now().AddDate(0, 0, -1)) // today ->
+	// })
+
+	govalidator.CustomTypeTagMap.Set("Now", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.After(time.Now().Add(time.Second * -599))
+	})
+
+	govalidator.CustomTypeTagMap.Set("IsAfterCheckIn", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		cio := context.(CheckInOut)
+		return t.After(cio.CheckInTime.Add(time.Second)) //Start ->
+	})
 }
