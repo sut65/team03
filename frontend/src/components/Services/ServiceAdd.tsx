@@ -150,30 +150,21 @@ function ServiceAdd() {
             Item: accessorieitemsum,
         };
 
-        if (fooditemsum > 0) {
-            if (drinkitemsum > 0) {
-                if (accessorieitemsum > 0) {
-                    let res = await AddService(serviceadd);
-                    if (res.status) {
+        let res = await AddService(serviceadd);
+        if (res.status) {
+            if (fooditemsum > 0 || fooditemsum < 50) {
+                if (drinkitemsum > 0 || drinkitemsum < 50) {
+                    if (accessorieitemsum > 0 || accessorieitemsum < 50) {
                         await UpdateFood(foodupdate);
                         await UpdateDrink(drinkupdate);
                         await UpdateAccessories(accessoriesupdate);
                         setAlertMessage("Save Order Successfully");
                         setSuccess(true);
-                    } else {
-                        setAlertMessage(res.message);
-                        setError(true);
                     }
-                } else {
-                    setAlertMessage(`Accessories not enough now item have ${accessorieitem - 1}`);
-                    setError(true);
                 }
-            } else {
-                setAlertMessage(`Drink not enough now item have ${drinkitem - 1}`);
-                setError(true);
             }
         } else {
-            setAlertMessage(`Food not enough now item have ${fooditem - 1}`);
+            setAlertMessage(res.message);
             setError(true);
         }
     }
@@ -394,7 +385,6 @@ function ServiceAdd() {
                         <Grid item xs={4}>
                             <TextField
                                 required
-                                type='number'
                                 label="How much ?"
                                 variant="standard"
                                 id="FoodItem"
@@ -405,7 +395,6 @@ function ServiceAdd() {
                         <Grid item xs={4}>
                             <TextField
                                 required
-                                type='number'
                                 label="How much ?"
                                 variant="standard"
                                 id="DrinkItem"
@@ -416,7 +405,6 @@ function ServiceAdd() {
                         <Grid item xs={4}>
                             <TextField
                                 required
-                                type='number'
                                 label="How much ?"
                                 variant="standard"
                                 id="AccessoriesItem"
