@@ -117,7 +117,7 @@ export default function App() {
             )
             }
 
-              {role === "Customer" && (
+              {role === "Employee" && (
               <>
               <Route path="/RT" element={<RoomShow />} />
               <Route path="/RT/Create" element={<RoomCreate />} />
