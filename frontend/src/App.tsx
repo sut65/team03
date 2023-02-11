@@ -113,8 +113,12 @@ export default function App() {
                 <Route path="/ps" element={<PaymentShow />} />
                 <Route path="/pa" element={<PaymentAdd />} />
                 {/* <Route path="/pu/:id" element={<PaymentUpdate />} /> */}
+                </>
+            )
+            }
 
-
+              {role === "Customer" && (
+              <>
               <Route path="/RT" element={<RoomShow />} />
               <Route path="/RT/Create" element={<RoomCreate />} />
               <Route path="/RT/Edit" element={<RoomEdit />} />
