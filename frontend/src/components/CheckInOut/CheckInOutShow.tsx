@@ -103,7 +103,7 @@ function CheckInOutShow() {
               onClick={() => {
                 onCheckOut(row.ID);
               }}
-              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              sx={{borderRadius: 20,'&:hover': {color: '#4caf50', backgroundColor: '#e8f5e9'}}}
               endIcon={<CheckCircleIcon />}
           >
               CHECK-OUT
@@ -125,7 +125,7 @@ function CheckInOutShow() {
               onClick={() => {
                  onDelete(row.ID);
               }}
-              sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+              sx={{borderRadius: 20,'&:hover': {color: '#ef5350', backgroundColor: '#F9EBEB'}}}
               endIcon={<DeleteOutlineIcon />}
           >
               DELETE

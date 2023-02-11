@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -60,9 +60,7 @@ import EditCustomer from "./components/Customer/EditCustomer";
 import CustomerlistforAdmin from "./components/Customer/ShowCustomerforAdmin";
 
 export default function App() {
-
   const [token, setToken] = useState<String>("");
-
   const [role, setRole] = useState<string>("");
 
   useEffect(() => {
@@ -79,73 +77,68 @@ export default function App() {
 
   return (
     <Router>
-      <div>
-        <Navbar />
-        <Routes>
+      {token && (
+        <Fragment>
+          <Navbar />
+          <Routes>
+            {role === "Officer" && (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/Manage-Save" element={<Manage_Save />} />
+                <Route path="/Manage-Show" element={<Manage_Show />} />
+                <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
+              </>
+              )
+            }
+            {role === "Customer" && (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="/Book" element={<Bookings />} />
+                <Route path="/Book/Create" element={<BookingCreate />} />
+                <Route path="/Book/Edit" element={<BookingUpdate />} />
+                <Route path="/Book/Delete" element={<BookingDelete />} />
 
-          <Route path="/" element={<Home />} />
+                <Route path="/Rep" element={<RepRqShow />} />
+                <Route path="/Rep/Create" element={<RepRqCreate />} />
+                <Route path="/Rep/Edit/:id" element={<RepRqEdit />} />
 
-          <Route path="/Manage-Save" element={<Manage_Save />} />
-          <Route path="/Manage-Show" element={<Manage_Show />} />
-          <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
-       
+                <Route path="/RW" element={<Review_Show />} />
+                <Route path="/Reviewlist" element={<Review_list />} />
 
-          <Route path="/Book" element={<Bookings />} />
-          <Route path="/Book/Create" element={<BookingCreate />} />
-          <Route path="/Book/Edit" element={<BookingUpdate />} />
-          <Route path="/Book/Delete" element={<BookingDelete />} />
+                <Route path="/ss" element={<ServiceShow />} />
+                <Route path="/sa" element={<ServiceAdd />} />
+                <Route path="/su/:id" element={<ServiceUpdate />} />
+                <Route path="/sd" element={<ServiceDelete />} />
 
-          <Route path="/CPM" element={<CHK_Payments />} />
-          <Route path="/CPM/Create" element={<CHK_PaymentCreate />} />
-          <Route path="/CPM/Edit" element={<CHK_PaymentUpdate />} />
+                <Route path="/ps" element={<PaymentShow />} />
+                <Route path="/pa" element={<PaymentAdd />} />
+                {/* <Route path="/pu/:id" element={<PaymentUpdate />} /> */}
+                </>
+            )
+            }
 
-          <Route path="/CNCO" element={<CheckInOutShow />} />
-          <Route path="/CNCO/Create" element={<CheckInOutCreate />}/> 
-          <Route path="/CNCO/Edit/:id" element={<CheckInOutEdit />}/> 
+              {role === "Employee" && (
+              <>
+              <Route path="/RT" element={<RoomShow />} />
+              <Route path="/RT/Create" element={<RoomCreate />} />
+              <Route path="/RT/Edit" element={<RoomEdit />} />
 
-          <Route path="/Rep" element={<RepRqShow />} />
-          <Route path="/Rep/Create" element={<RepRqCreate />} />
-          <Route path="/Rep/Edit/:id" element={<RepRqEdit />} />
-          
-          <Route path="/RW" element={<Review_Show />} />
-          <Route path="/Reviewlist" element={<Review_list />} />
+              <Route path="/RoomW" element={<StorageShow />} />
+              <Route path="/RoomW/Create" element={<StorageCreate />} />
+              <Route path="/RoomW/Edit" element={<StorageEdit />} />
 
-          <Route path="/ss" element={<ServiceShow />} />
-          <Route path="/sa" element={<ServiceAdd />} />
-          <Route path="/su/:id" element={<ServiceUpdate />} />
-          <Route path="/sd" element={<ServiceDelete />} />
+              <Route path="/checkroom/create" element={<Checkroom />} />
+              <Route path="/checkroom/list" element={<Checkroomlist />} />
+              <Route path="/checkroom/edit" element={<CheckroomEdit />} />
 
-          <Route path="/ps" element={<PaymentShow />} />
-          <Route path="/pa" element={<PaymentAdd />} />
-          {/* <Route path="/pu/:id" element={<PaymentUpdate />} /> */}
-
-
-          <Route path="/RT" element={<RoomShow />} />
-          <Route path="/RT/Create" element={<RoomCreate />} />
-          <Route path="/RT/Edit" element={<RoomEdit />} />
-
-          <Route path="/RoomW" element={<StorageShow />} />
-          <Route path="/RoomW/Create" element={<StorageCreate />} />
-          <Route path="/RoomW/Edit" element={<StorageEdit />} />
-
-          <Route path="/customer/create" element={<Customer />} />
-          <Route path="/customer/profile" element={<ProfileCustomer />} /> 
-          <Route path="/customer/edit" element={<EditCustomer />} /> 
-          <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />
-
-          
-          <Route path="/checkroom/create" element={<Checkroom />} /> 
-          <Route path="/checkroom/list" element={<Checkroomlist />} /> 
-          <Route path="/checkroom/edit" element={<CheckroomEdit />} /> 
-
-
-        </Routes>
-
-      </div>
-
+              <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />
+              </>
+            )
+            }
+          </Routes>
+        </Fragment>
+      )
+    }
     </Router>
-
   );
-
 }
-

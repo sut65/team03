@@ -97,6 +97,21 @@ function RoomEdit() {
 
   };
 
+  const handleInputChangenum = (
+
+    event: React.ChangeEvent<{ id?: string; value: any }>
+
+  ) => {
+
+    const id = event.target.id as keyof typeof room;
+
+    const { value } = event.target;
+
+    setRoom({ ...room, [id]: value  === "" ? "" : Number(value)  });
+    console.log(`id: ${id} value:${value}`)
+
+  };
+
   const getRoom =  async () => {
     let res = await GetRooms();
     if (res) {
@@ -312,6 +327,19 @@ function RoomEdit() {
               </Select>
             </FormControl>
           </Grid>
+
+          <Grid item xs={6}>
+          <FormControl fullWidth variant="outlined">
+            <TextField
+          id="Amount" label="ราคาของห้อง" type="number" 
+          InputLabelProps={{ shrink: true,}} 
+          value={room?.Amount} 
+          onChange={handleInputChangenum}   
+          inputProps={{name: "Amount"}}    
+          />
+            </FormControl>
+          </Grid>
+
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>

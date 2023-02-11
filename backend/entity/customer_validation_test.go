@@ -183,5 +183,40 @@ func TestCustomerPassword(t *testing.T) {
 		g.Expect(err.Error()).To(gomega.Equal("Password must contain at least 1 character A-Z."))
 	}
 })
-
 }
+
+func TestCustomerCheckPhone(t *testing.T) {
+	g := gomega.NewGomegaWithT(t)
+	test := uint(1)
+	//ทำการตรวจสอบ Phonenumber ต้องมีตัวเลข 0-9 เท่ากับ 10 ตัว ไม่มีตัวอักษร และ ขึ้นต้นด้วยเลข 0
+	fixtures := []string{
+		"190545200", // ผิดเพราะเลขไม่ครบ 10 และตัวนำหน้าไม่ใช่ 0
+		"09548125", // ผิดเพราะเลขไม่ครบ 10
+		"b288525", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
+		"b28g525b", //ผิดเพราะมีตัวอักษร เลขไม่ครบ 10
+	}
+	for _, fixture := range fixtures{
+		cus:= Customer{
+			FirstName: "Sandee",
+			LastName: "Memak",
+			Age: 	20,
+			Password: "SD123456",
+			Phone: fixture,
+			Email: "S@gmail.com",
+			Nametitle_ID: &test,
+			Gender_ID: 	&test,
+			Province_ID: &test,
+		}
+
+		ok, err := govalidator.ValidateStruct(cus)
+
+		g.Expect(ok).NotTo(gomega.BeTrue())
+
+		g.Expect(err).ToNot(gomega.BeNil())
+
+		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not valid"))
+	}
+}
+
+
+

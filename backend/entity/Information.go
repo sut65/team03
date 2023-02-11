@@ -315,6 +315,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Standard,
 		RoomZone: A,
 		State:    on,
+		Amount:   3000,
 		Time:     time.Now(),
 	})
 	//Room2
@@ -324,6 +325,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Superior,
 		RoomZone: B,
 		State:    on,
+		Amount:   4000,
 		Time:     time.Now(),
 	})
 	//Room3
@@ -333,6 +335,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		RoomType: Deluxe,
 		RoomZone: C,
 		State:    off,
+		Amount:   5000,
 		Time:     time.Now(),
 	})
 	var Room1 Room
@@ -1280,6 +1283,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Price: 7000,
 	}
 	db.Model(&Product{}).Create(&aircon)
+
+	plug := Product{
+		Name:  "plug",
+		Price: 200,
+	}
+	db.Model(&Product{}).Create(&plug)
 
 	lamp := Product{
 		Name:  "lamp",
