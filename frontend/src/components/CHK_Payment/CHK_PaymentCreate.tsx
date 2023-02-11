@@ -22,6 +22,7 @@ import { CHK_PaymentStatusesInterface } from "../../models/modelCHK_Payment/ISta
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
 import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
 import { min } from "date-fns";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 
 
@@ -39,6 +40,7 @@ function CHK_PaymentCreate() {
     const [employees, setEmployees] = useState<EmployeeInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -117,9 +119,11 @@ function CHK_PaymentCreate() {
         console.log(data);
 
         let res = await CHK_Payments(data);
-        if (res) {
+        if (res.status) {
+            setAlertMessage("บันทึกรายการตรวจสอบการชำระเงินสำเร็จ");
             setSuccess(true);
         } else {
+            setAlertMessage(res.message);
             setError(true);
         }
     }
@@ -128,12 +132,12 @@ function CHK_PaymentCreate() {
         <Container maxWidth="md">
             <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    บันทึกการตตรวจสอบเสร็จสิ้น
+                    {message}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่สามารถบันทึกการตตรวจสอบได้
+                    {message}
                 </Alert>
             </Snackbar>
             <Paper>
@@ -148,7 +152,7 @@ function CHK_PaymentCreate() {
                 <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>เลือกรายการ การชำระเงิน</p>
+                            <p>เลือกรายการการชำระเงิน</p>
                             <Select
                                 native
                                 value={chk_payment.PaymentID + ""}
@@ -158,7 +162,7 @@ function CHK_PaymentCreate() {
                                 }}
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกราย การชำระเงิน
+                                    กรุณาเลือกรายการชำระเงิน
                                 </option>
                                 {payments.map((item: PaymentsInterface) => (
                                     <option value={item.ID} key={item.ID}>
@@ -193,10 +197,9 @@ function CHK_PaymentCreate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>วันที่ชำระเงิน</p>
-                            {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    disableFuture
+                                <DateTimePicker
+                                    // disableFuture
                                     value={chk_payment.Date_time}
                                     onChange={(newValue) => {
                                         setCHK_Payment({
@@ -213,14 +216,14 @@ function CHK_PaymentCreate() {
                         <FormControl fullWidth variant="outlined">
                             <p>จำนวนเงิน</p>
                             <TextField
-                                type="number"
+                                // type="number"
                                 value={chk_payment.Amount}
                                 id="Amount"
                                 label="กรุณาใส่จำนวนเงิน"
                                 variant="outlined"
                                 inputProps={{
                                     name: "Amount",
-                                    min: 0
+                                    // min: 0
                                 }}
                                 onChange={handleInputChange_Text}
                             />

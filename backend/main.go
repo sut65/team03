@@ -121,7 +121,7 @@ func main() {
 			protected.POST("/checkinout", check.CreateCheckInOut)
 			protected.PATCH("/checkin", check.UpdateCheckIn)
 			protected.PATCH("/checkout", check.UpdateCheckOut)
-			protected.PATCH("/checkinout", check.UpdateCheckInOut)
+			//protected.PATCH("/checkinout", check.UpdateCheckInOut)
 			protected.DELETE("/checkinout/:id", check.DeleteCheckInOut)
 			protected.PATCH("/checkinout/:id", check.CheckOut)
 
@@ -188,10 +188,18 @@ func main() {
 			protected.DELETE("/services/:id", service.DeleteService)
 
 			protected.GET("/room/customer/:id", service.GetRoomByCID)
+
 			protected.GET("/foods", service.ListFoods)
+			protected.GET("/food/item/:id", service.GetFoodItem)
 			protected.PATCH("/foods", service.UpdateFood)
+
 			protected.GET("/drinks", service.ListDrinks)
+			protected.GET("/drink/item/:id", service.GetDrinkItem)
+			protected.PATCH("/drinks", service.UpdateDrink)
+
 			protected.GET("/accessories", service.ListAccessories)
+			protected.GET("/accessorie/item/:id", service.GetAccessoriesItem)
+			protected.PATCH("/accessories", service.UpdateAccessorie)
 			// ======================================= SERVICE
 
 			// Run the server

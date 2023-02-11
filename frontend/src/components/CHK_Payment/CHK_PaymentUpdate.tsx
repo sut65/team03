@@ -22,6 +22,7 @@ import { CHK_PaymentStatusesInterface } from "../../models/modelCHK_Payment/ISta
 import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
 import MenuItem from "@mui/material/MenuItem";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -38,6 +39,7 @@ function CHK_PaymentUpdate() {
     const [employees, setEmployees] = useState<EmployeeInterface>();
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
+    const [message, setAlertMessage] = useState("");
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -132,9 +134,11 @@ function CHK_PaymentUpdate() {
         console.log(data)
 
         let res = await UppdateCHK_Payment(data);
-        if (res) {
+        if (res.status) {
+            setAlertMessage("แก้ไขรายการตรวจสอบการชำระเงินสำเร็จ");
             setSuccess(true);
         } else {
+            setAlertMessage(res.message);
             setError(true);
         }
     }
@@ -143,19 +147,19 @@ function CHK_PaymentUpdate() {
         <Container maxWidth="md">
             <Snackbar open={success} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="success">
-                    บันทึกการตตรวจสอบเสร็จสิ้น
+                    {message}
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "center" }} >
                 <Alert onClose={handleClose} severity="error">
-                    ไม่สามารถบันทึกการตตรวจสอบได้
+                    {message}
                 </Alert>
             </Snackbar>
             <Paper>
                 <Box display="flex" sx={{ marginTop: 2, }} >
                     <Box sx={{ paddingX: 2, paddingY: 1 }}>
                         <Typography component="h2" variant="h6" color="primary" gutterBottom >
-                            ตรวจสอบการชำระเงิน
+                            แก้ไขการตรวจสอบการชำระเงิน
                         </Typography>
                     </Box>
                 </Box>
@@ -163,35 +167,17 @@ function CHK_PaymentUpdate() {
                 <Grid container spacing={3} sx={{ padding: 2 }}>
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
-                            <p>เลือกรายการที่จะแก้ไข</p>
-                            <Select
-                                value={chk_payment.ID + ""}
-                                onChange={onChangeU_CHKPayment}
-                                inputProps={{
-                                    name: "ID",
-                                }}
-                            >
-                                {u_chkpayments.map((item: CHK_PaymentsInterface) => (
-                                    <MenuItem value={item.ID} key={item.ID}>
-                                        {item.ID}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth variant="outlined">
-                            <p>เลือกรายการ การชำระเงิน</p>
+                            <p>เลือกรายการการชำระเงิน</p>
                             <Select
                                 native
                                 value={chk_payment.PaymentID + ""}
-                                onChange={handleChange}
+                                onChange={onChangeU_CHKPayment}
                                 inputProps={{
                                     name: "PaymentID",
                                 }}
                             >
                                 <option aria-label="None" value="">
-                                    กรุณาเลือกราย การชำระเงิน
+                                    กรุณาเลือกรายการชำระเงิน
                                 </option>
                                 {payments.map((item: PaymentsInterface) => (
                                     <option value={item.ID} key={item.ID}>
@@ -226,10 +212,9 @@ function CHK_PaymentUpdate() {
                     <Grid item xs={6}>
                         <FormControl fullWidth variant="outlined">
                             <p>วันที่ชำระเงิน</p>
-                            {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    disableFuture
+                                <DateTimePicker
+                                    // disableFuture
                                     value={chk_payment.Date_time}
                                     onChange={(newValue) => {
                                         setCHK_Payment({
@@ -253,7 +238,7 @@ function CHK_PaymentUpdate() {
                                 variant="outlined"
                                 inputProps={{
                                     name: "Amount",
-                                    min: 0
+                                    // min: 0
                                 }}
                                 onChange={handleInputChange_Text}
                             />

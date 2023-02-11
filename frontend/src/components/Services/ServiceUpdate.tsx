@@ -1,12 +1,28 @@
+import {
+    GetRoom,
+    GetFoods,
+    GetDrinks,
+    UpdateFood,
+    GetFoodItem,
+    GetDrinkItem,
+    UpdateService,
+    GetAccessories,
+    GetServiceByID,
+    GetAccessorieItem,
+    GetFoodItemS,
+    GetDrinkItemS,
+    GetAccessoriesItemS,
+    UpdateDrink,
+    UpdateAccessories
+} from "./service/ServiceHttpClientService";
 import { AccessoriesInterface, DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
 import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
-import { GetAccessories, GetDrinks, GetFoods, GetRoom, GetServiceByID, UpdateService, UpdateFood } from "./service/ServiceHttpClientService";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const theme = createTheme({
     palette: {
@@ -29,16 +45,34 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
 function ServiceUpdate() {
 
     const [service, setService] = useState<Partial<ServicesInterface>>({});
-    const [food, setFood] = useState<FoodsInterface[]>([]);
-    const [drink, setDrink] = useState<DrinksInterface[]>([]);
-    const [Accessorie, setAccessorie] = useState<AccessoriesInterface[]>([]);
     const [time] = useState<Date | null>(new Date());
+
+    const [food, setFood] = useState<FoodsInterface[]>([]);
+    const [fooditem, setFoodItem] = useState(0);
+    const [fooditems, setFoodItemS] = useState(0);
+    const [fooditemwant, setFoodItemWant] = useState(0);
+    const [fooditemsum, setFoodItemSum] = useState(0);
+
+    const [drink, setDrink] = useState<DrinksInterface[]>([]);
+    const [drinkitem, setDrinkItem] = useState(0);
+    const [drinkitems, setDrinkItemS] = useState(0);
+    const [drinkitemwant, setDrinkItemWant] = useState(0);
+    const [drinkitemsum, setDrinkItemSum] = useState(0);
+
+    const [accessorie, setAccessorie] = useState<AccessoriesInterface[]>([]);
+    const [accessorieitem, setAccessorieItem] = useState(0);
+    const [accessorieitems, setAccessorieItemS] = useState(0);
+    const [accessorieitemwant, setAccessorieItemWant] = useState(0);
+    const [accessorieitemsum, setAccessorieItemSum] = useState(0);
+
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [message, setAlertMessage] = useState("");
     const [room, setRoom] = useState('');
-    const { id } = useParams();
     const id_cus = localStorage.getItem("id");
+    const { id } = useParams();
+    const status = useRef(true);
+
 
     const handleClose = (
         event?: React.SyntheticEvent | Event,
@@ -60,55 +94,118 @@ function ServiceUpdate() {
         });
     };
 
+    const handleInputFoodChange = (
+        event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+        const id = event.target.id as keyof typeof ServiceUpdate;
+        const { value } = event.target;
+        const getitemwant = event.target.value;
+
+        setService({ ...service, [id]: value });
+        setFoodItemWant(getitemwant)
+    };
+
+    const handleInputDrinkChange = (
+        event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+        const id = event.target.id as keyof typeof ServiceUpdate;
+        const { value } = event.target;
+        const getitemwant = event.target.value;
+
+        setService({ ...service, [id]: value });
+        setDrinkItemWant(getitemwant)
+    };
+
+    const handleInputAccessorieChange = (
+        event: React.ChangeEvent<{ id?: string; value: any }>
+    ) => {
+        const id = event.target.id as keyof typeof ServiceUpdate;
+        const { value } = event.target;
+        const getitemwant = event.target.value;
+
+        setService({ ...service, [id]: value });
+        setAccessorieItemWant(getitemwant)
+    };
+
     const convertType = (data: string | number | undefined | null) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
     };
-
     const convertTypeNotNull = (data: string | number | undefined) => {
         let val = typeof data === "string" ? parseInt(data) : data;
         return val;
     };
 
-    async function submit() {
-        let data = {
+    async function update() {
+        let serviceupdate = {
             ID: convertTypeNotNull(id),
             CustomerID: convertType(id_cus),
             Time: time,
             FoodID: convertTypeNotNull(service.FoodID),
+            FoodItem: convertTypeNotNull(service.FoodItem),
             DrinkID: convertTypeNotNull(service.DrinkID),
+            DrinkItem: convertTypeNotNull(service.DrinkItem),
             AccessoriesID: convertTypeNotNull(service.AccessoriesID),
+            AccessoriesItem: convertTypeNotNull(service.AccessoriesItem),
         };
-
-        let res = await UpdateService(data);
-        if (res.status) {
-            setAlertMessage("Update Order Successfully");
-            setSuccess(true);
-        } else {
-            setAlertMessage(res.message);
-            setError(true);
-        }
-    }
-
-    async function updatefood() {
-        let data = {
+        let foodupdate = {
             ID: convertTypeNotNull(service.FoodID),
+            Item: fooditemsum,
+        };
+        let drinkupdate = {
+            ID: convertTypeNotNull(service.DrinkID),
+            Item: drinkitemsum,
+        };
+        let accessoriesupdate = {
+            ID: convertTypeNotNull(service.AccessoriesID),
+            Item: accessorieitemsum,
         };
 
-        let res = await UpdateFood(data);
-        if (res.status) {
-            setAlertMessage("Update Order Successfully");
-            setSuccess(true);
+        if (fooditemsum > 0) {
+            if (drinkitemsum > 0) {
+                if (accessorieitemsum > 0) {
+                    let res = await UpdateService(serviceupdate);
+                    if (res.status) {
+                        await UpdateFood(foodupdate);
+                        await UpdateDrink(drinkupdate);
+                        await UpdateAccessories(accessoriesupdate);
+                        setAlertMessage("Update Order Successfully");
+                        setSuccess(true);
+                    } else {
+                        setAlertMessage(res.message);
+                        setError(true);
+                    }
+                } else {
+                    setAlertMessage(`Accessories not enough now item have ${accessorieitem - 1}`);
+                    setError(true);
+                }
+            } else {
+                setAlertMessage(`Drink not enough now item have ${drinkitem - 1}`);
+                setError(true);
+            }
         } else {
-            setAlertMessage(res.message);
+            setAlertMessage(`Food not enough now item have ${fooditem - 1}`);
             setError(true);
         }
     }
+
+    const getservicebyid = async () => {
+        let res = await GetServiceByID(id);
+        if (res) {
+            setService(res);
+        }
+    };
 
     const getfoods = async () => {
         let res = await GetFoods();
         if (res) {
             setFood(res);
+        }
+    };
+    const getfooditem = async () => {
+        let res = await GetFoodItem(service.FoodID);
+        if (res) {
+            setFoodItem(res);
         }
     };
     const getdrinks = async () => {
@@ -117,16 +214,22 @@ function ServiceUpdate() {
             setDrink(res);
         }
     };
+    const getdrinkitem = async () => {
+        let res = await GetDrinkItem(service.DrinkID);
+        if (res) {
+            setDrinkItem(res);
+        }
+    };
     const getaccessories = async () => {
         let res = await GetAccessories();
         if (res) {
             setAccessorie(res);
         }
     };
-    const getservicebyid = async () => {
-        let res = await GetServiceByID(id);
+    const getaccessorieitem = async () => {
+        let res = await GetAccessorieItem(service.AccessoriesID);
         if (res) {
-            setService(res);
+            setAccessorieItem(res);
         }
     };
     const getroom = async () => {
@@ -135,14 +238,52 @@ function ServiceUpdate() {
             setRoom(res);
         }
     };
+    const getfooditems = async () => {
+        let res = await GetFoodItemS(id);
+        if (res) {
+            setFoodItemS(res);
+            setFoodItemWant(res);
+        }
+    }
+    const getdrinkitems = async () => {
+        let res = await GetDrinkItemS(id);
+        if (res) {
+            setDrinkItemS(res);
+            setDrinkItemWant(res);
+        }
+    }
+    const getaccessorieitems = async () => {
+        let res = await GetAccessoriesItemS(id);
+        if (res) {
+            setAccessorieItemS(res);
+            setAccessorieItemWant(res);
+        }
+    }
 
     useEffect(() => {
+        getservicebyid();
+        getroom();
         getfoods();
         getdrinks();
         getaccessories();
-        getservicebyid();
-        getroom();
+        getfooditems();
+        getdrinkitems();
+        getaccessorieitems();
     }, []);
+
+    // when foodid, drinkid, Accessoriesid update
+    useEffect(() => {
+        if (status.current) {
+            status.current = false;
+        } else {
+            getfooditem();
+            setFoodItemSum((fooditem + fooditems) - fooditemwant);
+            getdrinkitem();
+            setDrinkItemSum((drinkitem + drinkitems) - drinkitemwant);
+            getaccessorieitem();
+            setAccessorieItemSum((accessorieitem + accessorieitems) - accessorieitemwant);
+        }
+    });
 
     return (
         <div>
@@ -285,11 +426,44 @@ function ServiceUpdate() {
                                         name: "AccessoriesID",
                                     }}
                                 >
-                                    {Accessorie.map((item: AccessoriesInterface) => (
+                                    {accessorie.map((item: AccessoriesInterface) => (
                                         <option value={item.ID}>{item.Name}</option>
                                     ))}
                                 </Select>
                             </FormControl>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container spacing={1} sx={{ padding: 3 }}>
+                        <Grid item xs={4}>
+                            <TextField
+                                required
+                                type='number'
+                                variant="standard"
+                                id="FoodItem"
+                                value={service.FoodItem}
+                                onChange={handleInputFoodChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                required
+                                type='number'
+                                variant="standard"
+                                id="DrinkItem"
+                                value={service.DrinkItem}
+                                onChange={handleInputDrinkChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <TextField
+                                required
+                                type='number'
+                                variant="standard"
+                                id="AccessoriesItem"
+                                value={service.AccessoriesItem}
+                                onChange={handleInputAccessorieChange}
+                            />
                         </Grid>
                     </Grid>
 
@@ -306,7 +480,7 @@ function ServiceUpdate() {
 
                             <Button
                                 style={{ float: "right" }}
-                                onClick={submit}
+                                onClick={update}
                                 variant="contained"
                                 color="success"
                             >

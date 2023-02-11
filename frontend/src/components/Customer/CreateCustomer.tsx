@@ -19,6 +19,7 @@ import { GenderInterface } from "../../models/modelCustomer/IGender";
 import { NametitleInterface } from "../../models/modelCustomer/INametitle";
 import { ProvinceInterface } from "../../models/modelCustomer/IProvince";
 import { Link } from "react-router-dom";
+import { Message } from "@mui/icons-material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -43,6 +44,7 @@ function Customer() {
   const [phone, setPhone] = useState<string>("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [message, setAlertMessage] = useState("");
 
   const [password, setPassword] = React.useState<State>({
     password: "",
@@ -189,9 +191,10 @@ function Customer() {
         .then((res) => {
           console.log(res);
           if (res.data) {
-            setSuccess(true);
+            return { status: true, message: res.data };
           }   else {
-            setError(true);
+            console.log(res.error);
+            return { status: false, message: res.customer_error };
         }
         });
         setInterval(() => {
@@ -488,7 +491,8 @@ function Customer() {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+           {/* บันทึกข้อมูลไม่สำเร็จ */}
+         {message}
         </Alert>
       </Snackbar>
     </div>
