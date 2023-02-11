@@ -46,25 +46,28 @@ func TestQuantity_Zero(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("จำนวนต้องมากกว่าศูนย์"))
+	g.Expect(err.Error()).To(Equal("กรุณากรอกจำนวนที่มากกว่าศูนย์"))
 }
 
 func TesQuantity_CannotBeNegative(t *testing.T) {
 	g := NewGomegaWithT(t)
 
-	t.Run("Date now cannot be negative number", func(t *testing.T) {
+	t.Run("Quantity cannot be negative number", func(t *testing.T) {
 		storage := Storage{
 			Quantity: -50, // เป็นจำนวนติดลบ
 			Time:     time.Now().Add(22 * time.Hour),
 		}
 
+		// ตรวจสอบด้วย govalidator
 		ok, err := govalidator.ValidateStruct(storage)
 
+		// ok ต้องไม่เป็น true แปลว่าต้องจับ error ได้
 		g.Expect(ok).NotTo(BeTrue())
+		// err ต้องไม่เป็น nil แปลว่าต้องจับ error ได้
 		g.Expect(err).ToNot(BeNil())
+		// err.Error() ต้องมี message แสดงออกมา
 		g.Expect(err.Error()).To(Equal("กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"))
 	})
-
 }
 
 func TestStorageTime(t *testing.T) {

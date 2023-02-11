@@ -307,6 +307,7 @@ func CreateRoom(c *gin.Context) {
 		RoomZone: roomzone,
 		State:    state,
 		Room_No:  room.Room_No,
+		Amount: room.Amount,
 		Time:     room.Time,
 	}
 
@@ -547,6 +548,7 @@ func UpdateRoom(c *gin.Context) {
 	ro.RoomType = roomtype
 	ro.RoomZone = roomzone
 	ro.State = state
+	ro.Amount = room.Amount
 	//ro.Time = room.Time
 
 	if err := entity.DB().Save(&ro).Error; err != nil {

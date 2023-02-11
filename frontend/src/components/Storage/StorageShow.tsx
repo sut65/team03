@@ -14,7 +14,7 @@ import { Alert, Snackbar } from "@mui/material";
 
 // //import { UsersInterface } from "../models/IUser";
 
- import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 import { StorageInterface, ProductInterface, ProductTypeInterface } from "../../models/IStorage";
 
@@ -132,18 +132,24 @@ function StorageShow() {
 
    {
     field: "delete",
-    headerName: "DELETE",
-    sortable: false,
+    headerName: "",
+    sortable: true,
+    width: 120,
     align:"center",
-    renderCell: (params) => {
-        const onClick = (e: { stopPropagation: () => void; }) => {
-            e.stopPropagation();
-            const id = params.getValue(params.id, "ID");
-            onDelete(id);
-        };
-
-        return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
-    }
+    headerAlign: "center",
+    renderCell: ({ row }: Partial<GridRowParams>) =>
+        <Button 
+            size="small"
+            //variant="contained"
+            color="error"
+            onClick={() => {
+               onDelete(row.ID);
+            }}
+            sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+            endIcon={<DeleteOutlineIcon />}
+        >
+            DELETE
+        </Button>,
   },
  ];
 
