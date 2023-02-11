@@ -408,6 +408,7 @@ func UpdateEmployee(c *gin.Context) {
 		Employeename: employee.Employeename,
 		Email:        employee.Email,
 		Eusername:    employee.Eusername,
+		Password: 	  employee.Password,
 		Salary:       employee.Salary,      // ตั้งค่าฟิลด์ Salary
 		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
 		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender

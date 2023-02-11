@@ -54,9 +54,6 @@ function Home() {
             <div>
               <h3>Handmade piece</h3>
               <p>Welcome to Hotel G03</p>
-              <a href="#" className="black-btn">
-                Check out
-              </a>
             </div>
           </div>
           <div>
@@ -71,9 +68,6 @@ function Home() {
             <div>
               <h3>wow</h3>
               <p>Welcome to Hotel G03</p>
-              <a href="#" className="black-btn">
-                Check out
-              </a>
             </div>
           </div>
         </div>
@@ -85,9 +79,6 @@ function Home() {
             <div>
               <h3>wowhhghgh</h3>
               <p>Welcome to Hotel G03</p>
-              <a href="#" className="black-btn">
-                Check out
-              </a>
             </div>
           </div>
         </div>

@@ -38,6 +38,7 @@ import Review_Save from "./Review_Save";
 import { ReviewInterface, SystemworkInterface } from "../../models/IReview";
 import Moment from "moment";
 import EditIcon from "@mui/icons-material/Edit";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 
 const themeshow = createTheme({
   palette: {
@@ -67,6 +68,14 @@ function Review_list() {
   const [start, setStart] = React.useState<number | null>();
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
+
+  const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+    props,
+  
+    ref
+  ) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   const UpdateReview = () => {
     let UpdateData = {
@@ -351,7 +360,7 @@ function Review_list() {
           <Container maxWidth="md">
             <Snackbar
             open={success}
-            autoHideDuration={6000}
+            autoHideDuration={8000}
             onClose={handleClose}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
@@ -398,17 +407,17 @@ function Review_list() {
                   <FormLabel>Department</FormLabel>
                   <FormControl fullWidth variant="outlined">
                     <Select
+                      native
                       value={review1.DepartmentID}
                       onChange={handleChange}
                       inputProps={{
                         name: "DepartmentID",
                       }}
                     >
-                      <MenuItem value={0} key={0}>
-                        เลือกแผนก
-                      </MenuItem>
+                      <option value={0} key={0}>
+                      </option>
                       {department.map((item: DepartmentInterface) => (
-                        <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                        <option value={item.ID}>{item.Name}</option>
                       ))}
                     </Select>
                   </FormControl>
@@ -419,17 +428,17 @@ function Review_list() {
                   <FormLabel>System Work</FormLabel>
                   <FormControl fullWidth variant="outlined">
                     <Select
+                      native
                       value={review1.SystemworkID}
                       onChange={handleChange}
                       inputProps={{
                         name: "SystemworkID",
                       }}
                     >
-                      <MenuItem value={0} key={0}>
-                        เลือกตำแหน่ง
-                      </MenuItem>
+                      <option value={0} key={0}>
+                      </option>
                       {systemwork.map((item: SystemworkInterface) => (
-                        <MenuItem value={item.ID}>{item.Name}</MenuItem>
+                        <option value={item.ID}>{item.Name}</option>
                       ))}
                     </Select>
                   </FormControl>
@@ -446,6 +455,7 @@ function Review_list() {
                   <FormControl>
                     <FormLabel>Start</FormLabel>
                     <Rating
+                      disabled
                       name="simple-controlled"
                       defaultValue={review1.Star}
                       onChange={(event, newValue) => {
