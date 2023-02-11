@@ -27,13 +27,13 @@ func TestStoragePass(t *testing.T) {
 	g.Expect(err).To(BeNil())
 }
 
-func TestQuantity_Zero(t *testing.T) {
+func TestQuantity_Null(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	// ข้อมูล Room_No ไม่ถูกต้องตาม Format
 	storage := Storage{
 		Quantity: 0, // เป็นศูนย์
-		Time:     time.Now().Add(22 * time.Hour),
+		Time:     time.Now().Add(2 * time.Minute),
 	}
 
 	// ตรวจสอบด้วย govalidator
@@ -46,7 +46,7 @@ func TestQuantity_Zero(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("กรุณากรอกจำนวนที่มากกว่าศูนย์"))
+	g.Expect(err.Error()).To(Equal("กรุณากรอกจำนวน"))
 }
 
 func TesQuantity_CannotBeNegative(t *testing.T) {
@@ -55,7 +55,7 @@ func TesQuantity_CannotBeNegative(t *testing.T) {
 	t.Run("Quantity cannot be negative number", func(t *testing.T) {
 		storage := Storage{
 			Quantity: -50, // เป็นจำนวนติดลบ
-			Time:     time.Now().Add(22 * time.Hour),
+			Time:     time.Now().Add(-2 * time.Minute),
 		}
 
 		// ตรวจสอบด้วย govalidator
@@ -89,5 +89,5 @@ func TestStorageTime(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("วันที่และเวลาไม่ถูกต้อง"))
+	g.Expect(err.Error()).To(Equal("วันที่และเวลาต้องไม่เกิน +-3 นาที"))
 }

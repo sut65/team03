@@ -35,7 +35,7 @@ func TestRoom_No_Format(t *testing.T) {
 	room := Room{
 		Room_No: "12", // format is A-D ตามด้วยตัวเลข 2 ตัว
 		Amount:  3000,
-		Time:    time.Now().Add(22 * time.Hour),
+		Time:    time.Now().Add(1 * time.Minute),
 	}
 
 	// ตรวจสอบด้วย govalidator
@@ -58,7 +58,7 @@ func TestRoom_No__Null(t *testing.T) {
 	room := Room{
 		Room_No: "", // Null
 		Amount:  3000,
-		Time:    time.Now().Add(22 * time.Hour),
+		Time:    time.Now().Add(2 * time.Minute),
 	}
 
 	// ตรวจสอบด้วย govalidator
@@ -81,7 +81,7 @@ func TestAmount_Zero(t *testing.T) {
 	room := Room{
 		Room_No: "A10",
 		Amount:  0, //เป็นศูนย์
-		Time:    time.Now().Add(22 * time.Hour),
+		Time:    time.Now().Add(-1 * time.Minute),
 	}
 
 	// ตรวจสอบด้วย govalidator
@@ -97,14 +97,14 @@ func TestAmount_Zero(t *testing.T) {
 	g.Expect(err.Error()).To(Equal("กรุณากรอกราคาที่มากกว่าศูนย์"))
 }
 
-func TesAmount_CannotBeNegative(t *testing.T) {
+func TestAmount_CannotBeNegative(t *testing.T) {
 	g := NewGomegaWithT(t)
 
 	t.Run("Amount cannot be negative number", func(t *testing.T) {
 		room := Room{
 			Room_No: "A10",
 			Amount:  -3000, //เป็นจำนวนติดลบ
-			Time:    time.Now().Add(22 * time.Hour),
+			Time:    time.Now().Add(-2 * time.Minute),
 		}
 
 		// ตรวจสอบด้วย govalidator
@@ -126,7 +126,7 @@ func TestRoomTime(t *testing.T) {
 	room := Room{
 		Room_No: "A10",
 		Amount:  3000,
-		Time:    time.Date(2020, 3, 22, 0, 0, 0, 0, time.UTC), // เป็นอดีต
+		Time:    time.Now().Add(-5 * time.Minute), // เป็นอดีต
 	}
 
 	// ตรวจสอบด้วย govalidator
