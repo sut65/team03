@@ -31,14 +31,14 @@ type PaymentMethod struct {
 
 type Payment struct {
 	gorm.Model
-	CustomerID      *uint
-	Customer        Customer `gorm:"references:ID"`
-	PaymentMethodID *uint
+	CustomerID      int           `valid:"required~Please Login"`
+	Customer        Customer      `valid:"-" gorm:"references:id"`
+	PaymentMethodID int           `valid:"required~Choose payment method"`
 	PaymentMethod   PaymentMethod `gorm:"references:ID"`
-	MethodID        *uint
-	Method          Method `gorm:"references:ID"`
-	PlaceID         *uint
-	Place           Place `gorm:"references:ID"`
+	MethodID        int           `valid:"required~Choose method"`
+	Method          Method        `gorm:"references:ID"`
+	PlaceID         int           `valid:"required~Choose place"`
+	Place           Place         `gorm:"references:ID"`
 	Time            time.Time
 	Picture         string
 }
