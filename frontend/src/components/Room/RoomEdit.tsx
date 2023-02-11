@@ -52,9 +52,12 @@ function RoomEdit() {
   const [roomzone, setRoomZones] = useState<RoomZoneInterface[]>([]);
  
   const [rm, setRm] = useState<RoomInterface[]>([]);
-  const [room, setRoom] = useState<RoomInterface>({Time: new Date(),});
+  const [room, setRoom] = useState<RoomInterface>({
+     Time: new Date(),
+    Amount: 0,});
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [number, setNumber] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -167,6 +170,7 @@ function RoomEdit() {
       RoomZoneID: convertType(room.RoomZoneID),
       StateID: convertType(room.StateID),
       //EmployeeID: convertType(checkinout.EmployeeID),
+      Amount: convertType(number)||0,
       EmployeeID: convertType(localStorage.getItem("id")),
       Time: room.Time,
     };
@@ -330,12 +334,17 @@ function RoomEdit() {
 
           <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
-            <TextField
-          id="Amount" label="ราคาของห้อง" type="number" 
-          InputLabelProps={{ shrink: true,}} 
-          value={room?.Amount} 
-          onChange={handleInputChangenum}   
-          inputProps={{name: "Amount"}}    
+          <TextField
+              type="string"
+              value={number}
+              id="Amount"
+              label="ราคาห้องพัก"
+              variant="outlined"
+              inputProps={{
+                  name: "Amount",
+                  // min: 0
+              }}
+              onChange={(e)=>setNumber(e.target.value)} 
           />
             </FormControl>
           </Grid>

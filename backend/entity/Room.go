@@ -35,7 +35,7 @@ type Room struct {
 	gorm.Model
 	Amount  int       `valid:"required~กรุณากรอกราคาที่มากกว่าศูนย์, range(0|9223372036854775807)~กรุณากรอกราคาเป็นจำนวนเต็มบวก"`
 	Room_No string    `valid:"matches(^[A-D]\\d{2}$)~หมายเลขห้องต้องขึ้นต้นด้วย A-D ตามด้วยตัวเลข 2 หลัก, required~กรุณากรอกหมายเลขห้อง"`
-	Time    time.Time `valid:"IsnotPast~วันที่และเวลาไม่ถูกต้อง"`
+	Time    time.Time `valid:"DelayNow3Min~วันที่และเวลาไม่ถูกต้อง"`
 
 	//StaffID ทำหน้าที่เป็น FK
 	// StaffID *uint
@@ -77,6 +77,15 @@ func init() {
 	govalidator.CustomTypeTagMap.Set("IsnotPast", func(i interface{}, o interface{}) bool {
 		t := i.(time.Time)
 		// ย้อนหลังไม่เกิน 1 วัน
-		return t.After(time.Now())
+		return t.After(time.Now().AddDate(0, 0, -1))
+	})
+	govalidator.CustomTypeTagMap.Set("DelayNow3Min", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		a := t.After(time.Now().Add(-3 * time.Minute))
+		b := t.Before(time.Now().Add(+3 * time.Minute))
+		sts := a && b
+		println(a)
+		println(b)
+		return sts
 	})
 }

@@ -22,8 +22,8 @@ type ProductType struct {
 type Storage struct {
 	gorm.Model
 	ID       uint
-	Quantity int       `valid:"required~กรุณากรอกจำนวนที่มากกว่าศูนย์, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"`
-	Time     time.Time `valid:"IsnotPast~วันที่และเวลาไม่ถูกต้อง"` // เป็นปัจจุบัน +- 3 นาที
+	Quantity int       `valid:"required~กรุณากรอกจำนวน, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"`
+	Time     time.Time `valid:"DelayNow3Min~วันที่และเวลาต้องไม่เกิน +-3 นาที"` // เป็นปัจจุบัน +- 3 นาที
 
 	//EmployeeID ทำหน้าที่เป็น FK
 	EmployeeID *uint
@@ -56,6 +56,15 @@ func init() {
 	govalidator.CustomTypeTagMap.Set("IsnotPast", func(i interface{}, o interface{}) bool {
 		t := i.(time.Time)
 		// ย้อนหลังไม่เกิน 1 วัน
-		return t.After(time.Now().AddDate(0, 0, -1))
+		return !t.After(time.Now().AddDate(0, 0, -1))
+	})
+	govalidator.CustomTypeTagMap.Set("DelayNow3Min", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		a := t.After(time.Now().Add(-3 * time.Minute))
+		b := t.Before(time.Now().Add(+3 * time.Minute))
+		sts := a && b
+		println(a)
+		println(b)
+		return sts
 	})
 }

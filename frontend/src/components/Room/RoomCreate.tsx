@@ -27,7 +27,7 @@ import { GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom } from 
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
-import { Message, RoomOutlined } from "@mui/icons-material";
+import { Message } from "@mui/icons-material";
 
 const theme = createTheme({
   palette: {
@@ -59,6 +59,7 @@ function RoomCreate() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [message, setAlertMessage] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -93,20 +94,20 @@ function RoomCreate() {
 
   };
 
-  const handleInputChangenum = (
+  // const handleInputChangenum = (
 
-    event: React.ChangeEvent<{ id?: string; value: any }>
+  //   event: React.ChangeEvent<{ id?: string; value: any }>
 
-  ) => {
+  // ) => {
 
-    const id = event.target.id as keyof typeof room;
+  //   const id = event.target.id as keyof typeof room;
 
-    const { value } = event.target;
+  //   const { value } = event.target;
 
-    setRoom({ ...room, [id]: value  === "" ? "" : Number(value)  });
-    console.log(`id: ${id} value:${value}`)
+  //   setRoom({ ...room, [id]: value  === "" ? "" : Number(value)  });
+  //   console.log(`id: ${id} value:${value}`)
 
-  };
+  // };
 
   const getRoomType =  async () => {
     let res = await GetRoomTypes();
@@ -156,7 +157,8 @@ function RoomCreate() {
       //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
       Room_No: room.Room_No,
-      Amount: typeof room?.Amount === "string" ? (room?.Amount === "" ? 0 : room?.Amount) : room?.Amount,
+      Amount: convertType(number)||0,
+      //Amount: convertType(room.Amount),
       Time: room.Time,
     };
 
@@ -303,12 +305,17 @@ function RoomCreate() {
 
           <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
-            <TextField
-          id="Amount" label="ราคาของห้อง" type="number" 
-          InputLabelProps={{ shrink: true,}} 
-          value={room?.Amount} 
-          onChange={handleInputChangenum}   
-          inputProps={{name: "Amount"}}    
+          <TextField
+              type="string"
+              value={number}
+              id="Amount"
+              label="ราคาห้องพัก"
+              variant="outlined"
+              inputProps={{
+                  name: "Amount",
+                  // min: 0
+              }}
+              onChange={(e)=>setNumber(e.target.value)} 
           />
             </FormControl>
           </Grid>

@@ -56,6 +56,7 @@ function StorageCreate() {
   const [employees, setEmployees] = useState<EmployeeInterface[]>([]);
   //const [storage, setStorage] = useState<StorageInterface[]>([]);
 
+  const [number, setNumber] = useState("");
   const [st, setSt] = useState<StorageInterface[]>([]);
   const [storage, setStorage] = useState<StorageInterface>({});
   const [success, setSuccess] = useState(false);
@@ -150,7 +151,7 @@ function StorageCreate() {
       ProductID: convertType(storage.ProductID),
       //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")+""),
-      Quantity: storage.Quantity,
+      Quantity: convertType(number)||0,
       Time: storage.Time,
     };
     console.log(data)
@@ -285,14 +286,15 @@ function StorageCreate() {
           <Grid item xs={6}>
           <FormControl fullWidth variant="outlined">
             <TextField
-          id="Quantity" label="จำนวน" type="number" 
+          id="Quantity" label="จำนวน" type="string" 
           InputLabelProps={{ shrink: true,}} 
-          value={storage?.Quantity} 
-          onChange={handleInputChangenumber}   
+          value={number} 
+          onChange={(e)=>setNumber(e.target.value)}   
           inputProps={{name: "Quantity"}}    
           />
             </FormControl>
           </Grid>
+
 
 
           {/*<Grid item xs={6}>
