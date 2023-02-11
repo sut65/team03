@@ -235,11 +235,11 @@ function ServiceAdd() {
             status.current = false;
         } else {
             getfooditem();
-            setFoodItemSum(fooditem - fooditemwant)
+            setFoodItemSum(fooditem - fooditemwant);
             getdrinkitem();
-            setDrinkItemSum(drinkitem - drinkitemwant)
+            setDrinkItemSum(drinkitem - drinkitemwant);
             getaccessorieitem();
-            setAccessorieItemSum(accessorieitem - accessorieitemwant)
+            setAccessorieItemSum(accessorieitem - accessorieitemwant);
         }
     });
 

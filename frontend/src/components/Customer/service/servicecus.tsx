@@ -96,6 +96,29 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                 return res;
             }
             
+            async function Customers(data: CustomerInterface) {
+                const requestOptions = {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                };
+            
+                let res = await fetch(`${apiUrl}/customers`, requestOptions)
+                    .then((response) => response.json())
+                    .then((res) => {
+                        if (res.data) {
+                            return { status: true, message: res.data };
+                        } else {
+                            console.log(res.error);
+                            return { status: false, message: res.customer_error };
+                        }
+                    });
+            
+                return res;
+            }
             
 
             async function GetCustomerlist() {
@@ -201,4 +224,5 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                     GetNametitleByUID,
                     GetCustomerByID,
                     GetCustomerlist,
+                    Customers,
                 }

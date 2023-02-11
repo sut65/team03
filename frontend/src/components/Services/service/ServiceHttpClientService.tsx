@@ -82,6 +82,18 @@ async function GetServiceByID(id?: string) {
         });
     return res;
 }
+async function GetServiceByIDn(id?: number) {
+    let res = await fetch(`${apiUrl}/service/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
 async function GetService(id: string) {
     let res = await fetch(`${apiUrl}/services/customer/${id}`, requestOptionsGet)
         .then((response) => response.json())
@@ -119,6 +131,42 @@ async function GetDrinkItemS(id?: string) {
     return res;
 }
 async function GetAccessoriesItemS(id?: string) {
+    let res = await fetch(`${apiUrl}/service/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data.AccessoriesItem;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+async function GetFoodItemSn(id?: number) {
+    let res = await fetch(`${apiUrl}/service/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data.FoodItem;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+async function GetDrinkItemSn(id?: number) {
+    let res = await fetch(`${apiUrl}/service/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data.DrinkItem;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+async function GetAccessoriesItemSn(id?: number) {
     let res = await fetch(`${apiUrl}/service/${id}`, requestOptionsGet)
         .then((response) => response.json())
         .then((res) => {
@@ -288,9 +336,13 @@ export {
     DeleteService,
     GetService,
     GetServiceByID,
+    GetServiceByIDn,
     GetFoodItemS,
     GetDrinkItemS,
     GetAccessoriesItemS,
+    GetFoodItemSn,
+    GetDrinkItemSn,
+    GetAccessoriesItemSn,
     GetFoods,
     GetFoodItem,
     UpdateFood,

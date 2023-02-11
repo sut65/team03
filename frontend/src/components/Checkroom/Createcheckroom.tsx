@@ -15,7 +15,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 //เพิ่ม
-
+import { Message } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Snackbar from "@mui/material/Snackbar";
@@ -48,7 +48,7 @@ function Checkroom() {
     const [Product, setProduct] = useState<ProductInterface[]>([]);
     const [date, setDate] = useState<Date | null>(new Date());
     const [employee, setEmployee] = React.useState<EmployeeInterface>();
-
+    const [message, setAlertMessage] = useState("");
     
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -177,10 +177,13 @@ useEffect(() => {
       EmployeeID: convertTypeC(localStorage.getItem('id')),
     };
     let res = await Checkrooms(data);
-    if (res) {
-        setSuccess(true);
+    if (res.status) {
+      setAlertMessage("บันทึกสำเร็จ");
+      setSuccess(true);
     } else {
-        setError(true);
+      console.log(res.message);
+      setAlertMessage(res.message);
+      setError(true);
     }
   }
 
@@ -377,7 +380,8 @@ return (
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="success">
-          บันทึกข้อมูลสำเร็จ
+           {/* บันทึกข้อมูลสำเร็จ */}
+           {message}
         </Alert>
       </Snackbar>
 
@@ -388,7 +392,8 @@ return (
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleClose} severity="error">
-          บันทึกข้อมูลไม่สำเร็จ
+             {/* บันทึกข้อมูลไม่สำเร็จ */}
+         {message}
         </Alert>
       </Snackbar>
     </div>
