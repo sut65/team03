@@ -15,7 +15,7 @@ func TestCustomerEmailisNotValid(t *testing.T) {
 	test := uint(1)
 
 	//ทำการตรวจสอบ Email ต้องถูกต้องมา Pattern ของ Email
-	e := Customer{
+	cus := Customer{
 			FirstName: "Sandee",
 			LastName: "Memak",
 			Age: 	30,
@@ -27,7 +27,7 @@ func TestCustomerEmailisNotValid(t *testing.T) {
 			Province_ID: &test,	
 	}
 
-	ok, err := govalidator.ValidateStruct(e)
+	ok, err := govalidator.ValidateStruct(cus)
 
 	g.Expect(ok).NotTo(gomega.BeTrue())
 

@@ -8,7 +8,7 @@ export interface CustomerInterface {
   LastName?: string;
   Password?: string;
   Age?: number;
-  Phone?: number;
+  Phone?: string;
   Email?: string;
   Gender?: GenderInterface;
   Gender_ID?: number;

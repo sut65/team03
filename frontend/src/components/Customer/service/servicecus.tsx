@@ -113,7 +113,7 @@ import { CustomerInterface } from "../../../models/modelCustomer/ICustomer"
                             return { status: true, message: res.data };
                         } else {
                             console.log(res.error);
-                            return { status: false, message: res.customer_error };
+                            return { status: false, message: res.error };
                         }
                     });
             
