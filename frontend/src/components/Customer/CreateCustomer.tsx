@@ -23,6 +23,7 @@ import { Message } from "@mui/icons-material";
 
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Customers } from "./service/servicecus";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -170,40 +171,20 @@ function Customer() {
       Nametitle_ID: convertType(customer.Nametitle_ID),
       Province_ID: convertType(customer.Province_ID),
     };
-    console.log(data);
-    const regexp = new RegExp(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-
-    console.log(regexp.test(data.Email + ""));
-
-    if (regexp.test(data.Email + "")) {
-      fetch(`${apiUrl}/customers`, requestOptions)
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(res);
-          if (res.data) {
-            return { status: true, message: res.data };
-          } else {
-            console.log(res.error);
-            return { status: false, message: res.error };
-          }
-        });
+    let res = await Customers(data);
+    if (res.status) {
+      setAlertMessage("บันทึกสำเร็จ");
+      setSuccess(true);
       setInterval(() => {
         window.location.assign("/");
-      }, 1000);
+      }, 8000);
     } else {
+      console.log(res.message);
+      setAlertMessage(res.message);
       setError(true);
     }
-  };
+  }
+
   return (
     <div>
       <Container maxWidth="sm" sx={{ marginTop: 6 }}>
@@ -409,7 +390,7 @@ function Customer() {
                     name: "Gender_ID",
                   }}
                 >
-                 <option aria-label="None" value="">
+                  <option aria-label="None" value="">
                     กรุณาเลือกเพศ
                   </option>
                   {gender.map((item: GenderInterface) => (
