@@ -50,20 +50,7 @@ function CheckInOutCreate() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   let today = new Date();
-
-  // function filterBookingsByToday(bookings: BookingsInterface[]) {
-  //   const today = new Date();
-  //   return bookings.filter((booking) => {
-  //     const bookingDate = new Date(booking.Start);
-  //     return (
-  //       bookingDate.getFullYear() === today.getFullYear() &&
-  //       bookingDate.getMonth() === today.getMonth() &&
-  //       bookingDate.getDate() === today.getDate()
-  //     );
-  //   });
-  // }
   
-
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
