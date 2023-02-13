@@ -1192,7 +1192,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//set check In-Out data
 	db.Model(&CheckInOut{}).Create(&CheckInOut{
 		Booking:          booking1,
-		CheckInTime:      time.Now(),
+		CheckInTime:      time.Date(2023, 2, 12, 0, 0, 0, 0, time.UTC),
 		CheckOutTime:     time.Time{},
 		CheckInOutStatus: checkout,
 		Employee:         Sobsa,

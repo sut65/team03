@@ -234,13 +234,13 @@ func UpdateCheckIn(c *gin.Context) {
 		cio.CheckOutTime = cioOld.CheckOutTime
 	}
 
-	if cio.CheckInTime.Before(cio.CheckOutTime) {
-		if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-in time"})
-			c.Abort()
-			return
-		}
-	} else {
+	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-in time"})
+		c.Abort()
+		return
+	}
+
+	if cio.CheckInTime.After(cio.CheckOutTime) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":    "Check in time must be before in check out time",
 			"In Time":  cio.CheckInTime,
@@ -248,6 +248,7 @@ func UpdateCheckIn(c *gin.Context) {
 		})
 		c.Abort()
 		return
+
 	}
 
 	if cio.BookingID == nil {
@@ -311,13 +312,13 @@ func UpdateCheckOut(c *gin.Context) {
 		cio.CheckInTime = cioOld.CheckInTime
 	}
 
-	if cio.CheckOutTime.After(cio.CheckInTime) {
-		if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-out time"})
-			c.Abort()
-			return
-		}
-	} else {
+	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-out time"})
+		c.Abort()
+		return
+	}
+
+	if cio.CheckOutTime.Before(cio.CheckInTime) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":    "Check out time must be after in check in time",
 			"In Time":  cio.CheckInTime,
@@ -369,11 +370,19 @@ func CheckOut(c *gin.Context) {
 
 	cio.CheckInOutStatus.ID = 2
 
-	
+	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-out time"})
+		c.Abort()
+		return
+	}
 
-	// แทรกการ validate ไว้ช่วงนี้ของ controller
-	if _, err := govalidator.ValidateStruct(cio); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if cio.CheckOutTime.Before(cio.CheckInTime) {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":    "Check out time must be after in check in time",
+			"In Time":  cio.CheckInTime,
+			"Out Time": cio.CheckOutTime,
+		})
+		c.Abort()
 		return
 	}
 

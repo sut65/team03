@@ -242,7 +242,7 @@ return (
                   </option>
                   {room.map((item: RoomInterface) => (
                     <option value={item.ID} key={item.ID}>
-                      {item.ID}
+                      {item.Room_No}
                     </option>
                   ))}
                 </Select>
@@ -275,7 +275,7 @@ return (
                   fullWidth
                 >
                   <option aria-label="None" value="">
-                    กรุณาเลือกคำนำหน้า
+                    กรุณาเลือกอุปกรณ์ภายในห้อง
                   </option>
                   {Product.map((item: ProductInterface) => (
                     <option value={item.ID} key={item.ID}>

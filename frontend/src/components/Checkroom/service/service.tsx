@@ -119,7 +119,8 @@ async function Checkrooms(data: CheckroomInterface) {
     return res;
 }
 
-async function GetCheckroomslist() {
+
+async function GetChecklists() {
     const requestOptions = {
         method: "GET",
           headers: {
@@ -129,6 +130,28 @@ async function GetCheckroomslist() {
     };
 
     let res = await fetch(`${apiUrl}/checkrooms`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+async function GetCheckroomslist(id : any) {
+    const requestOptions = {
+        method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+    };
+
+    let res = await fetch(`${apiUrl}/checkroom/${id}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -199,5 +222,5 @@ export {
     GetProduct,
     GetDamage, 
     GetStatus,
-    
+    GetChecklists,
 };
