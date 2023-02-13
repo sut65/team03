@@ -44,6 +44,11 @@ func init() {
 		return t.After(time.Now().Add(time.Second * -599))
 	})
 
+	// govalidator.CustomTypeTagMap.Set("Future", func(i interface{}, context interface{}) bool {
+	// 	t := i.(time.Time)
+	// 	return t.Before(time.Now().Add(time.Second * 599))
+	// })
+
 	govalidator.CustomTypeTagMap.Set("IsAfterCheckIn", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
 		cio := context.(CheckInOut)

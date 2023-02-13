@@ -230,12 +230,24 @@ func UpdateCheckIn(c *gin.Context) {
 
 	cio.CheckInOutStatusID = cioOld.CheckInOutStatusID
 
-	if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		cio.CheckInTime = cioOld.CheckInTime
-	}
-
 	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
 		cio.CheckOutTime = cioOld.CheckOutTime
+	}
+
+	if cio.CheckInTime.Before(cio.CheckOutTime) {
+		if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-in time"})
+			c.Abort()
+			return
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":    "Check in time must be before in check out time",
+			"In Time":  cio.CheckInTime,
+			"Out Time": cio.CheckOutTime,
+		})
+		c.Abort()
+		return
 	}
 
 	if cio.BookingID == nil {
@@ -249,11 +261,11 @@ func UpdateCheckIn(c *gin.Context) {
 	}
 	cio.Employee = emp
 
-	// แทรกการ validate ไว้ช่วงนี้ของ controller
-	if _, err := govalidator.ValidateStruct(cio); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	// // แทรกการ validate ไว้ช่วงนี้ของ controller
+	// if _, err := govalidator.ValidateStruct(cio); err != nil {
+	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	// 	return
+	// }
 
 	if err := entity.DB().Save(&cio).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -299,9 +311,22 @@ func UpdateCheckOut(c *gin.Context) {
 		cio.CheckInTime = cioOld.CheckInTime
 	}
 
-	if cio.CheckOutTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
-		cio.CheckOutTime = cioOld.CheckOutTime
+	if cio.CheckOutTime.After(cio.CheckInTime) {
+		if cio.CheckInTime.String() == "0001-01-01 00:00:00 +0000 UTC" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Please select check-out time"})
+			c.Abort()
+			return
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":    "Check out time must be after in check in time",
+			"In Time":  cio.CheckInTime,
+			"Out Time": cio.CheckOutTime,
+		})
+		c.Abort()
+		return
 	}
+
 	if cio.BookingID == nil {
 		cio.BookingID = cioOld.BookingID
 	}
@@ -312,12 +337,6 @@ func UpdateCheckOut(c *gin.Context) {
 		return
 	}
 	cio.Employee = emp
-
-	// แทรกการ validate ไว้ช่วงนี้ของ controller
-	if _, err := govalidator.ValidateStruct(cio); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 
 	if err := entity.DB().Save(&cio).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -348,8 +367,9 @@ func CheckOut(c *gin.Context) {
 		return
 	}
 
-	// cio.CheckOutTime = time.Now()
 	cio.CheckInOutStatus.ID = 2
+
+	
 
 	// แทรกการ validate ไว้ช่วงนี้ของ controller
 	if _, err := govalidator.ValidateStruct(cio); err != nil {
