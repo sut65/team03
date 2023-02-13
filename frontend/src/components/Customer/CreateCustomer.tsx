@@ -170,6 +170,10 @@ function Customer() {
       Gender_ID: convertType(customer.Gender_ID),
       Nametitle_ID: convertType(customer.Nametitle_ID),
       Province_ID: convertType(customer.Province_ID),
+      Signin: {
+        Username: customer.Email ?? "",
+        Password: customer.Password ?? "",
+      }
     };
     let res = await Customers(data);
     if (res.status) {
