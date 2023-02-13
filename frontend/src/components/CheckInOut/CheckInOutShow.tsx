@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
@@ -27,6 +27,35 @@ function CheckInOutShow() {
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
   const [message, setAlertMessage] = useState("");
+  //For Delete state 
+  const [deleteID, setDeleteID] = React.useState<number>(0)
+
+  // For Set dialog open
+  const [openDelete, setOpenDelete] = React.useState(false);
+  
+  const handleDialogDeleteclose = () => {
+    setOpenDelete(false)
+    setTimeout(() => {
+        setDeleteID(0)
+    }, 500)
+}
+
+const handleDialogDeleteOpen = (ID: number) => {
+  setDeleteID(ID)
+  setOpenDelete(true)
+}
+
+const handleDelete = async () => {
+  let res = await DeleteCheckInOut(deleteID)
+  if (res.status) {
+      //console.log(res.data)
+  } else {
+      //console.log(res.data)
+  }
+  getList();
+  setOpenDelete(false)
+
+}
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -48,15 +77,15 @@ function CheckInOutShow() {
     }
   };
 
-  const onDelete = async (id: number) => {
-    let res = await DeleteCheckInOut(id);
-    if (res) {
-      setSuccessDel(true);
-    } else {
-      setErrorDel(true);
-    }
-    getList()
-  }
+  // const onDelete = async (id: number) => {
+  //   let res = await DeleteCheckInOut(id);
+  //   if (res) {
+  //     setSuccessDel(true);
+  //   } else {
+  //     setErrorDel(true);
+  //   }
+  //   getList()
+  // }
 
   const onCheckOut = async (id: number) => {
     let res = await CheckOut(id);
@@ -123,7 +152,8 @@ function CheckInOutShow() {
               //variant="contained"
               color="error"
               onClick={() => {
-                 onDelete(row.ID);
+                 handleDialogDeleteOpen(row.ID)
+                //  onDelete(row.ID);
               }}
               sx={{borderRadius: 20,'&:hover': {color: '#ef5350', backgroundColor: '#F9EBEB'}}}
               endIcon={<DeleteOutlineIcon />}
@@ -235,8 +265,30 @@ function CheckInOutShow() {
             rowsPerPageOptions={[5]}
           />
         </div>
+        <Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {`Do you want to delete check in out record No. ${checkInOuts.filter((cio) => (cio.ID === deleteID)).at(0)?.ID}?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      If you delete this data, you won't be able to recover it again. Do you want to delete this data?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogDeleteclose}>cancel</Button>
+                    <Button onClick={handleDelete} className="bg-red" autoFocus>
+                        confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
       </Container>
     </div>
+    
   );
 }
 
