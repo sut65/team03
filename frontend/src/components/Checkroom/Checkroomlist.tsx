@@ -11,7 +11,7 @@ import { DataGrid, GridApi, GridColDef } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 import moment from "moment";
-import {GetCheckroomslist, DeleteCheckroom}  from "./service/service";
+import {GetChecklists, DeleteCheckroom}  from "./service/service";
 
 
 function Checkroomlist() {
@@ -48,7 +48,7 @@ function Checkroomlist() {
     };
   
     const getCheckroomlist = async () => {
-      let res = await GetCheckroomslist();
+      let res = await GetChecklists();
       if (res) {
           setCheckroom(res);
           console.log(res);
@@ -67,7 +67,7 @@ function Checkroomlist() {
    
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 100 },
-        { field: "RoomID", headerName: "หมายเลขห้อง", width: 100 },
+        { field: "Room", headerName: "หมายเลขห้อง", width: 100 , valueFormatter: (params) => params?.value?.Room_No,},
         { field: "Product", headerName: "อุปกรณ์", width: 150 , valueFormatter: (params) => params?.value?.Name,},
         { field: "Damage", headerName: "ความเสียหาย", width: 150 , valueFormatter: (params) => params?.value?.Description,},
         { field: "Status", headerName: "สถานะของห้อง", width: 150 , valueFormatter: (params) => params?.value?.S_Name,},
