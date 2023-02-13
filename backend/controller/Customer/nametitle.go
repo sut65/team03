@@ -64,7 +64,7 @@ func UpdateNametitle(c *gin.Context) {
 	}
 
 	if tx := entity.DB().Where("id = ?", nametitle.ID).First(&nametitle); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "gender not found"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "nametitle not found"})
 		return
 	}
 

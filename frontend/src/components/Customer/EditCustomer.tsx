@@ -8,100 +8,84 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { Link, Link as RouterLink, useParams } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
-
-import Stack from '@mui/material/Stack';
-import HouseIcon from '@mui/icons-material/House';
-import EditIcon from '@mui/icons-material/Edit';
+import { Link, Link as RouterLink } from "react-router-dom";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
 import { NametitleInterface } from "../../models/modelCustomer/INametitle";
-import { GetCustomerByID, GetCustomerByUID, GetNametitleByUID, UpdateCustomer } from "./service/servicecus";
+import {  GetCustomerByUID,  UpdateCustomer } from "./service/servicecus";
 import { FormControl, Select, SelectChangeEvent } from "@mui/material";
 import { ProvinceInterface } from "../../models/modelCustomer/IProvince";
 import { GenderInterface } from "../../models/modelCustomer/IGender";
-import { Agent } from "http";
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-  
-    ref
-  ) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-  });
-  
+  props,
+
+  ref
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 
 function EditCustomer() {
-    const { id } = useParams();
-    const [customer, setCustomer] = useState<CustomerInterface>({});
-    const [nametitle, setNametitle] = useState<NametitleInterface[]>([]);
-    const [gender, setGender] = useState<GenderInterface[]>([]);
-    const [province, setProvince] = useState<ProvinceInterface[]>([]);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
-    const [password, setPassword] = React.useState<State>({
-      password: "",
-      showPassword: false,
+  
+  const [customer, setCustomer] = useState<CustomerInterface>({});
+  const [nametitle, setNametitle] = useState<NametitleInterface[]>([]);
+  const [gender, setGender] = useState<GenderInterface[]>([]);
+  const [province, setProvince] = useState<ProvinceInterface[]>([]);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+  
+  const handleChange = (event: SelectChangeEvent<number>) => { 
+  const name = event.target.name as keyof typeof customer;
+    setCustomer({
+      ...customer,
+      [name]: event.target.value,
     });
-  
-    // ==============================(handle password)=====================================
-  
-    interface State {
-      password: string;
-      showPassword: boolean;
-    }
-  
-    const handlePassword =
-      (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword({ ...password, [prop]: event.target.value });
-      };
-  
-    const handleClickShowPassword = () => {
-      setPassword({
-        ...password,
-        showPassword: !password.showPassword,
-      });
-    };
-  
-    const handleMouseDownPassword = (
-      event: React.MouseEvent<HTMLButtonElement>
-    ) => {
-      event.preventDefault();
-    };
-    
+  };
 
-      const handleClose = (
-        event?: React.SyntheticEvent | Event,
-    
-        reason?: string
-      ) => {
-        if (reason === "clickaway") {
-          return;
-        }
-    
-        setSuccess(false);
-        setError(false);
-      };
-    
-      const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name as keyof typeof customer;
-        console.log(event.target.name);
-        console.log(event.target.value);
-        setCustomer({
+
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSuccess(false);
+    setError(false);
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<{ id?: string; value: unknown }>
+) => {
+    const id = event.target.id as keyof typeof customer;
+    setCustomer({
+        ...customer,
+        [id]: event.target.value,
+    });};
+
+    const handleInputAge = (
+      event: React.ChangeEvent<{ id?: string; value: unknown }>
+  ) => {
+      const id = event.target.id as keyof typeof customer;
+      const { value } = event.target;
+      setCustomer({
+          ...customer,
+          [id]: value  === "" ? "" : Number(value)  
+      });};
+  
+
+    const handleSelectChange = (event: SelectChangeEvent<string>) => {
+      const name = event.target.name as keyof typeof customer;
+      setCustomer({
           ...customer,
           [name]: event.target.value,
-        });
-        console.log(customer);
-      };
-    
-      const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const name = e.target.name;
-        console.log(name);
-        setCustomer({ ...customer, [name]: e.target.value });
-      };
-    
+      });
+
+  };
+
+
   // =========================(Fetch API)====================================================
 
   const apiUrl = "http://localhost:8080";
@@ -110,8 +94,9 @@ function EditCustomer() {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
-  },
+    },
   };
+  
 
   const fetchGender = async () => {
     fetch(`${apiUrl}/customers/genders`, requestOptionsGet)
@@ -138,7 +123,7 @@ function EditCustomer() {
   const fetchCustomer = async () => {
     let res = await GetCustomerByUID();
     res && setCustomer(res);
-};
+  };
 
   useEffect(() => {
     fetchGender();
@@ -154,10 +139,10 @@ function EditCustomer() {
 
   async function update() {
     let newdata = {
-      ID: customer.ID,
-      NametitleID: convertType(customer.Nametitle_ID),
-      GenderID: convertType(customer.Gender_ID),
-      ProvinceID: convertType(customer.Province_ID),
+      ID: convertType(customer.ID),
+      Nametitle_ID: convertType(customer.Nametitle_ID),
+      Gender_ID: convertType(customer.Gender_ID),
+      Province_ID: convertType(customer.Province_ID),
       Firstname: customer.FirstName,
       Lastname: customer.LastName,
       Age: customer.Age,
@@ -169,18 +154,18 @@ function EditCustomer() {
     console.log(JSON.stringify(newdata))
     let res = await UpdateCustomer(newdata);
     if (res) {
-        setSuccess(true);
-        console.log(newdata)
+      setSuccess(true);
+      console.log(newdata)
     } else {
-        setError(true);
+      setError(true);
     }
     console.log(JSON.stringify(newdata))
   };
 
 
-    return (
+  return (
     <div>
-        <Snackbar
+      <Snackbar
         open={success}
         autoHideDuration={5000}
         onClose={handleClose}
@@ -201,187 +186,202 @@ function EditCustomer() {
           บันทึกข้อมูลไม่สำเร็จ
         </Alert>
       </Snackbar>
-        <Container maxWidth="sm" sx={{ marginTop: 6 }}>
-    <Paper
-      elevation={4}
-      sx={{
-        marginBottom: 2,
-        marginTop: 2,
-        padding: 1,
-        paddingX: 2,
-        display: "flex",
-        justifyContent: "flex-start",
-      }}
-    >
-      <h4 style={{ color: "#000000" }}>Profile</h4>
-    </Paper>
-    <form>
-      <Paper
-        variant="outlined"
-        sx={{ padding: 2, paddingTop: 1, marginBottom: 2 }}
-        
-      >
-        
+      <Container maxWidth="sm" sx={{ marginTop: 6 }}>
+        <Paper
+          elevation={4}
+          sx={{
+            marginBottom: 2,
+            marginTop: 2,
+            padding: 1,
+            paddingX: 2,
+            display: "flex",
+            justifyContent: "flex-start",
+          }}
+        >
+          <h4 style={{ color: "#000000" }}>Profile</h4>
+        </Paper>
+        <form>
+          <Paper
+            variant="outlined"
+            sx={{ padding: 2, paddingTop: 1, marginBottom: 2 }}
 
-        {/*=======================================(Title)===========================================================*/}
-        <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
-                <Grid
+          >
+
+
+            {/*=======================================(Title)===========================================================*/}
+            <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
+              <Grid
                 xs={12}
                 md={8}
                 sx={{ display: "flex", alignItems: "center", margin: 1 }}
-                >
+              >
                 <FormLabel
-                id="demo-simple-select-helper-label"
-                sx={{ marginRight: 6.5, fontSize: 17, paddingBottom: 2 }}
+                  id="demo-simple-select-helper-label"
+                  sx={{ marginRight: 6.5, fontSize: 17, paddingBottom: 2 }}
                 >
-                Title:
+                  Title:
                 </FormLabel>
                 <FormControl fullWidth variant="outlined">
-                <Select
-                native
-                value={customer.Nametitle_ID+""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "Nametitle_ID",
-                }}
-              >
-                {nametitle.map((item: NametitleInterface) => (
-                  <option value={item.ID}>{item.NT_Name}</option>
-                ))}
-              </Select>
-                </FormControl>              
+                  <Select
+                    id="Nametitle_ID"
+                    native
+                    value={customer.Nametitle_ID}
+                    onChange={handleChange}
+                    inputProps={{
+                      name: "Nametitle_ID",
+                    }}
+                  >
+                    {nametitle.map((item: NametitleInterface) => (
+                      <option value={item.ID}>{item.NT_Name}</option>
+                    ))}
+                  </Select>
+                </FormControl>
                 <FormHelperText disabled sx={{ width: 350, marginLeft: 2 }}>
-                คำนำหน้าชื่อ
+                  คำนำหน้าชื่อ
                 </FormHelperText>
-                </Grid>
-
-                {/*============================================(First name)======================================================*/}
-                <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>First name</p>
-                <TextField
-                  id="Fristname"
-                  type="string"
-                  variant="outlined"
-                  fullWidth
-                  required
-                  value={customer.FirstName}
-                  onChange={handleInputChange}
-                />
               </Grid>
-            
-                {/*=============================================(Last name)=====================================================*/}
-                <Grid xs={6} md={6}>
+
+              {/*============================================(First name)======================================================*/}
+              <Grid xs={6} md={6}>
+                <p style={{ color: "grey", fontSize: 17 }}>First name</p>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="FirstName"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    value={customer.FirstName || ""}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+
+              </Grid>
+
+              {/*=============================================(Last name)=====================================================*/}
+              <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>Last name</p>
-                <TextField
-                id="lastname"
-                variant="outlined"
-                name="Lastname"
-                fullWidth
-                required
-                value={customer.LastName}
-                onChange={handleInputChange}
-                />
-                </Grid>
-                </Grid>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="LastName"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    value={customer.LastName || ""}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
 
-                <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
-                {/*============================================(Age)======================================================*/}
-                <Grid xs={6} md={6}>
+            <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
+              {/*============================================(Age)======================================================*/}
+              <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>Age</p>
-                <TextField
-                id="Age"             
-                fullWidth
-                required
-                 value={customer.Age}
-                />
-                </Grid>
-                {/*=============================================(Phone)=====================================================*/}
-                <Grid xs={6} md={6}>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="Age"
+                    size="medium"
+                    value={customer.Age}
+                    onChange={handleInputAge}
+                  />
+                </FormControl>
+              </Grid>
+              {/*=============================================(Phone)=====================================================*/}
+              <Grid xs={6} md={6}>
                 <p style={{ color: "grey", fontSize: 17 }}>Phone number</p>
-                <TextField
-                id="Phone"
-                fullWidth
-                required
-                value={customer.Phone}
-                />
-                </Grid>
-                </Grid>
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="Phone"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    value={customer.Phone || ""}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
 
 
-                {/*===========================================(email)=======================================================*/}
-                <Grid container spacing={1}>
-                <Grid
+            {/*===========================================(email)=======================================================*/}
+            <Grid container spacing={1}>
+              <Grid
                 xs={12}
                 md={12}
                 sx={{ display: "flex", alignItems: "center", margin: 1 }}
-                >
+              >
                 <FormLabel sx={{ marginRight: 7, fontSize: 17 }}>
-                Email:
+                  Email:
                 </FormLabel>
-                <TextField
-                type="email"
-                id="outlined-basic"
-                required
-                fullWidth
-                value={customer.Email}
-                />
-                </Grid>
-                
-                {/*=======================================(select Gender)===========================================================*/}
-                <Grid
+                <FormControl fullWidth variant="outlined">
+                  <TextField
+                    id="Email"
+                    variant="outlined"
+                    type="string"
+                    size="medium"
+                    value={customer.Email || ""}
+                    onChange={handleInputChange}
+                  />
+                </FormControl>
+              </Grid>
+
+              {/*=======================================(select Gender)===========================================================*/}
+              <Grid
                 xs={12}
                 md={9}
                 sx={{ display: "flex", alignItems: "center", margin: 1 }}
-                >
+              >
                 <FormLabel
-                id="demo-simple-select-helper-label"
-                sx={{ marginRight: 5.5, fontSize: 17, paddingBottom: 2 }}
+                  id="demo-simple-select-helper-label"
+                  sx={{ marginRight: 5.5, fontSize: 17, paddingBottom: 2 }}
                 >
-                Gender:
+                  Gender:
                 </FormLabel>
                 <Select
-                native
-                value={customer.Gender_ID+""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "Gender_ID",
-                }}
-              >
-                {gender.map((item: GenderInterface) => (
-                  <option value={item.ID}>{item.G_Name}</option>
-                ))}
-              </Select>
-                
-                </Grid>
+                  id="Gender_ID"
+                  native
+                  value={customer.Gender_ID}
+                  onChange={handleChange}
+                  inputProps={{
+                    name: "Gender_ID",
+                  }}
+                >
+                  {gender.map((item: GenderInterface) => (
+                    <option value={item.ID}>{item.G_Name}</option>
+                  ))}
+                </Select>
 
-                {/*=======================================(Province)===========================================================*/}
-                <Grid
+              </Grid>
+
+              {/*=======================================(Province)===========================================================*/}
+              <Grid
                 xs={12}
                 md={8}
                 sx={{ display: "flex", alignItems: "center", margin: 1 }}
-                >
-                <FormLabel
-                id="demo-simple-select-helper-label"
-                sx={{ marginRight: 4.5, fontSize: 17, paddingBottom: 2 }}
-                >
-                Province:
-                </FormLabel>
-                
-                <Select
-                native
-                value={customer.Province_ID+""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "Province_ID",
-                }}
               >
-                {province.map((item: ProvinceInterface) => (
-                  <option value={item.ID}>{item.P_Name}</option>
-                ))}
-              </Select>
-                </Grid>
-    
-        <Grid
+                <FormLabel
+                  id="demo-simple-select-helper-label"
+                  sx={{ marginRight: 4.5, fontSize: 17, paddingBottom: 2 }}
+                >
+                  Province:
+                </FormLabel>
+
+                <Select
+                  id="Province_ID"
+                  native
+                  value={customer.Province_ID}
+                  onChange={handleChange}
+                  inputProps={{
+                    name: "Province_ID",
+                  }}
+                >
+                  {province.map((item: ProvinceInterface) => (
+                    <option value={item.ID}>{item.P_Name}</option>
+                  ))}
+                </Select>
+              </Grid>
+
+              <Grid
                 container
                 xs={12}
                 md={12}
@@ -391,7 +391,7 @@ function EditCustomer() {
                 <Button variant="contained" size="large" onClick={update}>
                   บันทึกการแก้ไข
                 </Button>
-                
+
                 <Link to="/customer/profile" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
@@ -402,12 +402,12 @@ function EditCustomer() {
                   </Button>
                 </Link>
               </Grid>
-            
-            
-        </Grid></Paper></form></Container></div>
-    )
-        
-    
+
+
+            </Grid></Paper></form></Container></div>
+  )
+
+
 
 }
 
