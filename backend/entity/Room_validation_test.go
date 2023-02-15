@@ -94,7 +94,7 @@ func TestAmount_Zero(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("กรุณากรอกราคาที่มากกว่าศูนย์"))
+	g.Expect(err.Error()).To(Equal("กรุณากรอกราคา"))
 }
 
 func TestAmount_CannotBeNegative(t *testing.T) {
