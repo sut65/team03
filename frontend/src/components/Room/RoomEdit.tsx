@@ -354,7 +354,7 @@ function RoomEdit() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
                         <DesktopDateTimePicker
-                        label="วันที่และเวลา"
+                        label="วันที่และเวลาที่บันทึกข้อมูล"
                         value={room.Time}
                         onChange={(newValue) => {
                             setRoom({
@@ -373,7 +373,7 @@ function RoomEdit() {
               component={RouterLink}
               to="/RT"
               variant="contained"
-              color="inherit"
+              color="info"
             >
               กลับ
             </Button>

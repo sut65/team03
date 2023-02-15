@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import Box from "@mui/material/Box";
 
-import { Alert, Snackbar } from "@mui/material";
+//import { Alert, Snackbar } from "@mui/material";
 
 // //import { UsersInterface } from "../models/IUser";
 
@@ -37,7 +37,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import moment from "moment";
 import { GetRooms, Room, DeleteRoom } from "./service/RoomHttpClientService";
-
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
+import React from "react";
 
 const theme = createTheme({
   palette: {
@@ -63,7 +64,36 @@ function RoomShow() {
   const [errorDel, setErrorDel] = useState(false);
   const [id, setId] = useState(0);
 
-  
+   //For Delete state 
+   const [deleteID, setDeleteID] = React.useState<number>(0)
+
+   // For Set dialog open
+   const [openDelete, setOpenDelete] = React.useState(false);
+ 
+   const handleDialogDeleteclose = () => {
+     setOpenDelete(false)
+     setTimeout(() => {
+         setDeleteID(0)
+     }, 500)
+ }
+ 
+ const handleDialogDeleteOpen = (ID: number) => {
+   setDeleteID(ID)
+   setOpenDelete(true)
+ }
+ 
+ const handleDelete = async () => {
+   let res = await DeleteRoom(deleteID)
+   if (res.status) {
+    console.log(res.status)
+   } else {
+    console.log(res.status)
+   }
+   getList();
+   setOpenDelete(false)
+ 
+ }
+ 
 
   // const getRooms = async () => {
   //     const apiUrl = `http://localhost:8080/service/rooms`;
@@ -130,7 +160,7 @@ function RoomShow() {
 
    { field: "Amount", headerName: "ราคาของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Amount,},
 
-   { field: "Time", headerName: "วันที่และเวลา", width: 150, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
+   { field: "Time", headerName: "วันที่และเวลาที่บันทึกข้อมูล", width: 150, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
 
    {
     field: "delete",
@@ -145,8 +175,10 @@ function RoomShow() {
             //variant="contained"
             color="error"
             onClick={() => {
-               onDelete(row.ID);
+              //  onDelete(row.ID);
+               handleDialogDeleteOpen(row.ID)
             }}
+            
             sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
             endIcon={<DeleteOutlineIcon />}
         >
@@ -231,7 +263,7 @@ function RoomShow() {
               component={RouterLink}
               to="/RT/Create"
               variant="contained"
-              color="info"
+              color="inherit"
             >
               Add
             </Button>
@@ -241,7 +273,7 @@ function RoomShow() {
               component={RouterLink}
               to="/RT/Edit"
               variant="contained"
-              color="info"
+              color="inherit"
             >
               Edit
             </Button>
@@ -256,6 +288,27 @@ function RoomShow() {
             rowsPerPageOptions={[5]}
           />
         </div>
+        <Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" > 
+                    {`คุณต้องการลบข้อมูลหมายเลขห้อง ${room.filter((room) => (room.ID === deleteID)).at(0)?.Room_No}?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      ถ้าคุณลบข้อมูลนี้ คุณจะไม่สามารถกู้ข้อมูลคืนได้ คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="inherit" onClick={handleDialogDeleteclose}>ยกเลิก</Button>
+                    <Button color="error" onClick={handleDelete} autoFocus>
+                        ยืนยัน
+                    </Button>
+                </DialogActions>
+            </Dialog>
       </Container>
     </div>
 

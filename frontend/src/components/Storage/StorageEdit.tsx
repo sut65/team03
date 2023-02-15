@@ -387,7 +387,7 @@ function StorageCreate() {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
                         <DesktopDateTimePicker
-                        label="วันที่และเวลา"
+                        label="วันที่และเวลาที่บันทึกข้อมูล"
                         value={storage.Time}
                         onChange={(newValue) => {
                             setStorage({
@@ -406,7 +406,7 @@ function StorageCreate() {
               component={RouterLink}
               to="/RoomW"
               variant="contained"
-              color="inherit"
+              color="info"
             >
               กลับ
             </Button>

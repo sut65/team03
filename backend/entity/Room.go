@@ -33,7 +33,7 @@ type State struct {
 }
 type Room struct {
 	gorm.Model
-	Amount  int       `valid:"required~กรุณากรอกราคาที่มากกว่าศูนย์, range(0|9223372036854775807)~กรุณากรอกราคาเป็นจำนวนเต็มบวก"`
+	Amount  int       `valid:"required~กรุณากรอกราคา, range(0|9223372036854775807)~กรุณากรอกราคาเป็นจำนวนเต็มบวก"`
 	Room_No string    `valid:"matches(^[A-D]\\d{2}$)~หมายเลขห้องต้องขึ้นต้นด้วย A-D ตามด้วยตัวเลข 2 หลัก, required~กรุณากรอกหมายเลขห้อง"`
 	Time    time.Time `valid:"DelayNow3Min~วันที่และเวลาไม่ถูกต้อง"`
 

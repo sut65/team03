@@ -1,4 +1,4 @@
-//import React, { useEffect } from "react";
+import React from "react";
 
 //import { Link as RouterLink } from "react-router-dom";
 
@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 
 import Box from "@mui/material/Box";
 
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 
 // //import { UsersInterface } from "../models/IUser";
 
@@ -63,7 +63,35 @@ function StorageShow() {
   const [errorDel, setErrorDel] = useState(false);
   const [id, setId] = useState(0);
 
-  
+  //For Delete state 
+   const [deleteID, setDeleteID] = React.useState<number>(0)
+
+   // For Set dialog open
+   const [openDelete, setOpenDelete] = React.useState(false);
+ 
+   const handleDialogDeleteclose = () => {
+     setOpenDelete(false)
+     setTimeout(() => {
+         setDeleteID(0)
+     }, 500)
+ }
+ 
+ const handleDialogDeleteOpen = (ID: number) => {
+   setDeleteID(ID)
+   setOpenDelete(true)
+ }
+ 
+ const handleDelete = async () => {
+   let res = await DeleteStorage(deleteID)
+   if (res.status) {
+       console.log(res.data)
+   } else {
+       console.log(res.data)
+   }
+   getList();
+   setOpenDelete(false)
+ 
+ }
 
   // const getRooms = async () => {
   //     const apiUrl = `http://localhost:8080/service/rooms`;
@@ -104,15 +132,15 @@ function StorageShow() {
     }
   };
 
-  const onDelete = async (id: number) => {
-    let res = await DeleteStorage(id);
-    if (res) {
-      setSuccessDel(true);
-    } else {
-      setErrorDel(true);
-    }
-    getList()
-  }
+  // const onDelete = async (id: number) => {
+  //   let res = await DeleteStorage(id);
+  //   if (res) {
+  //     setSuccessDel(true);
+  //   } else {
+  //     setErrorDel(true);
+  //   }
+  //   getList()
+  // }
 
 
 
@@ -128,7 +156,7 @@ function StorageShow() {
    
    { field: "Quantity", headerName: "จำนวน", width: 150 , valueFormatter: (params) => params?.value?.Quantity,},
 
-   { field: "Time", headerName: "วันที่และเวลา", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
+   { field: "Time", headerName: "วันที่และเวลาที่บันทึกข้อมูล", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
 
    {
     field: "delete",
@@ -143,7 +171,8 @@ function StorageShow() {
             //variant="contained"
             color="error"
             onClick={() => {
-               onDelete(row.ID);
+               //onDelete(row.ID);
+               handleDialogDeleteOpen(row.ID)
             }}
             sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
             endIcon={<DeleteOutlineIcon />}
@@ -229,7 +258,7 @@ function StorageShow() {
               component={RouterLink}
               to="/RoomW/Create"
               variant="contained"
-              color="primary"
+              color="inherit"
             >
               Add
             </Button>
@@ -239,7 +268,7 @@ function StorageShow() {
               component={RouterLink}
               to="/RoomW/Edit"
               variant="contained"
-              color="primary"
+              color="inherit"
             >
               Edit
             </Button>
@@ -254,6 +283,27 @@ function StorageShow() {
             rowsPerPageOptions={[5]}
           />
         </div>
+        <Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" >
+                    {`คุณต้องการลบข้อมูลคลังสินค้าที่รหัสสินค้า${storage.filter((storage) => (storage.ID === deleteID)).at(0)?.ID} ?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                    ถ้าคุณลบข้อมูลนี้ คุณจะไม่สามารถกู้ข้อมูลคืนได้ คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="inherit" onClick={handleDialogDeleteclose}>ยกเลิก</Button>
+                    <Button color="error" onClick={handleDelete} autoFocus>
+                        ยืนยัน
+                    </Button>
+                </DialogActions>
+            </Dialog>
       </Container>
     </div>
 
