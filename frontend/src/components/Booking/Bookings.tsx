@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { BookingsInterface } from "../../models/modelBooking/IBooking";
-import { GetBookings } from "./services/BookingHttpClientService";
+import { GetBookingsBYUID, GetBookingsSumTotal } from "./services/BookingHttpClientService";
 
 function Bookings() {
     const [bookings, setBookings] = useState<BookingsInterface[]>([]);
@@ -16,7 +16,7 @@ function Bookings() {
     }, []);
 
     const getBookings = async () => {
-        let res = await GetBookings();
+        let res = await GetBookingsBYUID();
         if (res) {
             setBookings(res);
             console.log(res);
@@ -26,10 +26,11 @@ function Bookings() {
     const columns: GridColDef[] = [
         { field: "ID", headerName: "ลำดับ", width: 50 },
         { field: "Branch", headerName: "สาขา", width: 250, valueFormatter: (params) => params.value.B_name, },
-        { field: "Room", headerName: "ห้องพักหมายเลข", width: 250, valueFormatter: (params) => params.value.ID, },
+        { field: "Room", headerName: "ห้องพักหมายเลข", width: 250, valueFormatter: (params) => params.value.Room_No, },
         { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150 },
         { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150 },
-        { field: "Customer", headerName: "จองโดย", width: 250, valueFormatter: (params) => params.value.FirstName, },
+        { field: "Customer", headerName: "จองโดย", width: 150, valueFormatter: (params) => params.value.FirstName, },
+        { field: "Total", headerName: "คิดเป็นเงิน/รายการ", width: 150 },
     ]
 
     return (

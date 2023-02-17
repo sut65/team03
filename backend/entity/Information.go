@@ -1114,6 +1114,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
 		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer1,
+		Total:    float64(Room1.Amount),
 	})
 
 	db.Model(&Booking{}).Create(&Booking{
@@ -1122,6 +1123,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
 		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
 		Customer: Customer2,
+		Total:    float64(Room1.Amount),
 	})
 
 	now := time.Now()
@@ -1133,6 +1135,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Start:    today,
 		Stop:     today.AddDate(0, 0, 1),
 		Customer: Customer2,
+		Total:    float64(Room1.Amount),
 	})
 
 	var booking1 Booking

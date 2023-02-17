@@ -25,6 +25,7 @@ type Booking struct {
 
 	Start time.Time `valid:"required~กรุณาเลือกเวลาเริ่มเข้าพัก, IsAfterAndPresent~เวลาในการเข้าพักไม่ถูกต้อง(ห้ามเป็นอดีต)"`
 	Stop  time.Time `valid:"required~กรุณาเลือกวันที่สิ้นสุดการพัก, IsAfterStartOneDay~เวลาสิ้นสุดการพักต้องอยู่หลังวันเข้าพักอย่างน้อย 1 วัน"`
+	Total float64
 	//รับเข้ามา
 	CustomerID *uint    `valid:"required~กรุณาเข้าสู่ระบบ"`
 	Customer   Customer `valid:"-" gorm:"references:id"`

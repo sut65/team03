@@ -52,6 +52,7 @@ func CreateBooking(c *gin.Context) {
 		Start:    time.Date(booking.Start.Year(), booking.Start.Month(), booking.Start.Day(), 0, 0, 0, 0, time.UTC),
 		Stop:     time.Date(booking.Stop.Year(), booking.Stop.Month(), booking.Stop.Day(), 0, 0, 0, 0, time.UTC),
 		Customer: customer,
+		Total:    float64(room.Amount),
 	}
 
 	//13: save
@@ -88,7 +89,7 @@ func ListBookings(c *gin.Context) {
 func ListBookingsByUID(c *gin.Context) {
 	var bookings []entity.Booking
 	id := c.Param("id")
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE userid = ?", id).Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE customer_id = ?", id).Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -109,6 +110,20 @@ func ListBookingsBydate(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": bookings})
+}
+
+// GET /bookingtotalgroupbydate
+func ListBookingsTotalbyCID(c *gin.Context) {
+	var b_total []struct {
+		CustomerID  uint64
+		TotalAmount float64
+	}
+	if err := entity.DB().Raw("SELECT customer_id, SUM(total) as total_amount FROM bookings GROUP BY customer_id").Scan(&b_total).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": b_total})
 }
 
 // DELETE /bookings/:id

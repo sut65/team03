@@ -51,12 +51,14 @@ async function GetCustomers() {
 
 /* -----------------------------------------------------------------------Booking--------------------------------------------------------------*/
 // //=================================================== Booking Routes
-// r.GET("/bookings", booking.ListBookings)
-// r.GET("/booking/:id", booking.GetBooking)
-// r.GET("/bookings/user/:id", booking.ListBookingsByUID)
-// r.POST("/bookings", booking.CreateBooking)
-// r.PATCH("/bookings", booking.UpdateBooking)
-// r.DELETE("/bookings/:id", booking.DeleteBooking)
+// protected.GET("/bookings", booking.ListBookings)
+// protected.GET("/booking/:id", booking.GetBooking)
+// protected.GET("/bookings/user/:id", booking.ListBookingsByUID)
+// protected.POST("/bookings", booking.CreateBooking)
+// protected.PATCH("/bookings/:id", booking.UpdateBooking)
+// protected.DELETE("/bookings/:id", booking.DeleteBooking)
+// protected.GET("/bookingbydate", booking.ListBookingsBydate)
+// protected.GET("/bookingtotalgroupbydate", booking.ListBookingsTotalbyCID)
 
 //List Booking
 async function GetBookings() {
@@ -107,7 +109,7 @@ async function GetBooking(data: string | undefined) {
 
 //***List Booking by user ID***
 async function GetBookingsBYUID() {
-    let uid = localStorage.getItem('uid');
+    let uid = localStorage.getItem('id');
     const requestOptions = {
         method: "GET",
         headers: {
@@ -121,6 +123,31 @@ async function GetBookingsBYUID() {
         .then((res) => {
             if (res.data) {
                 return res.data;
+            } else {
+                return false;
+            }
+        });
+
+    return res;
+}
+
+//***List Booking Total by customerID**
+async function GetBookingsSumTotal() {
+    let uid = localStorage.getItem('id');
+    const requestOptions = {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+
+    let res = await fetch(`${apiUrl}/bookingtotalgroupbydate`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data;
+                console.log(res.data);
             } else {
                 return false;
             }
@@ -339,6 +366,7 @@ export {
     GetBookings,
     GetBooking,
     GetBookingsBYUID, //****Special get */
+    GetBookingsSumTotal,
     DeleteBooking,
     UppdateBooking,
 
