@@ -62,6 +62,7 @@ func main() {
 			protected.PATCH("/bookings/:id", booking.UpdateBooking)
 			protected.DELETE("/bookings/:id", booking.DeleteBooking)
 			protected.GET("/bookingbydate", booking.ListBookingsBydate)
+			protected.GET("/bookingtotalgroupbydate", booking.ListBookingsTotalbyCID)
 			// ---Branch---
 			protected.GET("/branchs", booking.ListBranchs)
 			protected.GET("/branch/:id", booking.GetBranch)
@@ -260,7 +261,6 @@ func main() {
 		}
 	}
 	r.POST("/login", controller.Login)
-	
 
 	r.Run()
 

@@ -176,7 +176,7 @@ function BookingCreate() {
                                 </option>
                                 {rooms.map((item: RoomInterface) => (
                                     <option value={item.ID} key={item.ID}>
-                                        {item.ID}
+                                        ห้องพักหมายเลข: {item.Room_No} ราคา: {item.Amount}
                                     </option>
                                 ))}
                             </Select>

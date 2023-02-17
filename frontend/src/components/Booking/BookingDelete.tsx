@@ -175,7 +175,7 @@ function BookingDelete() {
                             >
                                 {rooms.map((item: RoomInterface) => item.ID === s_booking?.RoomID && (
                                     <option aria-label="None" value={item.ID} key={item.ID} selected>
-                                        {item.ID}
+                                        ห้องพักหมายเลข: {item.Room_No} ราคา: {item.Amount}
                                     </option>
                                 ))}
                             </Select>
