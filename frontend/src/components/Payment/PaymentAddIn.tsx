@@ -1,14 +1,13 @@
+import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetTotalPriceByCID } from "./service/PaymentHttpClientService";
 import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
-import { DatePicker, DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { forwardRef, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ThemeProvider } from "@emotion/react";
 import { grey } from "@mui/material/colors";
-import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces } from "./service/PaymentHttpClientService";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-
 
 const theme = createTheme({
     palette: {
@@ -28,7 +27,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function PaymentAdd() {
+function PaymentAddIn() {
 
     const [payment, setPayment] = useState<Partial<PaymentsInterface>>({});
     const [time, setTime] = useState<Date | null>(new Date());
@@ -44,6 +43,7 @@ function PaymentAdd() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const id_cus = localStorage.getItem("id");
+    const [price, setPrice] = useState(0);
 
     const handleImageChange = (event: any) => {
         const image = event.target.files[0];
@@ -108,6 +108,7 @@ function PaymentAdd() {
             PaymentMethodID: convertType(payment.PaymentMethodID),
             MethodID: convertType(payment.MethodID),
             PlaceID: convertType(payment.PlaceID),
+            Price: price,
             Time: time,
             Picture: image,
         };
@@ -154,6 +155,12 @@ function PaymentAdd() {
             setPicture(res);
         }
     };
+    const getpriceofroom = async () => {
+        let res = await GetTotalPriceByCID(id_cus);
+        if (res) {
+            setPrice(res);
+        }
+    };
 
     useEffect(() => {
         getpaymentMethods();
@@ -161,8 +168,11 @@ function PaymentAdd() {
         getdestination();
         getpicture();
         getplaces();
+        getpriceofroom();
     }, [paymetid, metid]);
 
+    console.log(price);
+    
     return (
 
         <div>
@@ -292,7 +302,7 @@ function PaymentAdd() {
                                     <FormLabel> Price </FormLabel>
                                     <TextField
                                         variant="outlined"
-                                        value={200}
+                                        value={price}
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -337,4 +347,4 @@ function PaymentAdd() {
 }
 
 
-export default PaymentAdd
+export default PaymentAddIn

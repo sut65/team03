@@ -34,7 +34,7 @@ function PaymentShow() {
 
     useEffect(() => {
         getpayment();
-    }, []);    
+    }, []);
 
     return (
         <ThemeProvider theme={theme}>
@@ -62,10 +62,11 @@ function PaymentShow() {
                                         <TableRow>
                                             <TableCell align="center" width="20%"> Payment </TableCell>
                                             <TableCell align="center" width="20%"> Customer name </TableCell>
-                                            <TableCell align="center" width="20%"> Bill Time </TableCell>
+                                            <TableCell align="center" width="20%"> Slip Time </TableCell>
                                             <TableCell align="center" width="20%"> Method </TableCell>
                                             <TableCell align="center" width="20%"> Name </TableCell>
                                             <TableCell align="center" width="20%"> Place </TableCell>
+                                            <TableCell align="center" width="20%"> Price </TableCell>
                                             <TableCell align="center" width="20%"> Slip </TableCell>
                                             <TableCell align="center" width="20%"> - Edit - </TableCell>
                                         </TableRow>
@@ -80,6 +81,7 @@ function PaymentShow() {
                                                 <TableCell align="center">{item.PaymentMethod?.Name}</TableCell>
                                                 <TableCell align="center">{item.Method?.Name}</TableCell>
                                                 <TableCell align="center">{item.Place?.Name}</TableCell>
+                                                <TableCell align="center">{item.Price}</TableCell>
                                                 <TableCell align="center"><img src={`${item.Picture}`} width="75" height="90" /></TableCell>
                                                 <TableCell align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
@@ -99,6 +101,28 @@ function PaymentShow() {
                         </div>
                     </Container>
                 </div>
+                <Grid container spacing={1} sx={{ padding: 3 }}>
+                    <Grid item xs={12}>
+                        <Button
+                            component={RouterLink}
+                            to="/pai"
+                            variant="contained"
+                            color="success"
+                        >
+                            PAYMENT CHECKIN
+                        </Button>
+
+                        <Button
+                            style={{ float: "right" }}
+                            component={RouterLink}
+                            to="/pao"
+                            variant="contained"
+                            color="success"
+                        >
+                            PAYMENT CHECKOUT
+                        </Button>
+                    </Grid>
+                </Grid>
             </Container>
         </ThemeProvider>
     );
