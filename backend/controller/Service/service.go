@@ -14,7 +14,7 @@ func CreateService(c *gin.Context) {
 	var customer entity.Customer
 	var food entity.Food
 	var drink entity.Drink
-	var accessorie entity.Accessories
+	var storage entity.Storage
 
 	// ผลลัพธ์ที่ได้จากขั้นตอนที่ 9 จะถูก bind เข้าตัวแปร service
 	if err := c.ShouldBindJSON(&service); err != nil {
@@ -39,9 +39,9 @@ func CreateService(c *gin.Context) {
 		return
 	}
 
-	// 12: ค้นหา accessories ด้วย id
-	if tx := entity.DB().Where("id = ?", service.AccessoriesID).First(&accessorie); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "accessories not found"})
+	// 12: ค้นหา storage ด้วย id
+	if tx := entity.DB().Where("id = ?", service.StorageID).First(&storage); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "storage not found"})
 		return
 	}
 
@@ -53,14 +53,14 @@ func CreateService(c *gin.Context) {
 
 	// 14: สร้าง Service
 	sv := entity.Service{
-		Customer:        customer,
-		Time:            service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
-		Food:            food,
-		FoodItem:        service.FoodItem,
-		Drink:           drink,
-		DrinkItem:       service.DrinkItem,
-		Accessories:     accessorie,
-		AccessoriesItem: service.AccessoriesItem,
+		Customer:    customer,
+		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		Food:        food,
+		FoodItem:    service.FoodItem,
+		Drink:       drink,
+		DrinkItem:   service.DrinkItem,
+		Storage:     storage,
+		StorageItem: service.StorageItem,
 	}
 
 	//15: save
@@ -85,7 +85,7 @@ func GetService(c *gin.Context) {
 // GET /services
 func ListServices(c *gin.Context) {
 	var services []entity.Service
-	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services").Find(&services).Error; err != nil {
+	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Storage.Product").Preload("Customer").Raw("SELECT * FROM services").Find(&services).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -97,7 +97,7 @@ func ListServices(c *gin.Context) {
 func ListServicesByUID(c *gin.Context) {
 	var services []entity.Service
 	id := c.Param("id")
-	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Accessories").Preload("Customer").Raw("SELECT * FROM services WHERE customer_id = ?", id).Find(&services).Error; err != nil {
+	if err := entity.DB().Preload("Food").Preload("Drink").Preload("Customer").Preload("Storage.Product").Raw("SELECT * FROM services WHERE customer_id = ?", id).Find(&services).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -122,7 +122,7 @@ func UpdateService(c *gin.Context) {
 	var customer entity.Customer
 	var food entity.Food
 	var drink entity.Drink
-	var accessorie entity.Accessories
+	var storage entity.Storage
 
 	if err := c.ShouldBindJSON(&service); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -144,20 +144,20 @@ func UpdateService(c *gin.Context) {
 		return
 	}
 
-	if tx := entity.DB().Where("id = ?", service.AccessoriesID).First(&accessorie); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "accessories not found"})
+	if tx := entity.DB().Where("id = ?", service.StorageID).First(&storage); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "storage not found"})
 		return
 	}
 
 	patchservice := entity.Service{
-		Time:            service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
-		Food:            food,
-		FoodItem:        service.FoodItem,
-		Drink:           drink,
-		DrinkItem:       service.DrinkItem,
-		Accessories:     accessorie,
-		AccessoriesItem: service.AccessoriesItem,
-		Customer:        customer,
+		Time:        service.Time, // ข้อมูลที่รับเข้ามาจาก frontend
+		Food:        food,
+		FoodItem:    service.FoodItem,
+		Drink:       drink,
+		DrinkItem:   service.DrinkItem,
+		Storage:     storage,
+		StorageItem: service.StorageItem,
+		Customer:    customer,
 	}
 
 	if err := entity.DB().Where("id = ?", service.ID).Updates(&patchservice).Error; err != nil {
@@ -256,8 +256,8 @@ func UpdateDrink(c *gin.Context) {
 
 // GET /accessories
 func ListAccessories(c *gin.Context) {
-	var accessories []entity.Accessories
-	if err := entity.DB().Raw("SELECT * FROM accessories").Find(&accessories).Error; err != nil {
+	var accessories []entity.Storage
+	if err := entity.DB().Preload("Product").Raw("SELECT * FROM storages").Find(&accessories).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -267,9 +267,9 @@ func ListAccessories(c *gin.Context) {
 
 // GET /accessorie/item/:id
 func GetAccessoriesItem(c *gin.Context) {
-	var accessories entity.Accessories
+	var accessories entity.Storage
 	id := c.Param("id")
-	if tx := entity.DB().Raw("SELECT item FROM accessories WHERE id = ?", id).First(&accessories); tx.RowsAffected == 0 {
+	if tx := entity.DB().Raw("SELECT quantity FROM storages WHERE id = ?", id).First(&accessories); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "accessorie not found"})
 		return
 	}
@@ -278,15 +278,15 @@ func GetAccessoriesItem(c *gin.Context) {
 
 // PATCH /accessories
 func UpdateAccessorie(c *gin.Context) {
-	var accessories entity.Accessories
+	var accessories entity.Storage
 
 	if err := c.ShouldBindJSON(&accessories); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	patchaccessories := entity.Accessories{
-		Item: accessories.Item, // ข้อมูลที่รับเข้ามาจาก frontend
+	patchaccessories := entity.Storage{
+		Quantity: accessories.Quantity, // ข้อมูลที่รับเข้ามาจาก frontend
 	}
 
 	if err := entity.DB().Where("id = ?", accessories.ID).Updates(&patchaccessories).Error; err != nil {
