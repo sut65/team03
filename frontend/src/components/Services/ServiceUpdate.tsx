@@ -73,6 +73,7 @@ function ServiceUpdate() {
     const id_cus = localStorage.getItem("id");
     const { id } = useParams();
     const status = useRef(true);
+    const statusnew = useRef(true);
 
 
     const handleClose = (
@@ -162,21 +163,30 @@ function ServiceUpdate() {
             Quantity: accessorieitemsum,
         };
 
-        let res = await UpdateService(serviceupdate);
-        if (res.status) {
-            if (fooditemsum > 0 || fooditemsum < 50) {
-                if (drinkitemsum > 0 || drinkitemsum < 50) {
-                    if (accessorieitemsum > 0 || accessorieitemsum < 50) {
+        if (fooditemsum > 0 && fooditemsum <= fooditems) {
+            if (drinkitemsum > 0 && drinkitemsum <= drinkitem) {
+                if (accessorieitemsum > 0 && accessorieitemsum <= accessorieitem) {
+                    let res = await UpdateService(serviceupdate);
+                    if (res.status) {
                         await UpdateFood(foodupdate);
                         await UpdateDrink(drinkupdate);
                         await UpdateAccessories(accessoriesupdate);
-                        setAlertMessage("Update Order Successfully");
+                        setAlertMessage("Save Order Successfully");
                         setSuccess(true);
+                    } else {
+                        setAlertMessage(res.message);
+                        setError(true);
                     }
+                } else {
+                    setAlertMessage("Accessorie not enough")
+                    setError(true);
                 }
+            } else {
+                setAlertMessage("Drink not enough")
+                setError(true);
             }
         } else {
-            setAlertMessage(res.message);
+            setAlertMessage("Food not enough")
             setError(true);
         }
     }
@@ -269,11 +279,19 @@ function ServiceUpdate() {
             status.current = false;
         } else {
             getfooditem();
-            setFoodItemSum((fooditem + fooditems) - fooditemwant);
+            setFoodItemSum((fooditem + fooditems) - fooditemwant); 
             getdrinkitem();
             setDrinkItemSum((drinkitem + drinkitems) - drinkitemwant);
             getaccessorieitem();
             setAccessorieItemSum((accessorieitem + accessorieitems) - accessorieitemwant);
+        }
+    });
+
+    useEffect(() => {
+        if (statusnew.current) {
+            statusnew.current = false;
+        } else {
+
         }
     });
 
@@ -380,6 +398,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
+                                    disabled
                                     value={service.FoodID + ""}
                                     onChange={handleChange}
                                     inputProps={{
@@ -396,6 +415,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
+                                    disabled
                                     value={service.DrinkID + ""}
                                     onChange={handleChange}
                                     inputProps={{
@@ -412,6 +432,7 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
+                                    disabled
                                     value={service.StorageID + ""}
                                     onChange={handleChange}
                                     inputProps={{

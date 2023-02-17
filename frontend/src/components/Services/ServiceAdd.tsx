@@ -152,26 +152,34 @@ function ServiceAdd() {
             Quantity: accessorieitemsum,
         };
 
-        console.log(serviceadd);
-        
-        let res = await AddService(serviceadd);
-        if (res.status) {
-            if (fooditemsum > 0 || fooditemsum < 50) {
-                if (drinkitemsum > 0 || drinkitemsum < 50) {
-                    if (accessorieitemsum > 0 || accessorieitemsum < 50) {
+        if (fooditemsum > 0 && fooditemsum < fooditem) {
+            if (drinkitemsum > 0 && drinkitemsum < drinkitem) {
+                if (accessorieitemsum > 0 && accessorieitemsum < accessorieitem) {
+                    let res = await AddService(serviceadd);
+                    if (res.status) {
                         await UpdateFood(foodupdate);
                         await UpdateDrink(drinkupdate);
                         await UpdateAccessories(accessoriesupdate);
                         setAlertMessage("Save Order Successfully");
                         setSuccess(true);
+                    } else {
+                        setAlertMessage(res.message);
+                        setError(true);
                     }
+                } else {
+                    setAlertMessage("Accessorie not enough")
+                    setError(true);
                 }
+            } else {
+                setAlertMessage("Drink not enough")
+                setError(true);
             }
         } else {
-            setAlertMessage(res.message);
+            setAlertMessage("Food not enough")
             setError(true);
         }
     }
+
 
     const getfoods = async () => {
         let res = await GetFoods();

@@ -178,10 +178,6 @@ function ServiceDelete() {
             getaccessorieitems();
             setAccessorieItemSum(accessorieitem + accessorieitems);
             status.current = true;
-
-            console.log('old ' + accessorieitem);
-            console.log('in service ' + accessorieitems);
-            
         }
     });
 
