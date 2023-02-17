@@ -13,7 +13,6 @@ import Snackbar from "@mui/material/Snackbar";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import { GetCHK_Payments, GetEmployeeByUID, GetStatuses, GetPayments, GetCHK_Payment, UppdateCHK_Payment } from "./services/CHK_PaymentHttpClientService";
@@ -21,7 +20,6 @@ import { EmployeeInterface } from "../../models/IEmployee";
 import { CHK_PaymentStatusesInterface } from "../../models/modelCHK_Payment/IStatus";
 import { CHK_PaymentsInterface } from "../../models/modelCHK_Payment/ICHK_Payment";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
-import MenuItem from "@mui/material/MenuItem";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -58,6 +56,13 @@ function CHK_PaymentUpdate() {
             ...chk_payment,
             [name]: event.target.value,
         });
+    };
+
+    const handleSuccess = () => {
+        const shouldConfirm = window.confirm('คุณแน่ใจแล้วหรือไม่ว่าจะแก้ไขการตรวจสอบการชำระเงิน');
+        if (shouldConfirm) {
+            submit();
+        }
     };
 
     const onChangeU_CHKPayment = async (event: SelectChangeEvent) => {
@@ -289,7 +294,7 @@ function CHK_PaymentUpdate() {
                         </Button>
                         <Button
                             style={{ float: "right" }}
-                            onClick={submit}
+                            onClick={handleSuccess}
                             variant="contained"
                             color="warning"
                         >

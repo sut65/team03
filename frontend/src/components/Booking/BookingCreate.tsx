@@ -31,7 +31,10 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function BookingCreate() {
-    const [booking, setBooking] = useState<BookingsInterface>({});
+    const [booking, setBooking] = useState<BookingsInterface>({
+        Start: new Date(),
+        Stop: new Date(),
+    });
     const [branchs, setBranchs] = useState<BranchsInterface[]>([]);
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
     const [customers, setCustomers] = useState<CustomerInterface>();

@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"crypto/md5"
+	"fmt"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -1108,42 +1110,43 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Model(&Branch{}).Create(&b4004)
 	// ============================================================================ Booking
 	//ใส่ไว้ก่อนนะเราต้องใช้เชื่อมกับตาราง checkin-out by joon => patch 21/1/2566 by earth
-	db.Model(&Booking{}).Create(&Booking{
-		Branch:   b4001,
-		Room:     Room1,
-		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
-		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
-		Customer: Customer1,
-		Total:    float64(Room1.Amount),
-	})
+	start := time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC)
+	stop := time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC)
+	//for grouping
+	hashBk_No1 := fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%v_%v_%v_%v", stop.Unix(), start.Unix(), Room1.ID, b4001.ID))))
+	hashBk_No2 := fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%v_%v_%v_%v", stop.Unix(), start.Unix(), Room2.ID, b4002.ID))))
 
 	db.Model(&Booking{}).Create(&Booking{
-		Branch:   b4002,
-		Room:     Room2,
-		Start:    time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
-		Stop:     time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
-		Customer: Customer2,
-		Total:    float64(Room1.Amount),
+		Booking_Number: hashBk_No1,
+		Tx_No:          hashBk_No1,
+		Branch:         b4001,
+		Room:           Room1,
+		Start:          time.Date(2023, 2, 7, 0, 0, 0, 0, time.UTC),
+		Stop:           time.Date(2023, 2, 8, 0, 0, 0, 0, time.UTC),
+		DayEach:        time.Date(2023, 2, 11, 0, 0, 0, 0, time.UTC),
+		Customer:       Customer1,
+		Total:          float64(Room1.Amount),
 	})
 
 	now := time.Now()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 
 	db.Model(&Booking{}).Create(&Booking{
-		Branch:   b4002,
-		Room:     Room3,
-		Start:    today,
-		Stop:     today.AddDate(0, 0, 1),
-		Customer: Customer2,
-		Total:    float64(Room1.Amount),
+		Booking_Number: hashBk_No2,
+		Tx_No:          hashBk_No2,
+		Branch:         b4002,
+		Room:           Room3,
+		Start:          today,
+		Stop:           today.AddDate(0, 0, 1),
+		DayEach:        time.Date(2023, 2, 11, 0, 0, 0, 0, time.UTC),
+		Customer:       Customer2,
+		Total:          float64(Room1.Amount),
 	})
 
 	var booking1 Booking
 	var booking2 Booking
-	var booking3 Booking
 	db.Raw("SELECT * FROM bookings WHERE id = ?", "1").Scan(&booking1)
 	db.Raw("SELECT * FROM bookings WHERE id = ?", "2").Scan(&booking2)
-	db.Raw("SELECT * FROM bookings WHERE id = ?", "3").Scan(&booking3)
 	// ============================================================================ Check Payment
 	// ------------------------- Status ------------------
 	s1001 := CHK_PaymentStatus{
