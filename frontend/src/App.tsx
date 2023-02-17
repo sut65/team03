@@ -29,7 +29,8 @@ import ServiceAdd from "./components/Services/ServiceAdd";
 import ServiceUpdate from "./components/Services/ServiceUpdate";
 import ServiceDelete from "./components/Services/ServiceDelete";
 
-import PaymentAdd from "./components/Payment/PaymentAdd";
+import PaymentAddIn from "./components/Payment/PaymentAddIn";
+import PaymentAddOut from "./components/Payment/PaymentAddOut";
 import PaymentShow from "./components/Payment/PaymentShow";
 import PaymentUpdate from "./components/Payment/PaymentUpdate";
 
@@ -111,7 +112,8 @@ export default function App() {
                 <Route path="/sd" element={<ServiceDelete />} />
 
                 <Route path="/ps" element={<PaymentShow />} />
-                <Route path="/pa" element={<PaymentAdd />} />
+                <Route path="/pai" element={<PaymentAddIn />} />
+                <Route path="/pao" element={<PaymentAddOut />} />
                 <Route path="/pu/:id" element={<PaymentUpdate />} />
 
                 <Route path="/customer/create" element={<Customer />} />

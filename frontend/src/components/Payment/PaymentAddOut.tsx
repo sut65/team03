@@ -1,13 +1,15 @@
-import { GetDestination, GetMethodP, GetPaymentByID, GetPaymentMethods, GetPicture, GetPlaces, UpdatePayment } from "./service/PaymentHttpClientService";
 import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { AddPayment, GetAccessorieItem, GetDestination, GetDrinkItem, GetFoodItem, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceAccessorie, GetPriceDrink, GetPriceFood } from "./service/PaymentHttpClientService";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Link as RouterLink, useParams } from "react-router-dom";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { grey } from "@mui/material/colors";
+import { ServicesInterface } from "../../models/modelService/IService";
+import { GetService } from "../Services/service/ServiceHttpClientService";
 
 
 const theme = createTheme({
@@ -28,7 +30,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function PaymentUpdate() {
+function PaymentAddOut() {
 
     const [payment, setPayment] = useState<Partial<PaymentsInterface>>({});
     const [time, setTime] = useState<Date | null>(new Date());
@@ -44,7 +46,15 @@ function PaymentUpdate() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const id_cus = localStorage.getItem("id");
-    const { id } = useParams();
+    const status = useRef(true);
+
+    const [sumprice, setSumPrice] = useState(0);
+    const [pricefood, setPriceFood] = useState(0);
+    const [fooditem, setFoodItem] = useState(0);
+    const [pricedrink, setPriceDrink] = useState(0);
+    const [drinkitem, setDrinkItem] = useState(0);
+    const [priceaccessorie, setPriceAccessorie] = useState(0);
+    const [accessorieitem, setAccessorieItem] = useState(0);
 
     const handleImageChange = (event: any) => {
         const image = event.target.files[0];
@@ -103,27 +113,22 @@ function PaymentUpdate() {
         return val;
     };
 
-    const convertTypeNotNull = (data: string | number | undefined) => {
-        let val = typeof data === "string" ? parseInt(data) : data;
-        return val;
-    };
-
     async function submit() {
         let data = {
-            ID: convertTypeNotNull(id),
             CustomerID: convertType(id_cus),
             PaymentMethodID: convertType(payment.PaymentMethodID),
             MethodID: convertType(payment.MethodID),
             PlaceID: convertType(payment.PlaceID),
+            Price: sumprice,
             Time: time,
             Picture: image,
         };
 
         console.log(data);
         
-        let res = await UpdatePayment(data);
+        let res = await AddPayment(data);
         if (res.status) {
-            setAlertMessage("Update Payment Successfully");
+            setAlertMessage("Save Payment Successfully");
             setSuccess(true);
         } else {
             setAlertMessage(res.message);
@@ -149,29 +154,53 @@ function PaymentUpdate() {
             setMethod(res);
         }
     };
-
     const getdestination = async () => {
         let res = await GetDestination(metid);
         if (res) {
             setDestination(res);
         }
     };
-
     const getpicture = async () => {
         let res = await GetPicture(metid);
         if (res) {
             setPicture(res);
-            console.log();
-            
         }
     };
-    const getpaymentbyid = async () => {
-        let res = await GetPaymentByID(id);
+
+    const getpricefood = async () => {
+        let res = await GetPriceFood(id_cus + "");
         if (res) {
-            setPayment(res);
-            setPaymetid(res.PaymentMethodID)
-            setMetid(res.MethodID)
-            setImage(res.Picture)
+            setPriceFood(res);
+        }
+    };
+    const getfooditem = async () => {
+        let res = await GetFoodItem(id_cus + "");
+        if (res) {
+            setFoodItem(res);
+        }
+    };
+    const getpricedrink = async () => {
+        let res = await GetPriceDrink(id_cus + "");
+        if (res) {
+            setPriceDrink(res);
+        }
+    };
+    const getdrinkitem = async () => {
+        let res = await GetDrinkItem(id_cus + "");
+        if (res) {
+            setDrinkItem(res);
+        }
+    };
+    const getpriceaccessorie = async () => {
+        let res = await GetPriceAccessorie(id_cus + "");
+        if (res) {
+            setPriceAccessorie(res);
+        }
+    };
+    const getaccessorieitem = async () => {
+        let res = await GetAccessorieItem(id_cus + "");
+        if (res) {
+            setAccessorieItem(res);
         }
     };
 
@@ -184,8 +213,20 @@ function PaymentUpdate() {
     }, [paymetid, metid]);
 
     useEffect(() => {
-        getpaymentbyid();
-    }, [])
+        if (status.current) {
+            status.current = false;
+        } else {
+            getpricefood();
+            getfooditem();
+            getpricedrink();
+            getdrinkitem();
+            getpriceaccessorie();
+            getaccessorieitem();
+
+            setSumPrice((pricefood * fooditem) + (pricedrink * drinkitem) + (priceaccessorie * accessorieitem))
+
+        }
+    });
 
     return (
 
@@ -251,7 +292,7 @@ function PaymentUpdate() {
                                     <FormControl fullWidth variant="outlined">
                                         <Select
                                             native
-                                            value={payment.MethodID + ""}
+                                            value={payment.MethodID}
                                             onChange={handleMet}
                                             inputProps={{
                                                 name: "MethodID",
@@ -305,7 +346,7 @@ function PaymentUpdate() {
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                                         <DateTimePicker
                                             renderInput={(props) => <TextField {...props} />}
-                                            value={payment.Time}
+                                            value={time}
                                             onChange={setTime}
                                         />
                                     </LocalizationProvider>
@@ -316,7 +357,7 @@ function PaymentUpdate() {
                                     <FormLabel> Price </FormLabel>
                                     <TextField
                                         variant="outlined"
-                                        value={payment.Price}
+                                        value={sumprice}
                                         InputProps={{
                                             readOnly: true,
                                         }}
@@ -361,4 +402,4 @@ function PaymentUpdate() {
 }
 
 
-export default PaymentUpdate
+export default PaymentAddOut

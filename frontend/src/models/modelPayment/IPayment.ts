@@ -10,6 +10,7 @@ export interface PaymentsInterface {
     Method?: MethodsInterface;
     PlaceID?: number | null;
     Place?: PlacesInterface;
+    Price?: number ;
     Time?: Date | null;
     Picture?: string | ArrayBuffer | null;
 }

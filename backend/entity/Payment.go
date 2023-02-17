@@ -39,6 +39,7 @@ type Payment struct {
 	Method          Method        `gorm:"references:ID"`
 	PlaceID         int           `valid:"required~Choose place"`
 	Place           Place         `gorm:"references:ID"`
+	Price           int           `valid:"required~Price not found"`
 	Time            time.Time
 	Picture         string
 }
