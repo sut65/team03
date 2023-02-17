@@ -36,6 +36,8 @@ type Storage struct {
 	//ProductTypeID ทำหน้าที่เป็น FK
 	ProductTypeID *uint
 	ProductType   ProductType `valid:"-" gorm:"references:id"`
+
+	Service []Service `gorm:"foreignKey:StorageID"`
 }
 
 func init() {

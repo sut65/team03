@@ -22,27 +22,19 @@ type Drink struct {
 	Service []Service `gorm:"foreignKey:DrinkID"`
 }
 
-type Accessories struct {
-	gorm.Model
-	Name    string
-	Price   int
-	Item    int
-	Service []Service `gorm:"foreignKey:AccessoriesID"`
-}
-
 // หลัก 1.
 type Service struct {
 	gorm.Model
-	Time            time.Time
-	CustomerID      int         `valid:"required~Please Login"`
-	Customer        Customer    `valid:"-" gorm:"references:id"`
-	FoodID          int         `valid:"required~Choose Food"`
-	Food            Food        `gorm:"references:id"`
-	FoodItem        int         `valid:"range(0|50)~How much food do you want?"`
-	DrinkID         int         `valid:"required~Choose Drink"`
-	Drink           Drink       `gorm:"references:id"`
-	DrinkItem       int         `valid:"range(0|50)~How much drink do you want?"`
-	AccessoriesID   int         `valid:"required~Choose Accessories"`
-	Accessories     Accessories `gorm:"references:id"`
-	AccessoriesItem int         `valid:"range(0|50)~How much accessories do you want?"`
+	Time        time.Time
+	CustomerID  int      `valid:"required~Please Login"`
+	Customer    Customer `valid:"-" gorm:"references:id"`
+	FoodID      int      `valid:"required~Choose Food"`
+	Food        Food     `gorm:"references:id"`
+	FoodItem    int      `valid:"range(0|50)~How much food do you want?"`
+	DrinkID     int      `valid:"required~Choose Drink"`
+	Drink       Drink    `gorm:"references:id"`
+	DrinkItem   int      `valid:"range(0|50)~How much drink do you want?"`
+	StorageID   int      `valid:"required~Choose Accessories"`
+	Storage     Storage  `valid:"-" gorm:"references:id"`
+	StorageItem int      `valid:"range(0|50)~How much accessories do you want?"`
 }

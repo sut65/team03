@@ -48,7 +48,6 @@ func SetupDatabase() {
 		// ระบบบริการเสริม
 		&Food{},
 		&Drink{},
-		&Accessories{},
 		&Service{},
 		// ระบบชำระเงิน
 		&PaymentMethod{},

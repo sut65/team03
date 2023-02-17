@@ -14,14 +14,14 @@ func TestServiceValidate(t *testing.T) {
 
 	t.Run("Check Customer", func(t *testing.T) {
 		s := Service{
-			CustomerID:      0,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  0,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -31,14 +31,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Food", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          0,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      0,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -48,14 +48,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Drink", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         0,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     0,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -65,14 +65,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Accessories", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   0,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   0,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -82,14 +82,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Food Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        -1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    -1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -99,14 +99,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Drink Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       -1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   -1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -116,14 +116,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Accessories Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: -1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: -1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -133,14 +133,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Food Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        51,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    51,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -150,14 +150,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Drink Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       51,
-			AccessoriesID:   1,
-			AccessoriesItem: 1,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   51,
+			StorageID:   1,
+			StorageItem: 1,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -167,14 +167,14 @@ func TestServiceValidate(t *testing.T) {
 	})
 	t.Run("Check Accessories Item", func(t *testing.T) {
 		s := Service{
-			CustomerID:      1,
-			Time:            time.Now(),
-			FoodID:          1,
-			FoodItem:        1,
-			DrinkID:         1,
-			DrinkItem:       1,
-			AccessoriesID:   1,
-			AccessoriesItem: 51,
+			CustomerID:  1,
+			Time:        time.Now(),
+			FoodID:      1,
+			FoodItem:    1,
+			DrinkID:     1,
+			DrinkItem:   1,
+			StorageID:   1,
+			StorageItem: 51,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)

@@ -869,102 +869,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM repair_reqs WHERE id = ?", "2").Scan(&RepairReq2)
 	db.Raw("SELECT * FROM repair_reqs WHERE id = ?", "3").Scan(&RepairReq3)
 
-	// ===============     SERVICE     ===============
-
-	// ===============     อาหาร     ===============
-	db.Model(&Food{}).Create(&Food{
-		Name:  "No Order",
-		Price: 0,
-		Item:  1,
-	})
-	db.Model(&Food{}).Create(&Food{
-		Name:  "Pad Thai",
-		Price: 65,
-		Item:  50,
-	})
-	db.Model(&Food{}).Create(&Food{
-		Name:  "Pad Kaphao",
-		Price: 55,
-		Item:  50,
-	})
-	db.Model(&Food{}).Create(&Food{
-		Name:  "Noodles",
-		Price: 55,
-		Item:  50,
-	})
-	var Noodles Food
-	db.Raw("SELECT * FROM Foods WHERE name = ?", "Noodles").Scan(&Noodles)
-
-	// ===============     เครื่องดื่ม     ===============
-	db.Model(&Drink{}).Create(&Drink{
-		Name:  "No Order",
-		Price: 0,
-		Item:  1,
-	})
-	db.Model(&Drink{}).Create(&Drink{
-		Name:  "Pepsi",
-		Price: 15,
-		Item:  50,
-	})
-	db.Model(&Drink{}).Create(&Drink{
-		Name:  "Mansome",
-		Price: 20,
-		Item:  50,
-	})
-	db.Model(&Drink{}).Create(&Drink{
-		Name:  "Water",
-		Price: 10,
-		Item:  50,
-	})
-	var Pepsi Drink
-	db.Raw("SELECT * FROM drinks WHERE name = ?", "Pepsi").Scan(&Pepsi)
-
-	// ===============     อุปกรณ์เสริม     ===============
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "No Order",
-		Price: 0,
-		Item:  1,
-	})
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "Plug",
-		Price: 40,
-		Item:  15,
-	})
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "Chair",
-		Price: 70,
-		Item:  7,
-	})
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "Table",
-		Price: 120,
-		Item:  7,
-	})
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "Table & Chair (small)",
-		Price: 135,
-		Item:  10,
-	})
-	db.Model(&Accessories{}).Create(&Accessories{
-		Name:  "Bed",
-		Price: 350,
-		Item:  5,
-	})
-	var Bed Accessories
-	db.Raw("SELECT * FROM Accessories WHERE name=?", "Bed").Scan(&Bed)
-
-	// ===============     ตารางหลัก     ===============
-	db.Model(&Service{}).Create(&Service{
-		Customer:        Customer1,
-		Time:            time.Now(),
-		Food:            Noodles,
-		FoodItem:        1,
-		Drink:           Pepsi,
-		DrinkItem:       2,
-		Accessories:     Bed,
-		AccessoriesItem: 1,
-	})
-
 	// ===============     PAYMENT     ===============
 
 	// ===============     สถานที่ชำระเงิน     ===============
@@ -1444,6 +1348,68 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM storages WHERE id = ?", "1").Scan(&Storage1)
 	db.Raw("SELECT * FROM storages WHERE id = ?", "2").Scan(&Storage2)
 	db.Raw("SELECT * FROM storages WHERE id = ?", "3").Scan(&Storage3)
+
+	// ===============     SERVICE     ===============
+
+	// ===============     อาหาร     ===============
+	db.Model(&Food{}).Create(&Food{
+		Name:  "No Order",
+		Price: 0,
+		Item:  1,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Pad Thai",
+		Price: 65,
+		Item:  50,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Pad Kaphao",
+		Price: 55,
+		Item:  50,
+	})
+	db.Model(&Food{}).Create(&Food{
+		Name:  "Noodles",
+		Price: 55,
+		Item:  50,
+	})
+	var Noodles Food
+	db.Raw("SELECT * FROM Foods WHERE name = ?", "Noodles").Scan(&Noodles)
+
+	// ===============     เครื่องดื่ม     ===============
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "No Order",
+		Price: 0,
+		Item:  1,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Pepsi",
+		Price: 15,
+		Item:  50,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Mansome",
+		Price: 20,
+		Item:  50,
+	})
+	db.Model(&Drink{}).Create(&Drink{
+		Name:  "Water",
+		Price: 10,
+		Item:  50,
+	})
+	var Pepsi Drink
+	db.Raw("SELECT * FROM drinks WHERE name = ?", "Pepsi").Scan(&Pepsi)
+
+	// ===============     ตารางหลัก     ===============
+	db.Model(&Service{}).Create(&Service{
+		Customer:    Customer1,
+		Time:        time.Now(),
+		Food:        Noodles,
+		FoodItem:    1,
+		Drink:       Pepsi,
+		DrinkItem:   2,
+		Storage:     Storage1,
+		StorageItem: 1,
+	})
 
 	//=================================Checkroom===========
 	//Damage
