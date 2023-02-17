@@ -4,6 +4,9 @@ import { BranchsInterface } from "./IBranch"
 
 export interface BookingsInterface {
     ID?: number,
+    Booking_Number?: string,
+    Tx_No?: string,
+    
     BranchID?: number,
     Branch?: BranchsInterface,
 

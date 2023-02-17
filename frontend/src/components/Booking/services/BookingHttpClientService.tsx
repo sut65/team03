@@ -133,7 +133,6 @@ async function GetBookingsBYUID() {
 
 //***List Booking Total by customerID**
 async function GetBookingsSumTotal() {
-    let uid = localStorage.getItem('id');
     const requestOptions = {
         method: "GET",
         headers: {
@@ -147,7 +146,6 @@ async function GetBookingsSumTotal() {
         .then((res) => {
             if (res.data) {
                 return res.data;
-                console.log(res.data);
             } else {
                 return false;
             }
@@ -182,7 +180,7 @@ async function Bookings(data: BookingsInterface) {
 
 // Delete Booking
 async function DeleteBooking(data: BookingsInterface) {
-    let booking_id = data.ID;
+    let booking_number = data.Booking_Number;
     const requestOptions = {
         method: "DELETE",
         headers: {
@@ -192,7 +190,7 @@ async function DeleteBooking(data: BookingsInterface) {
         body: JSON.stringify(data),
     }
 
-    let res = await fetch(`${apiUrl}/bookings/${booking_id}`, requestOptions)
+    let res = await fetch(`${apiUrl}/bookings/${booking_number}`, requestOptions)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {

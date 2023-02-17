@@ -22,7 +22,6 @@ import { GetRooms } from "../Room/service/RoomHttpClientService";
 import { DeleteBooking, GetBooking, GetBookings, GetBranchs, GetCustomerByUID } from "./services/BookingHttpClientService";
 import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { BranchsInterface } from "../../models/modelBooking/IBranch";
-import MenuItem from "@mui/material/MenuItem";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -51,6 +50,13 @@ function BookingDelete() {
         setError(false);
     };
 
+    const handleSuccess = () => {
+        const shouldConfirm = window.confirm('คุณแน่ใจแล้วหรือไม่ว่าจะยกเลิกการจอง');
+        if (shouldConfirm) {
+            submit();
+        }
+    };
+
     const onChangeU_Booking = async (event: SelectChangeEvent) => {
         let res = await GetBooking(event.target.value);
         console.log(res);
@@ -61,6 +67,7 @@ function BookingDelete() {
 
     const getBookings = async () => {
         let res = await GetBookings();
+        console.log(res)
         if (res) {
             setU_Bookings(res);;
         }
@@ -102,7 +109,10 @@ function BookingDelete() {
     async function submit() {
         let data = {
             ID: s_booking?.ID,
+            Booking_Number: s_booking?.Booking_Number,
         };
+
+        console.log(data);
 
         let res = await DeleteBooking(data);
         if (res) {
@@ -138,15 +148,20 @@ function BookingDelete() {
                         <FormControl fullWidth variant="outlined">
                             <p>เลือกรายการจองที่จะยกเลิก</p>
                             <Select
+                                native
+                                value={s_booking?.ID + ""}
                                 onChange={onChangeU_Booking}
                                 inputProps={{
                                     name: "ID",
                                 }}
                             >
-                                {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && ( 
-                                    <MenuItem key={item.ID} value={item.ID}>
-                                        {item.ID}
-                                    </MenuItem>
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกรายการที่จะยกเลิก
+                                </option>
+                                {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && (
+                                    <option value={item.ID} key={item.ID}>
+                                        {item.Booking_Number}
+                                    </option>
                                 ))}
                             </Select>
                         </FormControl>
@@ -158,6 +173,9 @@ function BookingDelete() {
                                 native
                                 disabled
                             >
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกสาขาที่จะเข้าพัก
+                                </option>
                                 {branchs.map((item: BranchsInterface) => item.ID === s_booking?.BranchID && (
                                     <option aria-label="None" value={item.ID} key={item.ID} selected>
                                         {item.B_name}
@@ -173,6 +191,9 @@ function BookingDelete() {
                                 native
                                 disabled
                             >
+                                <option aria-label="None" value="">
+                                    กรุณาเลือกห้องพัก
+                                </option>
                                 {rooms.map((item: RoomInterface) => item.ID === s_booking?.RoomID && (
                                     <option aria-label="None" value={item.ID} key={item.ID} selected>
                                         ห้องพักหมายเลข: {item.Room_No} ราคา: {item.Amount}
@@ -240,7 +261,7 @@ function BookingDelete() {
                         </Button>
                         <Button
                             style={{ float: "right" }}
-                            onClick={submit}
+                            onClick={handleSuccess}
                             variant="contained"
                             color="error"
                         >

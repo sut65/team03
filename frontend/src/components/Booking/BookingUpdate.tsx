@@ -52,6 +52,13 @@ function BookingUpdate() {
         setError(false);
     };
 
+    const handleSuccess = () => {
+        const shouldConfirm = window.confirm('คุณแน่ใจแล้วหรือไม่ว่าจะแก้ไขการจอง');
+        if (shouldConfirm) {
+            submit();
+        }
+    };
+
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name as keyof typeof booking;
         setBooking({
@@ -64,6 +71,7 @@ function BookingUpdate() {
         let res = await GetBooking(event.target.value);
         if (res) {
             setBooking(res);
+            console.log(res);
         }
     };
 
@@ -120,6 +128,7 @@ function BookingUpdate() {
     async function submit() {
         let data = {
             ID: convertType(booking.ID),
+            Booking_Number: booking.Booking_Number,
             BranchID: convertType(booking.BranchID),
             RoomID: convertType(booking.RoomID),
             Start: booking.Start,
@@ -177,7 +186,7 @@ function BookingUpdate() {
                                 </option>
                                 {u_bookings.map((item: BookingsInterface) => item.CustomerID === convertType_C(localStorage.getItem('id')) && ( 
                                     <option value={item.ID} key={item.ID}>
-                                        {item.ID}
+                                        {item.Booking_Number}
                                     </option>
                                 ))}
                             </Select>
@@ -292,7 +301,7 @@ function BookingUpdate() {
                         </Button>
                         <Button
                             style={{ float: "right" }}
-                            onClick={submit}
+                            onClick={handleSuccess}
                             variant="contained"
                             color="warning"
                         >

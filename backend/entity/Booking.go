@@ -16,6 +16,8 @@ type Branch struct {
 
 type Booking struct {
 	gorm.Model
+	Booking_Number string
+	Tx_No          string `gorm:"uniqueIndex"`
 	//รับเข้ามา
 	BranchID *uint  `valid:"required~กรุณาเลือกสาขาของโรงแรม"`
 	Branch   Branch `valid:"-" gorm:"references:id"`
@@ -23,9 +25,10 @@ type Booking struct {
 	RoomID *uint `valid:"required~กรุณาเลือกห้องพัก"`
 	Room   Room  `valid:"-" gorm:"references:id"`
 
-	Start time.Time `valid:"required~กรุณาเลือกเวลาเริ่มเข้าพัก, IsAfterAndPresent~เวลาในการเข้าพักไม่ถูกต้อง(ห้ามเป็นอดีต)"`
-	Stop  time.Time `valid:"required~กรุณาเลือกวันที่สิ้นสุดการพัก, IsAfterStartOneDay~เวลาสิ้นสุดการพักต้องอยู่หลังวันเข้าพักอย่างน้อย 1 วัน"`
-	Total float64
+	Start   time.Time `valid:"required~กรุณาเลือกเวลาเริ่มเข้าพัก, IsAfterAndPresent~เวลาในการเข้าพักไม่ถูกต้อง(ห้ามเป็นอดีต)"`
+	Stop    time.Time `valid:"required~กรุณาเลือกวันที่สิ้นสุดการพัก, IsAfterStartOneDay~เวลาสิ้นสุดการพักต้องอยู่หลังวันเข้าพักอย่างน้อย 1 วัน"`
+	Total   float64
+	DayEach time.Time
 	//รับเข้ามา
 	CustomerID *uint    `valid:"required~กรุณาเข้าสู่ระบบ"`
 	Customer   Customer `valid:"-" gorm:"references:id"`
