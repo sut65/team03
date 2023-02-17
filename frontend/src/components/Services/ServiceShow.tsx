@@ -1,13 +1,13 @@
 import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { ServicesInterface } from "../../models/modelService/IService";
-import { grey } from '@mui/material/colors';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { GetService } from "./service/ServiceHttpClientService";
+import { Link as RouterLink } from "react-router-dom";
 import Container from "@mui/material/Container";
+import { useEffect, useState } from "react";
+import { grey } from '@mui/material/colors';
 import Button from "@mui/material/Button";
 import moment from "moment";
-import { GetService } from "./service/ServiceHttpClientService";
 
 const theme = createTheme({
     palette: {
@@ -91,8 +91,8 @@ function ServiceShow() {
                                                 <TableCell align="center">{item.FoodItem}</TableCell>
                                                 <TableCell align="center">{item.Drink?.Name}</TableCell>
                                                 <TableCell align="center">{item.DrinkItem}</TableCell>
-                                                <TableCell align="center">{item.Accessories?.Name}</TableCell>
-                                                <TableCell align="center">{item.AccessoriesItem}</TableCell>
+                                                <TableCell align="center">{item.Storage?.Product?.Name}</TableCell>
+                                                <TableCell align="center">{item.StorageItem}</TableCell>
                                                 <TableCell align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                                                         <Button

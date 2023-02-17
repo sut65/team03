@@ -87,8 +87,8 @@ function ServiceDelete() {
             Item: drinkitemsum,
         };
         let accessoriesupdate = {
-            ID: convertTypeNotNull(servicess.AccessoriesID),
-            Item: accessorieitemsum,
+            ID: convertTypeNotNull(servicess.StorageID),
+            Quantity: accessorieitemsum,
         };
         let res = await DeleteService(services.ID);
         if (res.status) {
@@ -128,7 +128,7 @@ function ServiceDelete() {
         }
     };
     const getaccessorieitem = async () => {
-        let res = await GetAccessorieItem(servicess.AccessoriesID);
+        let res = await GetAccessorieItem(servicess.StorageID);
         if (res) {
             setAccessorieItem(res);
         }
@@ -178,6 +178,10 @@ function ServiceDelete() {
             getaccessorieitems();
             setAccessorieItemSum(accessorieitem + accessorieitems);
             status.current = true;
+
+            console.log('old ' + accessorieitem);
+            console.log('in service ' + accessorieitems);
+            
         }
     });
 
@@ -289,8 +293,8 @@ function ServiceDelete() {
                                                     <TableCell align="center">{item.FoodItem}</TableCell>
                                                     <TableCell align="center">{item.Drink?.Name}</TableCell>
                                                     <TableCell align="center">{item.DrinkItem}</TableCell>
-                                                    <TableCell align="center">{item.Accessories?.Name}</TableCell>
-                                                    <TableCell align="center">{item.AccessoriesItem}</TableCell>
+                                                    <TableCell align="center">{item.Storage?.Product?.Name}</TableCell>
+                                                    <TableCell align="center">{item.StorageItem}</TableCell>
                                                 </TableRow>
                                             ))}
                                         </TableBody>

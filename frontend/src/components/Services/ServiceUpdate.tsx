@@ -15,14 +15,15 @@ import {
     UpdateDrink,
     UpdateAccessories
 } from "./service/ServiceHttpClientService";
-import { AccessoriesInterface, DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
+import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
 import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { StorageInterface } from "../../models/IStorage";
 import { Link as RouterLink } from "react-router-dom";
-import { grey } from "@mui/material/colors";
 import { useParams } from "react-router-dom";
+import { grey } from "@mui/material/colors";
 
 const theme = createTheme({
     palette: {
@@ -59,7 +60,7 @@ function ServiceUpdate() {
     const [drinkitemwant, setDrinkItemWant] = useState(0);
     const [drinkitemsum, setDrinkItemSum] = useState(0);
 
-    const [accessorie, setAccessorie] = useState<AccessoriesInterface[]>([]);
+    const [accessorie, setAccessorie] = useState<StorageInterface[]>([]);
     const [accessorieitem, setAccessorieItem] = useState(0);
     const [accessorieitems, setAccessorieItemS] = useState(0);
     const [accessorieitemwant, setAccessorieItemWant] = useState(0);
@@ -145,8 +146,8 @@ function ServiceUpdate() {
             FoodItem: convertTypeNotNull(service.FoodItem),
             DrinkID: convertTypeNotNull(service.DrinkID),
             DrinkItem: convertTypeNotNull(service.DrinkItem),
-            AccessoriesID: convertTypeNotNull(service.AccessoriesID),
-            AccessoriesItem: convertTypeNotNull(service.AccessoriesItem),
+            StorageID: convertTypeNotNull(service.StorageID),
+            StorageItem: convertTypeNotNull(service.StorageItem),
         };
         let foodupdate = {
             ID: convertTypeNotNull(service.FoodID),
@@ -157,8 +158,8 @@ function ServiceUpdate() {
             Item: drinkitemsum,
         };
         let accessoriesupdate = {
-            ID: convertTypeNotNull(service.AccessoriesID),
-            Item: accessorieitemsum,
+            ID: convertTypeNotNull(service.StorageID),
+            Quantity: accessorieitemsum,
         };
 
         let res = await UpdateService(serviceupdate);
@@ -218,7 +219,7 @@ function ServiceUpdate() {
         }
     };
     const getaccessorieitem = async () => {
-        let res = await GetAccessorieItem(service.AccessoriesID);
+        let res = await GetAccessorieItem(service.StorageID);
         if (res) {
             setAccessorieItem(res);
         }
@@ -411,14 +412,14 @@ function ServiceUpdate() {
                             <FormControl fullWidth variant="outlined">
                                 <Select
                                     native
-                                    value={service.AccessoriesID + ""}
+                                    value={service.StorageID + ""}
                                     onChange={handleChange}
                                     inputProps={{
-                                        name: "AccessoriesID",
+                                        name: "StorageID",
                                     }}
                                 >
-                                    {accessorie.map((item: AccessoriesInterface) => (
-                                        <option value={item.ID}>{item.Name}</option>
+                                    {accessorie.map((item: StorageInterface) => (
+                                        <option value={item.ID}>{item.Product?.Name}</option>
                                     ))}
                                 </Select>
                             </FormControl>
@@ -451,8 +452,8 @@ function ServiceUpdate() {
                                 required
                                 type='number'
                                 variant="standard"
-                                id="AccessoriesItem"
-                                value={service.AccessoriesItem}
+                                id="StorageItem"
+                                value={service.StorageItem}
                                 onChange={handleInputAccessorieChange}
                             />
                         </Grid>

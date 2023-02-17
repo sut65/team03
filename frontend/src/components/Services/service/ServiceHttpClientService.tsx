@@ -1,4 +1,5 @@
-import { AccessoriesInterface, DrinksInterface, FoodsInterface, ServicesInterface } from "../../../models/modelService/IService";
+import { StorageInterface } from "../../../models/IStorage";
+import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../../models/modelService/IService";
 
 const apiUrl = "http://localhost:8080";
 
@@ -135,7 +136,7 @@ async function GetAccessoriesItemS(id?: string) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data.AccessoriesItem;
+                return res.data.StorageItem;
             } else {
                 return false;
             }
@@ -171,7 +172,7 @@ async function GetAccessoriesItemSn(id?: number) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data.AccessoriesItem;
+                return res.data.StorageItem;
             } else {
                 return false;
             }
@@ -288,14 +289,14 @@ async function GetAccessorieItem(id?: number) {
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data.Item;
+                return res.data.Quantity;
             } else {
                 return false;
             }
         });
     return res;
 }
-async function UpdateAccessories(data: AccessoriesInterface) {
+async function UpdateAccessories(data: StorageInterface) {
     const requestOptions = {
         method: "PATCH",
         headers: {
