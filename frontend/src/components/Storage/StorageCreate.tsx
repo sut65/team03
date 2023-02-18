@@ -233,12 +233,12 @@ function StorageCreate() {
 
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
-            <InputLabel id="demo-simple-select-label">ประเภทของห้องพัก</InputLabel>
+            <InputLabel id="demo-simple-select-label">ประเภทของสินค้าห้องพัก</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 native
                 value={storage.ProductTypeID + ""}
-                label="ประเภทของห้องพัก."
+                label="ประเภทของสินค้าห้องพัก."
                 onChange={handleChange}
                 inputProps={{
                   name: "ProductTypeID",

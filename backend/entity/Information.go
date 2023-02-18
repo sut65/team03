@@ -253,6 +253,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Size:    "Standard",
 		Bedsize: "Single Bedded",
 		Bedtype: "King Sized Bed",
+		Amount:  3000,
 	}
 	db.Model(&RoomType{}).Create(&Standard)
 
@@ -260,6 +261,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Size:    "Superior",
 		Bedsize: "Twin Bedded",
 		Bedtype: "Queen Sized Bed",
+		Amount:  5000,
 	}
 	db.Model(&RoomType{}).Create(&Superior)
 
@@ -267,6 +269,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Size:    "Deluxe",
 		Bedsize: "Double Bedded",
 		Bedtype: "Double Bed",
+		Amount:  6000,
 	}
 	db.Model(&RoomType{}).Create(&Deluxe)
 
@@ -274,6 +277,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Size:    "Suite",
 		Bedsize: "Triple Bedded",
 		Bedtype: "King Sized Bed",
+		Amount:  7000,
 	}
 	db.Model(&RoomType{}).Create(&Suite)
 
@@ -1171,6 +1175,12 @@ func SetupIntoDatabase(db *gorm.DB) {
 	//=====================================================Storage
 	// Data Storage
 	//Product Data
+	NoOrder := Product{
+		Name:  "No Order",
+		Price: 0,
+	}
+	db.Model(&Product{}).Create(&NoOrder)
+
 	TV := Product{
 		Name:  "TV",
 		Price: 5000,
