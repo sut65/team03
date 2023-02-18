@@ -19,6 +19,7 @@ type RoomType struct {
 	Size    string
 	Bedsize string
 	Bedtype string
+	Amount  int
 	Rooms   []Room `gorm:"foreignKey:RoomTypeID"`
 }
 type RoomZone struct {
