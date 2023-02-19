@@ -4,9 +4,7 @@ import { BranchsInterface } from "./IBranch"
 
 export interface BookingsInterface {
     ID?: number,
-    Booking_Number?: string,
-    Tx_No?: string,
-    
+
     BranchID?: number,
     Branch?: BranchsInterface,
 
@@ -15,6 +13,15 @@ export interface BookingsInterface {
 
     Start?: Date | null,
     Stop?: Date | null,
+
+    // Auto generate in backend
+    Booking_Number?: string,
+    Tx_No?: string,
+    Total?: number, // TypeScript's number type represents a floating-point number and can store integers and floating-point numbers.
+    DayEech?: Date | null,
+    TotalAmount?: number,
+    Num_Of_Day?: number,
+    // Auto generate in backend
 
     CustomerID?: number,
     Customer?: CustomerInterface,

@@ -37,10 +37,12 @@ function Bookings() {
         { field: "Booking_Number", headerName: "เลขที่การจอง", width: 150 },
         { field: "Branch", headerName: "สาขา", width: 150, valueFormatter: (params) => params.value.B_name, },
         { field: "Room", headerName: "ห้องพักหมายเลข", width: 150, valueFormatter: (params) => params.value.Room_No, },
+        { field: "Total", headerName: "ราคาต่อวัน(บาท)", width: 100 },
         { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150 },
         { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150 },
+        { field: "Num_Of_Day", headerName: "รวมเป็น(วัน)", width: 100 },
         { field: "Customer", headerName: "จองโดย", width: 150, valueFormatter: (params) => params.value.FirstName, },
-        { field: "TotalAmount", headerName: "คิดเป็นเงิน/รายการ", width: 150 },
+        { field: "TotalAmount", headerName: "คิดเป็นเงิน(บาท)", width: 150 },
     ]
 
     return (
@@ -68,7 +70,7 @@ function Bookings() {
                     </Box>
                 </Box>
                 <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
-                    <DataGrid rows={bookings} getRowId={(row) => row.ID} columns={columns} pageSize={5} rowsPerPageOptions={[5]}/>
+                    <DataGrid rows={bookings} getRowId={(row) => row.ID} columns={columns} pageSize={5} rowsPerPageOptions={[5]} />
                 </div>
             </Container>
     );

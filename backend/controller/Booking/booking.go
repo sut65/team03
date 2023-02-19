@@ -85,9 +85,10 @@ func GetBooking(c *gin.Context) {
 	id := c.Param("id")
 	var bookings struct {
 		TotalAmount float64
+		Num_Of_Day  int
 		entity.Booking
 	}
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount FROM bookings WHERE id = ? GROUP BY booking_number", id).Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount, COUNT(booking_number) as Num_Of_Day FROM bookings WHERE id = ? GROUP BY booking_number", id).Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -98,9 +99,10 @@ func GetBooking(c *gin.Context) {
 func ListBookings(c *gin.Context) {
 	var b_total []struct {
 		TotalAmount float64
+		Num_Of_Day  int
 		entity.Booking
 	}
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount FROM bookings GROUP BY booking_number").Find(&b_total).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount, COUNT(booking_number) as Num_Of_Day FROM bookings GROUP BY booking_number").Find(&b_total).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -112,10 +114,11 @@ func ListBookingsByUID(c *gin.Context) {
 	id := c.Param("id")
 	var bookings []struct {
 		TotalAmount float64
+		Num_Of_Day  int
 		entity.Booking
 	}
 
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount FROM bookings WHERE customer_id = ? GROUP BY booking_number", id).Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount, COUNT(booking_number) as Num_Of_Day FROM bookings WHERE customer_id = ? GROUP BY booking_number", id).Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -129,9 +132,10 @@ func ListBookingsBydate(c *gin.Context) {
 	//formattedDate := today.Format("2006-01-02")
 	var bookings []struct {
 		TotalAmount float64
+		Num_Of_Day  int
 		entity.Booking
 	}
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount FROM bookings WHERE start = ? GROUP BY booking_number", today).Find(&bookings).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT *, SUM(total) as total_amount, COUNT(booking_number) as Num_Of_Day FROM bookings WHERE start = ? GROUP BY booking_number", today).Find(&bookings).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
