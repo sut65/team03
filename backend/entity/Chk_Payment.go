@@ -23,7 +23,7 @@ type CHK_Payment struct {
 	CHK_PaymentStatusID *uint             `valid:"required~กรุณาเลือกสถานะการชำระเงิน"`
 	CHK_PaymentStatus   CHK_PaymentStatus `valid:"-" gorm:"references:id"`
 	Date_time           time.Time         `valid:"required~กรุณาเลือกวันที่ที่ทำการชำระเงิน, IsBeforeAndPresent~เวลาในการชำระเงินไม่ถูกต้อง(ห้ามเป็นอนาคต)"`
-	Amount              float64           `valid:"required~กรุณาระบุจำนวนเงิน, range(0|10000000000)~จำนวนเงินไม่สามารถติดลบได้"`
+	Amount              int               `valid:"required~กรุณาระบุจำนวนเงิน, range(0|10000000000)~จำนวนเงินไม่สามารถติดลบได้"`
 	Description         string
 	//รับเข้ามา
 	EmployeeID *uint    `valid:"required~กรุณาเข้าสู่ระบบ"`
