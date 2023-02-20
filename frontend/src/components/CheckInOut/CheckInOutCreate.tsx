@@ -217,7 +217,7 @@ function CheckInOutCreate() {
               variant="contained"
               color="inherit"
             >
-              กลับ
+              BACK
             </Button>
             <Button
               style={{ float: "right" }}
@@ -225,7 +225,7 @@ function CheckInOutCreate() {
               variant="contained"
               color="primary"
             >
-              บันทึก
+              SAVE
             </Button>
           </Grid>
         </Grid>

@@ -29,11 +29,14 @@ function CheckInOutShow() {
   const [message, setAlertMessage] = useState("");
   //For Delete state 
   const [deleteID, setDeleteID] = React.useState<number>(0)
-
   // For Set dialog open
   const [openDelete, setOpenDelete] = React.useState(false);
+  //For checkout state 
+  const [checkoutID, setCheckoutID] = React.useState<number>(0)
+  // For Set dialog open
+  const [openCheckout, setOpenCheckout] = React.useState(false);
   
-  const handleDialogDeleteclose = () => {
+const handleDialogDeleteclose = () => {
     setOpenDelete(false)
     setTimeout(() => {
         setDeleteID(0)
@@ -48,14 +51,53 @@ const handleDialogDeleteOpen = (ID: number) => {
 const handleDelete = async () => {
   let res = await DeleteCheckInOut(deleteID)
   if (res.status) {
-      //console.log(res.data)
+    setSuccessDel(true);
   } else {
-      //console.log(res.data)
+    setErrorDel(true);
   }
   getList();
   setOpenDelete(false)
 
 }
+
+const handleDialogCheckoutclose = () => {
+    setOpenCheckout(false)
+    setTimeout(() => {
+        setCheckoutID(0)
+    }, 500)
+}
+
+const handleDialogCheckoutOpen = (ID: number) => {
+  setCheckoutID(ID)
+  setOpenCheckout(true)
+}
+
+const handleCheckout = async () => {
+  let res = await CheckOut(checkoutID)
+  if (res.status) {
+    setAlertMessage("Check Out Success")
+    setSuccess(true);
+  } else {
+    setAlertMessage(res.message);
+    setError(true);
+  }
+  getList();
+  setOpenCheckout(false)
+
+}
+
+  // const handleClose = (
+  //   event?: React.SyntheticEvent | Event,
+  //   reason?: string
+  // ) => {
+  //   if (reason === "clickaway") {
+  //     return;
+  //   }
+  //   setSuccess(false);
+  //   setSuccessDel(false);
+  //   setError(false);
+  //   setErrorDel(false);
+  // };
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -77,27 +119,19 @@ const handleDelete = async () => {
     }
   };
 
-  // const onDelete = async (id: number) => {
-  //   let res = await DeleteCheckInOut(id);
-  //   if (res) {
-  //     setSuccessDel(true);
+
+
+  // const onCheckOut = async (id: number) => {
+  //   let res = await CheckOut(id);
+  //   if (res.status) {
+  //     setAlertMessage("Check Out Success")
+  //     setSuccess(true);
   //   } else {
-  //     setErrorDel(true);
+  //     setAlertMessage(res.message);
+  //     setError(true);
   //   }
   //   getList()
   // }
-
-  const onCheckOut = async (id: number) => {
-    let res = await CheckOut(id);
-    if (res.status) {
-      setAlertMessage("Check Out Success")
-      setSuccess(true);
-    } else {
-      setAlertMessage(res.message);
-      setError(true);
-    }
-    getList()
-  }
 
   function formatTime (time : string){
     const data = new Date(time)
@@ -130,7 +164,8 @@ const handleDelete = async () => {
               //variant="contained"
               color="success"
               onClick={() => {
-                onCheckOut(row.ID);
+                // onCheckOut(row.ID);
+                handleDialogCheckoutOpen(row.ID)
               }}
               sx={{borderRadius: 20,'&:hover': {color: '#4caf50', backgroundColor: '#e8f5e9'}}}
               endIcon={<CheckCircleIcon />}
@@ -196,7 +231,7 @@ const handleDelete = async () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="success">
-            ลบข้อมูลสำเร็จ
+            Delete data successfully
           </Alert>
         </Snackbar>
         <Snackbar
@@ -206,7 +241,7 @@ const handleDelete = async () => {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="error">
-            ไม่สามารถลบข้อมูลได้
+            Can't delete data
           </Alert>
         </Snackbar>
         <Snackbar
@@ -286,6 +321,23 @@ const handleDelete = async () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Dialog
+                open={openCheckout}
+                onClose={handleDialogCheckoutclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {`Do you want to check out record No. ${checkInOuts.filter((cio) => (cio.ID === checkoutID)).at(0)?.ID}?`}
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={handleDialogCheckoutclose}>cancel</Button>
+                    <Button onClick={handleCheckout} className="bg-red" autoFocus>
+                        confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            
       </Container>
     </div>
     
