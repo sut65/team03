@@ -201,8 +201,8 @@ func ListPlaces(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": places})
 }
 
-// GET /totalprice/customer/:id
-func TotalPricebyCID(c *gin.Context) {
+// GET /priceroom/customer/:id
+func PriceRoomCID(c *gin.Context) {
 	id := c.Param("id")
 	var b_total struct {
 		TotalAmount int
@@ -216,86 +216,17 @@ func TotalPricebyCID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": b_total})
 }
 
-// GET /pricefood/customer/:id
-func GetPriceFood(c *gin.Context) {
+// GET /priceservice/customer/:id
+func PriceServiceCID(c *gin.Context) {
 	id := c.Param("id")
-	var f_price struct {
-		price int
-		entity.Food
+	var s_total struct {
+		TotalAmount int
+		entity.Service
 	}
-	if err := entity.DB().Raw("SELECT price FROM foods WHERE id = (SELECT food_id FROM services WHERE customer_id = ?)", id).Scan(&f_price).Error; err != nil {
+	if err := entity.DB().Raw("SELECT SUM(total) as total_amount FROM services WHERE customer_id = ? GROUP BY customer_id", id).Scan(&s_total).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": f_price})
-}
-
-// GET /fooditem/customer/:id
-func GetFoodItem(c *gin.Context) {
-	id := c.Param("id")
-	var food entity.Service
-
-	if err := entity.DB().Raw("SELECT food_item FROM services WHERE customer_id = ?", id).Scan(&food).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": food})
-}
-
-// GET /pricedrink/customer/:id
-func GetPriceDrink(c *gin.Context) {
-	id := c.Param("id")
-	var d_price struct {
-		price int
-		entity.Drink
-	}
-	if err := entity.DB().Raw("SELECT price FROM drinks WHERE id = (SELECT drink_id FROM services WHERE customer_id = ?)", id).Scan(&d_price).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": d_price})
-}
-
-// GET /drinkitem/customer/:id
-func GetDrinkItem(c *gin.Context) {
-	id := c.Param("id")
-	var drink entity.Service
-
-	if err := entity.DB().Raw("SELECT drink_item FROM services WHERE customer_id = ?", id).Scan(&drink).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": drink})
-}
-
-// GET /priceaccessorie/customer/:id
-func GetPriceAccessorie(c *gin.Context) {
-	id := c.Param("id")
-	var a_price struct {
-		price int
-		entity.Product
-	}
-	if err := entity.DB().Raw("SELECT price FROM products WHERE id = (SELECT product_id FROM storages WHERE id = (SELECT storage_id FROM services WHERE customer_id = ?))", id).Scan(&a_price).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": a_price})
-}
-
-// GET /accessorieitem/customer/:id
-func GetAccessorieItem(c *gin.Context) {
-	id := c.Param("id")
-	var accessorie entity.Service
-
-	if err := entity.DB().Raw("SELECT storage_item FROM services WHERE customer_id = ?", id).Scan(&accessorie).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"data": accessorie})
+	c.JSON(http.StatusOK, gin.H{"data": s_total})
 }

@@ -1,4 +1,4 @@
-import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetTotalPriceByCID } from "./service/PaymentHttpClientService";
+import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceRoomCID } from "./service/PaymentHttpClientService";
 import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -156,7 +156,7 @@ function PaymentAddIn() {
         }
     };
     const getpriceofroom = async () => {
-        let res = await GetTotalPriceByCID(id_cus);
+        let res = await GetPriceRoomCID(id_cus);
         if (res) {
             setPrice(res);
         }

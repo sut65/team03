@@ -1,5 +1,5 @@
 import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
-import { AddPayment, GetAccessorieItem, GetDestination, GetDrinkItem, GetFoodItem, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceAccessorie, GetPriceDrink, GetPriceFood } from "./service/PaymentHttpClientService";
+import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceServiceCID } from "./service/PaymentHttpClientService";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -46,15 +46,8 @@ function PaymentAddOut() {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const id_cus = localStorage.getItem("id");
-    const status = useRef(true);
 
-    const [sumprice, setSumPrice] = useState(0);
-    const [pricefood, setPriceFood] = useState(0);
-    const [fooditem, setFoodItem] = useState(0);
-    const [pricedrink, setPriceDrink] = useState(0);
-    const [drinkitem, setDrinkItem] = useState(0);
-    const [priceaccessorie, setPriceAccessorie] = useState(0);
-    const [accessorieitem, setAccessorieItem] = useState(0);
+    const [price, setPrice] = useState(0);
 
     const handleImageChange = (event: any) => {
         const image = event.target.files[0];
@@ -119,7 +112,7 @@ function PaymentAddOut() {
             PaymentMethodID: convertType(payment.PaymentMethodID),
             MethodID: convertType(payment.MethodID),
             PlaceID: convertType(payment.PlaceID),
-            Price: sumprice,
+            Price: price,
             Time: time,
             Picture: image,
         };
@@ -166,41 +159,10 @@ function PaymentAddOut() {
             setPicture(res);
         }
     };
-
-    const getpricefood = async () => {
-        let res = await GetPriceFood(id_cus + "");
+    const getpriceofroom = async () => {
+        let res = await GetPriceServiceCID(id_cus);
         if (res) {
-            setPriceFood(res);
-        }
-    };
-    const getfooditem = async () => {
-        let res = await GetFoodItem(id_cus + "");
-        if (res) {
-            setFoodItem(res);
-        }
-    };
-    const getpricedrink = async () => {
-        let res = await GetPriceDrink(id_cus + "");
-        if (res) {
-            setPriceDrink(res);
-        }
-    };
-    const getdrinkitem = async () => {
-        let res = await GetDrinkItem(id_cus + "");
-        if (res) {
-            setDrinkItem(res);
-        }
-    };
-    const getpriceaccessorie = async () => {
-        let res = await GetPriceAccessorie(id_cus + "");
-        if (res) {
-            setPriceAccessorie(res);
-        }
-    };
-    const getaccessorieitem = async () => {
-        let res = await GetAccessorieItem(id_cus + "");
-        if (res) {
-            setAccessorieItem(res);
+            setPrice(res);
         }
     };
 
@@ -210,23 +172,8 @@ function PaymentAddOut() {
         getdestination();
         getpicture();
         getplaces();
+        getpriceofroom();
     }, [paymetid, metid]);
-
-    useEffect(() => {
-        if (status.current) {
-            status.current = false;
-        } else {
-            getpricefood();
-            getfooditem();
-            getpricedrink();
-            getdrinkitem();
-            getpriceaccessorie();
-            getaccessorieitem();
-
-            setSumPrice((pricefood * fooditem) + (pricedrink * drinkitem) + (priceaccessorie * accessorieitem))
-
-        }
-    });
 
     return (
 
@@ -357,7 +304,7 @@ function PaymentAddOut() {
                                     <FormLabel> Price </FormLabel>
                                     <TextField
                                         variant="outlined"
-                                        value={sumprice}
+                                        value={price}
                                         InputProps={{
                                             readOnly: true,
                                         }}

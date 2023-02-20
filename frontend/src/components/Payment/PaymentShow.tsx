@@ -24,6 +24,7 @@ const theme = createTheme({
 function PaymentShow() {
     const [payment, setPayment] = useState<PaymentsInterface[]>([]);
     const id_cus = localStorage.getItem("id");
+    const name = localStorage.getItem("name");
 
     const getpayment = async () => {
         let res = await GetPayment(id_cus + "");
@@ -43,8 +44,7 @@ function PaymentShow() {
                     <Grid item xs={12}>
                         <TextField
                             style={{ float: "right" }}
-                            label=" "
-                            defaultValue="This is your bill."
+                            value= {name + "'s Bill Payment"}
                             variant="standard"
                             InputProps={{
                                 readOnly: true,
@@ -61,7 +61,6 @@ function PaymentShow() {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="center" width="20%"> Payment </TableCell>
-                                            <TableCell align="center" width="20%"> Customer name </TableCell>
                                             <TableCell align="center" width="20%"> Slip Time </TableCell>
                                             <TableCell align="center" width="20%"> Method </TableCell>
                                             <TableCell align="center" width="20%"> Name </TableCell>
@@ -76,7 +75,6 @@ function PaymentShow() {
                                         {payment.map((item: PaymentsInterface) => (
                                             <TableRow key={item.ID}>
                                                 <TableCell align="center">{item.ID}</TableCell>
-                                                <TableCell align="center">{item.Customer?.FirstName}</TableCell>
                                                 <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
                                                 <TableCell align="center">{item.PaymentMethod?.Name}</TableCell>
                                                 <TableCell align="center">{item.Method?.Name}</TableCell>

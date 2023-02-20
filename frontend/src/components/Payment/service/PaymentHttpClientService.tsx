@@ -145,8 +145,8 @@ async function GetPaymentByID(id?: string) {
     return res;
 }
 
-async function GetTotalPriceByCID(id?: string | null) {
-    let res = await fetch(`${apiUrl}/totalprice/customer/${id}`, requestOptionsGet)
+async function GetPriceRoomCID(id?: string | null) {
+    let res = await fetch(`${apiUrl}/priceroom/customer/${id}`, requestOptionsGet)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
@@ -157,73 +157,12 @@ async function GetTotalPriceByCID(id?: string | null) {
         });
     return res;
 }
-
-async function GetPriceFood(id?: string) {
-    let res = await fetch(`${apiUrl}/pricefood/customer/${id}`, requestOptionsGet)
+async function GetPriceServiceCID(id?: string | null) {
+    let res = await fetch(`${apiUrl}/priceservice/customer/${id}`, requestOptionsGet)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data.Price;
-            } else {
-                return false;
-            }
-        });
-    return res;
-}
-async function GetFoodItem(id?: string) {
-    let res = await fetch(`${apiUrl}/fooditem/customer/${id}`, requestOptionsGet)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data.FoodItem;
-            } else {
-                return false;
-            }
-        });
-    return res;
-}
-async function GetPriceDrink(id?: string) {
-    let res = await fetch(`${apiUrl}/pricedrink/customer/${id}`, requestOptionsGet)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data.Price;
-            } else {
-                return false;
-            }
-        });
-    return res;
-}
-async function GetDrinkItem(id?: string) {
-    let res = await fetch(`${apiUrl}/drinkitem/customer/${id}`, requestOptionsGet)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data.DrinkItem;
-            } else {
-                return false;
-            }
-        });
-    return res;
-}
-async function GetPriceAccessorie(id?: string) {
-    let res = await fetch(`${apiUrl}/priceaccessorie/customer/${id}`, requestOptionsGet)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data.Price;
-            } else {
-                return false;
-            }
-        });
-    return res;
-}
-async function GetAccessorieItem(id?: string) {
-    let res = await fetch(`${apiUrl}/accessorieitem/customer/${id}`, requestOptionsGet)
-        .then((response) => response.json())
-        .then((res) => {
-            if (res.data) {
-                return res.data.StorageItem;
+                return res.data.TotalAmount;
             } else {
                 return false;
             }
@@ -241,11 +180,6 @@ export {
     GetPlaces,
     GetMethodP,
     GetPaymentByID,
-    GetTotalPriceByCID,
-    GetPriceFood,
-    GetFoodItem,
-    GetPriceDrink,
-    GetDrinkItem,
-    GetPriceAccessorie,
-    GetAccessorieItem,
+    GetPriceRoomCID,
+    GetPriceServiceCID,
 };
