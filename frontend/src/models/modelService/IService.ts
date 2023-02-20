@@ -3,7 +3,7 @@ import { CustomerInterface } from "../modelCustomer/ICustomer";
 
 export interface ServicesInterface {
     ID?: number,
-    
+
     CustomerID?: number | null,
     Customer?: CustomerInterface,
 
@@ -20,6 +20,8 @@ export interface ServicesInterface {
     StorageID?: number,
     Storage?: StorageInterface,
     StorageItem?: number;
+
+    Total?: number;
 }
 
 export interface FoodsInterface {

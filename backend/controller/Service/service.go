@@ -61,6 +61,7 @@ func CreateService(c *gin.Context) {
 		DrinkItem:   service.DrinkItem,
 		Storage:     storage,
 		StorageItem: service.StorageItem,
+		Total:       service.Total,
 	}
 
 	//15: save
@@ -158,6 +159,7 @@ func UpdateService(c *gin.Context) {
 		Storage:     storage,
 		StorageItem: service.StorageItem,
 		Customer:    customer,
+		Total:       service.Total,
 	}
 
 	if err := entity.DB().Where("id = ?", service.ID).Updates(&patchservice).Error; err != nil {
@@ -307,3 +309,39 @@ func GetRoomByCID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": booking})
 }
+
+// GET /food/price/:id
+func GetFoodPrice(c *gin.Context) {
+	var food entity.Food
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT price FROM foods WHERE id = ?", id).First(&food); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "food not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": food})
+}
+
+// GET /drink/price/:id
+func GetDrinkPrice(c *gin.Context) {
+	var drink entity.Drink
+	id := c.Param("id")
+	if tx := entity.DB().Raw("SELECT price FROM drinks WHERE id = ?", id).First(&drink); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "drink not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": drink})
+}
+
+// GET /accessorie/price/:id
+func GetAccessoriePrice(c *gin.Context) {
+	var accessorie entity.Product
+	id := c.Param("id")
+	if err := entity.DB().Raw("SELECT price From products WHERE id = (SELECT product_id FROM storages WHERE id = ?)", id).Scan(&accessorie).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": accessorie})
+}
+
+// ("SELECT price From products WHERE id = (SELECT product_id FROM storages WHERE id = ?)

@@ -37,4 +37,5 @@ type Service struct {
 	StorageID   int      `valid:"required~Choose Accessories"`
 	Storage     Storage  `valid:"-" gorm:"references:id"`
 	StorageItem int      `valid:"range(0|50)~How much accessories do you want?"`
+	Total       int
 }

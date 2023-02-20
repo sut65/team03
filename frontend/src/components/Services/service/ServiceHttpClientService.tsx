@@ -320,10 +320,46 @@ async function UpdateAccessories(data: StorageInterface) {
 
 async function GetRoom(id: string | null) {
     let res = await fetch(`${apiUrl}/room/customer/${id}`, requestOptionsGet)
+    .then((response) => response.json())
+    .then((res) => {
+        if (res.data) {
+            return res.data.RoomID;
+        } else {
+            return false;
+        }
+    });
+    return res;
+}
+async function GetPriceFood(id?: number) {
+    let res = await fetch(`${apiUrl}/food/price/${id}`, requestOptionsGet)
         .then((response) => response.json())
         .then((res) => {
             if (res.data) {
-                return res.data.RoomID;
+                return res.data.Price;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+async function GetPriceDrink(id?: number) {
+    let res = await fetch(`${apiUrl}/drink/price/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data.Price;
+            } else {
+                return false;
+            }
+        });
+    return res;
+}
+async function GetPriceAccessorie(id?: number) {
+    let res = await fetch(`${apiUrl}/accessorie/price/${id}`, requestOptionsGet)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return res.data.Price;
             } else {
                 return false;
             }
@@ -354,4 +390,7 @@ export {
     GetAccessorieItem,
     UpdateAccessories,
     GetRoom,
+    GetPriceFood,
+    GetPriceDrink,
+    GetPriceAccessorie,
 };

@@ -13,7 +13,10 @@ import {
     GetDrinkItemS,
     GetAccessoriesItemS,
     UpdateDrink,
-    UpdateAccessories
+    UpdateAccessories,
+    GetPriceFood,
+    GetPriceDrink,
+    GetPriceAccessorie
 } from "./service/ServiceHttpClientService";
 import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
 import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
@@ -53,18 +56,26 @@ function ServiceUpdate() {
     const [fooditems, setFoodItemS] = useState(0);
     const [fooditemwant, setFoodItemWant] = useState(0);
     const [fooditemsum, setFoodItemSum] = useState(0);
+    const [pricefood, setPriceFood] = useState(0);
+
 
     const [drink, setDrink] = useState<DrinksInterface[]>([]);
     const [drinkitem, setDrinkItem] = useState(0);
     const [drinkitems, setDrinkItemS] = useState(0);
     const [drinkitemwant, setDrinkItemWant] = useState(0);
     const [drinkitemsum, setDrinkItemSum] = useState(0);
+    const [pricedrink, setPriceDrink] = useState(0);
+
 
     const [accessorie, setAccessorie] = useState<StorageInterface[]>([]);
     const [accessorieitem, setAccessorieItem] = useState(0);
     const [accessorieitems, setAccessorieItemS] = useState(0);
     const [accessorieitemwant, setAccessorieItemWant] = useState(0);
     const [accessorieitemsum, setAccessorieItemSum] = useState(0);
+    const [priceaccessorie, setPriceAccessorie] = useState(0);
+
+
+    const [pricetotal, setPriceTotal] = useState(0);
 
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
@@ -149,6 +160,7 @@ function ServiceUpdate() {
             DrinkItem: convertTypeNotNull(service.DrinkItem),
             StorageID: convertTypeNotNull(service.StorageID),
             StorageItem: convertTypeNotNull(service.StorageItem),
+            Total: pricetotal,
         };
         let foodupdate = {
             ID: convertTypeNotNull(service.FoodID),
@@ -163,9 +175,9 @@ function ServiceUpdate() {
             Quantity: accessorieitemsum,
         };
 
-        if (fooditemsum > 0 && fooditemsum <= fooditems) {
-            if (drinkitemsum > 0 && drinkitemsum <= drinkitem) {
-                if (accessorieitemsum > 0 && accessorieitemsum <= accessorieitem) {
+        if (fooditemsum > 0 && fooditemsum <= 100) {
+            if (drinkitemsum > 0 && drinkitemsum <= 100) {
+                if (accessorieitemsum > 0 && accessorieitemsum <= 100) {
                     let res = await UpdateService(serviceupdate);
                     if (res.status) {
                         await UpdateFood(foodupdate);
@@ -261,6 +273,24 @@ function ServiceUpdate() {
             setAccessorieItemWant(res);
         }
     }
+    const getfoodprice = async () => {
+        let res = await GetPriceFood(service.FoodID);
+        if (res) {
+            setPriceFood(res);
+        }
+    };
+    const getdrinkprice = async () => {
+        let res = await GetPriceDrink(service.DrinkID);
+        if (res) {
+            setPriceDrink(res);
+        }
+    };
+    const getaccessorieprice = async () => {
+        let res = await GetPriceAccessorie(service.StorageID);
+        if (res) {
+            setPriceAccessorie(res);
+        }
+    };
 
     useEffect(() => {
         getservicebyid();
@@ -284,16 +314,14 @@ function ServiceUpdate() {
             setDrinkItemSum((drinkitem + drinkitems) - drinkitemwant);
             getaccessorieitem();
             setAccessorieItemSum((accessorieitem + accessorieitems) - accessorieitemwant);
+            getfoodprice();
+            getdrinkprice();
+            getaccessorieprice();
+            setPriceTotal((pricefood * fooditemwant) + (pricedrink * drinkitemwant) + (priceaccessorie * accessorieitemwant));
         }
     });
 
-    useEffect(() => {
-        if (statusnew.current) {
-            statusnew.current = false;
-        } else {
-
-        }
-    });
+    console.log('This price ' + pricetotal);
 
     return (
         <div>

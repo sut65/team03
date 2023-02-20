@@ -1421,8 +1421,9 @@ func SetupIntoDatabase(db *gorm.DB) {
 		FoodItem:    1,
 		Drink:       Pepsi,
 		DrinkItem:   2,
-		Storage:     Storage1,
+		Storage:     Storage2,
 		StorageItem: 1,
+		Total:       5085,
 	})
 
 	//=================================Checkroom===========
