@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 
@@ -26,6 +26,35 @@ function RepRqShow() {
   const [error, setError] = useState(false);
   const [errorDel, setErrorDel] = useState(false);
   const id_cus = localStorage.getItem("id");
+  //For Delete state 
+  const [deleteID, setDeleteID] = React.useState<number>(0)
+
+  // For Set dialog open
+  const [openDelete, setOpenDelete] = React.useState(false);
+    
+    const handleDialogDeleteclose = () => {
+      setOpenDelete(false)
+      setTimeout(() => {
+          setDeleteID(0)
+      }, 500)
+  }
+  
+  const handleDialogDeleteOpen = (ID: number) => {
+    setDeleteID(ID)
+    setOpenDelete(true)
+  }
+  
+  const handleDelete = async () => {
+    let res = await DeleteRepairReq(deleteID)
+    if (res.status) {
+        //console.log(res.data)
+    } else {
+        //console.log(res.data)
+    }
+    getRepReqByCID();
+    setOpenDelete(false)
+  
+  }
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -40,12 +69,12 @@ function RepRqShow() {
     setErrorDel(false);
   };
 
-  const getList = async () => {
-    let res = await GetRepairReqs();
-    if (res) {
-        setRpRq(res);
-    }
-  };
+  // const getList = async () => {
+  //   let res = await GetRepairReqs();
+  //   if (res) {
+  //       setRpRq(res);
+  //   }
+  // };
 
   const getRepReqByCID = async () => {
     let res = await GetRepairReqByCID(id_cus + "");
@@ -87,7 +116,7 @@ function RepRqShow() {
               //variant="contained"
               color="error"
               onClick={() => {
-                 onDelete(row.ID);
+                handleDialogDeleteOpen(row.ID);
               }}
               sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
               endIcon={<DeleteOutlineIcon />}
@@ -132,7 +161,7 @@ function RepRqShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="success">
-            ลบข้อมูลสำเร็จ
+            Delete data successfully
           </Alert>
         </Snackbar>
         <Snackbar
@@ -142,27 +171,7 @@ function RepRqShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="error">
-            ไม่สามารถลบข้อมูลได้
-          </Alert>
-        </Snackbar>
-        <Snackbar
-          open={success}
-          autoHideDuration={3000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert onClose={handleClose} severity="success">
-            Check Out สำเร็จ
-          </Alert>
-        </Snackbar>
-        <Snackbar
-          open={error}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        >
-          <Alert onClose={handleClose} severity="error">
-            ไม่สามารถ Check Out ได้
+            Can't delete data
           </Alert>
         </Snackbar>
         <Box
@@ -191,16 +200,6 @@ function RepRqShow() {
               Request
             </Button>
           </Box>
-          {/* <Box>
-            <Button
-              component={RouterLink}
-              to="/Rep/Edit"
-              variant="contained"
-              color="primary"
-            >
-              Edit
-            </Button>
-          </Box> */}
         </Box>
         <div style={{ height: 400, width: "100%", marginTop: "20px" }}>
           <DataGrid
@@ -211,6 +210,27 @@ function RepRqShow() {
             rowsPerPageOptions={[5]}
           />
         </div>
+        <Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {`Do you want to delete request record No. ${rprq.filter((rprq) => (rprq.ID === deleteID)).at(0)?.ID}?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      If you delete this data, you won't be able to recover it again. Do you want to delete this data?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogDeleteclose}>cancel</Button>
+                    <Button onClick={handleDelete} className="bg-red" autoFocus>
+                        confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
       </Container>
     </div>
   );
