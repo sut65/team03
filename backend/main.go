@@ -179,13 +179,9 @@ func main() {
 			protected.GET("/methods/paymet/:id", payment.ListMethodsByPID)
 			protected.GET("/method/:id", payment.GetMethod)
 			protected.GET("/places", payment.ListPlaces)
-			protected.GET("/totalprice/customer/:id", payment.TotalPricebyCID)
-			protected.GET("/pricefood/customer/:id", payment.GetPriceFood)
-			protected.GET("/fooditem/customer/:id", payment.GetFoodItem)
-			protected.GET("/pricedrink/customer/:id", payment.GetPriceDrink)
-			protected.GET("/drinkitem/customer/:id", payment.GetDrinkItem)
-			protected.GET("/priceaccessorie/customer/:id", payment.GetPriceAccessorie)
-			protected.GET("/accessorieitem/customer/:id", payment.GetAccessorieItem)
+			protected.GET("/priceroom/customer/:id", payment.PriceRoomCID)
+			protected.GET("/priceservice/customer/:id", payment.PriceServiceCID)
+
 			// ======================================= PAYMENT
 
 			// ======================================= SERVICE
@@ -200,12 +196,15 @@ func main() {
 			protected.GET("/foods", service.ListFoods)
 			protected.GET("/food/item/:id", service.GetFoodItem)
 			protected.PATCH("/foods", service.UpdateFood)
+			protected.GET("/food/price/:id", service.GetFoodPrice)
 			protected.GET("/drinks", service.ListDrinks)
 			protected.GET("/drink/item/:id", service.GetDrinkItem)
 			protected.PATCH("/drinks", service.UpdateDrink)
+			protected.GET("/drink/price/:id", service.GetDrinkPrice)
 			protected.GET("/accessories", service.ListAccessories)
 			protected.GET("/accessorie/item/:id", service.GetAccessoriesItem)
 			protected.PATCH("/accessories", service.UpdateAccessorie)
+			protected.GET("/accessorie/price/:id", service.GetAccessoriePrice)
 			// ======================================= SERVICE
 
 			// Run the server
