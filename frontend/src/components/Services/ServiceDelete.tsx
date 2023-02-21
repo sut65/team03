@@ -33,14 +33,6 @@ function ServiceDelete() {
     const [services, setServices] = useState<Partial<ServicesInterface>>({});
     const [servicess, setServicess] = useState<Partial<ServicesInterface>>({});
 
-    const [fooditem, setFoodItem] = useState(0);
-    const [fooditems, setFoodItemS] = useState(0);
-    const [fooditemsum, setFoodItemSum] = useState(0);
-
-    const [drinkitem, setDrinkItem] = useState(0);
-    const [drinkitems, setDrinkItemS] = useState(0);
-    const [drinkitemsum, setDrinkItemSum] = useState(0);
-
     const [accessorieitem, setAccessorieItem] = useState(0);
     const [accessorieitems, setAccessorieItemS] = useState(0);
     const [accessorieitemsum, setAccessorieItemSum] = useState(0);
@@ -78,22 +70,12 @@ function ServiceDelete() {
     };
 
     async function confirm() {
-        let foodupdate = {
-            ID: convertTypeNotNull(servicess.FoodID),
-            Item: fooditemsum,
-        };
-        let drinkupdate = {
-            ID: convertTypeNotNull(servicess.DrinkID),
-            Item: drinkitemsum,
-        };
         let accessoriesupdate = {
             ID: convertTypeNotNull(servicess.StorageID),
             Quantity: accessorieitemsum,
         };
         let res = await DeleteService(services.ID);
         if (res.status) {
-            await UpdateFood(foodupdate);
-            await UpdateDrink(drinkupdate);
             await UpdateAccessories(accessoriesupdate);
             setAlertMessage("Cancle Order Successfully");
             setSuccess(true);
@@ -115,18 +97,6 @@ function ServiceDelete() {
             setServicess(res);
         }
     };
-    const getfooditem = async () => {
-        let res = await GetFoodItem(servicess.FoodID);
-        if (res) {
-            setFoodItem(res);
-        }
-    };
-    const getdrinkitem = async () => {
-        let res = await GetDrinkItem(servicess.DrinkID);
-        if (res) {
-            setDrinkItem(res);
-        }
-    };
     const getaccessorieitem = async () => {
         let res = await GetAccessorieItem(servicess.StorageID);
         if (res) {
@@ -139,18 +109,6 @@ function ServiceDelete() {
             setRoom(res);
         }
     };
-    const getfooditems = async () => {
-        let res = await GetFoodItemSn(services.ID);
-        if (res) {
-            setFoodItemS(res);
-        }
-    }
-    const getdrinkitems = async () => {
-        let res = await GetDrinkItemSn(services.ID);
-        if (res) {
-            setDrinkItemS(res);
-        }
-    }
     const getaccessorieitems = async () => {
         let res = await GetAccessoriesItemSn(services.ID);
         if (res) {
@@ -168,12 +126,6 @@ function ServiceDelete() {
             getservicebyid();
             status.current = false;
         } else {
-            getfooditem();
-            getfooditems();
-            setFoodItemSum(fooditem + fooditems);
-            getdrinkitem();
-            getdrinkitems();
-            setDrinkItemSum(drinkitem + drinkitems);
             getaccessorieitem();
             getaccessorieitems();
             setAccessorieItemSum(accessorieitem + accessorieitems);
