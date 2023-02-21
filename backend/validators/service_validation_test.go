@@ -22,6 +22,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -39,6 +40,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -56,6 +58,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -73,6 +76,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   0,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -90,6 +94,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -107,6 +112,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   -1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -124,6 +130,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: -1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -141,6 +148,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -158,6 +166,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   51,
 			StorageID:   1,
 			StorageItem: 1,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
@@ -175,6 +184,7 @@ func TestServiceValidate(t *testing.T) {
 			DrinkItem:   1,
 			StorageID:   1,
 			StorageItem: 51,
+			Total:       200,
 		}
 
 		ok, err := govalidator.ValidateStruct(s)
