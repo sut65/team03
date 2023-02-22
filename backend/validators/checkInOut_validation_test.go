@@ -115,11 +115,11 @@ func TestCheckInOutValidateNotBlank(t *testing.T) {
 }
 
 // ============================================================= Date Now ->
-func TestValidateCheckInTimeMustBeNow(t *testing.T) {
+func TestValidateCheckInTimeMustBeNowNotPast(t *testing.T) {
 	g := NewGomegaWithT(t)
 	test := uint(1)
 
-	t.Run("check in time must be now", func(t *testing.T) {
+	t.Run("check in time must be now not past", func(t *testing.T) {
 		cio := CheckInOut{
 			BookingID:          &test,
 			CheckInTime:        time.Now().AddDate(0, 0, -1), //ผิด เป็นอดีต
@@ -133,6 +133,28 @@ func TestValidateCheckInTimeMustBeNow(t *testing.T) {
 		g.Expect(ok).ToNot(BeTrue())
 		g.Expect(err).ToNot(BeNil())
 		g.Expect(err.Error()).To(Equal("Invalid check-in time (do not be in the past)"))
+	})
+}
+
+// ============================================================= Date Now ->
+func TestValidateCheckInTimeMustBeNowNotFuture(t *testing.T) {
+	g := NewGomegaWithT(t)
+	test := uint(1)
+
+	t.Run("check in time must be now not future", func(t *testing.T) {
+		cio := CheckInOut{
+			BookingID:          &test,
+			CheckInTime:        time.Now().AddDate(0, 0, 1), //ผิด เป็นอดีต
+			CheckOutTime:       time.Now().AddDate(0, 0, 2),
+			CheckInOutStatusID: &test,
+			EmployeeID:         &test,
+		}
+
+		ok, err := govalidator.ValidateStruct(cio)
+
+		g.Expect(ok).ToNot(BeTrue())
+		g.Expect(err).ToNot(BeNil())
+		g.Expect(err.Error()).To(Equal("Invalid check-in time (do not be in the future)"))
 	})
 }
 

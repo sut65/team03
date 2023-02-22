@@ -23,7 +23,7 @@ type CheckInOut struct {
 	BookingID *uint   `valid:"required~Please select booking"`
 	Booking   Booking `valid:"-" gorm:"references:ID"`
 
-	CheckInTime  time.Time `valid:"required~Please select check-in time, Now~Invalid check-in time (do not be in the past)"`
+	CheckInTime  time.Time `valid:"required~Please select check-in time, NowP~Invalid check-in time (do not be in the past), NowF~Invalid check-in time (do not be in the future)"`
 	CheckOutTime time.Time `valid:"IsAfterCheckIn~check out time must be after in check in time"`
 
 	CheckInOutStatusID *uint            `valid:"required~Please select status"`
@@ -39,9 +39,14 @@ func init() {
 	// 	return t.After(time.Now().AddDate(0, 0, -1)) // today ->
 	// })
 
-	govalidator.CustomTypeTagMap.Set("Now", func(i interface{}, context interface{}) bool {
+	govalidator.CustomTypeTagMap.Set("NowP", func(i interface{}, context interface{}) bool {
 		t := i.(time.Time)
 		return t.After(time.Now().Add(time.Second * -599))
+	})
+
+	govalidator.CustomTypeTagMap.Set("NowF", func(i interface{}, context interface{}) bool {
+		t := i.(time.Time)
+		return t.Before(time.Now().Add(time.Second * 599))
 	})
 
 	// govalidator.CustomTypeTagMap.Set("Future", func(i interface{}, context interface{}) bool {

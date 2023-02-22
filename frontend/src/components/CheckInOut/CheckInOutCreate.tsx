@@ -79,24 +79,24 @@ function CheckInOutCreate() {
     }
   };
 
-  const getStatuses =  async () => {
-    let res = await GetIOStatus();
-    if (res) {
-      setStatuses(res);
-    }
-  };
+  // const getStatuses =  async () => {
+  //   let res = await GetIOStatus();
+  //   if (res) {
+  //     setStatuses(res);
+  //   }
+  // };
 
-  const getEmps =  async () => {
-    let res = await GetEmps();
-    if (res) {
-      setEmps(res);
-    }
-  };
+  // const getEmps =  async () => {
+  //   let res = await GetEmps();
+  //   if (res) {
+  //     setEmps(res);
+  //   }
+  // };
 
   useEffect(() => {
     getBookings();
-    getStatuses();
-    getEmps();
+    // getStatuses();
+    // getEmps();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
@@ -110,8 +110,8 @@ function CheckInOutCreate() {
       BookingID: convertType(checkinout.BookingID),
       CheckInOutStatusID: 1,
       EmployeeID: convertType(localStorage.getItem("id")),
-      // CheckInTime: checkinout.CheckInTime,
-      CheckInTime: new Date(),
+      CheckInTime: checkinout.CheckInTime,
+      // CheckInTime: new Date(),
       CheckOutTime: null,
     };
 
@@ -191,7 +191,7 @@ function CheckInOutCreate() {
               </Select>
             </FormControl>
           </Grid>
-          {/* <Grid item xs={6}>
+          <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack spacing={3}>
@@ -209,7 +209,7 @@ function CheckInOutCreate() {
                     </Stack>
                 </LocalizationProvider>
             </FormControl>
-          </Grid> */}
+          </Grid>
           <Grid item xs={12}>
             <Button
               component={RouterLink}
