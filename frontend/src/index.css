@@ -36,13 +36,13 @@ code {
 .grid-con {
   display: grid;
   grid-template-columns: repeat(4,1fr);
-  grid-template-rows: repeat(8,300px);
+  grid-template-rows: repeat(3,300px);
 }
 
 .grid-con2 {
   display: grid;
-  grid-template-columns: repeat(2,1fr);
-  grid-template-rows: repeat(9,80px);
+  grid-template-columns: repeat(10,1fr);
+  grid-template-rows: repeat(10,80px);
 }
 
 .grid-con img {
@@ -100,12 +100,40 @@ code {
 
 .grid-item-21 {
   display: flex;
-  grid-column: 1 / 2;
+  grid-column: 1 / 7;
+  grid-row: 2 / 10;
+  overflow: hidden;
+  border-radius: 5%;
+  margin-left: 20%;
+}
+.grid-item-22 {
+  display: flex;
+  grid-column: 8 / 12;
+  grid-row: 2 / 3;
+}
+.grid-item-23 {
+  display: flex;
+  grid-column: 8 / 12;
+  grid-row: 3 / 4;
   height: 600px;
   width: 450px;
   overflow: hidden;
-  margin-left: 11%;
-  margin-top: 6%;
+}
+.grid-item-24 {
+  display: flex;
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  height: 600px;
+  width: 450px;
+  overflow: hidden;
+}
+.grid-item-25 {
+  display: flex;
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  height: 600px;
+  width: 450px;
+  overflow: hidden;
 }
 
 .grid-item-info{
@@ -117,6 +145,12 @@ code {
 }
 
 .grid-item-info2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .grid-item-info3{
   display: flex;
   justify-content: center;
   align-items: center;

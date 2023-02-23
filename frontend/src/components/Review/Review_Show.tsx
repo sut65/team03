@@ -9,31 +9,28 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 
 import Box from "@mui/material/Box";
+import Carousel from "react-material-ui-carousel";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import {
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Paper,
   Grid,
   Dialog,
-  DialogTitle,
   DialogContent,
   TextField,
   Rating,
+  AppBar,
 } from "@mui/material";
-import moment from "moment";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Margin } from "@mui/icons-material";
 import Review_Save from "./Review_Save";
 import { ReviewInterface } from "../../models/IReview";
 import Moment from "moment";
+import Toolbar from "@mui/material/Toolbar";
+import Logo1 from "../../Image/LOGO.png"
+import im10 from "../../Image/im10.jpg"
+import im7 from "../../Image/im7.jpg"
+import im9 from "../../Image/im9.png"
+
 
 const themeshow = createTheme({
   palette: {
@@ -76,6 +73,7 @@ function Review_Show() {
     }
   };
 
+
   const OpenImageonCilck = (item: ReviewInterface) => {
     setOpenImage(true);
     setimg(item.Reviewimage);
@@ -115,19 +113,63 @@ function Review_Show() {
     getReview();
   }, []);
 
+  function Item(props: any) {
+    return (
+         <img src={props.item.Image} width= "100%" height="600px"/>
+      );
+  }
+
+  var Slider = [
+    {
+      Image: im9,
+    },
+    {
+      Image: im7,
+    },
+    {
+      Image: im10,
+    },
+  ];
+
+  function ImageC() {
+    return (
+      <Carousel>
+        {Slider.map((item, i) => (<Item key={i} item={item} />))}
+      </Carousel>
+    );
+  }
+
   return (
+    <ThemeProvider theme={themeshow}>
+    <AppBar position="fixed">
+      <Toolbar>
+        <div>
+          <img src={Logo1} width= "75px" height="75px"/>
+        </div>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '60%'}}>
+          <Typography variant="h6" color="secondary" noWrap component="div" marginLeft={2}>
+            <div >
+              G03 Hotel
+            </div>
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', width: '50%'}}>
+          <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Home</Button>
+          <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
+          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
+          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
+          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '13%'}}>Content</Button>
+        </Box>
+        <Box sx={{ display: 'flex', width: '11%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
+        </Box>
+        
+      </Toolbar>
+
+    </AppBar>
     <div>
       <Container maxWidth="xl">
-        <Box
-          sx={{
-            backgroundImage: `url(${"https://img.freepik.com/free-photo/modern-luxury-hotel-office-reception-lounge-with-meeting-room_105762-1772.jpg?w=1060&t=st=1674825855~exp=1674826455~hmac=e2e451703c84c01719b2d4ab952bfc88a4cc96670f85bfc1735a997d9f74efd3"})`,
-            backgroundSize: "auto",
-            padding: 0,
-            height: 500,
-            marginTop: 3,
-            boxShadow: 5,
-          }}
-        ></Box>
+        {ImageC()}
         <div >
           <Grid
             container
@@ -140,12 +182,14 @@ function Review_Show() {
             {review.map((item: ReviewInterface) => (
               <Grid item xs="auto" key={item.ID}>
                 <Paper>
+                  
                   <Grid>
                     <TextField
                       sx={{ "& fieldset": { border: "none" } }}
                       value={item.Customer.Email}
                     />
                   </Grid>
+
                   <Grid container columns={12}>
                     <Grid
                       display={"flex"}
@@ -168,6 +212,7 @@ function Review_Show() {
                       />
                     </Grid>
                   </Grid>
+
                   <Grid>
                     <TextField
                       fullWidth
@@ -176,12 +221,14 @@ function Review_Show() {
                       value={item.Comment}
                     />
                   </Grid>
+
                   <Grid container display={"flex"} justifyContent={"center"}>
                     <Grid>
                       {CheckImage(item)}
                       {/* <img  src={`${item.Reviewimage}`} onError={() => CheckImage(item)} style={myImageStyle} onDoubleClick={() => OpenImageonCilck(item)}/> */}
                     </Grid>
                   </Grid>
+
                 </Paper>
               </Grid>
             ))}
@@ -194,6 +241,7 @@ function Review_Show() {
         </Dialog>
       </Container>
     </div>
+    </ThemeProvider>
   );
 }
 

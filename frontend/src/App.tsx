@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 
-import Manage_Search from "./components/Employee/Manage_Search";
 import Manage_Show from "./components/Employee/Manage_Show";
 import Manage_Save from "./components/Employee/Manage_Save";
 import Manage_Edit from "./components/Employee/Manage_Edit";
@@ -59,6 +58,8 @@ import CheckroomEdit from "./components/Checkroom/CheckroomEdit";
 import Checkroom from "./components/Checkroom/Createcheckroom";
 import EditCustomer from "./components/Customer/EditCustomer";
 import CustomerlistforAdmin from "./components/Customer/ShowCustomerforAdmin";
+import Homepage from "./components/Homepage";
+import Homeshow from "./components/Homeshow";
 
 export default function App() {
   const [token, setToken] = useState<String>("");
@@ -73,7 +74,16 @@ export default function App() {
   }, []);
 
   if (!token) {
-    return <SignIn />;
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/Homeshow" element={<Homeshow />} />
+          <Route path="/RW" element={<Review_Show />} />
+          <Route path="/home" element={<SignIn />} />
+        </Routes>
+      </Router>
+    );
   }
 
   return (
@@ -84,7 +94,7 @@ export default function App() {
           <Routes>
             {role === "Officer" && (
               <>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/Manage-Save" element={<Manage_Save />} />
                 <Route path="/Manage-Show" element={<Manage_Show />} />
                 <Route path="/Manage-Edit/:id" element={<Manage_Edit />} />
@@ -93,7 +103,7 @@ export default function App() {
             }
             {role === "Customer" && (
               <>
-                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/Book" element={<Bookings />} />
                 <Route path="/Book/Create" element={<BookingCreate />} />
                 <Route path="/Book/Edit" element={<BookingUpdate />} />
@@ -103,7 +113,7 @@ export default function App() {
                 <Route path="/Rep/Create" element={<RepRqCreate />} />
                 <Route path="/Rep/Edit/:id" element={<RepRqEdit />} />
 
-                <Route path="/RW" element={<Review_Show />} />
+
                 <Route path="/Reviewlist" element={<Review_list />} />
 
                 <Route path="/ss" element={<ServiceShow />} />
@@ -126,7 +136,7 @@ export default function App() {
 
               {role === "Employee" && (
               <>
-              <Route path="/" element={<Home />} />
+              <Route path="/home" element={<Home />} />
               
               <Route path="/RT" element={<RoomShow />} />
               <Route path="/RT/Create" element={<RoomCreate />} />
