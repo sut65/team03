@@ -1,30 +1,16 @@
 import React, { useEffect } from "react";
-
 import { Link as RouterLink } from "react-router-dom";
-
 import TextField from "@mui/material/TextField";
-
 import Button from "@mui/material/Button";
-
 import FormControl from "@mui/material/FormControl";
-
 import Container from "@mui/material/Container";
-
 import Paper from "@mui/material/Paper";
-
 import Grid from "@mui/material/Grid";
-
 import Box from "@mui/material/Box";
-
 import Typography from "@mui/material/Typography";
-
 import Divider from "@mui/material/Divider";
-
 import Snackbar from "@mui/material/Snackbar";
-
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-
-import { UsersInterface } from "../../models/IUser";
 import {
   createTheme,
   FormControlLabel,
@@ -71,7 +57,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function Manage_Save() {
-  const [date, setDate] = React.useState<Date | null>(null);
   const [employee, setEmployee] = React.useState<Partial<EmployeeInterface>>(
     {
       DepartmentID: 0,
@@ -86,7 +71,6 @@ function Manage_Save() {
   const [gender, setGender] = React.useState<string>("");
   const [success, setSuccess] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const [offID,setOffID] = React.useState<Number | null>(0);
   const [dateOfBirth, setDateOfBirth] = React.useState<Date | null>(new Date());
   const [yearOfStart, setYearOfStart] = React.useState<Date | null>(new Date());
   const [message, setAlertMessage] = React.useState("");

@@ -1,15 +1,41 @@
-import { Box, Button, Container, Grid, Paper } from "@mui/material";
 import * as React from "react";
 import Carousel from "react-material-ui-carousel";
 import im10 from "../Image/im10.jpg"
-import im6 from "../Image/im6.jpeg"
 import im7 from "../Image/im7.jpg"
 import im9 from "../Image/im9.png"
-import { mt } from "date-fns/locale";
+import Logo1 from "../Image/LOGO.png"
+
+import Toolbar from "@mui/material/Toolbar";
+
+import Typography from "@mui/material/Typography";
+
+import { Link as RouterLink } from "react-router-dom";
+
+import { createTheme, styled, useTheme } from "@mui/material/styles";
+import { grey } from "@mui/material/colors";
+
+import { AppBar, Box, Button, Grid, ThemeProvider } from "@mui/material";
+
+const bgnavbar = createTheme({
+  palette: {
+    primary: {
+      // Purple and grey play nicely together.
+      main: grey[800],
+    },
+    secondary: {
+      // Purple and grey play nicely together.
+      main: grey[50],
+    },
+
+  },
+});
 
 
-function Home() {
-  
+function Homeshow() {
+  const themep = useTheme();
+  const [open, setOpen] = React.useState(false);
+
+  //เรียกใช้งานรูปภาพเป็นสไลด์ๆ
   function Item(props: any) {
     return (
          <img src={props.item.Image} width= "100%" height="600px"/>
@@ -27,7 +53,7 @@ function Home() {
       Image: im10,
     },
   ];
-
+//เรียกใช้ Carousel
   function ImageC() {
     return (
       <Carousel>
@@ -35,8 +61,36 @@ function Home() {
       </Carousel>
     );
   }
+
   return (
-  <div>
+  <ThemeProvider theme={bgnavbar}>
+      <AppBar position="fixed">
+        <Toolbar>
+          <div>
+            <img src={Logo1} width= "75px" height="75px"/>
+          </div>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '60%'}}>
+            <Typography variant="h6" color="secondary" noWrap component="div" marginLeft={2}>
+              <div >
+                G03 Hotel
+              </div>
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', width: '50%'}}>
+            <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}} >Home</Button>
+            <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
+            <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
+            <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
+
+          </Box>
+          <Box sx={{ display: 'flex', width: '11%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
+          </Box>
+          
+        </Toolbar>
+
+      </AppBar>
+      <div>
      <Grid>
       {ImageC()}
      </Grid >
@@ -55,12 +109,12 @@ function Home() {
             <h2>Our hotel has good service such as friendly staff and service with a smile. Parking service, Roomservice , Spa&Massage, Elegant restaurant with well decorated. Variety of food for you to taste. Complete hotel facilities Additional services available to you With 24-hour service and excellent security system. With a key card scanning door system There are security guards who are always ready to help you. You will be impressed. Satisfaction in various fields in our hotel</h2>
           </div>
         </div>
-        <div className="grid-item-24">
+        {/* <div className="grid-item-24">
           <img src="https://media-cdn.tripadvisor.com/media/photo-s/1c/ff/66/8a/modern-thai-cuisine-perfectly.jpg" />
         </div>
         <div className="grid-item-25">
           <img src="https://media-cdn.tripadvisor.com/media/photo-s/0c/17/73/d1/legrande-lounge.jpg" />
-        </div>
+        </div> */}
      </div>
 
      <div className="grid-con">
@@ -106,13 +160,10 @@ function Home() {
             <img src="https://www.thedenizen.co.nz/wp-content/uploads/2021/01/Opera-Suite-Lounge-1.jpg"></img>
           </div>
         </div>
-     </div>
-
-     <div className="grid-confooter">
-        <p>Contectdssssssssssssssssssssssssssssssssssssss</p>
-     </div>
+    </div>
   </div>
+</ThemeProvider>
   );
 }
 
-export default Home;
+export default Homeshow;
