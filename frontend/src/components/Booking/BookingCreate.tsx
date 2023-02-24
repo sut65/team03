@@ -75,7 +75,7 @@ function BookingCreate() {
         }
     };
 
-    const getCustomer = async() => {
+    const getCustomer = async () => {
         let res = await GetCustomerByUID();
         if (res) {
             setBooking({
@@ -113,6 +113,9 @@ function BookingCreate() {
         if (res.status) {
             setAlertMessage("จองห้องพักสำเร็จ");
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/pai");
+            }, 2000);
         } else {
             setAlertMessage(res.message);
             setError(true);
