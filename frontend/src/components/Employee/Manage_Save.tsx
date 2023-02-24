@@ -204,7 +204,11 @@ const getPosition = async () => {
         console.log(res)
         if (res.data) {
           setSuccess(true);
+          setInterval(() => {
+            window.location.assign("/Manage-Show");
+          }, 1000);
         } else {
+        
           setError(true);
           setAlertMessage(res.error);
         }
@@ -227,7 +231,7 @@ const getPosition = async () => {
       <Snackbar
         id="success"        
         open={success}
-        autoHideDuration={8000}
+        autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
@@ -239,7 +243,7 @@ const getPosition = async () => {
       <Snackbar 
         id="error"
         open={error} 
-        autoHideDuration={8000} 
+        autoHideDuration={6000} 
         onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
           {message}
@@ -519,7 +523,7 @@ const getPosition = async () => {
 
           <Grid item xs={12}>
             <Button component={RouterLink} to="/Manage-Show" variant="contained">
-              Back
+              Show Information
             </Button>
 
             <Button 

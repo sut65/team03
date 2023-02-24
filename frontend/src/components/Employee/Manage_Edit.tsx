@@ -237,8 +237,9 @@ const getEmployee = async () => {
         console.log(res)
         if (res.data) {
           setSuccess(true);
-        //   setErrorMassage("");
-        //   setBtnDisabled(!btnDisabled)
+          setInterval(() => {
+            window.location.assign("/Manage-Show");
+          }, 1000);
         } else {
           
           setError(true);
@@ -578,6 +579,7 @@ const getEmployee = async () => {
             </Button>
 
             <Button 
+            
               style={{ float: "right" , marginRight: "15px"}}
               onClick={handleClickedit}
               variant="contained"
