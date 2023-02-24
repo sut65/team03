@@ -146,6 +146,9 @@ function StorageCreate() {
     let res = await UpdateStorage(data);
     if (res.status) {
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/RoomW");
+    }, 2000);
       setErrorMSG("")
     } else {
       setError(true);

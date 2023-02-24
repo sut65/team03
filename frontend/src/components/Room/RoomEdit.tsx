@@ -167,6 +167,9 @@ function RoomEdit() {
     let res = await UpdateRoom(data);
     if (res) {
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/RT");
+    }, 2000);
     } else {
       setError(true);
     }
