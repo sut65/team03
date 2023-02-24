@@ -156,6 +156,9 @@ function EditCustomer() {
     if (res) {
       setSuccess(true);
       console.log(newdata)
+      setInterval(() => {
+        window.location.assign("/customer/profile");
+      }, 1000);
     } else {
       setError(true);
     }
@@ -243,7 +246,7 @@ function EditCustomer() {
 
               {/*============================================(First name)======================================================*/}
               <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>First name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Firstname</p>
                 <FormControl fullWidth variant="outlined">
                   <TextField
                     id="FirstName"
@@ -259,7 +262,7 @@ function EditCustomer() {
 
               {/*=============================================(Last name)=====================================================*/}
               <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>Last name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Lastname</p>
                 <FormControl fullWidth variant="outlined">
                   <TextField
                     id="LastName"

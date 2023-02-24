@@ -23,8 +23,6 @@ export interface EmployeeInterface {
     PositionID : number;
     Position: PositionInterface;
 
-    LocationID : number;
-    Location: LocationInterface;
 
    //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
 }
@@ -50,13 +48,5 @@ export interface PositionInterface {
     ID: number;
     Name: string;
 //หลังบ้าน ไปเว็บ เว็บมา models
-   //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
-}
-
-export interface LocationInterface {
-
-    ID: number;
-    Name: string;
-
    //แสดงข้อมูลมาแสดงมาจาก หลังบ้าน
 }

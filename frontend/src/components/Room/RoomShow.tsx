@@ -1,29 +1,10 @@
-//import React, { useEffect } from "react";
-
-//import { Link as RouterLink } from "react-router-dom";
-
 import Typography from "@mui/material/Typography";
 
-//import Button from "@mui/material/Button";
-
-//import Container from "@mui/material/Container";
-
 import Box from "@mui/material/Box";
-
-//import { Alert, Snackbar } from "@mui/material";
-
-// //import { UsersInterface } from "../models/IUser";
 
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 import { RoomInterface, RoomTypeInterface, RoomZoneInterface,StateInterface } from "../../models/IRoom";
-
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-// import { grey } from '@mui/material/colors';
-
-// import { EmployeeInterface } from "../../models/IEmployee";
-// import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -39,17 +20,6 @@ import moment from "moment";
 import { GetRooms, Room, DeleteRoom } from "./service/RoomHttpClientService";
 import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 import React from "react";
-
-const theme = createTheme({
-  palette: {
-      primary: {
-          main: grey[800],
-      },
-      secondary: {
-          main: grey[50],
-      },
-  },
-});
 
 
 function RoomShow() {
@@ -94,26 +64,6 @@ function RoomShow() {
  
  }
  
-
-  // const getRooms = async () => {
-  //     const apiUrl = `http://localhost:8080/service/rooms`;
-  //     const requestOptions = {
-  //         method: "GET",
-  //         headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //             "Content-Type": "application/json",
-  //         },
-  //     };
-
-  //     fetch(apiUrl, requestOptions)
-  //         .then((response) => response.json())
-  //         .then((res) => {
-  //             if (res.data) {
-  //                 setRoom(res.data);
-  //             }
-  //         });
-  // };
-
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -160,7 +110,7 @@ function RoomShow() {
 
    { field: "Amount", headerName: "ราคาของห้อง", width: 150 , valueFormatter: (params) => params?.value?.Amount,},
 
-   { field: "Time", headerName: "วันที่และเวลาที่บันทึกข้อมูล", width: 150, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
+   { field: "Time", headerName: "วันที่และเวลาที่บันทึกข้อมูล", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
 
    {
     field: "delete",
@@ -229,7 +179,7 @@ function RoomShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="success">
-            Add สำเร็จ
+            เพิ่มข้อมูลสำเร็จ
           </Alert>
         </Snackbar>
         <Snackbar
@@ -239,7 +189,7 @@ function RoomShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="error">
-            ไม่สามารถ Add ได้
+            ไม่สามารถเพิ่มข้อมูลได้
           </Alert>
         </Snackbar>
         <Box
@@ -265,7 +215,7 @@ function RoomShow() {
               variant="contained"
               color="inherit"
             >
-              Add
+              เพิ่มข้อมูลห้อง
             </Button>
           </Box>
           <Box>
@@ -275,7 +225,7 @@ function RoomShow() {
               variant="contained"
               color="inherit"
             >
-              Edit
+              แก้ไขข้อมูลห้อง
             </Button>
           </Box>
           </Box>

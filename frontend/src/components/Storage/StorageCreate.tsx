@@ -24,20 +24,9 @@ import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
 import { GetEmployees, GetProductTypes, GetProducts, CreateStorage } from "./service/StorageHttpClientService";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 import { Message } from "@mui/icons-material";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-        main: grey[800],
-    },
-    secondary: {
-        main: grey[50],
-    },
-},
-});
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -110,17 +99,17 @@ function StorageCreate() {
     }
   };
 
-  const getEmployee =  async () => {
-    let res = await GetEmployees();
-    if (res) {
-      setEmployees(res);
-    }
-  };
+  // const getEmployee =  async () => {
+  //   let res = await GetEmployees();
+  //   if (res) {
+  //     setEmployees(res);
+  //   }
+  // };
 
   useEffect(() => {
     getProductType();
     getProduct();
-    getEmployee();
+    //getEmployee();
   }, []);
 
   const convertType = (data: string | number | undefined | null) => {
@@ -132,11 +121,7 @@ function StorageCreate() {
     let data = {
       ProductTypeID: convertType(storage.ProductTypeID),
       ProductID: convertType(storage.ProductID),
-      //ProductTypeID: storage.ProductTypeID,
-      //ProductID: storage.ProductID,
-      //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
-      //Quantity: storage?.Quantity,
       Quantity: convertType(number)||0,
       Time: storage.Time,
     };
@@ -267,93 +252,6 @@ function StorageCreate() {
           />
             </FormControl>
           </Grid>
-
-
-          {/*<Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-            <InputLabel id="demo-simple-select-label">สถานะของห้องพัก</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                native
-                value={Store.StateID + ""}
-                label="สถานะของห้องพัก."
-                onChange={handleChange}
-                inputProps={{
-                  name: "StateID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกสถานะห้อง
-                </option>
-                {states.map((item: StateInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-                </Grid>*/}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>สถานะของห้อง</p>
-              <Select
-                native
-                value={room.StateID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "StateID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกสถานะห้อง
-                </option>
-                {states.map((item: StateInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-                </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>employee</p>
-              <Select
-                native
-                value={checkinout.EmployeeID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "EmployeeID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Employee
-                </option>
-                {emps.map((item: EmployeeInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={checkinout.CheckInTime}
-                  onChange={(newValue) => {
-                    setCheckinout({
-                      ...checkinout,
-                      CheckInTime: newValue,
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -378,7 +276,7 @@ function StorageCreate() {
               component={RouterLink}
               to="/RoomW"
               variant="contained"
-              color="info"
+              color="inherit"
             >
               กลับ
             </Button>

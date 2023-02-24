@@ -45,7 +45,7 @@ function CheckInOutCreate() {
   const [bookings, setBookings] = useState<BookingsInterface[]>([]);
   const [statuses, setStatuses] = useState<CheckInOutStatusInterface[]>([]);
   const [emps, setEmps] = useState<EmployeeInterface[]>([]);
-  const [checkinout, setCheckinout] = useState<CheckInOutInterface>({});
+  const [checkinout, setCheckinout] = useState<CheckInOutInterface>({CheckInTime: new Date()});
   const [message, setAlertMessage] = useState("");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);

@@ -140,7 +140,6 @@ function Manage_Show() {
                       <TableCell align="center" width="20%"> Name </TableCell>
                       <TableCell align="center" width="20%"> Department </TableCell>
                       <TableCell align="center" width="20%"> Position </TableCell>
-                      <TableCell align="center" width="20%"> Location </TableCell>
                       <TableCell align="center" width="20%"> Username </TableCell>
                       <TableCell align="center" width="20%"> Email </TableCell>
                       <TableCell align="center" width="20%"> Tel </TableCell>
@@ -162,7 +161,6 @@ function Manage_Show() {
                         <TableCell align="center">{item.Employeename}</TableCell>
                         <TableCell align="center">{item.Department?.Name}</TableCell>
                         <TableCell align="center">{item.Position?.Name}</TableCell>
-                        <TableCell align="center">{item.Location?.Name}</TableCell>
                         <TableCell align="center">{item.Eusername}</TableCell>
                         <TableCell align="center">{item.Email}</TableCell>
                         <TableCell align="center">{item.Phonenumber}</TableCell>
