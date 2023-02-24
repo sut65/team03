@@ -4,10 +4,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { CheckroomInterface } from "../../models/ICheckroom" 
-import { DataGrid, GridApi, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridApi, GridColDef, GridRowParams } from "@mui/x-data-grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 import moment from "moment";
@@ -20,6 +20,36 @@ function Checkroomlist() {
     const [successDelete, setSuccessDelete] = useState(false);
     const [error, setError] = useState(false);
     const [errorDelete, setErrorDelete] = useState(false);
+
+
+    const [deleteID, setDeleteID] = React.useState<number>(0)
+
+   // For Set dialog open
+   const [openDelete, setOpenDelete] = React.useState(false);
+ 
+   const handleDialogDeleteclose = () => {
+     setOpenDelete(false)
+     setTimeout(() => {
+         setDeleteID(0)
+     }, 500)
+ }
+ 
+ const handleDialogDeleteOpen = (ID: number) => {
+   setDeleteID(ID)
+   setOpenDelete(true)
+ }
+ 
+ const handleDelete = async () => {
+   let res = await DeleteCheckroom(deleteID)
+   if (res.status) {
+    console.log(res.status)
+   } else {
+    console.log(res.status)
+   }
+   getCheckroomlist();
+   setOpenDelete(false)
+ 
+ }
   
 
 
@@ -34,6 +64,7 @@ function Checkroomlist() {
         },
       });
 
+      
     const handleClose = (
       event?: React.SyntheticEvent | Event,
       reason?: string
@@ -73,20 +104,27 @@ function Checkroomlist() {
         { field: "Status", headerName: "สถานะของห้อง", width: 150 , valueFormatter: (params) => params?.value?.S_Name,},
         { field: "Date", headerName: "วันที่และเวลา", width: 170, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm') },
         { field: "Employee", headerName: "ชื่อ-นามสกุล", width: 150 , valueFormatter: (params) => params?.value?.Employeename,},
-        { field: "delete",
-          headerName: "ลบข้อมูลการตรวจสอบ",
-          width: 150,
-          sortable: false,
-          align:"center",
-          renderCell: (params) => {
-              const onClick = (e: { stopPropagation: () => void; }) => {
-                  e.stopPropagation();
-                  const id = params.getValue(params.id, "ID");
-                  onDelete(id);
-              };
-              return <Button onClick={onClick} color="error" endIcon={<DeleteOutlineIcon />} >Delete</Button>;
-          }
-        },
+        {  field: "delete",
+        headerName: "",
+        sortable: true,
+        width: 120,
+        align:"center",
+        headerAlign: "center",
+        renderCell: ({ row }: Partial<GridRowParams>) =>
+            <Button 
+                size="small"
+                //variant="contained"
+                color="error"
+                onClick={() => {
+                  //  onDelete(row.ID);
+                   handleDialogDeleteOpen(row.ID)
+                }}
+                
+                sx={{borderRadius: 20,'&:hover': {color: '#FC0000', backgroundColor: '#F9EBEB'}}}
+                endIcon={<DeleteOutlineIcon />}
+            >
+                DELETE
+            </Button>,},
      
       ];
       useEffect(() => {
@@ -179,11 +217,32 @@ function Checkroomlist() {
               pageSize={5}
               rowsPerPageOptions={[5]}
             />
-          </div>
+          </div><Dialog
+                open={openDelete}
+                onClose={handleDialogDeleteclose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" > 
+                    {`คุณต้องการลบข้อมูลการตรวจสอบห้องพักนี้?`}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      ถ้าคุณลบข้อมูลนี้ คุณจะไม่สามารถกู้ข้อมูลคืนได้ คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button color="inherit" onClick={handleDialogDeleteclose}>ยกเลิก</Button>
+                    <Button color="error" onClick={handleDelete} autoFocus>
+                        ยืนยัน
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Container>
         </ThemeProvider>
       </Container>
       </div>
+      
     );
   }
   
