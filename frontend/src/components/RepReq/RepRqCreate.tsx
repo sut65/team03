@@ -128,6 +128,9 @@ function RepRqCreate() {
     if (res.status) {
       setAlertMessage("Create Request Success")
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/Rep");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);
