@@ -6,20 +6,20 @@ import {
     UpdateFood,
     UpdateDrink,
     GetFoodItem,
+    GetPriceFood,
     GetDrinkItem,
+    GetPriceDrink,
     GetAccessories,
     UpdateAccessories,
     GetAccessorieItem,
-    GetPriceFood,
-    GetPriceDrink,
     GetPriceAccessorie,
 } from "./service/ServiceHttpClientService";
+import { Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, TextField, Typography } from "@mui/material";
 import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
-import { StorageInterface } from "../../models/IStorage";
-import { Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, styled, TextField, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { StorageInterface } from "../../models/IStorage";
 import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import { Box } from "@mui/system";
@@ -364,7 +364,6 @@ function ServiceAdd() {
                                 container
                                 sx={{
                                     flexGrow: 1,
-                                    fontFamily: "Comic Sans MS",
                                 }}
                             >
                                 <Grid
@@ -487,7 +486,9 @@ function ServiceAdd() {
                                     <TextField
                                         required
                                         label="How much ?"
-
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
+                                        }}
                                         variant="standard"
                                         id="FoodItem"
                                         value={service.FoodItem}
@@ -498,6 +499,9 @@ function ServiceAdd() {
                                     <TextField
                                         required
                                         label="How much ?"
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
+                                        }}
                                         variant="standard"
                                         id="DrinkItem"
                                         value={service.DrinkItem}
@@ -511,6 +515,9 @@ function ServiceAdd() {
                                         }}
                                         required
                                         label="How much ?"
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
+                                        }}
                                         variant="standard"
                                         id="StorageItem"
                                         value={service.StorageItem}

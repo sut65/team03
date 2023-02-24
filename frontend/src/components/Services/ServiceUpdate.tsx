@@ -3,23 +3,23 @@ import {
     GetFoods,
     GetDrinks,
     UpdateFood,
+    UpdateDrink,
     GetFoodItem,
     GetDrinkItem,
+    GetPriceFood,
+    GetFoodItemS,
+    GetPriceDrink,
+    GetDrinkItemS,
     UpdateService,
     GetAccessories,
     GetServiceByID,
-    GetAccessorieItem,
-    GetFoodItemS,
-    GetDrinkItemS,
-    GetAccessoriesItemS,
-    UpdateDrink,
     UpdateAccessories,
-    GetPriceFood,
-    GetPriceDrink,
-    GetPriceAccessorie
+    GetAccessorieItem,
+    GetPriceAccessorie,
+    GetAccessoriesItemS
 } from "./service/ServiceHttpClientService";
+import { Box, Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, TextField, Typography } from "@mui/material";
 import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
-import { Box, Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, styled, TextField, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
@@ -530,8 +530,8 @@ function ServiceUpdate() {
                             >
                                 <Grid item xs={2.2}>
                                     <TextField
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
                                         }}
                                         required
                                         variant="standard"
@@ -542,8 +542,8 @@ function ServiceUpdate() {
                                 </Grid>
                                 <Grid item xs={2.2}>
                                     <TextField
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
                                         }}
                                         required
                                         variant="standard"
@@ -554,8 +554,8 @@ function ServiceUpdate() {
                                 </Grid>
                                 <Grid item xs={2.2}>
                                     <TextField
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
                                         }}
                                         required
                                         variant="standard"
@@ -581,6 +581,7 @@ function ServiceUpdate() {
                                         to="/ss"
                                         variant="contained"
                                         color="error"
+
                                     >
                                         BACK
                                     </Button>

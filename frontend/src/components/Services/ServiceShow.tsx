@@ -125,7 +125,6 @@ function ServiceShow() {
                             เช่น ปลั๊กสามตา กาน้ำร้อน ไมโครเวฟ หรือเตียง และสามารถใส่จำนวนที่ต้องการ เมื่อทำการบันทึก จะบันทึกเวลา ณ ขณะนั้น 
                             หากต้องการสินค้าเพิ่ม หรือไม่ต้องการสินค้านั้นแล้วสามารถแก้ไขรายการสินค้าได้ และจะทำการอัพเดทเวลา และ ราคาที่ทำการแก้ไขนั้นๆ
                             หากรายการที่ทำการสั่งไปไม่ต้องการแล้ว สามารถยกเลิกสินค้าได้ นอกจากนี้ยังแสดงรายการที่ลูกค้าทำการใช้บริการเสริม และรายการจากการสั่งสินค้าจะนำไปชำระเงินในภายหลัง
-
                         </Box>
                     </Paper>
 
@@ -169,7 +168,7 @@ function ServiceShow() {
                                             <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Accessorie</TableCellHead>
                                             <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Item</TableCellHead>
                                             <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Total</TableCellHead>
-                                            <TableCellHeadY align="center" width="20%" sx={{ border: 1 }}>- Edit -</TableCellHeadY>
+                                            <TableCellHeadY align="center" width="20%" sx={{ border: 1 }}>Edit</TableCellHeadY>
                                         </TableRow>
                                     </TableHead>
 
@@ -187,11 +186,7 @@ function ServiceShow() {
                                                 <TableCellBody align="center">{item.Total}</TableCellBody>
                                                 <TableCellBody align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
-
                                                         <Button
-                                                            sx={{
-                                                                fontFamily: "Comic Sans MS",
-                                                            }}
                                                             color="warning"
                                                             component={RouterLink}
                                                             to={`/su/${item.ID}`}
