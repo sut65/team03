@@ -59,6 +59,7 @@ function CustomerlistforAdmin() {
       let res = await DeleteCustomer(id);
       if (res) {
         setSuccessDelete(true);
+        window.location.reload();
       } else {
         setErrorDelete(true);
       }
