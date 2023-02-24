@@ -18,7 +18,6 @@ import {
   Button,
   Divider,
   Drawer,
-  Grid,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -40,14 +39,11 @@ import RoomServiceIcon from "@mui/icons-material/RoomService";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import BedroomParentIcon from "@mui/icons-material/BedroomParent";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import RoomPreferencesIcon from "@mui/icons-material/RoomPreferences";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import PeopleIcon from "@mui/icons-material/People";
-import path from "path";
+import Logo1 from "../Image/LOGO.png"
 
 const bgnavbar = createTheme({
   palette: {
@@ -216,6 +212,9 @@ function Navbar() {
           >
             <MenuIcon />
           </IconButton>
+          <div>
+            <img src={Logo1} width= "65px" height="55px"/>
+          </div>
           <Box
             sx={{
               display: "flex",

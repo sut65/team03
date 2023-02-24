@@ -31,6 +31,8 @@ import Logo1 from "../../Image/LOGO.png"
 import im10 from "../../Image/im10.jpg"
 import im7 from "../../Image/im7.jpg"
 import im9 from "../../Image/im9.png"
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 
 const themeshow = createTheme({
@@ -50,18 +52,10 @@ function Review_Show() {
   Moment.locale("th");
   const [openForCreate, setOpenForCreate] = React.useState(false);
   const [review, setReview] = React.useState<ReviewInterface[]>([]);
-  // const c = { width: '200x', height: '200px' };
-  // const d = { width: '0', height: '0' };
   const imgSize = { width: "200px", height: "200px" };
-  //const [myImageStyle, setMyImage] = React.useState({width: '200px', height: '200px' })
   const [openImage, setOpenImage] = React.useState(false);
   const [img, setimg] = React.useState({});
 
-  //ตรวจสอบภาพ
-  // const CheckImage = (item: ReviewInterface) => {
-  //   if (item.Reviewimage == "")
-  //   {setMyImage({width: '200px', height: '200px' })}
-  // };
   const CheckImage = (item: ReviewInterface) => {
     if (item.Reviewimage != "") {
       return (
@@ -73,7 +67,6 @@ function Review_Show() {
       );
     }
   };
-
 
   const OpenImageonCilck = (item: ReviewInterface) => {
     setOpenImage(true);
@@ -154,22 +147,24 @@ function Review_Show() {
             </div>
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', width: '35%'}}>
-          <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Home</Button>
-          <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
-          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
-          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
-          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '13%'}}>Content</Button>
-          <IconButton component={RouterLink} to="/customer/create" sx={{ display: 'flex', width: '11%'}} color="secondary" >
-            <PersonAddIcon />
-          </IconButton>
-        </Box>
-        <Box sx={{ display: 'flex', width: '6%'}}>
-        <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
-        </Box>
-        <Box sx={{ display: 'flex', width: '10%'}}>
+        <Box sx={{ display: 'flex', width: '25%'}}>
+            <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}} >Home</Button>
+            <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
+            <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
+            <Button component={RouterLink} to="/About"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
+
+          </Box>
+          <Box sx={{ display: 'flex', width: '3%'}}>
+            <IconButton component={RouterLink} to="/customer/create" sx={{ display: 'flex', width: '10%'}} color="secondary" >
+              <PersonAddIcon />
+            </IconButton>
+          </Box>
+          <Box sx={{ display: 'flex', width: '6.5%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
+          </Box>
+          <Box sx={{ display: 'flex', width: '10%'}}>
           <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
-        </Box>
+          </Box>
         
       </Toolbar>
 
@@ -248,6 +243,33 @@ function Review_Show() {
         </Dialog>
       </Container>
     </div>
+    <div className="grid-conre">
+    </div>
+    <div className="grid-confooter">
+        <div className="grid-item-footer">
+          <h2>Phone Support</h2>
+        </div>
+        <div className="grid-item-footer2">
+          <p>24 HOURS A DAY</p>
+        </div>
+        <div className="grid-item-footer3">
+          <h3>+ 01 345 647 745</h3>
+        </div>
+        <div className="grid-item-footer4">
+          <h2>Connect With Us</h2>
+        </div>
+        <div className="grid-item-footer5">
+          <p>SOCIAL MEDIA CHANNELS</p>
+        </div>
+        <div className="grid-item-footer6">
+          <IconButton color="secondary" href="https://www.facebook.com/profile.php?id=100088341936558" >
+            <FacebookIcon />
+          </IconButton>
+          <IconButton color="secondary" href="https://www.youtube.com/watch?v=pugRd6WapdM" >
+            <YouTubeIcon />
+          </IconButton>
+        </div>
+      </div>
     </ThemeProvider>
   );
 }
