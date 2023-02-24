@@ -181,7 +181,7 @@ function Customer() {
       setSuccess(true);
       setInterval(() => {
         window.location.assign("/Homeshow");
-      }, 1000);
+      }, 8000);
     } else {
       console.log(res.message);
       setAlertMessage(res.message);
@@ -368,7 +368,7 @@ function Customer() {
                       </IconButton>
                     </InputAdornment>
                   }
-                  inputProps={{ maxLength: 10 }}
+                  inputProps={{ maxLength: 8 }}
                 />
               </Grid>
               {/*=======================================(select Gender)===========================================================*/}

@@ -1,4 +1,4 @@
-package entity
+package validators
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 	"github.com/asaskevich/govalidator"
 	"github.com/onsi/gomega"
 	. "github.com/onsi/gomega"
+	. "github.com/sut65/team03/entity"
 ) 
 
 
@@ -217,6 +218,3 @@ func TestCustomerCheckPhone(t *testing.T) {
 		g.Expect(err.Error()).To(gomega.Equal("Phonenumber is not valid"))
 	}
 }
-
-
-
