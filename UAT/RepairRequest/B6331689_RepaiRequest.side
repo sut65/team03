@@ -1,0 +1,507 @@
+{
+  "id": "3c62d48e-d59a-444b-9dcb-20a626fe8dc8",
+  "version": "2.0",
+  "name": "B6331689_RepaiRequest",
+  "url": "http://localhost:3000/Rep/Create",
+  "tests": [{
+    "id": "70a29b5a-802e-47e9-9855-7e1ffaaacc14",
+    "name": "pass",
+    "commands": [{
+      "id": "9f9aaa76-13be-4667-a81a-9d4fa7cba7d6",
+      "comment": "",
+      "command": "open",
+      "target": "/Rep/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b6458ab8-47ad-4d87-b600-c9332b21576a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "742x814",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "928ede4f-88b6-47c5-88fe-892eccfa0541",
+      "comment": "",
+      "command": "click",
+      "target": "name=RoomID",
+      "targets": [
+        ["name=RoomID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RoomID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "397dced0-4b13-437a-a49a-42578645924f",
+      "comment": "",
+      "command": "select",
+      "target": "name=RoomID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "274f3cbb-432b-4f1c-8b37-ceae62a9042d",
+      "comment": "",
+      "command": "click",
+      "target": "name=RepairTypeID",
+      "targets": [
+        ["name=RepairTypeID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RepairTypeID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a068073-7b6e-4efa-91ac-8fca3b6552b0",
+      "comment": "",
+      "command": "select",
+      "target": "name=RepairTypeID",
+      "targets": [],
+      "value": "label=Light Bulb"
+    }, {
+      "id": "cecfa201-ca40-47ab-91f9-565cfe059277",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiInputBase-multiline",
+      "targets": [
+        ["css=.MuiInputBase-multiline", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d40c89c0-12a5-4bda-bf03-c8de96078278",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cc1b29a9-c139-4841-917a-4e32f4a211db",
+      "comment": "",
+      "command": "type",
+      "target": "id=Note",
+      "targets": [
+        ["id=Note", "id"],
+        ["css=#Note", "css:finder"],
+        ["xpath=//textarea[@id='Note']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "แตก"
+    }, {
+      "id": "f216f66d-4fd7-49ef-8cbe-9061ab7cf02e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "218aa5bf-94bf-4618-b58d-0bd9ba7a867e",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "6940031d-722d-42f0-a751-3a398af6b9fc",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Create Request Success"
+    }, {
+      "id": "0b547272-d28d-410b-b17d-5a1e4164c325",
+      "comment": "",
+      "command": "click",
+      "target": "css=html",
+      "targets": [
+        ["css=html", "css:finder"],
+        ["xpath=//html", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "490df53a-4349-497f-a4b3-f54b2e0d526f",
+    "name": "note not blank",
+    "commands": [{
+      "id": "26fc8636-61c5-4686-87cf-c455b4558b01",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/Rep/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "03e8c567-4e20-46c3-a33d-48fdd185e4ba",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e2840465-b38d-4b06-842c-62c68d18ab2e",
+      "comment": "",
+      "command": "click",
+      "target": "name=RoomID",
+      "targets": [
+        ["name=RoomID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RoomID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ac4dfed-7904-41ad-a6b2-cd8c8308faca",
+      "comment": "",
+      "command": "select",
+      "target": "name=RoomID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "157a1a6d-ce2e-4f69-8501-427f47572d14",
+      "comment": "",
+      "command": "click",
+      "target": "name=RepairTypeID",
+      "targets": [
+        ["name=RepairTypeID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RepairTypeID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0fdf7f0c-b3ae-4c33-b793-e0c71199961c",
+      "comment": "",
+      "command": "select",
+      "target": "name=RepairTypeID",
+      "targets": [],
+      "value": "label=Furniture"
+    }, {
+      "id": "0558f44e-42ec-4584-ab20-a265c1bdec8c",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a3b6dee7-9ac3-449a-b47d-b19ebb4cf5db",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "34f5c7f5-c863-4604-aba7-82a530942a3c",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a051a552-2f52-4e7d-89e3-db4800ee884c",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "fail: Please enter note"
+    }]
+  }, {
+    "id": "8358b3a0-fab9-4336-9c93-1cde26ed9c27",
+    "name": "Note length must be between 0 - 200",
+    "commands": [{
+      "id": "0a6eb281-0db4-48a7-b7bb-ed4d31b15766",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/Rep/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "36c4627d-818f-4938-95d9-6dce8eda6005",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "178a1ec2-e145-45ec-9967-b01a36553a92",
+      "comment": "",
+      "command": "click",
+      "target": "name=RoomID",
+      "targets": [
+        ["name=RoomID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RoomID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "205dae46-235b-4119-9b99-f1385a04536a",
+      "comment": "",
+      "command": "select",
+      "target": "name=RoomID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "45444681-7237-42ac-82a5-b1bb992ec9bc",
+      "comment": "",
+      "command": "click",
+      "target": "name=RepairTypeID",
+      "targets": [
+        ["name=RepairTypeID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RepairTypeID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "10dec493-168c-4e90-ac18-bbbdc3250cb2",
+      "comment": "",
+      "command": "select",
+      "target": "name=RepairTypeID",
+      "targets": [],
+      "value": "label=Toilet"
+    }, {
+      "id": "f57b7a36-ecd5-42ad-8f09-98c308a75608",
+      "comment": "",
+      "command": "click",
+      "target": "id=Note",
+      "targets": [
+        ["id=Note", "id"],
+        ["css=#Note", "css:finder"],
+        ["xpath=//textarea[@id='Note']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "edb4400c-d4ad-4b2a-a5db-198afedd5018",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b0df29e-48e9-4f95-a203-c00b2fa4a124",
+      "comment": "",
+      "command": "type",
+      "target": "id=Note",
+      "targets": [
+        ["id=Note", "id"],
+        ["css=#Note", "css:finder"],
+        ["xpath=//textarea[@id='Note']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ208"
+    }, {
+      "id": "74073677-0761-4243-81cf-b9c1b4d67c77",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b795a47e-c27f-4177-be65-858137293ca1",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "12cb902f-12cd-4e56-b141-3b68da49703b",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiPaper-elevation6",
+      "targets": [
+        ["css=.MuiPaper-elevation6", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div", "xpath:position"]
+      ],
+      "value": "fail: Note length must be between 0 - 200"
+    }]
+  }, {
+    "id": "bd85e705-945b-4088-9aaf-c767f3574212",
+    "name": "Note must not contain special characters",
+    "commands": [{
+      "id": "e4d1ea2b-6639-41db-b4fa-7e0b63a615a9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/Rep/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5e89e4b5-98d6-4561-b247-e181dd74592b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "742x814",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2043c812-d972-4bf0-b769-6e2fc21ec50c",
+      "comment": "",
+      "command": "click",
+      "target": "name=RoomID",
+      "targets": [
+        ["name=RoomID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RoomID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "225412c0-52dc-431c-adbb-80771fd3f8f4",
+      "comment": "",
+      "command": "select",
+      "target": "name=RoomID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "a3de1ff1-c1c7-4b8d-ba27-af13d1c9bb5c",
+      "comment": "",
+      "command": "click",
+      "target": "name=RepairTypeID",
+      "targets": [
+        ["name=RepairTypeID", "name"],
+        ["css=.Mui-focused > .MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='RepairTypeID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "df292d7f-3e44-4f81-b491-9297e87a92e7",
+      "comment": "",
+      "command": "select",
+      "target": "name=RepairTypeID",
+      "targets": [],
+      "value": "label=Light Bulb"
+    }, {
+      "id": "f7a3e535-e25b-407e-be52-56d0f0c45c4e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiInputBase-multiline",
+      "targets": [
+        ["css=.MuiInputBase-multiline", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b4dab7f9-7428-43ec-b0b6-8b05ac50d6f4",
+      "comment": "",
+      "command": "type",
+      "target": "id=Note",
+      "targets": [
+        ["id=Note", "id"],
+        ["css=#Note", "css:finder"],
+        ["xpath=//textarea[@id='Note']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/div/div/div/textarea", "xpath:idRelative"],
+        ["xpath=//textarea", "xpath:position"]
+      ],
+      "value": "!@#$%^^&"
+    }, {
+      "id": "2ac5ad9d-8c76-4f4d-bd66-2a9a74605729",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[4]/button", "xpath:idRelative"],
+        ["xpath=//div[4]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6a60fdd-95b6-46c3-9f0a-caeab351a28d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "fail: Note must not contain special characters"
+    }]
+  }],
+  "suites": [{
+    "id": "01938b7a-dbe7-4f42-bf49-f702bcd76f51",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["70a29b5a-802e-47e9-9855-7e1ffaaacc14"]
+  }],
+  "urls": ["http://localhost:3000/", "http://localhost:3000/Rep/Create"],
+  "plugins": []
+}
