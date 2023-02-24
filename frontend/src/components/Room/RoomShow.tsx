@@ -98,7 +98,7 @@ function RoomShow() {
 
  const columns: GridColDef[] = [
 
-   { field: "Room_No", headerName: "หมายเลขห้อง", width: 150 , valueFormatter: (params) => params?.value?.Room_No,},
+   { field: "Room_No", headerName: "หมายเลขห้อง", width: 120 , valueFormatter: (params) => params?.value?.Room_No,},
    
    { field: "Employee", headerName: "ชื่อ-นามสกุล", width: 150 , valueFormatter: (params) => params?.value?.Employeename,},
 
