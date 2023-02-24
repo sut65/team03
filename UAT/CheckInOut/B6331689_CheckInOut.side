@@ -1,0 +1,490 @@
+{
+  "id": "86c514d6-6375-437e-b0b5-52786c7c49df",
+  "version": "2.0",
+  "name": "B6331689_CheckInOut",
+  "url": "http://localhost:3000/CNCO/Create",
+  "tests": [{
+    "id": "22c5bcee-6301-4a31-8a9e-c5cfba6e3da0",
+    "name": "pass",
+    "commands": [{
+      "id": "4a2ee20e-8866-41c2-95df-a9e8de957723",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/CNCO/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "adc981e3-a24f-45a9-bd15-ae693a50288b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "6e1f698a-72c1-465a-b116-0b43ef0ef555",
+      "comment": "",
+      "command": "click",
+      "target": "name=BookingID",
+      "targets": [
+        ["name=BookingID", "name"],
+        ["css=.MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='BookingID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c94eef77-c117-4d13-826e-756e9b7f14e7",
+      "comment": "",
+      "command": "select",
+      "target": "name=BookingID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "120be535-44cd-4648-be25-5010f8fec540",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0c1f6ebd-d01c-409a-ba0e-53c121572ec9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ffb1dc1d-3590-4c71-b054-74d992b50220",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "50db8bd4-ae32-47de-8078-0acf51f49cb0",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Check In Success"
+    }]
+  }, {
+    "id": "4da1e7f1-13a0-4a02-a5c6-4530b0a70e57",
+    "name": "booking not blank",
+    "commands": [{
+      "id": "aa4f9c20-843a-4ac0-83b9-3ac558920929",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/CNCO/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1bf63af1-3583-48fa-9f0e-01deb818f0cf",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0be945cf-5ea3-4adf-be4e-5de8d2a79821",
+      "comment": "",
+      "command": "click",
+      "target": "id=:r1:",
+      "targets": [
+        ["id=:r1:", "id"],
+        ["css=#\\3Ar1\\3A", "css:finder"],
+        ["xpath=//input[@id=':r1:']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[2]/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "df18175b-7284-4ecc-9dd9-9fa13d71d934",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "eeea9e0b-cb99-4862-8665-abfd6aad427f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f65743b6-f457-4112-ba07-967751fc4dac",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "86938ddb-6dfc-4af0-b508-0de5c1ca3c90",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Please select booking"
+    }]
+  }, {
+    "id": "8405673b-849d-46fe-bec8-5ebb3ba65fd6",
+    "name": "time not past",
+    "commands": [{
+      "id": "e2fe1544-f4da-4953-83f0-662b0f2395ca",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/CNCO/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2123a759-3ac1-4ed5-b8de-eba9ec5dfbc2",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "80a2f908-2963-4259-a240-bb7eb4ef9adb",
+      "comment": "",
+      "command": "click",
+      "target": "name=BookingID",
+      "targets": [
+        ["name=BookingID", "name"],
+        ["css=.MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='BookingID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c3ff6939-a1a0-43aa-a4cb-f1ca96cacf3b",
+      "comment": "",
+      "command": "select",
+      "target": "name=BookingID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "fe78c114-0be6-4c13-8552-b7515763b4d4",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd path",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "33b4413f-00a7-472d-b653-a81991e415db",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1ae9t7h-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.css-1ae9t7h-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa5d1ffc-d4be-4016-a821-a58f9c181dd8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayPicker-weekContainer:nth-child(1) > .MuiButtonBase-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiDayPicker-weekContainer:nth-child(1) > .MuiButtonBase-root:nth-child(3)", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
+        ["xpath=//button[3]", "xpath:position"],
+        ["xpath=//button[contains(.,'3')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "904e9de5-aa00-4f3b-9e61-e568468e15c6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiClock-squareMask",
+      "targets": [
+        ["css=.MuiClock-squareMask", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c1999a64-c2e9-4f90-88d3-8c52f919573a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiClock-squareMask",
+      "targets": [
+        ["css=.MuiClock-squareMask", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fa1b9795-d3c6-46de-849f-eb793ae6db53",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f67b702-9d8e-4578-946c-73b615558408",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9d002499-e414-464c-b2e3-256bd56568f3",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[6]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div[2]/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "8c4d5c74-0191-4ba7-bcb1-1d4f955f7873",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Invalid check-in time (do not be in the past)"
+    }]
+  }, {
+    "id": "c759639a-c7aa-44ff-83e0-307760686ea0",
+    "name": "time not future",
+    "commands": [{
+      "id": "a37c8716-57d2-4db7-899d-a9b86bbad4c0",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/CNCO/Create",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "22a48a9d-f0b8-4661-a333-db2b3759ddee",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1440x900",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5942ec35-1546-470f-90cf-a658b84c1646",
+      "comment": "",
+      "command": "click",
+      "target": "name=BookingID",
+      "targets": [
+        ["name=BookingID", "name"],
+        ["css=.MuiNativeSelect-select", "css:finder"],
+        ["xpath=//select[@name='BookingID']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e4461d5e-5c3c-4288-bae9-6211b71d4627",
+      "comment": "",
+      "command": "select",
+      "target": "name=BookingID",
+      "targets": [],
+      "value": "label=2"
+    }, {
+      "id": "063b8008-b6be-48fb-9ae0-5d95a26a38c3",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "84165b46-1d95-48a0-b2e0-d08104c75e16",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-edgeEnd > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "ad9b430c-d984-4226-98cc-4b16536d3cb0",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "8e7b719c-39b3-476d-b5f9-eb2b7cdbe260",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "6711a9d9-0920-465a-bf04-a6ce27485161",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "31e08d7d-0615-454d-9af2-8b8af49a26e7",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "648760c2-ada1-4036-9832-8e4ca023274f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button path",
+      "targets": [
+        ["css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "7414dc48-87c0-49ff-a20b-f8c80fb45ca6",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button path",
+      "targets": [
+        ["css=.css-jro82b-MuiButtonBase-root-MuiIconButton-root-MuiPickersArrowSwitcher-button path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf18f94f-0081-4eea-89f5-f93429f40b12",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiDayPicker-weekContainer:nth-child(2) > .MuiButtonBase-root:nth-child(7)",
+      "targets": [
+        ["css=.MuiDayPicker-weekContainer:nth-child(2) > .MuiButtonBase-root:nth-child(7)", "css:finder"],
+        ["xpath=(//button[@type='button'])[19]", "xpath:attributes"],
+        ["xpath=//button[7]", "xpath:position"],
+        ["xpath=//button[contains(.,'11')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5707099c-1a27-43ac-838f-2ff931fcda23",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiClock-squareMask",
+      "targets": [
+        ["css=.MuiClock-squareMask", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "18a6ee8a-645e-4eb8-84e1-5b880b79beca",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiClock-squareMask",
+      "targets": [
+        ["css=.MuiClock-squareMask", "css:finder"],
+        ["xpath=//div[2]/div/div/div/div[2]/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e6a7976-1f37-4a5c-881e-22d069a1c877",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedPrimary",
+      "targets": [
+        ["css=.MuiButton-containedPrimary", "css:finder"],
+        ["xpath=(//button[@type='button'])[5]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div[2]/div/div[2]/div[3]/button", "xpath:idRelative"],
+        ["xpath=//div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'SAVE')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4384cf05-d52d-4673-9579-a98736e7633a",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div[2]/div/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div/div/div[2]", "xpath:position"]
+      ],
+      "value": "Invalid check-in time (do not be in the future)"
+    }]
+  }],
+  "suites": [{
+    "id": "7b0106b8-0b39-4b37-97bb-489e602643af",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["22c5bcee-6301-4a31-8a9e-c5cfba6e3da0"]
+  }],
+  "urls": ["http://localhost:3000/CNCO/Create"],
+  "plugins": []
+}
