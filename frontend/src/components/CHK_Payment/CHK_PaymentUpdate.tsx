@@ -142,6 +142,9 @@ function CHK_PaymentUpdate() {
         if (res.status) {
             setAlertMessage("แก้ไขรายการตรวจสอบการชำระเงินสำเร็จ");
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/CPM");
+            }, 2000);
         } else {
             setAlertMessage(res.message);
             setError(true);

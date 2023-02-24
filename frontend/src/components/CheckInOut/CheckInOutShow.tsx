@@ -146,7 +146,7 @@ const handleCheckout = async () => {
     { field: "ID", headerName: "ลำดับ", width: 80 },
     { field: "CheckInTime", headerName: "Check-In Time", width: 190, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm A')},
     { field: "CheckOutTime", headerName: "Check-Out Time", width: 190, valueFormatter: (params) => formatTime(params.value)},
-    { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.ID},
+    { field: "Booking", headerName: "Booking ID", width: 100, valueFormatter: (params) => params.value.Booking_Number},
     //{ field: "Booking_Name", headerName: "Customer Name", width: 120, valueFormatter: (params) => params.value.Name},
     { field: "CheckInOutStatus", headerName: "Status", width: 130, valueFormatter: (params) => params.value.Name,},
     { field: "Employee", headerName: "Employee", width: 120, valueFormatter: (params) => params.value.Eusername,},

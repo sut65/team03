@@ -17,7 +17,7 @@ type CHK_PaymentStatus struct {
 type CHK_Payment struct {
 	gorm.Model
 	//รับเข้ามา
-	PaymentID *uint   `valid:"required~กรุณาเลือกรายการชำระเงิน"` // gorm:"uniqueIndex"
+	PaymentID *uint   `gorm:"uniqueIndex" valid:"required~กรุณาเลือกรายการชำระเงิน"`
 	Payment   Payment `valid:"-" gorm:"references:id"`
 	//รับเข้ามา
 	CHK_PaymentStatusID *uint             `valid:"required~กรุณาเลือกสถานะการชำระเงิน"`

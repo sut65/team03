@@ -115,23 +115,23 @@ func SetupIntoDatabase(db *gorm.DB) {
 
 	// Set Data Department
 	db.Model(&Location{}).Create(&Location{
-		Name: "Hotel front",
+		Name:       "Hotel front",
 		Department: Hotelfrontl,
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name: "Housekeeping staff Room",
+		Name:       "Housekeeping staff Room",
 		Department: Housekeepingstaffl,
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name: "Chef",
+		Name:       "Chef",
 		Department: Kitchenl,
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name: "Cashier",
+		Name:       "Cashier",
 		Department: Cashierl,
 	})
 	db.Model(&Location{}).Create(&Location{
-		Name: "Marketing staff room",
+		Name:       "Marketing staff room",
 		Department: Marketingl,
 	})
 
@@ -166,7 +166,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Department head").Scan(&Head)
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Full time employee").Scan(&Full)
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Part time employee").Scan(&Part)
-
 
 	timedate1 := time.Date(1950, 2, 16, 0, 0, 0, 0, time.Local)
 	timeyear1 := time.Date(1987, 2, 16, 0, 0, 0, 0, time.Local)
@@ -1066,19 +1065,8 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Employee:          Sobsa,
 	})
 
-	db.Model(&CHK_Payment{}).Create(&CHK_Payment{
-		Payment:           payment1,
-		CHK_PaymentStatus: s1002,
-		Date_time:         time.Now(),
-		Amount:            3200,
-		Description:       "-",
-		Employee:          Banana,
-	})
-
 	var chk_payment1 CHK_Payment
-	var chk_payment2 CHK_Payment
 	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "1").Scan(&chk_payment1)
-	db.Raw("SELECT * FROM check_in_outs WHERE id = ?", "2").Scan(&chk_payment2)
 	// ============================================================================ Check Payment
 	//ระบบ check In-Out
 
