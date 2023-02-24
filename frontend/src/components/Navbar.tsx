@@ -170,11 +170,6 @@ function Navbar() {
       icon: <PeopleIcon />,
       path: "/customer/showforadmin",
     },
-    {
-      name: "Manage Employee Information",
-      icon: <ManageAccountsIcon />,
-      path: "/Manage-Show",
-    },
   ];
   const OfficerMenu = [
     {

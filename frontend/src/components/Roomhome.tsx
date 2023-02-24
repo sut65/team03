@@ -78,19 +78,24 @@ function Roomhome() {
             </div>
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', width: '35%'}}>
-          <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}} >Home</Button>
-          <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
-          <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
-          <Button component={RouterLink} to="/About"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
+        <Box sx={{ display: 'flex', width: '25%'}}>
+            <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}} >Home</Button>
+            <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
+            <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
+            <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
 
-        </Box>
-        <Box sx={{ display: 'flex', width: '6%'}}>
-        <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
-        </Box>
-        <Box sx={{ display: 'flex', width: '10%'}}>
-        <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
-        </Box>
+          </Box>
+          <Box sx={{ display: 'flex', width: '3%'}}>
+            <IconButton component={RouterLink} to="/customer/create" sx={{ display: 'flex', width: '10%'}} color="secondary" >
+              <PersonAddIcon />
+            </IconButton>
+          </Box>
+          <Box sx={{ display: 'flex', width: '6.5%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
+          </Box>
+          <Box sx={{ display: 'flex', width: '10%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
+          </Box>
         
       </Toolbar>
 
