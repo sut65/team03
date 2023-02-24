@@ -417,6 +417,18 @@ function PaymentAddOut() {
                                 <Grid item xs={12}>
                                     <Button
                                         sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/ss"
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        BACK
+                                    </Button>
+
+                                    <Button
+                                        sx={{
                                             float: "right",
                                             fontFamily: "Comic Sans MS",
                                         }}
