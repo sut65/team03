@@ -256,10 +256,10 @@ function ServiceAdd() {
     };
 
     useEffect(() => {
-        getroom();
         getfoods();
         getdrinks();
         getaccessories();
+        getroom();
     }, []);
 
     // when foodid, drinkid, Accessoriesid update
@@ -279,7 +279,7 @@ function ServiceAdd() {
             setPriceTotal((pricefood * fooditemwant) + (pricedrink * drinkitemwant) + (priceaccessorie * accessorieitemwant));
         }
     });
-
+    
     return (
         <div>
             <ThemeProvider theme={theme}>

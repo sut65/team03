@@ -323,7 +323,7 @@ async function GetRoom(id: string | null) {
     .then((response) => response.json())
     .then((res) => {
         if (res.data) {
-            return res.data.RoomID;
+            return res.data.Room_No;
         } else {
             return false;
         }

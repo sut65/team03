@@ -16,7 +16,7 @@ import {
     UpdateAccessories,
     GetAccessorieItem,
     GetPriceAccessorie,
-    GetAccessoriesItemS
+    GetAccessoriesItemS,
 } from "./service/ServiceHttpClientService";
 import { Box, Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, TextField, Typography } from "@mui/material";
 import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
@@ -319,6 +319,8 @@ function ServiceUpdate() {
         }
     });
 
+    console.log(room);
+    
     return (
         <div>
             <ThemeProvider theme={theme}>

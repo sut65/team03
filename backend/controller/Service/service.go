@@ -312,13 +312,13 @@ func UpdateAccessorie(c *gin.Context) {
 
 // GET /room/customer/:id
 func GetRoomByCID(c *gin.Context) {
-	var booking entity.Booking
+	var room entity.Room
 	id := c.Param("id")
-	if tx := entity.DB().Raw("SELECT room_id FROM bookings WHERE customer_id = ?", id).First(&booking); tx.RowsAffected == 0 {
+	if tx := entity.DB().Raw("SELECT room_no FROM rooms WHERE id = (SELECT room_id FROM bookings WHERE customer_id = ?)	", id).First(&room); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "room not found"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": booking})
+	c.JSON(http.StatusOK, gin.H{"data": room})
 }
 
 // GET /food/price/:id
