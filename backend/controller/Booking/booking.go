@@ -167,6 +167,17 @@ func DeleteBooking(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
+// DELETE /bookings/customer/:id
+func DeleteBookingByCID(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM bookings WHERE customer_id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "booking not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
 // PATCH /bookings
 func UpdateBooking(c *gin.Context) {
 	var booking entity.Booking

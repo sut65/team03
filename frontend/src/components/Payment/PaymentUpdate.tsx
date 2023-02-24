@@ -123,6 +123,9 @@ function PaymentUpdate() {
         if (res.status) {
             setAlertMessage("Update Payment Successfully");
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/ps");
+            }, 2000);
         } else {
             setAlertMessage(res.message);
             setError(true);

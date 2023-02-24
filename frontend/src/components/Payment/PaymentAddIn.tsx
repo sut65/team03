@@ -1,5 +1,5 @@
 import { Button, Container, createTheme, FormControl, FormLabel, Grid, Paper, Select, SelectChangeEvent, Snackbar, TextField, Typography } from "@mui/material";
-import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceRoomCID } from "./service/PaymentHttpClientService";
+import { AddPayment, DeleteBookings, DeleteServices, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceRoomCID } from "./service/PaymentHttpClientService";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -112,9 +112,9 @@ function PaymentAddIn() {
             Time: time,
             Picture: image,
         };
-
         let res = await AddPayment(data);
         if (res.status) {
+            await DeleteBookings(id_cus);
             setAlertMessage("Save Payment Successfully");
             setSuccess(true);
             setInterval(() => {
