@@ -147,14 +147,14 @@ function Review_Show() {
         <div>
           <img src={Logo1} width= "75px" height="75px"/>
         </div>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '60%'}}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
           <Typography variant="h6" color="secondary" noWrap component="div" marginLeft={2}>
             <div >
               G03 Hotel
             </div>
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', width: '50%'}}>
+        <Box sx={{ display: 'flex', width: '35%'}}>
           <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Home</Button>
           <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
           <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
@@ -164,7 +164,10 @@ function Review_Show() {
             <PersonAddIcon />
           </IconButton>
         </Box>
-        <Box sx={{ display: 'flex', width: '11%'}}>
+        <Box sx={{ display: 'flex', width: '6%'}}>
+        <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
+        </Box>
+        <Box sx={{ display: 'flex', width: '10%'}}>
           <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
         </Box>
         

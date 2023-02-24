@@ -139,7 +139,11 @@ function Navbar() {
     localStorage.clear();
     window.location.href = "/";
   };
-
+  function CustomerMenuBar() {
+    if (localStorage.getItem("role") == "Customer"){
+    return(
+    <MenuItem onClick={handleClose} component={RouterLink} to="/customer/profile">Profile</MenuItem>)}
+  };
 
   const CustomerMenu = [
     { name: "หน้าหลัก", icon: <HomeIcon />, path: "/home" },
@@ -255,7 +259,7 @@ function Navbar() {
               horizontal: "left",
             }}
           >
-            <MenuItem onClick={handleClose} component={RouterLink} to="/customer/profile">Profile</MenuItem>
+            {CustomerMenuBar()}
             <MenuItem onClick={SignOut}>
             <LogoutIcon style={{ marginRight: ".5rem" }} />
               Log out

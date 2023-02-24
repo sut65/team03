@@ -28,7 +28,6 @@ import {
 import {
   DepartmentInterface,
   EmployeeInterface,
-  LocationInterface,
   OfficerInterface,
   PositionInterface,
 } from "../../models/IEmployee";
@@ -62,7 +61,6 @@ function Manage_Edit() {
   const [employeeEdit, EditEmployee] = useState<EmployeeInterface>();
 
   // const [em, setEm] = React.useState<EmployeeInterface[]>([]);
-  const [location, setLocation] = React.useState<LocationInterface[]>([]);
   const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
   const [position, setPosition] = React.useState<PositionInterface[]>([]);
   const [user, setUser] = React.useState<OfficerInterface>();
@@ -127,32 +125,7 @@ const getPosition = async () => {
       }
     });
 };
-//---------------------Position-----------------------------
-const getLocation = async () => {
-  const apiUrl = `http://localhost:8080/Locations`;
 
-  const requestOptions = {
-    method: "GET",
-
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  //การกระทำ //json
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-    .then((res) => {
-    //   console.log(res.data); //show ข้อมูล
-
-      if (res.data) {
-        setLocation(res.data);
-      } else {
-        // console.log("else");
-      }
-    });
-};
 
 const getEmployee = async () => {
     const apiUrl = `http://localhost:8080/Employee/${id}`;
@@ -244,7 +217,6 @@ const getEmployee = async () => {
       Address: employee.Address,
       DepartmentID: typeof employee.DepartmentID === "string" ? parseInt(employee.DepartmentID) : employee.DepartmentID,
       PositionID: typeof employee.PositionID === "string" ? parseInt(employee.PositionID) : employee.PositionID,
-      LocationID: typeof employee.LocationID === "string" ? parseInt(employee.LocationID) : employee.LocationID,
     }
 
     console.log(dataemployee)
@@ -281,7 +253,6 @@ const getEmployee = async () => {
     }
     getDepartment();
     getPosition();
-    getLocation();
     getEmployee();
 
   }, []);
@@ -333,8 +304,8 @@ const getEmployee = async () => {
         <Divider />
 
 
-        <Grid container spacing={3} sx={{ padding: 2 }} style={{ marginLeft: "0%"}}>
-         <Grid item xs={3}>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{ marginLeft: "6.5%"}}>
+         <Grid item xs={5}>
             <FormControl fullWidth variant="outlined">
               <FormLabel>Personal ID</FormLabel>
               <TextField
@@ -364,9 +335,9 @@ const getEmployee = async () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "10.5%"}}>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           {/* ComboboxDepartment */}
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormLabel>Department</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
@@ -386,7 +357,7 @@ const getEmployee = async () => {
           </Grid>
 
           {/* ComboboxPosition */}
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormLabel>Position</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
@@ -405,26 +376,6 @@ const getEmployee = async () => {
             </FormControl>
           </Grid>
 
-          {/* ComboboxLocation */}
-          <Grid item xs={3}>
-            <FormLabel>Location</FormLabel>
-
-            <FormControl fullWidth variant="outlined">
-              <Select
-                native
-                disabled={btnDisabled}
-                value={employee.LocationID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "LocationID",
-                }}
-              >
-                {location.map((item: LocationInterface) => (
-                  <option value={item.ID}>{item.Name}</option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
         </Grid>
 
         <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>

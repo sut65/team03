@@ -238,7 +238,6 @@ func CreateEmployee(c *gin.Context) {
 	var officer entity.Officer
 	var department entity.Department
 	var position entity.Position
-	var location entity.Location
 	var employee entity.Employee
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
@@ -272,12 +271,6 @@ func CreateEmployee(c *gin.Context) {
 		return
 	}
 
-	// 12. ค้นหา location ด้วย id
-	if tx := entity.DB().Where("id = ?", employee.LocationID).First(&location); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Location not found"})
-		return
-	}
-
 	var userrole entity.UserRole
 	if err := entity.DB().Model(&entity.UserRole{}).Where("role_name = ?", "Employee").First(&userrole).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Employees role not found"})
@@ -295,7 +288,6 @@ func CreateEmployee(c *gin.Context) {
 		Officer:      officer,               // โยงความสัมพันธ์กับ Entity Officer
 		Department:   department,            // โยงความสัมพันธ์กับ Entity Department
 		Position:     position,              // โยงความสัมพันธ์กับ Entity Position
-		Location:     location,              // โยงความสัมพันธ์กับ Entity Location
 		PersonalID:   employee.PersonalID,   // ตั้งค่าฟิลด์ PersonalID
 		Employeename: employee.Employeename, // ตั้งค่าฟิลด์ Name
 		Email:        employee.Email,
@@ -320,7 +312,7 @@ func CreateEmployee(c *gin.Context) {
 func ListEmplooyeeByUID(c *gin.Context) {
 	var employee []entity.Employee
 	id := c.Param("id")
-	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Raw("SELECT * FROM employees WHERE officer_id = ?", id).Find(&employee).Error; err != nil {
+	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Raw("SELECT * FROM employees WHERE officer_id = ?", id).Find(&employee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -346,7 +338,7 @@ func ListEmployees(c *gin.Context) {
 
 	var employee []entity.Employee
 
-	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Preload("Location").Raw("SELECT * FROM employees").Find(&employee).Error; err != nil {
+	if err := entity.DB().Preload("Officer").Preload("Department").Preload("Position").Raw("SELECT * FROM employees").Find(&employee).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -371,7 +363,6 @@ func UpdateEmployee(c *gin.Context) {
 	var employee entity.Employee
 	var department entity.Department
 	var position entity.Position
-	var location entity.Location
 
 	if err := c.ShouldBindJSON(&employee); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -394,21 +385,15 @@ func UpdateEmployee(c *gin.Context) {
 		return
 	}
 
-	// 12. ค้นหา location ด้วย id
-	if tx := entity.DB().Where("id = ?", employee.LocationID).First(&location); tx.RowsAffected == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Location not found"})
-		return
-	}
 
 	updateEm := entity.Employee{
 		Department:   department,          // โยงความสัมพันธ์กับ Entity Department
 		Position:     position,            // โยงความสัมพันธ์กับ Entity Position
-		Location:     location,            // โยงความสัมพันธ์กับ Entity Location
 		PersonalID:   employee.PersonalID, // ตั้งค่าฟิลด์ PersonalID
 		Employeename: employee.Employeename,
 		Email:        employee.Email,
 		Eusername:    employee.Eusername,
-		Password: 	  employee.Password,
+		Password:     SetupPasswordHash(employee.Password),
 		Salary:       employee.Salary,      // ตั้งค่าฟิลด์ Salary
 		Phonenumber:  employee.Phonenumber, // ตั้งค่าฟิลด์ Tel
 		Gender:       employee.Gender,      // ตั้งค่าฟิลด์ Gender

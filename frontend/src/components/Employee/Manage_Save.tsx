@@ -25,7 +25,6 @@ import {
 import {
   DepartmentInterface,
   EmployeeInterface,
-  LocationInterface,
   OfficerInterface,
   PositionInterface,
 } from "../../models/IEmployee";
@@ -61,10 +60,8 @@ function Manage_Save() {
     {
       DepartmentID: 0,
       PositionID: 0,
-      LocationID: 0,
     }
   );
-  const [location, setLocation] = React.useState<LocationInterface[]>([]);
   const [department, setDepartment] = React.useState<DepartmentInterface[]>([]);
   const [position, setPosition] = React.useState<PositionInterface[]>([]);
   const [user, setUser] = React.useState<OfficerInterface>();
@@ -128,32 +125,6 @@ const getPosition = async () => {
       }
     });
 };
-//---------------------Position-----------------------------
-const getLocation = async () => {
-  const apiUrl = `http://localhost:8080/Locations`;
-
-  const requestOptions = {
-    method: "GET",
-
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Content-Type": "application/json",
-    },
-  };
-  //การกระทำ //json
-  fetch(apiUrl, requestOptions)
-    .then((response) => response.json()) //เรียกได้จะให้แสดงเป็น json ซึ่ง json คือ API
-
-    .then((res) => {
-      console.log(res.data); //show ข้อมูล
-
-      if (res.data) {
-        setLocation(res.data);
-      } else {
-        console.log("else");
-      }
-    });
-};
 
 //----------------------------------จบการดึงข้อมูล------------------------
   const handleClose = (
@@ -204,7 +175,6 @@ const getLocation = async () => {
       OfficerID: user?.ID ?? "",
       DepartmentID: Number(employee.DepartmentID),
       PositionID: Number(employee.PositionID),
-      LocationID: Number(employee.LocationID),
       Signin: {
         Username: employee.Eusername ?? "",
         Password: employee.Password ?? "",
@@ -246,7 +216,6 @@ const getLocation = async () => {
     }
     getDepartment();
     getPosition();
-    getLocation();
 
   }, []);
 
@@ -329,9 +298,9 @@ const getLocation = async () => {
           </Grid>
         </Grid>
 
-        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "10.5%"}}>
+        <Grid container spacing={3} sx={{ padding: 2 }} style={{marginLeft: "14.5%"}}>
           {/* ComboboxDepartment */}
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormLabel>Department</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
@@ -352,7 +321,7 @@ const getLocation = async () => {
           </Grid>
 
           {/* ComboboxPosition */}
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <FormLabel>Position</FormLabel>
             <FormControl fullWidth variant="outlined">
               <Select
@@ -366,28 +335,6 @@ const getLocation = async () => {
                 <option value={0} key={0}>
                 </option>
                 {position.map((item: PositionInterface) => (
-                  <option value={item.ID}>{item.Name}</option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          {/* ComboboxLocation */}
-          <Grid item xs={3}>
-            <FormLabel>Location</FormLabel>
-
-            <FormControl fullWidth variant="outlined">
-              <Select
-                native
-                value={employee.LocationID}
-                onChange={handleChange}
-                inputProps={{
-                  name: "LocationID",
-                }}
-              >
-                <option value={0} key={0}>
-                </option>
-                {location.map((item: LocationInterface) => (
                   <option value={item.ID}>{item.Name}</option>
                 ))}
               </Select>

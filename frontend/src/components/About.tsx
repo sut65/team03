@@ -13,10 +13,8 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import CssBaseline from "@mui/material/CssBaseline";
-import { AppBar, Box, Button, Grid, IconButton, ThemeProvider } from "@mui/material";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+
+import { AppBar, Box, Button, Grid, ThemeProvider } from "@mui/material";
 
 const bgnavbar = createTheme({
   palette: {
@@ -33,7 +31,7 @@ const bgnavbar = createTheme({
 });
 
 
-function Roomhome() {
+function About() {
   const themep = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -87,6 +85,7 @@ function Roomhome() {
         </Box>
         <Box sx={{ display: 'flex', width: '6%'}}>
         <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
+       
         </Box>
         <Box sx={{ display: 'flex', width: '10%'}}>
         <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
@@ -171,4 +170,4 @@ function Roomhome() {
   );
 }
 
-export default Roomhome;
+export default About;
