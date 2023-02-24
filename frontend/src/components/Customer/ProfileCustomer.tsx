@@ -6,12 +6,7 @@ import Container from "@mui/material/Container";
 import FormLabel from "@mui/material/FormLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Button from "@mui/material/Button";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import IconButton from "@mui/material/IconButton";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import HouseIcon from '@mui/icons-material/House';
 import EditIcon from '@mui/icons-material/Edit';
@@ -167,13 +162,6 @@ const getProvince = async () => {
         });
   }
 
-  // const getNametitleByUID = async () => {
-  //   let res = await GetNametitleByUID(customer);
-  //   if (res) {
-  //       setNametitle(res);
-  //       console.log(res);
-  //   }
-  // };
 
   useEffect(() => {
     GetCustomer();
