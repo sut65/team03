@@ -97,7 +97,7 @@ function RepRqShow() {
 
   const columns: GridColDef[] = [
     { field: "ID", headerName: "No.", width: 80 },
-    { field: "Room", headerName: "Room", width: 110, valueFormatter: (params) => params.value.ID},
+    { field: "Room", headerName: "Room", width: 110, valueFormatter: (params) => params.value.Room_No},
     { field: "RepairType", headerName: "Type", width: 160, valueFormatter: (params) => params.value.Name,},
     { field: "Note", headerName: "Note", width: 295, valueFormatter: (params) => params.value.Note},
     { field: "Time", headerName: "Time", width: 190, valueFormatter: (params) => moment(params.value).format('DD-MM-yyyy เวลา hh:mm A')},
