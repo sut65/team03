@@ -81,6 +81,7 @@ export default function App() {
           <Route path="/Homeshow" element={<Homeshow />} />
           <Route path="/RW" element={<Review_Show />} />
           <Route path="/home" element={<SignIn />} />
+          <Route path="/customer/create" element={<Customer />} />
         </Routes>
       </Router>
     );
@@ -126,7 +127,7 @@ export default function App() {
                 <Route path="/pao" element={<PaymentAddOut />} />
                 <Route path="/pu/:id" element={<PaymentUpdate />} />
 
-                <Route path="/customer/create" element={<Customer />} />
+                
                 <Route path="/customer/profile" element={<ProfileCustomer />} /> 
                 <Route path="/customer/edit" element={<EditCustomer />} /> 
                 <Route path="/customer/showforadmin" element={<CustomerlistforAdmin />} />

@@ -198,6 +198,9 @@ function CheckroomEdit() {
     let res = await UpdateCheckroom(data);
     if (res) {
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/checkroom/list");
+      }, 1000);
       console.log(data)
     } else {
       setError(true);

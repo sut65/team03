@@ -244,7 +244,7 @@ const getProvince = async () => {
 
                 {/*============================================(First name)======================================================*/}
                 <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>First name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Firstname</p>
                 <TextField
                 id="Fristname"
                 disabled
@@ -255,7 +255,7 @@ const getProvince = async () => {
                 </Grid>
                 {/*=============================================(Last name)=====================================================*/}
                 <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>Last name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Lastname</p>
                 <TextField
                 id="lastname"
                 disabled
@@ -371,11 +371,11 @@ const getProvince = async () => {
 
           <Stack direction="row"  spacing={40} >
 
-          <Button variant="outlined" color="success" startIcon={<HouseIcon />} component={RouterLink} to="/">
+          <Button variant="contained" color="success" startIcon={<HouseIcon />} component={RouterLink} to="/home">
               Home
           </Button>
 
-          <Button variant="outlined" startIcon={<EditIcon />} onClick={() => navigate(`/customer/edit`)} >
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => navigate(`/customer/edit`)} >
               Edit
           </Button>
          

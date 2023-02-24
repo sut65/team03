@@ -145,7 +145,7 @@ function Navbar() {
     { name: "หน้าหลัก", icon: <HomeIcon />, path: "/home" },
     { name: "Booking", icon: <ReceiptLongIcon />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon />, path: "/Rep" },
-    { name: "Subscribe", icon: <PersonAddIcon />, path: "/customer/create" },
+    
     { name: "Payment", icon: <PaymentIcon />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/Reviewlist" },
     { name: "Service", icon: <RoomServiceIcon />, path: "/ss" },

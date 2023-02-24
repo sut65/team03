@@ -17,7 +17,8 @@ import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import CssBaseline from "@mui/material/CssBaseline";
-import { AppBar, Box, Button, Grid, ThemeProvider } from "@mui/material";
+import { AppBar, Box, Button, Grid, IconButton, ThemeProvider } from "@mui/material";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const bgnavbar = createTheme({
   palette: {
@@ -131,6 +132,9 @@ function Roomhome() {
           <Button component={RouterLink} to="/Homeshow"  color="secondary" >Home</Button>
           <Button component={RouterLink} to="/Roomhome"  color="secondary" >Room</Button>
           <Button component={RouterLink} to="/SignIn"  color="secondary" >ABOUT</Button>
+          <IconButton component={RouterLink} to="/customer/create" sx={{ display: 'flex', width: '10%'}} color="secondary" >
+            <PersonAddIcon />
+          </IconButton>
           <Button component={RouterLink} to="/SignIn" variant="contained" color="secondary" >BOOK NOW</Button>
           
         </Toolbar>

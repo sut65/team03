@@ -14,7 +14,8 @@ import { Link as RouterLink } from "react-router-dom";
 import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 
-import { AppBar, Box, Button, Grid, ThemeProvider } from "@mui/material";
+import { AppBar, Box, Button, Grid, IconButton, ThemeProvider } from "@mui/material";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const bgnavbar = createTheme({
   palette: {
@@ -81,7 +82,9 @@ function Homeshow() {
             <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
             <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
             <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>ABOUT</Button>
-
+            <IconButton component={RouterLink} to="/customer/create" sx={{ display: 'flex', width: '10%'}} color="secondary" >
+            <PersonAddIcon />
+            </IconButton>
           </Box>
           <Box sx={{ display: 'flex', width: '11%'}}>
           <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>

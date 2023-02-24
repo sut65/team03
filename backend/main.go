@@ -87,23 +87,23 @@ func main() {
 			//==================================================Customer Routes
 			protected.GET("/customers", customer.ListCustomers)
 			protected.GET("/customer/:id", customer.GetCustomerByID)
-			protected.POST("/customers", customer.CreateCustomer)
+			r.POST("/customers", customer.CreateCustomer)
 			protected.PATCH("/customersupdate/:id", customer.UpdateCustomer)
 			protected.DELETE("/customers/:id", customer.DeleteCustomer)
 			//Gender
-			protected.GET("/customers/genders", customer.ListGender)
+			r.GET("/customers/genders", customer.ListGender)
 			protected.GET("/customer/genders/:id", customer.GetGender)
 			protected.POST("/customers/genders", customer.CreateGender)
 			protected.PATCH("/customers/genders", customer.UpdateGender)
 			protected.DELETE("/customers/genders/:id", customer.DeleteGender)
 			//Nametitle
-			protected.GET("/nametitles", customer.ListNametitle)
+			r.GET("/nametitles", customer.ListNametitle)
 			protected.GET("/customer/nametitles/:id", customer.GetNametitle)
 			protected.POST("/customers/nametitles", customer.CreateNametitle)
 			protected.PATCH("/customers/nametitles", customer.UpdateNametitle)
 			protected.DELETE("/customers/nametitles/:id", customer.DeleteNametitle)
 			//Province
-			protected.GET("/provinces", customer.ListProvince)
+			r.GET("/provinces", customer.ListProvince)
 			protected.GET("/customer/provinces/:id", customer.GetProvince)
 			protected.POST("/customers/provinces", customer.CreateProvince)
 			protected.PATCH("/customers/provinces", customer.UpdateProvince)
