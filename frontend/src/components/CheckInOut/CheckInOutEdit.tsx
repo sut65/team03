@@ -131,7 +131,7 @@ function CheckInOutEdit() {
 
     let res = await UpdateCheckIn(data);
     if (res.status) {
-      setAlertMessage("Check In Success")
+      setAlertMessage("Edit Check In Success")
       setSuccess(true);
     } else {
       setAlertMessage(res.message);
@@ -154,7 +154,7 @@ function CheckInOutEdit() {
 
     let res = await UpdateCheckOut(data);
     if (res.status) {
-      setAlertMessage("Check Out Success")
+      setAlertMessage("Edit Check Out Success")
       setSuccess(true);
     } else {
       setAlertMessage(res.message);
