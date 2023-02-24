@@ -1,5 +1,5 @@
+import { Button, Container, createTheme, FormControl, FormLabel, Grid, Paper, Select, SelectChangeEvent, Snackbar, TextField, Typography } from "@mui/material";
 import { AddPayment, GetDestination, GetMethodP, GetPaymentMethods, GetPicture, GetPlaces, GetPriceRoomCID } from "./service/PaymentHttpClientService";
-import { Button, Container, createTheme, FormControl, FormLabel, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
 import { MethodsInterface, PaymentMethodsInterface, PaymentsInterface, PlacesInterface } from "../../models/modelPayment/IPayment";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -113,8 +113,6 @@ function PaymentAddIn() {
             Picture: image,
         };
 
-        console.log(data);
-        
         let res = await AddPayment(data);
         if (res.status) {
             setAlertMessage("Save Payment Successfully");
@@ -172,12 +170,18 @@ function PaymentAddIn() {
     }, [paymetid, metid]);
 
     console.log(price);
-    
+
     return (
 
         <div>
             <ThemeProvider theme={theme}>
-                <Container maxWidth="md">
+                <Container
+                    maxWidth="lg"
+                    sx={{
+                        width: "auto",
+                        height: "auto",
+                        fontFamily: "Comic Sans MS",
+                    }}>
                     <Snackbar
                         id="success"
                         open={success}
@@ -201,145 +205,237 @@ function PaymentAddIn() {
                             {message}
                         </Alert>
                     </Snackbar>
-                    <Grid container
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="stretch">
-                        <Grid container spacing={1} sx={{ padding: 3 }} >
-                            <Grid item xs={3}>
-                                <img src={`${picture}`} width="150" height="150" />
-                            </Grid>
-                            <Grid
-                                container
-                                item xs={9}
-                                columnGap={3}
-                            >
-                                <Grid item xs={5.75}>
-                                    <FormControl fullWidth variant="outlined">
-                                        <Select
-                                            native
-                                            value={payment.PaymentMethodID + ""}
-                                            onChange={handlePayMet}
-                                            inputProps={{
-                                                name: "PaymentMethodID",
-                                            }}
-                                        >
-                                            <option aria-label="None" value="">
-                                                Choose method
-                                            </option>
-                                            {paymet.map((item: PaymentMethodsInterface) => (
-                                                <option value={item.ID} >{item.Name}</option>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={5.75}>
-                                    <FormControl fullWidth variant="outlined">
-                                        <Select
-                                            native
-                                            value={payment.MethodID}
-                                            onChange={handleMet}
-                                            inputProps={{
-                                                name: "MethodID",
-                                            }}
-                                        >
-                                            <option aria-label="None" value="">
-                                                Choose way
-                                            </option>
-                                            {method.map((item: MethodsInterface) => (
-                                                <option value={item.ID}>{item.Name}</option>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <FormControl fullWidth variant="outlined">
-                                        <FormLabel> Destination </FormLabel>
-                                        <TextField
-                                            variant="outlined"
-                                            value={destination}
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <FormControl fullWidth variant="outlined">
-                                    <FormLabel> Where </FormLabel>
-                                    <Select
-                                        native
-                                        value={payment.PlaceID + ""}
-                                        onChange={handleChange}
-                                        inputProps={{
-                                            name: "PlaceID",
+
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            bgcolor: "#CDCDCDCD",
+                            padding: 2,
+                            marginBottom: 2,
+                            boxShadow: 1,
+                            marginTop: 4,
+                        }}
+                    >
+                        <Paper
+                            sx={{
+                                bgcolor: "#white",
+                                padding: 2,
+                                marginBottom: 1,
+                                boxShadow: 1,
+                                marginTop: 0.5,
+                            }}
+                        >
+                            <Grid container
+                                direction="row"
+                                justifyContent="center"
+                                alignItems="stretch">
+                                <Grid
+                                    container
+                                    sx={{
+                                        flexGrow: 1,
+                                    }}>
+                                    <Grid
+                                        item xs={3}
+                                        sx={{
+                                            paddingLeft: 7
                                         }}
                                     >
-                                        <option aria-label="None" value="">
-                                            Choose Place
-                                        </option>
-                                        {place.map((item: PlacesInterface) => (
-                                            <option value={item.ID}>{item.Name}</option>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <FormControl fullWidth variant="outlined">
-                                    <FormLabel> When </FormLabel>
-                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                        <DateTimePicker
-                                            renderInput={(props) => <TextField {...props} />}
-                                            value={time}
-                                            onChange={setTime}
-                                        />
-                                    </LocalizationProvider>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControl fullWidth variant="outlined">
-                                    <FormLabel> Price </FormLabel>
-                                    <TextField
-                                        variant="outlined"
-                                        value={price}
-                                        InputProps={{
-                                            readOnly: true,
+                                        <img src={`${picture}`} width="150" height="150" />
+                                    </Grid>
+                                    <Grid
+                                        container
+                                        item xs={9}
+                                        columnGap={3}
+                                    >
+                                        <Grid item xs={5.82}>
+                                            <FormControl fullWidth variant="outlined">
+                                                <Select
+                                                    native
+                                                    sx={{
+                                                        fontFamily: "Comic Sans MS",
+                                                    }}
+                                                    value={payment.PaymentMethodID + ""}
+                                                    onChange={handlePayMet}
+                                                    inputProps={{
+                                                        name: "PaymentMethodID",
+                                                    }}
+                                                >
+                                                    <option aria-label="None" value="">
+                                                        Choose method
+                                                    </option>
+                                                    {paymet.map((item: PaymentMethodsInterface) => (
+                                                        <option value={item.ID} >{item.Name}</option>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={5.82}>
+                                            <FormControl fullWidth variant="outlined">
+                                                <Select
+                                                    native
+                                                    sx={{
+                                                        fontFamily: "Comic Sans MS",
+                                                    }}
+                                                    value={payment.MethodID}
+                                                    onChange={handleMet}
+                                                    inputProps={{
+                                                        name: "MethodID",
+                                                    }}
+                                                >
+                                                    <option aria-label="None" value="">
+                                                        Choose way
+                                                    </option>
+                                                    {method.map((item: MethodsInterface) => (
+                                                        <option value={item.ID}>{item.Name}</option>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <FormControl fullWidth variant="outlined">
+                                                <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Destination </FormLabel>
+                                                <TextField
+                                                    variant="outlined"
+                                                    value={destination}
+                                                    InputProps={{
+                                                        style: { fontFamily: 'Comic Sans MS' },
+                                                        readOnly: true,
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        sx={{
+                                            padding: 1
                                         }}
-                                    />
-                                </FormControl>
+                                    >
+                                        <Grid
+                                            container
+                                            gap={3.5}
+                                        >
+                                            <Grid item xs={5.8}
+                                            sx={{
+                                                paddingLeft: 1
+                                            }}>
+                                                <FormControl fullWidth variant="outlined">
+                                                    <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Where </FormLabel>
+                                                    <Select
+                                                        native
+                                                        sx={{
+                                                            fontFamily: "Comic Sans MS",
+                                                        }}
+                                                        value={payment.PlaceID + ""}
+                                                        onChange={handleChange}
+                                                        inputProps={{
+                                                            name: "PlaceID",
+                                                        }}
+                                                    >
+                                                        <option aria-label="None" value="">
+                                                            Choose Place
+                                                        </option>
+                                                        {place.map((item: PlacesInterface) => (
+                                                            <option value={item.ID}>{item.Name}</option>
+                                                        ))}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item xs={5.8}>
+                                                <FormControl fullWidth variant="outlined">
+                                                    <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> When </FormLabel>
+                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                        <DateTimePicker
+                                                            renderInput={(props) => <TextField {...props} />}
+                                                            value={time}
+                                                            onChange={setTime}
+                                                        />
+                                                    </LocalizationProvider>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid
+                                        container
+                                        spacing={1}
+                                        sx={{
+                                            padding: 2
+                                        }}
+                                    >
+                                        <FormControl fullWidth variant="outlined">
+                                            <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Price </FormLabel>
+                                            <TextField
+                                                variant="outlined"
+                                                value={price}
+                                                InputProps={{
+                                                    style: { fontFamily: 'Comic Sans MS' },
+                                                    readOnly: true,
+                                                }}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={12}>
-                            <img src={`${image}`} width="270" height="270" />
-                            <FormControl fullWidth variant="outlined">
-                                <FormLabel> Slip </FormLabel>
-                                <input type="file" onChange={handleImageChange} />
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={12}>
-                            <Button
-                                component={RouterLink}
-                                to="/ps"
-                                variant="contained"
-                                color="error"
+
+                            <Typography
+                                gutterBottom
                             >
-                                BACK
-                            </Button>
-                            <Button
-                                style={{ float: "right" }}
-                                onClick={submit}
-                                variant="contained"
-                                color="success"
+                            </Typography>
+
+                            <Grid
+                                container
+                                sx={{
+                                    flexGrow: 1,
+                                    fontFamily: "Comic Sans MS",
+                                }}
                             >
-                                COMMIT
-                            </Button>
-                        </Grid>
-                    </Grid>
+                                <Grid
+                                    container
+                                    justifyContent="center"
+                                    gap={14.5}
+                                >
+                                    <img src={`${image}`} width="270" height="270" />
+                                    <FormControl fullWidth variant="outlined">
+                                        <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Slip </FormLabel>
+                                        <input type="file" onChange={handleImageChange} />
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+
+                            <Typography
+                                gutterBottom
+                            >
+                            </Typography>
+
+                            <Grid container spacing={1} sx={{ padding: 3 }}>
+                                <Grid item xs={12}>
+                                    <Button
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/ps"
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        BACK
+                                    </Button>
+                                    <Button
+                                        sx={{
+                                            float: "right",
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        onClick={submit}
+                                        variant="contained"
+                                        color="success"
+                                    >
+                                        COMMIT
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Paper>
                 </Container>
             </ThemeProvider>
         </div >
