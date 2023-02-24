@@ -1,10 +1,12 @@
-package entity
+package validators
 
 import (
 	"testing"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/onsi/gomega"
+	. "github.com/sut65/team03/entity"
+
 )
 
 func TestEmployeePass(t *testing.T) {
