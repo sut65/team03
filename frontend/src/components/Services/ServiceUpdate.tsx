@@ -178,8 +178,11 @@ function ServiceUpdate() {
                         await UpdateFood(foodupdate);
                         await UpdateDrink(drinkupdate);
                         await UpdateAccessories(accessoriesupdate);
-                        setAlertMessage("Save Order Successfully");
+                        setAlertMessage("Update Order Successfully");
                         setSuccess(true);
+                        setInterval(() => {
+                            window.location.assign("/ss");
+                        }, 2000);
                     } else {
                         setAlertMessage(res.message);
                         setError(true);
