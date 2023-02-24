@@ -150,9 +150,9 @@ function Navbar() {
     { name: "Booking", icon: <ReceiptLongIcon />, path: "/Book" },
     { name: "Repair", icon: <HandymanIcon />, path: "/Rep" },
     
-    { name: "Payment", icon: <PaymentIcon />, path: "/ps" },
     { name: "Review", icon: <ReviewsIcon />, path: "/Reviewlist" },
     { name: "Service", icon: <RoomServiceIcon />, path: "/ss" },
+    { name: "Payment", icon: <PaymentIcon />, path: "/ps" },
   ];
   const EmployeeMenu = [
     { name: "หน้าหลัก", icon: <HomeIcon />, path: "/home" },
