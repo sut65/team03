@@ -64,6 +64,13 @@ function ServiceDelete() {
         },
     }));
 
+    const handleSuccess = () => {
+        const shouldConfirm = window.confirm('Are you sure you want to cancel the Service?');
+        if (shouldConfirm) {
+            confirm();
+        }
+    };
+
     const handleInputChange = (
         event: React.ChangeEvent<{ id?: string; value: any }>
     ) => {
@@ -340,7 +347,7 @@ function ServiceDelete() {
                                             float: "right",
                                             fontFamily: "Comic Sans MS",
                                         }}
-                                        onClick={confirm}
+                                        onClick={handleSuccess}
                                         variant="contained"
                                         color="success"
                                     >
