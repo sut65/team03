@@ -142,6 +142,9 @@ function BookingUpdate() {
         if (res.status) {
             setAlertMessage("แก้ไขการจองห้องพักสำเร็จ");
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/Book");
+            }, 2000);
         } else {
             setAlertMessage(res.message);
             setError(true);

@@ -181,7 +181,7 @@ function Customer() {
       setSuccess(true);
       setInterval(() => {
         window.location.assign("/Homeshow");
-      }, 8000);
+      }, 1000);
     } else {
       console.log(res.message);
       setAlertMessage(res.message);

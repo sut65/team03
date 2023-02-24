@@ -117,6 +117,9 @@ function BookingDelete() {
         let res = await DeleteBooking(data);
         if (res) {
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/Book");
+            }, 2000);
         } else {
             setError(true);
         }
