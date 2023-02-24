@@ -183,282 +183,279 @@ function PaymentUpdate() {
         getpicture();
         getplaces();
     }, [paymetid, metid]);
- 
+
     useEffect(() => {
         getpaymentbyid();
     }, [])
 
     return (
- 
-        <div>
-            <ThemeProvider theme={theme}>
-                <Container
-                    maxWidth="lg"
+        <ThemeProvider theme={theme}>
+            <Container
+                maxWidth="lg"
+                sx={{
+                    width: "auto",
+                    height: "auto",
+                    fontFamily: "Comic Sans MS",
+                }}>
+                <Snackbar
+                    id="success"
+                    open={success}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                    <Alert onClose={handleClose} severity="success">
+                        {message}
+                    </Alert>
+                </Snackbar>
+
+                <Snackbar
+                    id="error"
+                    open={error}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                    <Alert onClose={handleClose} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
+
+                <Paper
+                    elevation={3}
                     sx={{
-                        width: "auto",
-                        height: "auto",
-                        fontFamily: "Comic Sans MS",
-                    }}>
-                    <Snackbar
-                        id="success"
-                        open={success}
-                        autoHideDuration={2000}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    >
-                        <Alert onClose={handleClose} severity="success">
-                            {message}
-                        </Alert>
-                    </Snackbar>
-
-                    <Snackbar
-                        id="error"
-                        open={error}
-                        autoHideDuration={2000}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    >
-                        <Alert onClose={handleClose} severity="error">
-                            {message}
-                        </Alert>
-                    </Snackbar>
-
+                        bgcolor: "#CDCDCDCD",
+                        padding: 2,
+                        marginBottom: 2,
+                        boxShadow: 1,
+                        marginTop: 4,
+                    }}
+                >
                     <Paper
-                        elevation={3}
                         sx={{
-                            bgcolor: "#CDCDCDCD",
+                            bgcolor: "#white",
                             padding: 2,
-                            marginBottom: 2,
+                            marginBottom: 1,
                             boxShadow: 1,
-                            marginTop: 4,
+                            marginTop: 0.5,
                         }}
                     >
-                        <Paper
-                            sx={{
-                                bgcolor: "#white",
-                                padding: 2,
-                                marginBottom: 1,
-                                boxShadow: 1,
-                                marginTop: 0.5,
-                            }}
-                        >
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="stretch">
                             <Grid
                                 container
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="stretch">
+                                sx={{
+                                    flexGrow: 1,
+                                }}>
+                                <Grid
+                                    item xs={3}
+                                    sx={{
+                                        paddingLeft: 7
+                                    }}
+                                >
+                                    <img src={`${picture}`} width="150" height="150" />
+                                </Grid>
                                 <Grid
                                     container
-                                    sx={{
-                                        flexGrow: 1,
-                                    }}>
-                                    <Grid
-                                        item xs={3}
-                                        sx={{
-                                            paddingLeft: 7
-                                        }}
-                                    >
-                                        <img src={`${picture}`} width="150" height="150" />
+                                    item xs={9}
+                                    columnGap={3}
+                                >
+                                    <Grid item xs={5.82}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <Select
+                                                native
+                                                sx={{
+                                                    fontFamily: "Comic Sans MS",
+                                                }}
+                                                value={payment.PaymentMethodID + ""}
+                                                onChange={handlePayMet}
+                                                inputProps={{
+                                                    name: "PaymentMethodID",
+                                                }}
+                                            >
+                                                <option aria-label="None" value="">
+                                                    Choose method
+                                                </option>
+                                                {paymet.map((item: PaymentMethodsInterface) => (
+                                                    <option value={item.ID} >{item.Name}</option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
                                     </Grid>
+                                    <Grid item xs={5.82}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <Select
+                                                native
+                                                sx={{
+                                                    fontFamily: "Comic Sans MS",
+                                                }}
+                                                value={payment.MethodID + ""}
+                                                onChange={handleMet}
+                                                inputProps={{
+                                                    name: "MethodID",
+                                                }}
+                                            >
+                                                <option aria-label="None" value="">
+                                                    Choose way
+                                                </option>
+                                                {method.map((item: MethodsInterface) => (
+                                                    <option value={item.ID}>{item.Name}</option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Destination </FormLabel>
+                                            <TextField
+                                                InputProps={{
+                                                    style: { fontFamily: 'Comic Sans MS' },
+                                                    readOnly: true,
+                                                }}
+                                                variant="outlined"
+                                                value={destination}
+                                            />
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                                <Grid
+                                    container
+                                    spacing={1}
+                                    sx={{
+                                        padding: 1
+                                    }}
+                                >
                                     <Grid
                                         container
-                                        item xs={9}
-                                        columnGap={3}
+                                        gap={3.5}
                                     >
-                                        <Grid item xs={5.82}>
+                                        <Grid item xs={5.8}
+                                            sx={{
+                                                paddingLeft: 1
+                                            }}>
                                             <FormControl fullWidth variant="outlined">
+                                                <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Where </FormLabel>
                                                 <Select
                                                     native
                                                     sx={{
                                                         fontFamily: "Comic Sans MS",
                                                     }}
-                                                    value={payment.PaymentMethodID + ""}
-                                                    onChange={handlePayMet}
+                                                    value={payment.PlaceID + ""}
+                                                    onChange={handleChange}
                                                     inputProps={{
-                                                        name: "PaymentMethodID",
+                                                        name: "PlaceID",
                                                     }}
                                                 >
                                                     <option aria-label="None" value="">
-                                                        Choose method
+                                                        Choose Place
                                                     </option>
-                                                    {paymet.map((item: PaymentMethodsInterface) => (
-                                                        <option value={item.ID} >{item.Name}</option>
-                                                    ))}
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid item xs={5.82}>
-                                            <FormControl fullWidth variant="outlined">
-                                                <Select
-                                                    native
-                                                    sx={{
-                                                        fontFamily: "Comic Sans MS",
-                                                    }}
-                                                    value={payment.MethodID + ""}
-                                                    onChange={handleMet}
-                                                    inputProps={{
-                                                        name: "MethodID",
-                                                    }}
-                                                >
-                                                    <option aria-label="None" value="">
-                                                        Choose way
-                                                    </option>
-                                                    {method.map((item: MethodsInterface) => (
+                                                    {place.map((item: PlacesInterface) => (
                                                         <option value={item.ID}>{item.Name}</option>
                                                     ))}
                                                 </Select>
                                             </FormControl>
                                         </Grid>
-                                        <Grid item xs={12}>
+                                        <Grid
+                                            item xs={5.8}>
                                             <FormControl fullWidth variant="outlined">
-                                                <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Destination </FormLabel>
-                                                <TextField
-                                                    InputProps={{
-                                                        style: { fontFamily: 'Comic Sans MS' },
-                                                        readOnly: true,
-                                                    }}
-                                                    variant="outlined"
-                                                    value={destination}
-                                                />
+                                                <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> When </FormLabel>
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                    <DateTimePicker
+                                                        value={payment.Time}
+                                                        renderInput={(props) => <TextField {...props} />}
+                                                        onChange={setTime}
+
+                                                    />
+                                                </LocalizationProvider>
                                             </FormControl>
                                         </Grid>
                                     </Grid>
-                                    <Grid
-                                        container
-                                        spacing={1}
-                                        sx={{
-                                            padding: 1
-                                        }}
-                                    >
-                                        <Grid
-                                            container
-                                            gap={3.5}
-                                        >
-                                            <Grid item xs={5.8}
-                                                sx={{
-                                                    paddingLeft: 1
-                                                }}>
-                                                <FormControl fullWidth variant="outlined">
-                                                    <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Where </FormLabel>
-                                                    <Select
-                                                        native
-                                                        sx={{
-                                                            fontFamily: "Comic Sans MS",
-                                                        }}
-                                                        value={payment.PlaceID + ""}
-                                                        onChange={handleChange}
-                                                        inputProps={{
-                                                            name: "PlaceID",
-                                                        }}
-                                                    >
-                                                        <option aria-label="None" value="">
-                                                            Choose Place
-                                                        </option>
-                                                        {place.map((item: PlacesInterface) => (
-                                                            <option value={item.ID}>{item.Name}</option>
-                                                        ))}
-                                                    </Select>
-                                                </FormControl>
-                                            </Grid>
-                                            <Grid
-                                                item xs={5.8}>
-                                                <FormControl fullWidth variant="outlined">
-                                                    <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> When </FormLabel>
-                                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                                        <DateTimePicker
-                                                            value={payment.Time}
-                                                            renderInput={(props) => <TextField {...props} />}
-                                                            onChange={setTime}
-
-                                                        />
-                                                    </LocalizationProvider>
-                                                </FormControl>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid
-                                        container
-                                        spacing={1}
-                                        sx={{
-                                            padding: 2
-                                        }}
-                                    >
-                                        <FormControl fullWidth variant="outlined">
-                                            <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Price </FormLabel>
-                                            <TextField
-                                                variant="outlined"
-                                                value={payment.Price}
-                                                InputProps={{
-                                                    style: { fontFamily: 'Comic Sans MS' },
-                                                    readOnly: true,
-                                                }}
-                                            />
-                                        </FormControl>
-                                    </Grid>
                                 </Grid>
-                            </Grid>
-
-                            <Typography
-                                gutterBottom
-                            >
-                            </Typography>
-
-                            <Grid
-                                container
-                                sx={{
-                                    flexGrow: 1,
-                                    fontFamily: "Comic Sans MS",
-                                }}
-                            >
                                 <Grid
                                     container
-                                    justifyContent="center"
-                                    gap={14.5}
+                                    spacing={1}
+                                    sx={{
+                                        padding: 2
+                                    }}
                                 >
-                                    <img src={`${image}`} width="140" height="140" />
                                     <FormControl fullWidth variant="outlined">
-                                        <FormLabel sx={{ fontFamily: "Comic Sans MS" }} > Slip </FormLabel>
-                                        <input type="file" onChange={handleImageChange} />
+                                        <FormLabel sx={{ fontFamily: "Comic Sans MS" }}> Price </FormLabel>
+                                        <TextField
+                                            variant="outlined"
+                                            value={payment.Price}
+                                            InputProps={{
+                                                style: { fontFamily: 'Comic Sans MS' },
+                                                readOnly: true,
+                                            }}
+                                        />
                                     </FormControl>
                                 </Grid>
                             </Grid>
+                        </Grid>
 
-                            <Typography
-                                gutterBottom
+                        <Typography
+                            gutterBottom
+                        >
+                        </Typography>
+
+                        <Grid
+                            container
+                            sx={{
+                                flexGrow: 1,
+                                fontFamily: "Comic Sans MS",
+                            }}
+                        >
+                            <Grid
+                                container
+                                justifyContent="center"
+                                gap={14.5}
                             >
-                            </Typography>
-
-                            <Grid container spacing={1} sx={{ padding: 3 }}>
-                                <Grid item xs={12}>
-                                    <Button
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
-                                        }}
-                                        component={RouterLink}
-                                        to="/ps"
-                                        variant="contained"
-                                        color="error"
-                                    >
-                                        BACK
-                                    </Button>
-                                    <Button
-                                        sx={{
-                                            float: "right",
-                                            fontFamily: "Comic Sans MS",
-                                        }}
-                                        onClick={submit}
-                                        variant="contained"
-                                        color="success"
-                                    >
-                                        COMMIT
-                                    </Button>
-                                </Grid>
+                                <img src={`${image}`} width="140" height="140" />
+                                <FormControl fullWidth variant="outlined">
+                                    <FormLabel sx={{ fontFamily: "Comic Sans MS" }} > Slip </FormLabel>
+                                    <input type="file" onChange={handleImageChange} />
+                                </FormControl>
                             </Grid>
-                        </Paper>
+                        </Grid>
+
+                        <Typography
+                            gutterBottom
+                        >
+                        </Typography>
+
+                        <Grid container spacing={1} sx={{ padding: 3 }}>
+                            <Grid item xs={12}>
+                                <Button
+                                    sx={{
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                    component={RouterLink}
+                                    to="/ps"
+                                    variant="contained"
+                                    color="error"
+                                >
+                                    BACK
+                                </Button>
+                                <Button
+                                    sx={{
+                                        float: "right",
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                    onClick={submit}
+                                    variant="contained"
+                                    color="success"
+                                >
+                                    COMMIT
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Paper>
-                </Container>
-            </ThemeProvider>
-        </div >
+                </Paper>
+            </Container>
+        </ThemeProvider>
     );
 }
 
