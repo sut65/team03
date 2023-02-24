@@ -119,6 +119,9 @@ function CheckInOutCreate() {
     if (res.status) {
       setAlertMessage("Check In Success")
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/CNCO");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);
@@ -185,7 +188,7 @@ function CheckInOutCreate() {
                 </option>
                 {bookings.map((item: BookingsInterface) => (
                   <option value={item.ID} key={item.ID}>
-                    {item.ID}
+                    {item.Booking_Number}
                   </option>
                 ))}
               </Select>

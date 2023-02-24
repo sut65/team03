@@ -133,6 +133,9 @@ function CheckInOutEdit() {
     if (res.status) {
       setAlertMessage("Edit Check In Success")
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/CNCO");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);
@@ -156,6 +159,9 @@ function CheckInOutEdit() {
     if (res.status) {
       setAlertMessage("Edit Check Out Success")
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/CNCO");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);
