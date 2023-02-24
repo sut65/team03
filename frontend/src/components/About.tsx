@@ -11,6 +11,8 @@ import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { AppBar, Box, Button, Grid, IconButton, ThemeProvider } from "@mui/material";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const bgnavbar = createTheme({
   palette: {
@@ -165,6 +167,31 @@ function About() {
         </div>
       </div>
   </div>
+  <div className="grid-confooter">
+        <div className="grid-item-footer">
+          <h2>Phone Support</h2>
+        </div>
+        <div className="grid-item-footer2">
+          <p>24 HOURS A DAY</p>
+        </div>
+        <div className="grid-item-footer3">
+          <h3>+ 01 345 647 745</h3>
+        </div>
+        <div className="grid-item-footer4">
+          <h2>Connect With Us</h2>
+        </div>
+        <div className="grid-item-footer5">
+          <p>SOCIAL MEDIA CHANNELS</p>
+        </div>
+        <div className="grid-item-footer6">
+          <IconButton color="secondary" href="https://www.facebook.com/profile.php?id=100088341936558" >
+            <FacebookIcon />
+          </IconButton>
+          <IconButton color="secondary" href="https://www.youtube.com/watch?v=pugRd6WapdM" >
+            <YouTubeIcon />
+          </IconButton>
+        </div>
+      </div>
 </div>
 </ThemeProvider>
   );

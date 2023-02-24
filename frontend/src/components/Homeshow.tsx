@@ -4,18 +4,15 @@ import im10 from "../Image/im10.jpg"
 import im7 from "../Image/im7.jpg"
 import im9 from "../Image/im9.png"
 import Logo1 from "../Image/LOGO.png"
-
 import Toolbar from "@mui/material/Toolbar";
-
 import Typography from "@mui/material/Typography";
-
 import { Link as RouterLink } from "react-router-dom";
-
 import { createTheme, styled, useTheme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
-
 import { AppBar, Box, Button, Grid, IconButton, ThemeProvider } from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import FacebookIcon from "@mui/icons-material/Facebook";
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 const bgnavbar = createTheme({
   palette: {
@@ -170,6 +167,32 @@ function Homeshow() {
           </div>
         </div>
     </div>
+
+    <div className="grid-confooter">
+        <div className="grid-item-footer">
+          <h2>Phone Support</h2>
+        </div>
+        <div className="grid-item-footer2">
+          <p>24 HOURS A DAY</p>
+        </div>
+        <div className="grid-item-footer3">
+          <h3>+ 01 345 647 745</h3>
+        </div>
+        <div className="grid-item-footer4">
+          <h2>Connect With Us</h2>
+        </div>
+        <div className="grid-item-footer5">
+          <p>SOCIAL MEDIA CHANNELS</p>
+        </div>
+        <div className="grid-item-footer6">
+          <IconButton color="secondary" href="https://www.facebook.com/profile.php?id=100088341936558" >
+            <FacebookIcon />
+          </IconButton>
+          <IconButton color="secondary" href="https://www.youtube.com/watch?v=pugRd6WapdM" >
+            <YouTubeIcon />
+          </IconButton>
+        </div>
+      </div>
   </div>
 </ThemeProvider>
   );
