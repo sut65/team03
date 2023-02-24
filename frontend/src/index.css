@@ -45,6 +45,12 @@ code {
   grid-template-rows: repeat(11,80px);
 }
 
+.grid-conre {
+  display: grid;
+  grid-template-columns: repeat(1,1fr);
+  grid-template-rows: repeat(1,80px);
+}
+
 .grid-con img {
   width: 100%;
   height: 100%;
@@ -147,4 +153,72 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+ }
+
+ .grid-confooter{
+  display: grid;
+  color: white;
+  grid-template-columns: repeat(4,1fr);
+  grid-template-rows: repeat(3,60px);
+  background-color: #424242;
+  bottom: 0%;
+ }
+
+ .grid-item-footer{
+  display: flex;
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9%;
+ }
+
+ .grid-item-footer2{
+  display: flex;
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  justify-content: center;
+  align-items: center;
+  margin-top: -4%;
+  margin-left: -10%;
+ }
+
+ .grid-item-footer3{
+  display: flex;
+  grid-column: 2 / 3;
+  grid-row: 3 / 3;
+  justify-content: center;
+  align-items: center;
+  margin-top: -9%;
+  margin-left: -6%;
+
+ }
+
+ .grid-item-footer4{
+  display: flex;
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+  justify-content: center;
+  align-items: center;
+  margin-top: 9%;
+ }
+
+ .grid-item-footer5{
+  display: flex;
+  grid-column: 3 / 4;
+  grid-row: 2 / 3;
+  justify-content: center;
+  align-items: center;
+  margin-top: -4%;
+  margin-left: 4%;
+ }
+
+ .grid-item-footer6{
+  display: flex;
+  grid-column: 3 / 4;
+  grid-row: 3 / 3;
+  justify-content: center;
+  align-items: center;
+  margin-top: -9%;
+  margin-left: -25%;
  }
