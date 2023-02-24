@@ -171,9 +171,6 @@ function ServiceAdd() {
                         await UpdateAccessories(accessoriesupdate);
                         setAlertMessage("Save Order Successfully");
                         setSuccess(true);
-                        setInterval(() => {
-                            window.location.assign("/pao");
-                        }, 2000);
                     } else {
                         setAlertMessage(res.message);
                         setError(true);
