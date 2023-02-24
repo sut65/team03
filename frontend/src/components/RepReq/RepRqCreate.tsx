@@ -31,6 +31,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
 import { CustomerInterface } from "../../models/modelCustomer/ICustomer";
+import { BookingsInterface } from "../../models/modelBooking/IBooking";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -40,7 +41,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 function RepRqCreate() {
-  const [rooms, setRooms] = useState<RoomInterface[]>([]);
+  // const [rooms, setRooms] = useState<RoomInterface[]>([]);
+  const [booking, setBooking] = useState<BookingsInterface[]>([]);
   const [types, setTypes] = useState<RepairTypeInterface[]>([]);
   const [customers, setCustomers] = useState<CustomerInterface[]>([]);
   const [rep, setRep] = useState<RepairReqInterface>({});
@@ -73,7 +75,7 @@ function RepRqCreate() {
     let res = await GetRoomListByID(localStorage.getItem("id"));
     console.log(res)
     if (res) {
-      setRooms(res);
+      setBooking(res);
     }
   };
 
@@ -190,9 +192,9 @@ function RepRqCreate() {
                 <option aria-label="None" value="">
                   กรุณาเลือก Room No.
                 </option>
-                {rooms.map((item: RoomInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
+                {booking.map((item: BookingsInterface) => (
+                  <option value={item.RoomID} key={item.RoomID}>
+                    {item.RoomID}
                   </option>
                 ))}
               </Select>

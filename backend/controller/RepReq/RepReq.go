@@ -181,7 +181,7 @@ func ListRepairReqs(c *gin.Context) {
 func GetListRoomByCID(c *gin.Context) {
 	var booking []entity.Booking
 	id := c.Param("id")
-	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE customer_id = ?", id).Find(&booking).Error; err != nil {
+	if err := entity.DB().Preload("Branch").Preload("Room").Preload("Customer").Raw("SELECT * FROM bookings WHERE customer_id = ? Group by booking_number", id).Find(&booking).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
