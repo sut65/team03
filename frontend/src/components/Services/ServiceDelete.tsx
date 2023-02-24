@@ -216,7 +216,7 @@ function ServiceDelete() {
                             spacing={1}
                             item xs={12}
                         >
-                            <Grid item xs={10.5}>
+                            <Grid item xs={10}>
                                 <Typography
                                     variant="h4"
                                     sx={{
@@ -227,7 +227,7 @@ function ServiceDelete() {
                                     {n_cus}'s Bill
                                 </Typography>
                             </Grid>
-                            <Grid item xs={1.5}>
+                            <Grid item xs={2}>
                                 <Typography
                                     variant="h4"
                                     sx={{
