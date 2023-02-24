@@ -132,6 +132,9 @@ function StorageCreate() {
     if (res.status) {
       setAlertMessage("บันทึกข้อมูลสำเร็จ");
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/RoomW");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);

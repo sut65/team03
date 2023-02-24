@@ -32,6 +32,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
 import { GetRoom } from "../Services/service/ServiceHttpClientService";
+import { BookingsInterface } from "../../models/modelBooking/IBooking";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -42,7 +43,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 function RepRqEdit() {
   const [rr, setRr] = useState<RepairReqInterface[]>([]);
-  const [rooms, setRooms] = useState<RoomInterface[]>([]);
+  const [booking, setBooking] = useState<BookingsInterface[]>([]);
   const [types, setTypes] = useState<RepairTypeInterface[]>([]);
   const [customers, setCustomers] = useState<CustomerInterface[]>([]);
   const [rep, setRep] = useState<RepairReqInterface>({});
@@ -97,7 +98,7 @@ function RepRqEdit() {
   const GetRooms =  async () => {
     let res = await GetRoomListByID(id_cus);
     if (res) {
-      setRooms(res);
+      setBooking(res);
     }
   };
 
@@ -140,6 +141,9 @@ function RepRqEdit() {
     if (res.status) {
       setAlertMessage("Edit Request Success")
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/Rep");
+    }, 2000);
     } else {
       setAlertMessage(res.message);
       setError(true);
@@ -204,9 +208,9 @@ function RepRqEdit() {
                 <option aria-label="None" value="">
                   กรุณาเลือก Room No.
                 </option>
-                {rooms.map((item: RoomInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.ID}
+                {booking.map((item: BookingsInterface) => (
+                  <option value={item.RoomID} key={item.RoomID}>
+                    {item.RoomID}
                   </option>
                 ))}
               </Select>
