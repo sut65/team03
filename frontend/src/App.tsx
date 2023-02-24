@@ -60,6 +60,8 @@ import EditCustomer from "./components/Customer/EditCustomer";
 import CustomerlistforAdmin from "./components/Customer/ShowCustomerforAdmin";
 import Homepage from "./components/Homepage";
 import Homeshow from "./components/Homeshow";
+import About from "./components/About";
+import Roomhome from "./components/Roomhome";
 
 export default function App() {
   const [token, setToken] = useState<String>("");
@@ -79,6 +81,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/Homeshow" element={<Homeshow />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Roomhome" element={<Roomhome />} />
           <Route path="/RW" element={<Review_Show />} />
           <Route path="/home" element={<SignIn />} />
           <Route path="/customer/create" element={<Customer />} />

@@ -23,9 +23,11 @@ type Officer struct {
 type Department struct {
 	gorm.Model
 	Name string
+
 	// ส่ง Department_id ไปตาราง Employee เพื่อเป็น foreignKey
 	Employee []Employee `gorm:"foreignKey:DepartmentID"`
 	Review   []Review   `gorm:"foreignKey:DepartmentID"`
+	Location []Location `gorm:"foreignKey:DepartmentID"`
 }
 
 // สร้างตารางชื่อ Position
@@ -40,8 +42,10 @@ type Position struct {
 type Location struct {
 	gorm.Model
 	Name string
+
+	DepartmentID *uint `valid:"-"`
+	Department   Department `gorm:"references:ID"`
 	// ส่ง Location_id ไปตาราง Employee เพื่อเป็น foreignKey
-	Employee []Employee `gorm:"foreignKey:LocationID"`
 }
 
 // สร้างตารางชื่อ Employee เป็นตารางหลัก
@@ -77,10 +81,6 @@ type Employee struct {
 	// PositionID ทำหน้าที่เป็น FK
 	PositionID *uint `valid:"-"`
 	Position   Position `gorm:"references:ID" valid:"-"`
-
-	// LocationID ทำหน้าที่เป็น FK
-	LocationID *uint `valid:"-"`
-	Location   Location `gorm:"references:ID" valid:"-"`
 
 	Rooms []Room `gorm:"foreignKey:EmployeeID"`
 	// ส่ง EmployeeID ไปตาราง CheckInOut เพื่อเป็น foreignKey

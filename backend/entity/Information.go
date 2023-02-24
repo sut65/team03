@@ -97,27 +97,44 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Signin:      loginOfficer2,
 	})
 
-	// Set Data Department
-	db.Model(&Department{}).Create(&Department{
-		Name: "Reception",
-	})
-	db.Model(&Department{}).Create(&Department{
-		Name: "Housekeeping",
-	})
-	db.Model(&Department{}).Create(&Department{
+	Kitchenl := Department{
 		Name: "Chef",
-	})
-	db.Model(&Department{}).Create(&Department{
+	}
+	Cashierl := Department{
 		Name: "Accounting",
-	})
-	db.Model(&Department{}).Create(&Department{
+	}
+	Hotelfrontl := Department{
+		Name: "Reception",
+	}
+	Housekeepingstaffl := Department{
+		Name: "Housekeeping",
+	}
+	Marketingl := Department{
 		Name: "Sale & Marketing",
+	}
+
+	// Set Data Department
+	db.Model(&Location{}).Create(&Location{
+		Name: "Hotel front",
+		Department: Hotelfrontl,
+	})
+	db.Model(&Location{}).Create(&Location{
+		Name: "Housekeeping staff Room",
+		Department: Housekeepingstaffl,
+	})
+	db.Model(&Location{}).Create(&Location{
+		Name: "Chef",
+		Department: Kitchenl,
+	})
+	db.Model(&Location{}).Create(&Location{
+		Name: "Cashier",
+		Department: Cashierl,
+	})
+	db.Model(&Location{}).Create(&Location{
+		Name: "Marketing staff room",
+		Department: Marketingl,
 	})
 
-	// Set Data Position
-	db.Model(&Position{}).Create(&Position{
-		Name: "Department head",
-	})
 	db.Model(&Position{}).Create(&Position{
 		Name: "Full time employee",
 	})
@@ -126,21 +143,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	})
 
 	// Set Data Location
-	db.Model(&Location{}).Create(&Location{
-		Name: "Kitchen Room",
-	})
-	db.Model(&Location{}).Create(&Location{
-		Name: "Cashier",
-	})
-	db.Model(&Location{}).Create(&Location{
-		Name: "Hotel Front",
-	})
-	db.Model(&Location{}).Create(&Location{
-		Name: "Housekeeping staff Room",
-	})
-	db.Model(&Location{}).Create(&Location{
-		Name: "Marketing staff room",
-	})
 
 	var OFSongsawang Officer
 	var OFMoonnight Officer
@@ -165,16 +167,6 @@ func SetupIntoDatabase(db *gorm.DB) {
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Full time employee").Scan(&Full)
 	db.Raw("SELECT * FROM positions WHERE name = ?", "Part time employee").Scan(&Part)
 
-	var Kitchen Location
-	var Cashier Location
-	var Hotelfront Location
-	var Housekeepingstaff Location
-	var Marketing Location
-	db.Raw("SELECT * FROM locations WHERE name = ?", "Kitchen Room").Scan(&Kitchen)
-	db.Raw("SELECT * FROM locations WHERE name = ?", "Cashier").Scan(&Cashier)
-	db.Raw("SELECT * FROM locations WHERE name = ?", "Hotel Front").Scan(&Hotelfront)
-	db.Raw("SELECT * FROM locations WHERE name = ?", "Housekeeping staff Room").Scan(&Housekeepingstaff)
-	db.Raw("SELECT * FROM locations WHERE name = ?", "Marketing staff room").Scan(&Marketing)
 
 	timedate1 := time.Date(1950, 2, 16, 0, 0, 0, 0, time.Local)
 	timeyear1 := time.Date(1987, 2, 16, 0, 0, 0, 0, time.Local)
@@ -190,8 +182,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Eusername:    "ESobsa",
 		Password:     SetupPasswordHash("Sobsa01"),
 		Department:   Chef,
-		Position:     Head,
-		Location:     Kitchen,
+		Position:     Full,
 		Salary:       50000,
 		Phonenumber:  "0905452001",
 		Gender:       "Male",
@@ -209,8 +200,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Eusername:    "EHanoi",
 		Password:     SetupPasswordHash("Hanoi02"),
 		Department:   Housekeeping,
-		Position:     Full,
-		Location:     Housekeepingstaff,
+		Position:     Part,
 		Salary:       25000,
 		Phonenumber:  "0982542528",
 		Gender:       "Female",
@@ -228,8 +218,7 @@ func SetupIntoDatabase(db *gorm.DB) {
 		Eusername:    "EBanana",
 		Password:     SetupPasswordHash("Eanana03"),
 		Department:   Salemarketing,
-		Position:     Head,
-		Location:     Marketing,
+		Position:     Full,
 		Salary:       50000,
 		Phonenumber:  "0824545304",
 		Gender:       "Female",

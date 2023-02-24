@@ -70,14 +70,14 @@ function Homeshow() {
           <div>
             <img src={Logo1} width= "75px" height="75px"/>
           </div>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '60%'}}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '50%'}}>
             <Typography variant="h6" color="secondary" noWrap component="div" marginLeft={2}>
               <div >
                 G03 Hotel
               </div>
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', width: '50%'}}>
+          <Box sx={{ display: 'flex', width: '35%'}}>
             <Button component={RouterLink} to="/Homeshow"  color="secondary" sx={{ display: 'flex', width: '10%'}} >Home</Button>
             <Button component={RouterLink} to="/Roomhome"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Room</Button>
             <Button component={RouterLink} to="/RW"  color="secondary" sx={{ display: 'flex', width: '10%'}}>Review</Button>
@@ -86,7 +86,11 @@ function Homeshow() {
             <PersonAddIcon />
             </IconButton>
           </Box>
-          <Box sx={{ display: 'flex', width: '11%'}}>
+          <Box sx={{ display: 'flex', width: '6%'}}>
+          <Button component={RouterLink} to="/home" variant="contained" color="secondary" >LOGIN</Button>
+         
+          </Box>
+          <Box sx={{ display: 'flex', width: '10%'}}>
           <Button component={RouterLink} to="/home" variant="contained" color="secondary" >BOOK NOW</Button>
           </Box>
           
@@ -112,12 +116,12 @@ function Homeshow() {
             <h2>Our hotel has good service such as friendly staff and service with a smile. Parking service, Roomservice , Spa&Massage, Elegant restaurant with well decorated. Variety of food for you to taste. Complete hotel facilities Additional services available to you With 24-hour service and excellent security system. With a key card scanning door system There are security guards who are always ready to help you. You will be impressed. Satisfaction in various fields in our hotel</h2>
           </div>
         </div>
-        {/* <div className="grid-item-24">
+        <div className="grid-item-24">
           <img src="https://media-cdn.tripadvisor.com/media/photo-s/1c/ff/66/8a/modern-thai-cuisine-perfectly.jpg" />
         </div>
         <div className="grid-item-25">
           <img src="https://media-cdn.tripadvisor.com/media/photo-s/0c/17/73/d1/legrande-lounge.jpg" />
-        </div> */}
+        </div>
      </div>
 
      <div className="grid-con">
