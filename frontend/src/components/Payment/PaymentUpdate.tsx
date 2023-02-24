@@ -183,7 +183,7 @@ function PaymentUpdate() {
         getpicture();
         getplaces();
     }, [paymetid, metid]);
-
+ 
     useEffect(() => {
         getpaymentbyid();
     }, [])
