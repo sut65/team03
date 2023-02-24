@@ -191,6 +191,7 @@ function BookingCreate() {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     // disablePast
+                                    inputFormat="dd/MM/yyyy"
                                     value={booking.Start}
                                     onChange={(newValue) => {
                                         setBooking({
@@ -209,6 +210,7 @@ function BookingCreate() {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
                                     // minDate={booking.Start && new Date(booking.Start.getTime() + (24 * 60 * 60 * 1000))}
+                                    inputFormat="dd/MM/yyyy"
                                     value={booking.Stop}
                                     onChange={(newValue) => {
                                         setBooking({

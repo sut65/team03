@@ -200,6 +200,7 @@ function CHK_PaymentCreate() {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DateTimePicker
                                     // disableFuture
+                                    inputFormat="dd/MM/yyyy HH:mm"
                                     value={chk_payment.Date_time}
                                     onChange={(newValue) => {
                                         setCHK_Payment({
