@@ -117,6 +117,9 @@ function PaymentAddIn() {
         if (res.status) {
             setAlertMessage("Save Payment Successfully");
             setSuccess(true);
+            setInterval(() => {
+                window.location.assign("/ps");
+            }, 2000);
         } else {
             setAlertMessage(res.message);
             setError(true);
@@ -410,17 +413,6 @@ function PaymentAddIn() {
 
                             <Grid container spacing={1} sx={{ padding: 3 }}>
                                 <Grid item xs={12}>
-                                    <Button
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
-                                        }}
-                                        component={RouterLink}
-                                        to="/ps"
-                                        variant="contained"
-                                        color="error"
-                                    >
-                                        BACK
-                                    </Button>
                                     <Button
                                         sx={{
                                             float: "right",
