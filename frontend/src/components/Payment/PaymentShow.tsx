@@ -1,11 +1,13 @@
-import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Box, ButtonGroup, Paper, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { PaymentsInterface } from "../../models/modelPayment/IPayment";
-import { grey } from '@mui/material/colors';
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GetPayment } from "./service/PaymentHttpClientService";
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Link as RouterLink } from "react-router-dom";
 import Container from "@mui/material/Container";
+import EditIcon from '@mui/icons-material/Edit';
+import { useEffect, useState } from "react";
+import { grey } from '@mui/material/colors';
 import Button from "@mui/material/Button";
 import moment from "moment";
 
@@ -33,94 +35,182 @@ function PaymentShow() {
         }
     };
 
+    const TableCellHead = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#808080",
+            color: theme.palette.common.white,
+            fontFamily: "Comic Sans MS",
+            fontSize: 16,
+        },
+    }));
+    const TableCellHeadY = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#FF7F00",
+            color: theme.palette.common.white,
+            fontFamily: "Comic Sans MS",
+            fontSize: 16,
+        },
+    }));
+
+    const TableCellBody = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.body}`]: {
+            backgroundColor: "#white",
+            color: theme.palette.common.black,
+            fontFamily: "Comic Sans MS",
+            fontSize: 12,
+        },
+    }));
+
     useEffect(() => {
         getpayment();
     }, []);
 
     return (
         <ThemeProvider theme={theme}>
-            <Container maxWidth="md">
-                <Grid container spacing={1} sx={{ padding: 3 }}>
-                    <Grid item xs={12}>
-                        <TextField
-                            style={{ float: "right" }}
-                            value= {name + "'s Bill Payment"}
-                            variant="standard"
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-                </Grid>
+            <Container
+                maxWidth="lg"
+                sx={{
+                    width: "auto",
+                    height: "auto",
 
-                <div>
-                    <Container maxWidth="md">
-                        <div style={{ height: 500, width: "100%", marginTop: "20px" }}>
-                            <TableContainer >
-                                <Table aria-label="simple table">
+                }}>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        bgcolor: "#CDCDCDCD",
+                        padding: 2,
+                        marginBottom: 2,
+                        boxShadow: 1,
+                        marginTop: 4,
+                    }}
+                >
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 3,
+                            boxShadow: 1,
+                            marginTop: 0.5,
+                        }}
+                    >
+                        <Typography
+                            component="h2"
+                            variant="h4"
+                            sx={{
+                                flexGrow: 1,
+                                fontFamily: "Comic Sans MS",
+                            }}
+                            gutterBottom
+                        >
+                            Requirement
+                        </Typography>
+                        <Box sx={{
+                            fontFamily: "Comic Sans MS"
+                        }}>
+                            ระบบโรงแรมจะทำให้การใช้งาน หรือทำงานของ พนักงาน และ ลูกค้า ให้ง่ายและสะดวกสบายมากขึ้น
+                            ระบบชำระเงิน เป็นระบบที่ให้ลูกค้าทำการชำระเงินหลังจาก booking ซึ่งจะระบุห้องพักที่ทำการ booking
+                            โดยที่ลูกค้าสามารถเลือกวิธีการชำระเงิน เพื่อเลือกช่องทางการชำระเงิน ว่าจะชำระด้วยเงินสด โอนจ่าย หรือผ่านทางสกุลเงินดิจิทอล
+                            เมื่อเลือกโอนจ่าย จะให้เลือกธนาคารว่าจะจ่ายไปยังธนาคารไหน และถ้าเลือกจ่ายโดยสกุลเงินดิจิทอล จะให้เลือกว่าจะจ่ายโดยเหรียญอะไร
+                            แล้วชำระเงินสถานที่ใด และหลังจาก Check Out หากห้องนั้นได้มีการเรียกใช้บริการเสริม จะต้องชำระเงินอีกครั้ง ในการชำระเงินแต่ละครั้ง
+                            ต้องแนบรูปใบเสร็จเพื่อเป็นหลักฐานการชำระเงิน และให้ลูกค้าใส่เวลาที่ชำระเงินให้ตรงกับในสลิป หลังจากชำระเงินแล้วระบบจะแสดงข้อความว่าชำระเงินเสร็จสิ้น
+                            และ ลูกค้าสามารถตรวจสอบข้อมูลของตัวเองได้ว่าข้อมูลที่กรอกไป เข้าระบบและถูกต้องหรือไม่ หากไม่ก็สามารถแก้ไขได้
+                            ส่วนพนักงานตรวจสอบการชำระเงินก็จะทำการตรวจสอบการชำระเงินต่อไป
+                        </Box>
+                    </Paper>
+
+                    <Paper
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 1,
+                            boxShadow: 1,
+                            marginTop: 0.5,
+                        }}
+                    >
+                        <Container maxWidth="xl">
+                            <Box
+                                sx={{
+                                    padding: 3,
+                                }}
+                            >
+                                <Typography
+                                    variant="h5"
+                                    sx={{
+                                        float: "right",
+                                        flexGrow: 1,
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                    gutterBottom
+                                >
+                                    {name}'s Bill Payment
+                                </Typography>
+                            </Box>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 500 }}>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="center" width="20%"> Payment </TableCell>
-                                            <TableCell align="center" width="20%"> Slip Time </TableCell>
-                                            <TableCell align="center" width="20%"> Method </TableCell>
-                                            <TableCell align="center" width="20%"> Name </TableCell>
-                                            <TableCell align="center" width="20%"> Place </TableCell>
-                                            <TableCell align="center" width="20%"> Price </TableCell>
-                                            <TableCell align="center" width="20%"> Slip </TableCell>
-                                            <TableCell align="center" width="20%"> - Edit - </TableCell>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Payment </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Slip Time </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Method </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Name </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Place </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Price </TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Slip </TableCellHead>
+                                            <TableCellHeadY align="center" width="20%" sx={{ border: 1 }}> Edit </TableCellHeadY>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {payment.map((item: PaymentsInterface) => (
                                             <TableRow key={item.ID}>
-                                                <TableCell align="center">{item.ID}</TableCell>
-                                                <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
-                                                <TableCell align="center">{item.PaymentMethod?.Name}</TableCell>
-                                                <TableCell align="center">{item.Method?.Name}</TableCell>
-                                                <TableCell align="center">{item.Place?.Name}</TableCell>
-                                                <TableCell align="center">{item.Price}</TableCell>
-                                                <TableCell align="center"><img src={`${item.Picture}`} width="75" height="90" /></TableCell>
-                                                <TableCell align="center">
+                                                <TableCellBody align="center">{item.ID}</TableCellBody>
+                                                <TableCellBody align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCellBody>
+                                                <TableCellBody align="center">{item.PaymentMethod?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.Method?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.Place?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.Price}</TableCellBody>
+                                                <TableCellBody align="center"><img src={`${item.Picture}`} width="70" height="90" /></TableCellBody>
+                                                <TableCellBody align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
                                                         <Button
                                                             color="warning"
                                                             component={RouterLink}
                                                             to={`/pu/${item.ID}`}
                                                         >
-                                                            Edit</Button>
+                                                            <EditIcon /></Button>
                                                     </ButtonGroup>
-                                                </TableCell>
+                                                </TableCellBody>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </div>
-                    </Container>
-                </div>
-                <Grid container spacing={1} sx={{ padding: 3 }}>
-                    <Grid item xs={12}>
-                        <Button
-                            component={RouterLink}
-                            to="/pai"
-                            variant="contained"
-                            color="success"
-                        >
-                            PAYMENT CHECKIN
-                        </Button>
+                        </Container>
+                        {/* <Grid container spacing={1} sx={{ padding: 3 }}>
+                            <Grid item xs={12}>
+                                <Button
+                                    component={RouterLink}
+                                    to="/pai"
+                                    variant="contained"
+                                    color="success"
+                                >
+                                    PAYMENT CHECKIN
+                                </Button>
 
-                        <Button
-                            style={{ float: "right" }}
-                            component={RouterLink}
-                            to="/pao"
-                            variant="contained"
-                            color="success"
-                        >
-                            PAYMENT CHECKOUT
-                        </Button>
-                    </Grid>
-                </Grid>
+                                <Button
+                                    style={{ float: "right" }}
+                                    component={RouterLink}
+                                    to="/pao"
+                                    variant="contained"
+                                    color="success"
+                                >
+                                    PAYMENT CHECKOUT
+                                </Button>
+                            </Grid>
+                        </Grid> */}
+                    </Paper>
+                </Paper>
             </Container>
         </ThemeProvider>
     );
