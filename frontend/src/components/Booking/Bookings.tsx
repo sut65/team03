@@ -23,7 +23,6 @@ function Bookings() {
         let res = await GetBookingsBYUID();
         if (res) {
             setBookings(res);
-            console.log(res)
         }
     };
     
