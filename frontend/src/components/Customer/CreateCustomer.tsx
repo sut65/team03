@@ -180,8 +180,8 @@ function Customer() {
       setAlertMessage("บันทึกสำเร็จ");
       setSuccess(true);
       setInterval(() => {
-        window.location.assign("/");
-      }, 8000);
+        window.location.assign("/Homeshow");
+      }, 1000);
     } else {
       console.log(res.message);
       setAlertMessage(res.message);
@@ -215,7 +215,7 @@ function Customer() {
 
             <Grid container spacing={2} sx={{ marginBottom: 1.5 }}>
 
-              {/*=======================================(Lock Memberlevel)===========================================================*/}
+              {/*=======================================(Nametitle)===========================================================*/}
               <Grid
                 xs={12}
                 md={8}
@@ -254,7 +254,7 @@ function Customer() {
 
               {/*============================================(First name)======================================================*/}
               <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>First name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Firstname</p>
                 <TextField
                   id="Fristname"
                   type="string"
@@ -269,7 +269,7 @@ function Customer() {
               </Grid>
               {/*=============================================(Last name)=====================================================*/}
               <Grid xs={6} md={6}>
-                <p style={{ color: "grey", fontSize: 17 }}>Last name</p>
+                <p style={{ color: "grey", fontSize: 17 }}>Lastname</p>
                 <TextField
                   id="lastname"
                   type="string"
@@ -455,13 +455,13 @@ function Customer() {
                 <Button variant="contained" size="large" onClick={submit}>
                   สมัครสมาชิก
                 </Button>
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <Link to="/Homeshow" style={{ textDecoration: "none" }}>
                   <Button
                     variant="contained"
                     size="large"
                     style={{ backgroundColor: "#fff", color: "#1976d2" }}
                   >
-                    กลับหน้าแรก
+                    กลับ
                   </Button>
                 </Link>
               </Grid>

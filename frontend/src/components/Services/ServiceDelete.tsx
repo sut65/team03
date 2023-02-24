@@ -1,13 +1,14 @@
-import { Button, FormControl, Grid, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { DeleteService, GetAccessorieItem, GetAccessoriesItemSn, GetRoom, GetService, GetServiceByIDn, UpdateAccessories, UpdateDrink, UpdateFood } from "./service/ServiceHttpClientService";
+import { Box, Button, FormControl, Grid, Paper, Snackbar, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { ServicesInterface } from "../../models/modelService/IService";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { ServicesInterface } from "../../models/modelService/IService";
-import { grey } from '@mui/material/colors';
-import Container from "@mui/material/Container";
-import moment from "moment";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import { DeleteService, GetAccessorieItem, GetAccessoriesItemSn, GetDrinkItem, GetDrinkItemSn, GetFoodItem, GetFoodItemSn, GetRoom, GetService, GetServiceByIDn, UpdateAccessories, UpdateDrink, UpdateFood } from "./service/ServiceHttpClientService";
+import { tableCellClasses } from "@mui/material/TableCell";
+import { Link as RouterLink } from "react-router-dom";
+import Container from "@mui/material/Container";
+import { grey } from '@mui/material/colors';
+import moment from "moment";
 
 const theme = createTheme({
     palette: {
@@ -44,6 +45,24 @@ function ServiceDelete() {
     const n_cus = localStorage.getItem("name");
     const id_cus = localStorage.getItem("id");
     const status = useRef(true);
+
+    const TableCellHead = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#808080",
+            color: theme.palette.common.white,
+            fontFamily: "Comic Sans MS",
+            fontSize: 16,
+        },
+    }));
+
+    const TableCellBody = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.body}`]: {
+            backgroundColor: "#white",
+            color: theme.palette.common.black,
+            fontFamily: "Comic Sans MS",
+            fontSize: 12,
+        },
+    }));
 
     const handleInputChange = (
         event: React.ChangeEvent<{ id?: string; value: any }>
@@ -134,147 +153,206 @@ function ServiceDelete() {
     });
 
     return (
-        <div>
-            <ThemeProvider theme={theme}>
-                <Container maxWidth="md">
-                    <Snackbar
-                        id="success"
-                        open={success}
-                        autoHideDuration={2000}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    >
-                        <Alert onClose={handleClose} severity="success">
-                            {message}
-                        </Alert>
-                    </Snackbar>
+        <ThemeProvider theme={theme}>
+            <Container
+                maxWidth="lg"
+                sx={{
+                    width: "auto",
+                    height: "auto",
 
-                    <Snackbar
-                        id="error"
-                        open={error}
-                        autoHideDuration={2000}
-                        onClose={handleClose}
-                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    >
-                        <Alert onClose={handleClose} severity="error">
-                            {message}
-                        </Alert>
-                    </Snackbar>
+                }}>
+                <Snackbar
+                    id="success"
+                    open={success}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                    <Alert onClose={handleClose} severity="success">
+                        {message}
+                    </Alert>
+                </Snackbar>
 
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={6}>
-                            <FormControl>
-                                <TextField
-                                    label="Customer Name"
-                                    value={n_cus}
-                                    InputProps={{
-                                        readOnly: true,
+                <Snackbar
+                    id="error"
+                    open={error}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+                    <Alert onClose={handleClose} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
+
+                <Paper
+                    elevation={3}
+                    sx={{
+                        bgcolor: "#CDCDCDCD",
+                        padding: 2,
+                        marginBottom: 2,
+                        boxShadow: 1,
+                        marginTop: 4,
+                    }}
+                >
+                    <Paper
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 3,
+                            boxShadow: 1,
+                            marginTop: 0.5,
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={1}
+                            item xs={12}
+                        >
+                            <Grid item xs={10.5}>
+                                <Typography
+                                    variant="h4"
+                                    sx={{
+                                        flexGrow: 1,
+                                        fontFamily: "Comic Sans MS",
                                     }}
-                                    variant="standard"
-                                />
-                            </FormControl>
+                                >
+                                    {n_cus}'s Bill
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={1.5}>
+                                <Typography
+                                    variant="h4"
+                                    sx={{
+                                        flexGrow: 1,
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                >
+                                    Room {room}
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                style={{ float: "right" }}
-                                label="Room Number"
-                                value={room}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                variant="standard"
-                            />
-                        </Grid>
-                    </Grid>
+                    </Paper>
 
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                label=" "
-                                defaultValue="Choose bill number if you want to cancle."
-                                variant="standard"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                required
-                                style={{ float: "right" }}
-                                label="Type Bill Number"
-                                variant="standard"
-                                id="ID"
-                                value={services.ID || ""}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <div>
+                    <Paper
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 1,
+                            boxShadow: 1,
+                            marginTop: 1,
+                        }}
+                    >
                         <Container maxWidth="xl">
-                            <div style={{ height: 500, width: "100%", marginTop: "20px" }}>
-                                <TableContainer >
-                                    <Table aria-label="simple table">
+                            <Box
+                                sx={{
+                                    padding: 3,
+                                }}
+                            >
+                                <Grid
+                                    container
+                                    justifyContent="center"
+                                    gap={20}
+                                >
+                                    <Typography
+                                        variant="h5"
+                                        sx={{
+                                            flexGrow: 1,
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        gutterBottom
+                                    >
+                                        Choose bill number if you want to cancle
+                                    </Typography>
+
+                                    <TextField
+                                        required
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        style={{ float: "right" }}
+                                        label="Type Bill Number"
+                                        variant="standard"
+                                        id="ID"
+                                        value={services.ID || ""}
+                                        onChange={handleInputChange}
+                                    />
+                                </Grid>
+                                <Typography
+                                    gutterBottom
+                                >
+                                </Typography>
+                            </Box>
+
+                            <Container maxWidth="xl">
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 500 }}>
                                         <TableHead>
                                             <TableRow>
-                                                <TableCell align="center" width="20%"> Bill Number </TableCell>
-                                                <TableCell align="center" width="20%"> Customer name </TableCell>
-                                                <TableCell align="center" width="20%"> Bill Time </TableCell>
-                                                <TableCell align="center" width="20%"> Food </TableCell>
-                                                <TableCell align="center" width="20%"> Food Item </TableCell>
-                                                <TableCell align="center" width="20%"> Drink </TableCell>
-                                                <TableCell align="center" width="20%"> Drink Item </TableCell>
-                                                <TableCell align="center" width="20%"> Accessorie </TableCell>
-                                                <TableCell align="center" width="20%"> Accessorie Item </TableCell>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Bill Number </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Customer name </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Bill Time </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Food </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}>  Item </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Drink </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}>  Item </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Accessorie </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}>  Item </TableCellHead>
+                                                <TableCellHead align="center" width="20%" sx={{ border: 1 }}> Total </TableCellHead>
                                             </TableRow>
                                         </TableHead>
 
                                         <TableBody>
                                             {service.map((item: ServicesInterface) => (
                                                 <TableRow key={item.ID}>
-                                                    <TableCell align="center">{item.ID}</TableCell>
-                                                    <TableCell align="center">{item.Customer?.FirstName}</TableCell>
-                                                    <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
-                                                    <TableCell align="center">{item.Food?.Name}</TableCell>
-                                                    <TableCell align="center">{item.FoodItem}</TableCell>
-                                                    <TableCell align="center">{item.Drink?.Name}</TableCell>
-                                                    <TableCell align="center">{item.DrinkItem}</TableCell>
-                                                    <TableCell align="center">{item.Storage?.Product?.Name}</TableCell>
-                                                    <TableCell align="center">{item.StorageItem}</TableCell>
+                                                    <TableCellBody align="center">{item.ID}</TableCellBody>
+                                                    <TableCellBody align="center">{item.Customer?.FirstName}</TableCellBody>
+                                                    <TableCellBody align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCellBody>
+                                                    <TableCellBody align="center">{item.Food?.Name}</TableCellBody>
+                                                    <TableCellBody align="center">{item.FoodItem}</TableCellBody>
+                                                    <TableCellBody align="center">{item.Drink?.Name}</TableCellBody>
+                                                    <TableCellBody align="center">{item.DrinkItem}</TableCellBody>
+                                                    <TableCellBody align="center">{item.Storage?.Product?.Name}</TableCellBody>
+                                                    <TableCellBody align="center">{item.StorageItem}</TableCellBody>
+                                                    <TableCellBody align="center">{item.Total}</TableCellBody>
                                                 </TableRow>
                                             ))}
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
-                            </div>
-                        </Container>
-                    </div>
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={12}>
-                            <Button
-                                component={RouterLink}
-                                to="/ss"
-                                variant="contained"
-                                color="error"
-                            >
-                                BACK
-                            </Button>
+                            </Container>
+                            <Grid container spacing={1} sx={{ padding: 3 }}>
+                                <Grid item xs={12}>
+                                    <Button
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/ss"
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        BACK
+                                    </Button>
 
-                            <Button
-                                style={{ float: "right" }}
-                                onClick={confirm}
-                                variant="contained"
-                                color="success"
-                            >
-                                CONFIRM
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </ThemeProvider>
-        </div>
+                                    <Button
+                                        sx={{
+                                            float: "right",
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        onClick={confirm}
+                                        variant="contained"
+                                        color="success"
+                                    >
+                                        CANCLE
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Container>
+                    </Paper>
+                </Paper>
+            </Container>
+        </ThemeProvider >
     );
 }
 

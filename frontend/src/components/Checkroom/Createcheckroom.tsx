@@ -180,6 +180,9 @@ useEffect(() => {
     if (res.status) {
       setAlertMessage("บันทึกสำเร็จ");
       setSuccess(true);
+      setInterval(() => {
+        window.location.assign("/checkroom/list");
+      }, 1000);
     } else {
       console.log(res.message);
       setAlertMessage(res.message);
