@@ -1,11 +1,26 @@
-import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import {
+    Box,
+    Grid,
+    Table,
+    Paper,
+    styled,
+    TableRow,
+    TableHead,
+    TableCell,
+    TableBody,
+    Typography,
+    ButtonGroup,
+    TableContainer,
+} from "@mui/material";
 import { ServicesInterface } from "../../models/modelService/IService";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GetService } from "./service/ServiceHttpClientService";
+import { tableCellClasses } from "@mui/material/TableCell";
 import { Link as RouterLink } from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
 import Container from "@mui/material/Container";
-import { useEffect, useState } from "react";
 import { grey } from '@mui/material/colors';
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import moment from "moment";
 
@@ -32,97 +47,200 @@ function ServiceShow() {
         }
     };
 
+    const TableCellHead = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#808080",
+            color: theme.palette.common.white,
+            fontFamily: "Comic Sans MS",
+            fontSize: 16,
+        },
+    }));
+    const TableCellHeadY = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#FF7F00",
+            color: theme.palette.common.white,
+            fontFamily: "Comic Sans MS",
+            fontSize: 16,
+        },
+    }));
+
+    const TableCellBody = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.body}`]: {
+            backgroundColor: "#white",
+            color: theme.palette.common.black,
+            fontFamily: "Comic Sans MS",
+            fontSize: 12,
+        },
+    }));
+
     useEffect(() => {
         getservice();
     }, []);
 
     return (
         <ThemeProvider theme={theme}>
-            <Container maxWidth="md">
-                <Grid container spacing={1} sx={{ padding: 3 }}>
-                    <Grid item xs={12}>
-                        <Button
-                            component={RouterLink}
-                            to="/sa"
-                            variant="contained"
-                            color="success"
-                        >
-                            ORDER
-                        </Button>
+            <Container
+                maxWidth="lg"
+                sx={{
+                    width: "auto",
+                    height: "auto",
 
-                        <Button
-                            style={{ float: "right" }}
-                            component={RouterLink}
-                            to="/sd"
-                            variant="contained"
-                            color="error"
-                        >
-                            CANCLE
-                        </Button>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={1} sx={{ padding: 3 }}>
-                    <Grid item xs={12}>
-                        <TextField
-                            style={{ float: "right" }}
-                            value={name + "'s Bill Service"}
-                            variant="standard"
-                            InputProps={{
-                                readOnly: true,
+                }}>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        bgcolor: "#CDCDCDCD",
+                        padding: 2,
+                        marginBottom: 2,
+                        boxShadow: 1,
+                        marginTop: 4,
+                    }}
+                >
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 3,
+                            boxShadow: 1,
+                            marginTop: 0.5,
+                        }}
+                    >
+                        <Typography
+                            component="h2"
+                            variant="h4"
+                            sx={{
+                                flexGrow: 1,
+                                fontFamily: "Comic Sans MS",
                             }}
-                        />
-                    </Grid>
-                </Grid>
-                <div>
-                    <Container maxWidth="xl">
-                        <div style={{ height: 500, width: "100%", marginTop: "20px" }}>
-                            <TableContainer >
-                                <Table aria-label="simple table">
+                            gutterBottom
+                        >
+                            Requirement
+                        </Typography>
+                        <Box sx={{
+                            fontFamily: "Comic Sans MS"
+                        }}>
+                            ระบบโรงแรมจะทำให้การใช้งาน หรือทำงานของพนักงาน และ ลูกค้า ให้ง่ายและสะดวกสบายมากขึ้น
+                            ระบบบริการเสริม เป็นระบบที่ให้ลูกค้าสะดวกสบายและให้ห้องนั้นมีประสิทธิภาพ เช่น อาหาร เครื่องดื่ม หรือขาดอุปกรณ์เสริมต่างๆ ภายในห้อง 
+                            เช่น ปลั๊กสามตา กาน้ำร้อน ไมโครเวฟ หรือเตียง และสามารถใส่จำนวนที่ต้องการ เมื่อทำการบันทึก จะบันทึกเวลา ณ ขณะนั้น 
+                            หากต้องการสินค้าเพิ่ม หรือไม่ต้องการสินค้านั้นแล้วสามารถแก้ไขรายการสินค้าได้ และจะทำการอัพเดทเวลา และ ราคาที่ทำการแก้ไขนั้นๆ
+                            หากรายการที่ทำการสั่งไปไม่ต้องการแล้ว สามารถยกเลิกสินค้าได้ นอกจากนี้ยังแสดงรายการที่ลูกค้าทำการใช้บริการเสริม และรายการจากการสั่งสินค้าจะนำไปชำระเงินในภายหลัง
+
+                        </Box>
+                    </Paper>
+
+                    <Paper
+                        sx={{
+                            bgcolor: "#white",
+                            padding: 2,
+                            marginBottom: 1,
+                            boxShadow: 1,
+                            marginTop: 0.5,
+                        }}
+                    >
+                        <Container maxWidth="xl">
+                            <Box
+                                sx={{
+                                    padding: 3,
+                                }}
+                            >
+                                <Typography
+                                    variant="h5"
+                                    sx={{
+                                        float: "right",
+                                        flexGrow: 1,
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                    gutterBottom
+                                >
+                                    {name}'s Bill Service
+                                </Typography>
+                            </Box>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 500 }}>
                                     <TableHead>
                                         <TableRow>
-                                            <TableCell align="center" width="20%">Bill</TableCell>
-                                            <TableCell align="center" width="20%">Bill Time</TableCell>
-                                            <TableCell align="center" width="20%">Food</TableCell>
-                                            <TableCell align="center" width="20%">Item</TableCell>
-                                            <TableCell align="center" width="20%">Drink</TableCell>
-                                            <TableCell align="center" width="20%">Item</TableCell>
-                                            <TableCell align="center" width="20%">Accessorie</TableCell>
-                                            <TableCell align="center" width="20%">Item</TableCell>
-                                            <TableCell align="center" width="20%">Total</TableCell>
-                                            <TableCell align="center" width="20%">- Edit -</TableCell>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Bill</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Bill Time</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Food</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Item</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Drink</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Item</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Accessorie</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Item</TableCellHead>
+                                            <TableCellHead align="center" width="20%" sx={{ border: 1 }}>Total</TableCellHead>
+                                            <TableCellHeadY align="center" width="20%" sx={{ border: 1 }}>- Edit -</TableCellHeadY>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {service.map((item: ServicesInterface) => (
                                             <TableRow key={item.ID}>
-                                                <TableCell align="center">{item.ID}</TableCell>
-                                                <TableCell align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCell>
-                                                <TableCell align="center">{item.Food?.Name}</TableCell>
-                                                <TableCell align="center">{item.FoodItem}</TableCell>
-                                                <TableCell align="center">{item.Drink?.Name}</TableCell>
-                                                <TableCell align="center">{item.DrinkItem}</TableCell>
-                                                <TableCell align="center">{item.Storage?.Product?.Name}</TableCell>
-                                                <TableCell align="center">{item.StorageItem}</TableCell>
-                                                <TableCell align="center">{item.Total}</TableCell>
-                                                <TableCell align="center">
+                                                <TableCellBody align="center">{item.ID}</TableCellBody>
+                                                <TableCellBody align="center">{moment(item.Time).format("DD/MM/YYYY HH:mm:ss")}</TableCellBody>
+                                                <TableCellBody align="center">{item.Food?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.FoodItem}</TableCellBody>
+                                                <TableCellBody align="center">{item.Drink?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.DrinkItem}</TableCellBody>
+                                                <TableCellBody align="center">{item.Storage?.Product?.Name}</TableCellBody>
+                                                <TableCellBody align="center">{item.StorageItem}</TableCellBody>
+                                                <TableCellBody align="center">{item.Total}</TableCellBody>
+                                                <TableCellBody align="center">
                                                     <ButtonGroup color="primary" aria-label="outlined primary button group">
+
                                                         <Button
+                                                            sx={{
+                                                                fontFamily: "Comic Sans MS",
+                                                            }}
                                                             color="warning"
                                                             component={RouterLink}
                                                             to={`/su/${item.ID}`}
                                                         >
-                                                            Edit</Button>
+                                                            <EditIcon /></Button>
                                                     </ButtonGroup>
-                                                </TableCell>
+                                                </TableCellBody>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                        </div>
-                    </Container>
-                </div>
+
+                            <Typography
+                                gutterBottom
+                            >
+                            </Typography>
+
+                            <Grid container spacing={1} sx={{ padding: 3 }}>
+                                <Grid item xs={12}>
+                                    <Button
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/sa"
+                                        variant="contained"
+                                        color="success"
+                                    >
+                                        ORDER
+                                    </Button>
+
+                                    <Button
+                                        sx={{
+                                            float: "right",
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/sd"
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        CANCLE
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Container>
+                    </Paper>
+                </Paper>
             </Container>
         </ThemeProvider>
     );
