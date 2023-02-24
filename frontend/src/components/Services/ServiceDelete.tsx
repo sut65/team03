@@ -1,5 +1,5 @@
-import { DeleteService, GetAccessorieItem, GetAccessoriesItemSn, GetRoom, GetService, GetServiceByIDn, UpdateAccessories, UpdateDrink, UpdateFood } from "./service/ServiceHttpClientService";
-import { Box, Button, FormControl, Grid, Paper, Snackbar, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, Snackbar, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { DeleteService, GetAccessorieItem, GetAccessoriesItemSn, GetRoom, GetService, GetServiceByIDn, UpdateAccessories } from "./service/ServiceHttpClientService";
 import { ServicesInterface } from "../../models/modelService/IService";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
@@ -267,8 +267,8 @@ function ServiceDelete() {
 
                                     <TextField
                                         required
-                                        sx={{
-                                            fontFamily: "Comic Sans MS",
+                                        InputProps={{
+                                            style: { fontFamily: 'Comic Sans MS' },
                                         }}
                                         style={{ float: "right" }}
                                         label="Type Bill Number"
