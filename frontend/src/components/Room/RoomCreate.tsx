@@ -25,20 +25,9 @@ import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
 import { GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom } from "./service/RoomHttpClientService";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 import { Message } from "@mui/icons-material";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-        main: grey[800],
-    },
-    secondary: {
-        main: grey[50],
-    },
-},
-});
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -130,17 +119,17 @@ function RoomCreate() {
     }
   };
 
-  const getEmployee =  async () => {
-    let res = await GetEmployees();
-    if (res) {
-      setEmployees(res);
-    }
-  };
+  // const getEmployee =  async () => {
+  //   let res = await GetEmployees();
+  //   if (res) {
+  //     setEmployees(res);
+  //   }
+  // };
 
   useEffect(() => {
     getRoomType();
     getRoomZone();
-    getEmployee();
+    //getEmployee();
     getState();
   }, []);
 
@@ -154,7 +143,6 @@ function RoomCreate() {
       RoomTypeID: convertType(room.RoomTypeID),
       RoomZoneID: convertType(room.RoomZoneID),
       StateID: convertType(room.StateID),
-      //EmployeeID: convertType(checkinout.EmployeeID),
       EmployeeID: convertType(localStorage.getItem("id")),
       Room_No: room.Room_No,
       Amount: convertType(number)||0,
@@ -319,68 +307,6 @@ function RoomCreate() {
           />
             </FormControl>
           </Grid>
-
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>สถานะของห้อง</p>
-              <Select
-                native
-                value={room.StateID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "StateID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือกสถานะห้อง
-                </option>
-                {states.map((item: StateInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Name}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-                </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>employee</p>
-              <Select
-                native
-                value={checkinout.EmployeeID + ""}
-                onChange={handleChange}
-                inputProps={{
-                  name: "EmployeeID",
-                }}
-              >
-                <option aria-label="None" value="">
-                  กรุณาเลือก Employee
-                </option>
-                {emps.map((item: EmployeeInterface) => (
-                  <option value={item.ID} key={item.ID}>
-                    {item.Eusername}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid> */}
-          {/* <Grid item xs={6}>
-            <FormControl fullWidth variant="outlined">
-              <p>วันที่และเวลา</p>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  value={checkinout.CheckInTime}
-                  onChange={(newValue) => {
-                    setCheckinout({
-                      ...checkinout,
-                      CheckInTime: newValue,
-                    });
-                  }}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </Grid> */}
           <Grid item xs={6}>
             <FormControl fullWidth variant="outlined">
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -405,7 +331,7 @@ function RoomCreate() {
               component={RouterLink}
               to="/RT"
               variant="contained"
-              color="info"
+              color="inherit"
             >
               กลับ
             </Button>
