@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import { format } from 'date-fns';
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { BookingsInterface } from "../../models/modelBooking/IBooking";
 import { GetBookingsBYUID, GetCustomerByUID } from "./services/BookingHttpClientService";
@@ -38,8 +39,8 @@ function Bookings() {
         { field: "Branch", headerName: "สาขา", width: 150, valueFormatter: (params) => params.value.B_name, },
         { field: "Room", headerName: "ห้องพักหมายเลข", width: 150, valueFormatter: (params) => params.value.Room_No, },
         { field: "Total", headerName: "ราคาต่อวัน(บาท)", width: 100 },
-        { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150 },
-        { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150 },
+        { field: "Start", headerName: "วันที่เริ่มเข้าพัก", width: 150, valueFormatter: (params) => format(new Date(params.value), "dd/MM/yyyy"), },
+        { field: "Stop", headerName: "วันที่สิ้นสุดการเข้าพัก", width: 150, valueFormatter: (params) => format(new Date(params.value), "dd/MM/yyyy"), },
         { field: "Num_Of_Day", headerName: "รวมเป็น(วัน)", width: 100 },
         { field: "Customer", headerName: "จองโดย", width: 150, valueFormatter: (params) => params.value.FirstName, },
         { field: "TotalAmount", headerName: "คิดเป็นเงิน(บาท)", width: 150 },

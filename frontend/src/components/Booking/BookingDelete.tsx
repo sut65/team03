@@ -208,6 +208,7 @@ function BookingDelete() {
                             {/* input from roomid andthen search booking where roomid and get start\stop day in recorded   */}
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    inputFormat="dd/MM/yyyy"
                                     value={s_booking?.Start}
                                     disabled
                                     onChange={(newValue) => {
@@ -225,6 +226,7 @@ function BookingDelete() {
                             <p>วันที่สิ้นสุดการพัก</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <DatePicker
+                                    inputFormat="dd/MM/yyyy"
                                     value={s_booking?.Stop}
                                     disabled
                                     onChange={(newValue) => {
