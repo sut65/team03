@@ -1,29 +1,15 @@
 import React from "react";
 
-//import { Link as RouterLink } from "react-router-dom";
-
 import Typography from "@mui/material/Typography";
-
-//import Button from "@mui/material/Button";
-
-//import Container from "@mui/material/Container";
 
 import Box from "@mui/material/Box";
 
 import { Alert, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from "@mui/material";
 
-// //import { UsersInterface } from "../models/IUser";
 
 import { DataGrid, GridColDef, GridRowParams } from "@mui/x-data-grid";
 
 import { StorageInterface, ProductInterface, ProductTypeInterface } from "../../models/IStorage";
-
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-// import { grey } from '@mui/material/colors';
-
-// import { EmployeeInterface } from "../../models/IEmployee";
-// import { createEmitAndSemanticDiagnosticsBuilderProgram } from "typescript";
 
 import { ButtonGroup, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -37,18 +23,6 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import moment from "moment";
 import { GetStorages, Storage, DeleteStorage } from "./service/StorageHttpClientService";
-
-
-const theme = createTheme({
-  palette: {
-      primary: {
-          main: grey[800],
-      },
-      // secondary: {
-      //     main: grey[50],
-      // },
-  },
-});
 
 
 function StorageShow() {
@@ -92,25 +66,6 @@ function StorageShow() {
    setOpenDelete(false)
  
  }
-
-  // const getRooms = async () => {
-  //     const apiUrl = `http://localhost:8080/service/rooms`;
-  //     const requestOptions = {
-  //         method: "GET",
-  //         headers: {
-  //             Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //             "Content-Type": "application/json",
-  //         },
-  //     };
-
-  //     fetch(apiUrl, requestOptions)
-  //         .then((response) => response.json())
-  //         .then((res) => {
-  //             if (res.data) {
-  //                 setRoom(res.data);
-  //             }
-  //         });
-  // };
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -224,7 +179,7 @@ function StorageShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="success">
-            Add สำเร็จ
+            เพิ่มข้อมูลสำเร็จ
           </Alert>
         </Snackbar>
         <Snackbar
@@ -234,7 +189,7 @@ function StorageShow() {
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert onClose={handleClose} severity="error">
-            ไม่สามารถ Add ได้
+            ไม่สามารถเพิ่มข้อมูลได้
           </Alert>
         </Snackbar>
         <Box
@@ -260,7 +215,7 @@ function StorageShow() {
               variant="contained"
               color="inherit"
             >
-              Add
+              เพิ่มข้อมูลคลังสินค้าห้องพัก
             </Button>
           </Box>
           <Box>
@@ -270,7 +225,7 @@ function StorageShow() {
               variant="contained"
               color="inherit"
             >
-              Edit
+              แก้ไขข้อมูลคลังสินค้าห้อง
             </Button>
           </Box>
           </Box>

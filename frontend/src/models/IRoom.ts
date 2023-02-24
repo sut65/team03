@@ -6,6 +6,7 @@ export interface RoomTypeInterface {
     Size:    string;
 	Bedsize: string;
 	Bedtype: string;
+    Amount: number;
 }
 
 //roomzone

@@ -24,19 +24,8 @@ import { DesktopDateTimePicker } from "@mui/x-date-pickers";
 import { InputLabel, Stack } from "@mui/material";
 import { GetRooms, GetEmployees, GetRoomTypes, GetRoomZones, GetStates, CreateRoom, UpdateRoom, GetRoom } from "./service/RoomHttpClientService";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from '@mui/material/colors';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-        main: grey[800],
-    },
-    secondary: {
-        main: grey[50],
-    },
-},
-});
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -143,17 +132,17 @@ function RoomEdit() {
     }
   };
 
-  const getEmployee =  async () => {
-    let res = await GetEmployees();
-    if (res) {
-      setEmployees(res);
-    }
-  };
+  // const getEmployee =  async () => {
+  //   let res = await GetEmployees();
+  //   if (res) {
+  //     setEmployees(res);
+  //   }
+  // };
 
   useEffect(() => {
     getRoomType();
     getRoomZone();
-    getEmployee();
+    //getEmployee();
     getRoom();
     getState();
   }, []);
@@ -373,7 +362,7 @@ function RoomEdit() {
               component={RouterLink}
               to="/RT"
               variant="contained"
-              color="info"
+              color="inherit"
             >
               กลับ
             </Button>

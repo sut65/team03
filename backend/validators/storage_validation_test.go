@@ -1,4 +1,4 @@
-package entity
+package validators
 
 import (
 	"testing"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/asaskevich/govalidator"
 	. "github.com/onsi/gomega"
+	. "github.com/sut65/team03/entity"
 )
 
 func TestStoragePass(t *testing.T) {
@@ -89,5 +90,5 @@ func TestStorageTime(t *testing.T) {
 	g.Expect(err).ToNot(BeNil())
 
 	// err.Error() ต้องมี message แสดงออกมา
-	g.Expect(err.Error()).To(Equal("วันที่และเวลาต้องไม่เกิน +-3 นาที"))
+	g.Expect(err.Error()).To(Equal("วันที่และเวลาไม่ถูกต้อง"))
 }

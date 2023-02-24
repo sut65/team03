@@ -22,8 +22,8 @@ type ProductType struct {
 type Storage struct {
 	gorm.Model
 	ID       uint
-	Quantity int       `valid:"required~กรุณากรอกจำนวน, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"`
-	Time     time.Time `valid:"DelayNow3Min~วันที่และเวลาต้องไม่เกิน +-3 นาที"` // เป็นปัจจุบัน +- 3 นาที
+	Quantity int       `valid:"required~กรุณากรอกจำนวน, range(0|9223372036854775807)~กรุณากรอกจำนวนเป็นจำนวนเต็มบวก"` //BIGINT=สำมำรถเก็บขอ้มูลไดต้้งัแต่-9223372036854775808จนถึง9223372036854775807
+	Time     time.Time `valid:"DelayNow3Min~วันที่และเวลาไม่ถูกต้อง"`                                                 // เป็นปัจจุบัน +- 3 นาที
 
 	//EmployeeID ทำหน้าที่เป็น FK
 	EmployeeID *uint
