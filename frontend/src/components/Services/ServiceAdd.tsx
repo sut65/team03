@@ -16,13 +16,13 @@ import {
 } from "./service/ServiceHttpClientService";
 import { DrinksInterface, FoodsInterface, ServicesInterface } from "../../models/modelService/IService";
 import { StorageInterface } from "../../models/IStorage";
-import { GetStorages } from "../Storage/service/StorageHttpClientService";
-import { Button, Container, FormControl, Grid, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material";
+import { Button, Container, FormControl, Grid, Paper, Select, SelectChangeEvent, Snackbar, styled, TextField, Typography } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { Link as RouterLink } from "react-router-dom";
 import { grey } from "@mui/material/colors";
+import { Box } from "@mui/system";
 
 const theme = createTheme({
     palette: {
@@ -52,13 +52,13 @@ function ServiceAdd() {
     const [fooditemwant, setFoodItemWant] = useState(0);
     const [fooditemsum, setFoodItemSum] = useState(0);
     const [pricefood, setPriceFood] = useState(0);
-    
+
     const [drink, setDrink] = useState<DrinksInterface[]>([]);
     const [drinkitem, setDrinkItem] = useState(0);
     const [drinkitemwant, setDrinkItemWant] = useState(0);
     const [drinkitemsum, setDrinkItemSum] = useState(0);
     const [pricedrink, setPriceDrink] = useState(0);
-    
+
     const [accessorie, setAccessorie] = useState<StorageInterface[]>([]);
     const [accessorieitem, setAccessorieItem] = useState(0);
     const [accessorieitemwant, setAccessorieItemWant] = useState(0);
@@ -160,7 +160,7 @@ function ServiceAdd() {
             ID: convertTypeNotNull(service.StorageID),
             Quantity: accessorieitemsum,
         };
-        
+
         if (fooditemsum > 0 && fooditemsum < fooditem) {
             if (drinkitemsum > 0 && drinkitemsum < drinkitem) {
                 if (accessorieitemsum > 0 && accessorieitemsum < accessorieitem) {
@@ -276,11 +276,18 @@ function ServiceAdd() {
             setPriceTotal((pricefood * fooditemwant) + (pricedrink * drinkitemwant) + (priceaccessorie * accessorieitemwant));
         }
     });
-    
+
     return (
         <div>
             <ThemeProvider theme={theme}>
-                <Container maxWidth="md">
+                <Container
+                    maxWidth="lg"
+                    sx={{
+                        width: "auto",
+                        height: "auto",
+
+                    }}>
+
                     <Snackbar
                         id="success"
                         open={success}
@@ -305,182 +312,250 @@ function ServiceAdd() {
                         </Alert>
                     </Snackbar>
 
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={12}>
-                            <TextField
-                                fullWidth
-                                label="Room Number"
-                                value={room}
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                                variant="standard"
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container margin={2} columnGap={4}>
-                        <Grid>
-                            <img src="https://images.unsplash.com/photo-1627308595186-e6bb36712645?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80" alt="" width="250" height="350" />
-                        </Grid>
-                        <Grid>
-                            <img src="https://images.unsplash.com/photo-1502389743708-d00f658638bd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="" width="250" height="350" />
-                        </Grid>
-                        <Grid>
-                            <img src="https://images.unsplash.com/photo-1558682766-1ff2c50e7056?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80" alt="" width="250" height="350" />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={4}>
-                            <TextField
-                                label=" "
-                                defaultValue="If you want to eat."
-                                variant="standard"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                label=" "
-                                defaultValue="If you want to drink."
-                                variant="standard"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                label=" "
-                                defaultValue="If you want to borrow."
-                                variant="standard"
-                                InputProps={{
-                                    readOnly: true,
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth variant="outlined">
-                                <Select
-                                    native
-                                    value={service.FoodID + ""}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        name: "FoodID",
-                                    }}
-                                >
-                                    <option aria-label="None" value="">
-                                        Choose Food
-                                    </option>
-                                    {food.map((item: FoodsInterface) => (
-                                        <option value={item.ID} key={item.ID}>{item.Name}</option>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth variant="outlined">
-                                <Select
-                                    native
-                                    value={service.DrinkID + ""}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        name: "DrinkID",
-                                    }}
-                                >
-                                    <option aria-label="None" value="">
-                                        Choose Drink
-                                    </option>
-                                    {drink.map((item: DrinksInterface) => (
-                                        <option value={item.ID}>{item.Name}</option>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={4}>
-                            <FormControl fullWidth variant="outlined">
-                                <Select
-                                    native
-                                    value={service.StorageID + ""}
-                                    onChange={handleChange}
-                                    inputProps={{
-                                        name: "StorageID",
-                                    }}
-                                >
-                                    <option aria-label="None" value="">
-                                        Choose Accessories
-                                    </option>
-                                    {accessorie.map((item: StorageInterface) => (
-                                        <option value={item.ID}>{item.Product?.Name}</option>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={4}>
-                            <TextField
-                                required
-                                label="How much ?"
-                                variant="standard"
-                                id="FoodItem"
-                                value={service.FoodItem}
-                                onChange={handleInputFoodChange}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                required
-                                label="How much ?"
-                                variant="standard"
-                                id="DrinkItem"
-                                value={service.DrinkItem}
-                                onChange={handleInputDrinkChange}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <TextField
-                                required
-                                label="How much ?"
-                                variant="standard"
-                                id="StorageItem"
-                                value={service.StorageItem}
-                                onChange={handleInputAccessorieChange}
-                            />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container spacing={1} sx={{ padding: 3 }}>
-                        <Grid item xs={12}>
-                            <Button
-                                component={RouterLink}
-                                to="/ss"
-                                variant="contained"
-                                color="error"
+                    <Paper
+                        elevation={3}
+                        sx={{
+                            bgcolor: "#CDCDCDCD",
+                            padding: 2,
+                            marginBottom: 2,
+                            boxShadow: 1,
+                            marginTop: 4,
+                        }}
+                    >
+                        <Paper
+                            sx={{
+                                bgcolor: "#white",
+                                padding: 2,
+                                marginBottom: 3,
+                                boxShadow: 1,
+                                marginTop: 0.5,
+                            }}
+                        >
+                            <Box
+                                display="flex"
                             >
-                                BACK
-                            </Button>
+                                <Typography
+                                    variant="h4"
+                                    sx={{
+                                        flexGrow: 1,
+                                        fontFamily: "Comic Sans MS",
+                                    }}
+                                >
+                                    Room {room}
+                                </Typography>
+                            </Box>
+                        </Paper>
 
-                            <Button
-                                style={{ float: "right" }}
-                                onClick={add}
-                                variant="contained"
-                                color="success"
+                        <Paper
+                            sx={{
+                                bgcolor: "#white",
+                                padding: 2,
+                                marginBottom: 1,
+                                boxShadow: 1,
+                                marginTop: 1,
+                            }}
+                        >
+                            <Typography
+                                gutterBottom
                             >
-                                CONFIRM
-                            </Button>
-                        </Grid>
-                    </Grid>
+                            </Typography>
+
+                            <Grid
+                                container
+                                sx={{
+                                    flexGrow: 1,
+                                    fontFamily: "Comic Sans MS",
+                                }}
+                            >
+                                <Grid
+                                    container
+                                    justifyContent="center"
+                                    gap={14.5}
+                                >
+                                    <Box>
+                                        <img src="https://images.unsplash.com/photo-1627308595186-e6bb36712645?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80" height={350} width={250} />
+                                    </Box>
+                                    <Box>
+                                        <img src="https://images.unsplash.com/photo-1502389743708-d00f658638bd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" height={350} width={250} />
+                                    </Box>
+                                    <Box>
+                                        <img src="https://images.unsplash.com/photo-1558682766-1ff2c50e7056?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=753&q=80" height={350} width={250} />
+                                    </Box>
+                                </Grid>
+                            </Grid>
+
+                            <Typography
+                                gutterBottom
+                            >
+                            </Typography>
+
+                            <Grid
+                                container
+                                spacing={1}
+                                sx={{
+                                    padding: 4,
+                                }}
+                            >
+                                <Grid
+                                    container
+                                    justifyContent="center"
+                                    gap={10}
+                                >
+                                    <Grid item xs={3.3}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <Select
+                                                native
+                                                value={service.FoodID + ""}
+                                                onChange={handleChange}
+                                                inputProps={{
+                                                    name: "FoodID",
+                                                }}
+                                                sx={{
+                                                    flexGrow: 1,
+                                                    fontFamily: "Comic Sans MS",
+                                                }}
+                                            >
+                                                <option aria-label="None" value="">
+                                                    Choose Food
+                                                </option>
+                                                {food.map((item: FoodsInterface) => (
+                                                    <option value={item.ID} key={item.ID}>{item.Name}</option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={3.3}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <Select
+                                                native
+                                                value={service.DrinkID + ""}
+                                                onChange={handleChange}
+                                                inputProps={{
+                                                    name: "DrinkID",
+                                                }}
+                                                sx={{
+                                                    flexGrow: 1,
+                                                    fontFamily: "Comic Sans MS",
+                                                }}
+                                            >
+                                                <option aria-label="None" value="">
+                                                    Choose Drink
+                                                </option>
+                                                {drink.map((item: DrinksInterface) => (
+                                                    <option value={item.ID}>{item.Name}</option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={3.3}>
+                                        <FormControl fullWidth variant="outlined">
+                                            <Select
+                                                native
+                                                value={service.StorageID + ""}
+                                                onChange={handleChange}
+                                                inputProps={{
+                                                    name: "StorageID",
+                                                }}
+                                                sx={{
+                                                    flexGrow: 1,
+                                                    fontFamily: "Comic Sans MS",
+                                                }}
+                                            >
+                                                <option aria-label="None" value="">
+                                                    Choose Accessories
+                                                </option>
+                                                {accessorie.map((item: StorageInterface) => (
+                                                    <option value={item.ID}>{item.Product?.Name}</option>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+
+                            <Typography
+                                gutterBottom
+                            >
+                            </Typography>
+
+                            <Grid
+                                container
+                                justifyContent="center"
+                                gap={20}
+                            >
+                                <Grid item xs={2.2}>
+                                    <TextField
+                                        required
+                                        label="How much ?"
+
+                                        variant="standard"
+                                        id="FoodItem"
+                                        value={service.FoodItem}
+                                        onChange={handleInputFoodChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.2}>
+                                    <TextField
+                                        required
+                                        label="How much ?"
+                                        variant="standard"
+                                        id="DrinkItem"
+                                        value={service.DrinkItem}
+                                        onChange={handleInputDrinkChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={2.2}>
+                                    <TextField
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        required
+                                        label="How much ?"
+                                        variant="standard"
+                                        id="StorageItem"
+                                        value={service.StorageItem}
+                                        onChange={handleInputAccessorieChange}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Typography
+                                gutterBottom
+                            >
+                            </Typography>
+
+                            <Grid container spacing={1} sx={{ padding: 3 }}>
+                                <Grid item xs={12}>
+                                    <Button
+                                        sx={{
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        component={RouterLink}
+                                        to="/ss"
+                                        variant="contained"
+                                        color="error"
+                                    >
+                                        BACK
+                                    </Button>
+
+                                    <Button
+                                        sx={{
+                                            float: "right",
+                                            fontFamily: "Comic Sans MS",
+                                        }}
+                                        onClick={add}
+                                        variant="contained"
+                                        color="success"
+                                    >
+                                        ORDER
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Paper>
                 </Container>
             </ThemeProvider>
-        </div>
+        </div >
     );
 }
 
