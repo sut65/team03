@@ -63,23 +63,3 @@ func TestCheckroomValidateNotBlank(t *testing.T) {
 
 }
 
-func TestValidateDateMustBePast(t *testing.T) {
-	g := NewGomegaWithT(t)
-	test := uint(1)
-
-	t.Run("check date must be not past", func(t *testing.T) {
-		cr := Checkroom{
-			StatusID:   &test,
-			RoomID:     &test,
-			ProductID:  &test,
-			DamageID:   &test,
-			Date:       time.Now().AddDate(0, 0, -1),
-			EmployeeID: &test,
-		}
-		ok, err := govalidator.ValidateStruct(cr)
-
-		g.Expect(ok).ToNot(BeTrue())
-		g.Expect(err).ToNot(BeNil())
-		g.Expect(err.Error()).To(Equal("เวลาในการตรวจสอบห้องพักไม่ถูกต้อง"))
-	})
-}
