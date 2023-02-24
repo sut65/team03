@@ -61,6 +61,7 @@ func main() {
 			protected.POST("/bookings", booking.CreateBooking)
 			protected.PATCH("/bookings/:id", booking.UpdateBooking)
 			protected.DELETE("/bookings/:id", booking.DeleteBooking)
+			protected.DELETE("/bookings/customer/:id", booking.DeleteBookingByCID)
 			protected.GET("/bookingbydate", booking.ListBookingsBydate)
 			protected.GET("/bookingtotalgroupbydate", booking.ListBookingsTotalbyCID)
 			// ---Branch---
@@ -191,6 +192,7 @@ func main() {
 			protected.POST("/service", service.CreateService)
 			protected.PATCH("/services", service.UpdateService)
 			protected.DELETE("/services/:id", service.DeleteService)
+			protected.DELETE("/services/customer/:id", service.DeleteServiceByCID)
 
 			protected.GET("/room/customer/:id", service.GetRoomByCID)
 			protected.GET("/foods", service.ListFoods)

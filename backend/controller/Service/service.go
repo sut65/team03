@@ -117,6 +117,17 @@ func DeleteService(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 }
 
+// DELETE /services/customer/:id
+func DeleteServiceByCID(c *gin.Context) {
+	id := c.Param("id")
+	if tx := entity.DB().Exec("DELETE FROM services WHERE customer_id = ?", id); tx.RowsAffected == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Please type some bill."})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": id})
+}
+
 // PATCH /services
 func UpdateService(c *gin.Context) {
 	var service entity.Service

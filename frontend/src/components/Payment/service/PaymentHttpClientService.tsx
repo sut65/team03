@@ -119,6 +119,45 @@ async function GetPlaces() {
     return res;
 }
 
+async function DeleteServices(id?: null | string) {
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+    let res = await fetch(`${apiUrl}/services/customer/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return { status: true, message: res.data };
+            } else {
+                return { status: false, message: res.error };
+            }
+        });
+    return res;
+}
+async function DeleteBookings(id?: null | string) {
+    const requestOptions = {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+        },
+    };
+    let res = await fetch(`${apiUrl}/bookings/customer/${id}`, requestOptions)
+        .then((response) => response.json())
+        .then((res) => {
+            if (res.data) {
+                return { status: true, message: res.data };
+            } else {
+                return { status: false, message: res.error };
+            }
+        });
+    return res;
+}
+
 async function GetMethodP(id: string) {
     let res = await fetch(`${apiUrl}/methods/paymet/${id}`, requestOptionsGet)
         .then((response) => response.json())
@@ -170,6 +209,7 @@ async function GetPriceServiceCID(id?: string | null) {
     return res;
 }
 
+
 export {
     AddPayment,
     UpdatePayment,
@@ -182,4 +222,6 @@ export {
     GetPaymentByID,
     GetPriceRoomCID,
     GetPriceServiceCID,
+    DeleteServices,
+    DeleteBookings,
 };
