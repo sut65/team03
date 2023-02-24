@@ -127,6 +127,8 @@ const getPosition = async () => {
 };
 
 //----------------------------------จบการดึงข้อมูล------------------------
+
+//==========เปิด ปิด การบันทึกและ error
   const handleClose = (
     event?: React.SyntheticEvent | Event,
 

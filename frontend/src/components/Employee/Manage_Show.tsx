@@ -34,10 +34,9 @@ const themeshow = createTheme({
 function Manage_Show() {
 
   const [employee, setEmployee] = React.useState<EmployeeInterface[]>([]);
-
   const id_officer = localStorage.getItem("id");
 
-  
+
  const getEmployee = async () => {
    const apiUrl = `http://localhost:8080/Employees/officer/${id_officer}`;
    const requestOptions = {
@@ -55,6 +54,8 @@ function Manage_Show() {
        }
      });
  };
+
+
 
  const deleteEmployee = (id : number) => {
   
@@ -187,7 +188,7 @@ function Manage_Show() {
                         </TableCell>
                       </TableRow>
                     ))}
-                  
+
                   </TableBody>
                 </Table>
               </TableContainer>
